@@ -28,6 +28,28 @@ class Player
      */
     private $name;
 
+    /**
+     * @var Result[]
+     * @ORM\OneToMany(targetEntity="Result", mappedBy="player")
+     */
+    private $results;
+
+    /**
+     * @return Result[]
+     */
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    /**
+     * @param Result[] $results
+     */
+    public function setResults($results)
+    {
+        $this->results = $results;
+    }
+
 
     /**
      * Get id
