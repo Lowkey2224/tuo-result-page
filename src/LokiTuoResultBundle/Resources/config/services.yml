@@ -1,0 +1,4 @@
+services:
+#    loki_tuo_result.example:
+#        class: LokiTuoResultBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
