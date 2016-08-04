@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    {% for result in results %}
+        Player: {{ result.player.name }}<br/>
+        {% for deckEntry in result.deck %}
+            {{ deckEntry.card.name }}<br/>
+        {% endfor %}
+        <hr>
+    {% endfor %}
+{% endblock %}
+
