@@ -5,7 +5,6 @@ namespace LokiTuoResultBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class LokiTuoResReadFileCommand extends ContainerAwareCommand
@@ -23,10 +22,11 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $argument = $input->getArgument('filename');
+        $filePath = $input->getArgument('filename');
+        $reader = $this->getContainer()->get('loki_tuo_result.reader');
+        $count = $reader->readFile($filePath);
 
-
-        $output->writeln('Command result.');
+        $output->writeln('Persisted '.$count. " Results");
     }
 
 }

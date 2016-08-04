@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,14 +37,15 @@ class Result
     private $player;
 
     /**
-     * @var Card[]
-     * @ORM\ManyToMany(targetEntity="Card")
-     * @ORM\JoinTable(name="decks",
-     *      joinColumns={@ORM\JoinColumn(name="result_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="card_id", referencedColumnName="id")}
-     * )
+     * @var Deck[]
+     * @ORM\OneToMany(targetEntity="Deck", mappedBy="mission")
      */
     private $deck;
+
+    public function __construct()
+    {
+        $this->deck = new ArrayCollection();
+    }
 
 
     /**
@@ -89,7 +91,7 @@ class Result
     }
 
     /**
-     * @return Card[]
+     * @return ArrayCollection
      */
     public function getDeck()
     {

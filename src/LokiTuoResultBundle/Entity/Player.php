@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +34,11 @@ class Player
      * @ORM\OneToMany(targetEntity="Result", mappedBy="player")
      */
     private $results;
+
+    public function __construct()
+    {
+        $this->results = new ArrayCollection();
+    }
 
     /**
      * @return Result[]
