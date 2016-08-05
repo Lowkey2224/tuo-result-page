@@ -58,23 +58,24 @@ class Service
         $firstLine = true;
         $count = 0;
         foreach ($content as $line) {
+            echo $line."\n";
             if ($firstLine) {
                 if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
                     $name = $name[1];
                     $result[$count]['playername'] = $name;
                 }
-                if (preg_match('/against (.*?) with/', $line, $name) === 1) {
+                if (preg_match('/against (.*?)/', $line, $name) === 1) {
                     $name = $name[1];
                     $result[$count]['mission'] = $name;
                 }
                 $firstLine = false;
             } else {
-                if (preg_match('/units: (\d\d.?\d?):/', $line, $name) === 1) {
+                if (preg_match('/units: (\d\d.?\d?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
                     $name = (int)($name*10);
                     $result[$count]['percent'] = $name;
                 }
-                if (preg_match('/units: \d\d.?\d?: (.*)/', $line, $name) === 1) {
+                if (preg_match('/units: \d\d.?\d?\d?: (.*)/', $line, $name) === 1) {
                     $name = $name[1];
                     $result[$count]['deck'] = explode(", ", $name);
                 }
