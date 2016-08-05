@@ -1,8 +1,9 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-Hello World!<br/>
+    This is the Website for the CarryNoSaints Guild.<br/>
+
     {% for mission in missions %}
         <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
-        Link to mission {{ mission.name }}</a><br/>
-        {% endfor %}
+            Link to mission {{ mission.name }}</a><br/>
+    {% endfor %}
 {% endblock %}
