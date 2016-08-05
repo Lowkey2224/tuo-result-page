@@ -8,6 +8,7 @@ use LokiTuoResultBundle\Entity\Deck;
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\Result;
+use LokiTuoResultBundle\Entity\ResultFile;
 
 
 /**
@@ -29,27 +30,30 @@ class Service
     public function readFile($path)
     {
         $content = $this->getFileContents($path);
-        $transformed = $this->transformContent($content);
-        $models = $this->transformToModels($transformed);
-        return count($models);
+        $file = new ResultFile();
+        $file->setContent($content);
+        $this->em->persist($file);
+        $this->em->flush();
+        return $file->getId();
 
+    }
+
+    public function importFileById($fileId)
+    {
+        $file = $this->getFileById($fileId);
+        $content = explode("\n",$file->getContent());
+        $transformed = $this->transformContent($content);
+        $models = $this->transformToModels($transformed, $file);
+        $file->setStatus(ResultFile::STATUS_IMPORTED);
+        $this->em->persist($file);
+        $this->em->flush();
+        return count($models);
     }
 
     private function getFileContents($path)
     {
-        $content = [];
-        $handle = fopen($path, "r");
-        if ($handle) {
-            fgets($handle); //Throw away first line.
-            while (($line = fgets($handle)) !== false) {
-                $content[] = $line;
-            }
-
-            fclose($handle);
-        } else {
-            // error opening the file.
-        }
-        return $content;
+        //Maybe do some validation here.
+        return file_get_contents($path);
     }
 
     private function transformContent($content)
@@ -57,6 +61,8 @@ class Service
         $result = [];
         $firstLine = true;
         $count = 0;
+        //THrow away first line
+        array_shift($content);
         foreach ($content as $line) {
             if ($firstLine) {
                 if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
@@ -80,13 +86,12 @@ class Service
                 }
                 $firstLine = true;
                 $count++;
-
             }
         }
         return $result;
     }
 
-    private function transformToModels($transformed)
+    private function transformToModels($transformed, ResultFile $file)
     {
         $results = [];
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
@@ -115,6 +120,7 @@ class Service
             if(is_null($result)){
                 $result = new Result();
             }
+            $result->setSourceFile($file);
             $result->setPlayer($player);
             $result->setPercent($line['percent']);
             $result->setMission($mission);
@@ -162,5 +168,19 @@ class Service
             $this->em->remove($deckItem);
         }
         $this->em->flush();
+    }
+
+    /**
+     * @param $fileId
+     * @return ResultFile|null
+     */
+    private function getFileById($fileId)
+    {
+        $repo = $this->em->getRepository('LokiTuoResultBundle:ResultFile');
+        if($fileId === 'next'){
+            return $repo->findOneBy(['status' => ResultFile::STATUS_NOT_IMPORTED],['id' => 'ASC']);
+        }else{
+            return $repo->find($fileId);
+        }
     }
 }

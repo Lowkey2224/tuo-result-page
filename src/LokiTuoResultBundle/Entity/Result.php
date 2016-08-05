@@ -49,6 +49,13 @@ class Result
      */
     private $deck;
 
+    /**
+     * @var ResultFile
+     * @ORM\ManyToOne(targetEntity="ResultFile", inversedBy="results")
+     * @ORM\JoinColumn(referencedColumnName="id", name="file_id")
+     */
+    private $sourceFile;
+
     public function __construct()
     {
         $this->deck = new ArrayCollection();
@@ -127,6 +134,22 @@ class Result
     public function setPercent($percent)
     {
         $this->percent = $percent;
+    }
+
+    /**
+     * @return ResultFile
+     */
+    public function getSourceFile()
+    {
+        return $this->sourceFile;
+    }
+
+    /**
+     * @param ResultFile $sourceFile
+     */
+    public function setSourceFile($sourceFile)
+    {
+        $this->sourceFile = $sourceFile;
     }
 
 
