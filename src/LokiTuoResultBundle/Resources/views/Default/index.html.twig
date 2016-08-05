@@ -1,7 +1,11 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-    This is the Website for the CarryNoSaints Guild.<br/>
-    Here you will see all Simulations done by LokiMcFly<br/>
+    <div class="row">
+        This is the Website for the CarryNoSaints Guild.<br/>
+    </div>
+    <div class="row">
+        Here you will see all Simulations done by LokiMcFly<br/>
+    </div>
     {% for mission in missions %}
         <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
             Link to mission {{ mission.name }}</a><br/>
