@@ -114,6 +114,7 @@ class Service
             $result->setPercent($line['percent']);
             $result->setMission($mission);
             $this->em->persist($result);
+            $this->deleteOldDeck($result);
             $deck = $this->createDeck($line['deck'], $result);
             $result->setDeck($deck);
             $this->em->persist($result);
@@ -147,5 +148,14 @@ class Service
             $resultDeck[] = $deckEntry;
         }
         return $resultDeck;
+    }
+
+    private function deleteOldDeck(Result $result)
+    {
+        foreach ($result->getDeck() as $deckItem)
+        {
+            $this->em->remove($deckItem);
+        }
+        $this->em->flush();
     }
 }
