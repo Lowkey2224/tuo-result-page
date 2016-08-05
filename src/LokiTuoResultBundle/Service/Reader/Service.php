@@ -91,6 +91,7 @@ class Service
         $results = [];
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
+        $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
         foreach ($transformed as $line) {
             if (!isset($line['deck']))
             {
@@ -98,19 +99,21 @@ class Service
                 continue;
             }
 
-            $result = new Result();
+
             if (!($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
                 $player = new Player();
                 $player->setName($line['playername']);
                 $this->em->persist($player);
             }
-            $result->setPlayer($player);
             if (!($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
                 $mission = new Mission();
                 $mission->setName($line['mission']);
                 $mission->setType("Mission");
                 $this->em->persist($mission);
             }
+            $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
+            $result= ($results)?$result:new Result();
+            $result->setPlayer($player);
             $result->setPercent($line['percent']);
             $result->setMission($mission);
             $this->em->persist($result);
