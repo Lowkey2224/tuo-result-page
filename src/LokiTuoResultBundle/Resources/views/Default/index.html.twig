@@ -8,8 +8,8 @@
     </div>
     {% for mission in missions %}
         <div class="row" style="margin-top: 20px;">
-        <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
-            Link to mission {{ mission.name }}</a><br/>
+            Simulation for:<a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
+             <b>{{ mission.name }}</b></a><br/>
         </div>
     {% endfor %}
     <div class="row" style="margin-top: 20px;">
