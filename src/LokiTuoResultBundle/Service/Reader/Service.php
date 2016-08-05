@@ -112,7 +112,9 @@ class Service
                 $this->em->persist($mission);
             }
             $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
-            $result= ($results)?$result:new Result();
+            if(is_null($result)){
+                $result = new Result();
+            }
             $result->setPlayer($player);
             $result->setPercent($line['percent']);
             $result->setMission($mission);
