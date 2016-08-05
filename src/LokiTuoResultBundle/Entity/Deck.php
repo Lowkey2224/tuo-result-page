@@ -35,7 +35,7 @@ class Deck
 
     /**
      * @var Result
-     * @ORM\ManyToOne(targetEntity="Result")
+     * @ORM\ManyToOne(targetEntity="Result", inversedBy="deck")
      * @ORM\JoinColumn(referencedColumnName="id", name="result_id")
      */
     private $result;

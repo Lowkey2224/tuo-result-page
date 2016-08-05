@@ -45,7 +45,7 @@ class Result
 
     /**
      * @var Deck[]
-     * @ORM\OneToMany(targetEntity="Deck", mappedBy="result", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Deck", mappedBy="result", cascade={"persist"}, fetch="EAGER")
      */
     private $deck;
 
