@@ -71,6 +71,7 @@ class Service
             } else {
                 if (preg_match('/units: (\d\d.?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
+                    $name = (int)($name*10);
                     $result[$count]['percent'] = $name;
                 }
                 if (preg_match('/units: \d\d.?\d?: (.*)/', $line, $name) === 1) {
@@ -110,8 +111,10 @@ class Service
                 $mission->setType("Mission");
                 $this->em->persist($mission);
             }
+            $result->setPercent($line['percent']);
             $result->setMission($mission);
-            $deck = $this->createDeck($line['deck'], $mission);
+            $this->em->persist($result);
+            $deck = $this->createDeck($line['deck'], $result);
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
@@ -121,10 +124,10 @@ class Service
         return $results;
     }
 
-    private function createDeck($deck, $mission)
+    private function createDeck($deck, Result $result)
     {
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
-        $result = [];
+        $resultDeck = [];
         $order = 0;
         foreach ($deck as $cardName) {
             $card = $cardRepo->findOneBy(['name' => $cardName]);
@@ -137,12 +140,12 @@ class Service
             }
             $deckEntry = new Deck();
             $deckEntry->setPlayOrder($order);
-            $deckEntry->setMission($mission);
+            $deckEntry->setResult($result);
             $deckEntry->setCard($card);
             $this->em->persist($deckEntry);
             $order++;
-            $result[] = $deckEntry;
+            $resultDeck[] = $deckEntry;
         }
-        return $result;
+        return $resultDeck;
     }
 }

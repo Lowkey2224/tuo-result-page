@@ -34,11 +34,11 @@ class Deck
 
 
     /**
-     * @var Mission
-     * @ORM\ManyToOne(targetEntity="Mission")
-     * @ORM\JoinColumn(referencedColumnName="id", name="mission_id")
+     * @var Result
+     * @ORM\ManyToOne(targetEntity="Result")
+     * @ORM\JoinColumn(referencedColumnName="id", name="result_id")
      */
-    private $mission;
+    private $result;
 
     /**
      * @var Card
@@ -48,20 +48,9 @@ class Deck
     private $card;
 
     /**
-     * @return Mission
+     * @var Result
      */
-    public function getMission()
-    {
-        return $this->mission;
-    }
 
-    /**
-     * @param Mission $mission
-     */
-    public function setMission($mission)
-    {
-        $this->mission = $mission;
-    }
 
     /**
      * @return Card
@@ -113,5 +102,23 @@ class Deck
     {
         return $this->playOrder;
     }
+
+    /**
+     * @return Result
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param Result $result
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+    }
+
+
 }
 

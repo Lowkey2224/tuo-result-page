@@ -31,7 +31,8 @@ class DefaultController extends Controller
         $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission'=>$mission]);
         return $this->render('LokiTuoResultBundle:Default:showMission.html.twig',
             [
-                'results' => $results
+                'mission' => $mission,
+                'results' => $results,
             ]);
     }
 

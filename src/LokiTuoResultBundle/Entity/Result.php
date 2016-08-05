@@ -23,6 +23,13 @@ class Result
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="percent", type="integer", nullable=false)
+     */
+    private $percent;
+
+    /**
      * @var Mission
      * @ORM\ManyToOne(targetEntity="Mission")
      * @ORM\JoinColumn(referencedColumnName="id", name="mission_id")
@@ -38,7 +45,7 @@ class Result
 
     /**
      * @var Deck[]
-     * @ORM\OneToMany(targetEntity="Deck", mappedBy="mission")
+     * @ORM\OneToMany(targetEntity="Deck", mappedBy="result", cascade={"persist"})
      */
     private $deck;
 
@@ -104,6 +111,22 @@ class Result
     public function setDeck($deck)
     {
         $this->deck = $deck;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPercent()
+    {
+        return $this->percent;
+    }
+
+    /**
+     * @param int $percent
+     */
+    public function setPercent($percent)
+    {
+        $this->percent = $percent;
     }
 
 
