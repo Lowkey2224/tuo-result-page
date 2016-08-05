@@ -1,9 +1,18 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-    Result for {{ mission.name }}<br/>
+    <h1>Result for {{ mission.name }}</h1>
     {% for result in results %}
-        <div class="panel panel-default">
+        {% if result.percent > 850 %}
+            {% set class = "panel-success" %}
+        {% elseif result.percent > 650 %}
+            {% set class = "panel-info" %}
+        {% elseif result.percent > 500 %}
+            {% set class = "panel-warning" %}
+        {% else %}
+            {% set class = "panel-danger" %}
+        {% endif %}
+        <div class="panel {{ class }}">
             <div class="panel-heading">
                 Player: {{ result.player.name }} with {{ result.percent/10 | number_format(2) }}%<br/>
             </div>
