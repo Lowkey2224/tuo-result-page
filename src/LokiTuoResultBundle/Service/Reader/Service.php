@@ -58,13 +58,12 @@ class Service
         $firstLine = true;
         $count = 0;
         foreach ($content as $line) {
-            echo $line."\n";
             if ($firstLine) {
                 if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
                     $name = $name[1];
                     $result[$count]['playername'] = $name;
                 }
-                if (preg_match('/against (.*?)/', $line, $name) === 1) {
+                if (preg_match('/against (.*)/', $line, $name) === 1) {
                     $name = $name[1];
                     $result[$count]['mission'] = $name;
                 }
