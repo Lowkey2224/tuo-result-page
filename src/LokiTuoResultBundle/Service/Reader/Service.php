@@ -41,6 +41,10 @@ class Service
     public function importFileById($fileId)
     {
         $file = $this->getFileById($fileId);
+        if(is_null($file))
+        {
+            return 0;
+        }
         $content = explode("\n",$file->getContent());
         $transformed = $this->transformContent($content);
         $models = $this->transformToModels($transformed, $file);
