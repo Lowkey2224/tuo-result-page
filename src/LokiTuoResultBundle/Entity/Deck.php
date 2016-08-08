@@ -10,8 +10,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="deck")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\DeckRepository")
- * @UniqueEntity(fields={"playOrder", "card", "mission"}, message="There already exists a repair job with name {{ value }} for this device and these colours.")
-
+ * @UniqueEntity(fields={"playOrder", "card", "mission"},
+ *     message="There already exists a repair job with name {{ value }} for this device and these colours.")
+ *
  */
 class Deck
 {
