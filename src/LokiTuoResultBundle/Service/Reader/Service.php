@@ -9,6 +9,8 @@ use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 
 /**
@@ -22,18 +24,31 @@ class Service
     /** @var  EntityManager */
     private $em;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
+        $this->logger = new NullLogger();
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     public function readFile($path)
     {
+        $this->logger->info("Reading file $path");
         $content = $this->getFileContents($path);
         $file = new ResultFile();
         $file->setContent($content);
         $this->em->persist($file);
         $this->em->flush();
+        $this->logger->info("Persisting file with Id ".$file->getId());
         return $file->getId();
 
     }
@@ -43,11 +58,15 @@ class Service
         $file = $this->getFileById($fileId);
         if(is_null($file))
         {
+            $this->logger->alert("No File with ID $fileId was found. Aborting");
             return 0;
         }
+        $this->logger->info("Using File with ID ".$file->getId()." for Import");
+
         $content = explode("\n",$file->getContent());
         $transformed = $this->transformContent($content);
         $models = $this->transformToModels($transformed, $file);
+        $this->logger->info(count($models). " were Saved");
         $file->setStatus(ResultFile::STATUS_IMPORTED);
         $this->em->persist($file);
         $this->em->flush();
@@ -104,7 +123,7 @@ class Service
         foreach ($transformed as $line) {
             if (!isset($line['deck']))
             {
-                echo "\n Skipped result for Player ". $line['playername']. " Because no Deck was found\n";
+                $this->logger->warning("Skipped result for Player ". $line['playername']. " Because no Deck was found");
                 continue;
             }
 
