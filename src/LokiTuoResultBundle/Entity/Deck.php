@@ -118,7 +118,4 @@ class Deck
     {
         $this->result = $result;
     }
-
-
 }
-

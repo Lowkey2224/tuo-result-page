@@ -187,4 +187,3 @@ class Card
         return $this->picture;
     }
 }
-

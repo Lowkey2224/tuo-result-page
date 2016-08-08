@@ -29,5 +29,4 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
 
         $output->writeln('Persisted '.$count. " Results");
     }
-
 }

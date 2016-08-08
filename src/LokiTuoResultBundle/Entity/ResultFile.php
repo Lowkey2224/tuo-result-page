@@ -182,8 +182,4 @@ class ResultFile
     {
         $this->results = $results;
     }
-
-
-
 }
-

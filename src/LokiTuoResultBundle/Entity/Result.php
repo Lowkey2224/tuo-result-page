@@ -151,7 +151,4 @@ class Result
     {
         $this->sourceFile = $sourceFile;
     }
-
-
 }
-

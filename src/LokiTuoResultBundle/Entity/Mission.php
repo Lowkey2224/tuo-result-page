@@ -94,4 +94,3 @@ class Mission
         return $this->type;
     }
 }
-

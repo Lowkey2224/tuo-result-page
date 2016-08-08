@@ -31,5 +31,4 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
 
         $output->writeln("Read File with id $id");
     }
-
 }

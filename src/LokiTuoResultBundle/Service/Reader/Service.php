@@ -12,7 +12,6 @@ use LokiTuoResultBundle\Entity\ResultFile;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-
 /**
  * Created by PhpStorm.
  * User: jenz
@@ -50,20 +49,18 @@ class Service
         $this->em->flush();
         $this->logger->info("Persisting file with Id ".$file->getId());
         return $file->getId();
-
     }
 
     public function importFileById($fileId)
     {
         $file = $this->getFileById($fileId);
-        if(is_null($file))
-        {
+        if (is_null($file)) {
             $this->logger->alert("No File with ID $fileId was found. Aborting");
             return 0;
         }
         $this->logger->info("Using File with ID ".$file->getId()." for Import");
 
-        $content = explode("\n",$file->getContent());
+        $content = explode("\n", $file->getContent());
         $transformed = $this->transformContent($content);
         $models = $this->transformToModels($transformed, $file);
         $this->logger->info(count($models). " were Saved");
@@ -121,8 +118,7 @@ class Service
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
         $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
         foreach ($transformed as $line) {
-            if (!isset($line['deck']))
-            {
+            if (!isset($line['deck'])) {
                 $this->logger->warning("Skipped result for Player ". $line['playername']. " Because no Deck was found");
                 continue;
             }
@@ -140,7 +136,7 @@ class Service
                 $this->em->persist($mission);
             }
             $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
-            if(is_null($result)){
+            if (is_null($result)) {
                 $result = new Result();
             }
             $result->setSourceFile($file);
@@ -186,8 +182,7 @@ class Service
 
     private function deleteOldDeck(Result $result)
     {
-        foreach ($result->getDeck() as $deckItem)
-        {
+        foreach ($result->getDeck() as $deckItem) {
             $this->em->remove($deckItem);
         }
         $this->em->flush();
@@ -200,9 +195,9 @@ class Service
     private function getFileById($fileId)
     {
         $repo = $this->em->getRepository('LokiTuoResultBundle:ResultFile');
-        if($fileId === 'next'){
-            return $repo->findOneBy(['status' => ResultFile::STATUS_NOT_IMPORTED],['id' => 'ASC']);
-        }else{
+        if ($fileId === 'next') {
+            return $repo->findOneBy(['status' => ResultFile::STATUS_NOT_IMPORTED], ['id' => 'ASC']);
+        } else {
             return $repo->find($fileId);
         }
     }
