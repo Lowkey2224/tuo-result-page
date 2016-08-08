@@ -98,12 +98,12 @@ class Service
                 }
                 $firstLine = false;
             } else {
-                if (preg_match('/units: (\d\d.?\d?\d?):/', $line, $name) === 1) {
+                if (preg_match('/units: (\d?\d.?\d?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
                     $name = (int)($name*10);
                     $result[$count]['percent'] = $name;
                 }
-                if (preg_match('/units: \d\d.?\d?\d?: (.*)/', $line, $name) === 1) {
+                if (preg_match('/units: \d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
                     $name = $name[1];
                     $result[$count]['deck'] = explode(", ", $name);
                 }
