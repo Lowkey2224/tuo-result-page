@@ -5,13 +5,15 @@
         <title>{% block title %}Carry No Saints Simulations{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css') }}">
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
     <div class="container" role="main">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </div>
 
+    </div>
+    {% block javascripts %}{% endblock %}
+    <script src="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
     </body>
 </html>

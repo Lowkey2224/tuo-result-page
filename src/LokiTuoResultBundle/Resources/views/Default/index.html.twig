@@ -6,12 +6,20 @@
     <div class="row">
         Here you will see all Simulations done by LokiMcFly<br/>
     </div>
-    {% for mission in missions %}
-        <div class="row" style="margin-top: 20px;">
-            Simulation for:<a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
-             <b>{{ mission.name }}</b></a><br/>
-        </div>
-    {% endfor %}
+    <div class="row">
+        Simulations
+        <ul class="">
+            {% for mission in missions %}
+                <li>
+                    <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
+                        <b>{{ mission.name }}</b>
+                    </a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+
     <div class="row" style="margin-top: 20px;">
 
         Simulations and website done by LokiMcFly<br/>
