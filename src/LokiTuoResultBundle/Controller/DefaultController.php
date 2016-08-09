@@ -4,6 +4,8 @@ namespace LokiTuoResultBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
@@ -40,5 +42,22 @@ class DefaultController extends Controller
         );
     }
 
-
+    /**
+     * @param $fileId
+     * @return Response|NotFoundHttpException
+     * @Route("/file/{fileId}", requirements={"fileId":"\d+"}, name="tuo.resultfile.show")
+     */
+    public function getFile($fileId)
+    {
+        $file = $this->getDoctrine()->getRepository('LokiTuoResultBundle:ResultFile')->find($fileId);
+        if (is_null($file)) {
+            return $this->createNotFoundException();
+        }
+        $filename = "result.txt";
+        return new Response($file->getContent(), 200, [
+            'content-type' => 'text/text',
+            'cache-control' => 'private',
+            'content-disposition' => 'attachment; filename="'.$filename.'";',
+        ]);
+    }
 }
