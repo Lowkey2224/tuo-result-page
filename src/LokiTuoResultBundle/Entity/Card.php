@@ -56,6 +56,13 @@ class Card
      */
     private $picture;
 
+    /**
+     * @var CardFile
+     * @ORM\ManyToOne(targetEntity="CardFile", inversedBy="cards")
+     * @ORM\JoinColumn(referencedColumnName="id", name="cardfile_id")
+     */
+    private $cardFile;
+
 
     /**
      * Get id
@@ -185,5 +192,29 @@ class Card
     public function getPicture()
     {
         return $this->picture;
+    }
+
+    /**
+     * @return CardFile
+     */
+    public function getCardFile()
+    {
+        return $this->cardFile;
+    }
+
+    /**
+     * @param CardFile $cardFile
+     */
+    public function setCardFile($cardFile)
+    {
+        $this->cardFile = $cardFile;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

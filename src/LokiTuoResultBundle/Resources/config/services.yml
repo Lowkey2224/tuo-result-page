@@ -4,3 +4,13 @@ services:
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
         #arguments: ["@service_id", "plain_value", %parameter%]
+
+    loki_tuo_result.card.reader:
+        class: LokiTuoResultBundle\Service\CardReader\Service
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    loki_tuo_result.card.persister:
+        class: LokiTuoResultBundle\Service\CardReader\Persister
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        #arguments: ["@service_id", "plain_value", %parameter%]
