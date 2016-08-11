@@ -32,7 +32,7 @@ class DefaultController extends Controller
         if (!$mission) {
             return $this->createNotFoundException();
         }
-        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission'=>$mission]);
+        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission' => $mission]);
         return $this->render(
             'LokiTuoResultBundle:Default:showMission.html.twig',
             [
@@ -57,7 +57,7 @@ class DefaultController extends Controller
         return new Response($file->getContent(), 200, [
             'content-type' => 'text/text',
             'cache-control' => 'private',
-            'content-disposition' => 'attachment; filename="'.$filename.'";',
+            'content-disposition' => 'attachment; filename="' . $filename . '";',
         ]);
     }
 }

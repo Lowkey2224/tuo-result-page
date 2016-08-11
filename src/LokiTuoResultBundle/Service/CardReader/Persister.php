@@ -38,57 +38,18 @@ class Persister
     {
         $criteria = ['status' => CardFile::STATUS_NOT_IMPORTED];
         $files = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findBy($criteria);
+        $transformer = new Transformer();
+        $transformer->setLogger($this->logger);
         $cards = [];
         foreach ($files as $file) {
             $content = simplexml_load_string($file->getContent());
-            $cards = $this->transformToModels($content, $file, $cards);
+            $cards = $transformer->transformToModels($content, $file, $cards);
             $this->persistModels($cards);
         }
         $this->em->flush();
     }
 
-    /**
-     * @param $content
-     * @return Card[]
-     */
-    private function transformToModels($content, CardFile $file, $result = [])
-    {
-        foreach ($content as $object) {
-            var_dump(trim($object->name));
-            if (array_key_exists(trim($object->name), $result)) {
-                continue;
-            }
-            $card = new Card();
-            $card->setName(trim($object->name));
-            $card->setPicture($object->picture);
-            $card->setAttack($object->attack);
-            $card->setDefense($object->health);
-            $card->setDelay($object->cost);
-            $card->setCardFile($file);
-            if (isset($object->upgrade)) {
-                foreach ($object->upgrade as $upgrade) {
-                    if (isset($upgrade->picture)) {
-                        $card->setPicture($upgrade->picture);
-                    }
-                    if (isset($upgrade->health)) {
-                        $card->setDefense($upgrade->health);
-                    };
-                    if (isset($upgrade->attack)) {
-                        $card->setAttack($upgrade->attack);
-                    };
-                    if (isset($upgrade->cost)) {
-                        $card->setDelay($upgrade->cost);
-                    }
-                }
-            } else {
-//                $this->logger->debug('Card without Upgrade found: ' . $card->getName());
-            }
-            $result[$card->getName()] = $card;
-        }
-        return $result;
-    }
-
-    /**
+        /**
      * @param LoggerInterface $logger
      */
     public function setLogger(LoggerInterface $logger)

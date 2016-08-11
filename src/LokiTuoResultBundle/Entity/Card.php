@@ -31,21 +31,21 @@ class Card
     /**
      * @var int
      *
-     * @ORM\Column(name="Attack", type="integer", nullable=true)
+     * @ORM\Column(name="Attack", type="integer")
      */
     private $attack;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="Defense", type="integer", nullable=true)
+     * @ORM\Column(name="Defense", type="integer")
      */
     private $defense;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="Delay", type="integer", nullable=true)
+     * @ORM\Column(name="Delay", type="integer")
      */
     private $delay;
 
@@ -57,12 +57,24 @@ class Card
     private $picture;
 
     /**
+     * @var
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $skills;
+
+    /**
      * @var CardFile
      * @ORM\ManyToOne(targetEntity="CardFile", inversedBy="cards")
      * @ORM\JoinColumn(referencedColumnName="id", name="cardfile_id")
      */
     private $cardFile;
 
+    public function __construct()
+    {
+        $this->defense = 0;
+        $this->delay = 0;
+        $this->attack = 0;
+    }
 
     /**
      * Get id
@@ -216,5 +228,21 @@ class Card
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSkills()
+    {
+        return $this->skills;
+    }
+
+    /**
+     * @param mixed $skills
+     */
+    public function setSkills($skills)
+    {
+        $this->skills = $skills;
     }
 }

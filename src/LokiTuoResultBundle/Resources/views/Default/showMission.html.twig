@@ -23,13 +23,17 @@
             <div class="panel-heading">
 
                 Player: <b>{{ result.player.name }}</b> with {{ result.percent/10 | number_format(2) }}%
-                <a href="{{ path("tuo.resultfile.show", {'fileId': result.sourceFile.id}) }}"><i class="pull-right glyphicon glyphicon-floppy-save"></i></a>
+                <a href="{{ path("tuo.resultfile.show", {'fileId': result.sourceFile.id}) }}"><i
+                            class="pull-right glyphicon glyphicon-floppy-save"></i></a>
 
 
             </div>
             <div class="panel-body">
                 {% for deckEntry in result.deck %}
-                    {{ deckEntry.card.name }}<br/>
+                    {{ deckEntry.card.name }}   {{ (deckEntry.card.delay) ? deckEntry.card.delay : 0 }}/
+                    {{ (deckEntry.card.attack) ? deckEntry.card.attack : 0 }}/
+                    {{ (deckEntry.card.defense) ? deckEntry.card.defense : 0 }}/
+                    <br/>
                 {% endfor %}
             </div>
         </div>
