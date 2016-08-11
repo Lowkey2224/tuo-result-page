@@ -24,6 +24,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
     {
 //        $argument = $input->getArgument('argument');
 
+        $path = $this->getContainer()->get('kernel')->getRootDir() . "/../data/";
         if ($input->getOption('option')) {
             // ...
         }
@@ -31,7 +32,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $reader->setLogger(new ConsoleLogger($output));
         $filenames = [];
         for ($i = 1; $i <= 10; $i++) {
-            $filenames[$i] = "/Users/jenz/Projects/tuo-result-page/data/cards_section_".$i.".xml";
+            $filenames[$i] = realpath($path."/cards_section_".$i.".xml");
         }
         $reader->saveCardFiles($filenames);
 
