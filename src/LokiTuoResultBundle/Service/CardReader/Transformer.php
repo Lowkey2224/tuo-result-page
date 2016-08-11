@@ -37,9 +37,9 @@ class Transformer
             $card = new Card();
             $card->setName(trim($object->name));
             $card->setPicture($object->picture);
-            $card->setAttack($object->attack);
-            $card->setDefense($object->health);
-            $card->setDelay($object->cost);
+            $card->setAttack(($object->attack)?$object->attack:0);
+            $card->setDefense(($object->health)?$object->health:0);
+            $card->setDelay(($object->cost)?$object->cost:0);
             $card->setCardFile($file);
             if (isset($object->skill)) {
                 $skills = array_merge($skills, $this->readSkill($object->skill));
