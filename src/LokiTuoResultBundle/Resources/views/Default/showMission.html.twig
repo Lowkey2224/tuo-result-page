@@ -32,7 +32,10 @@
                 {% for deckEntry in result.deck %}
                     {{ deckEntry.card.name }}   {{ (deckEntry.card.delay) ? deckEntry.card.delay : 0 }}/
                     {{ (deckEntry.card.attack) ? deckEntry.card.attack : 0 }}/
-                    {{ (deckEntry.card.defense) ? deckEntry.card.defense : 0 }}/
+                    {{ (deckEntry.card.defense) ? deckEntry.card.defense : 0 }}
+                    {% for skill in deckEntry.card.skills %}
+                        {{ skill }} |
+                    {% endfor %}
                     <br/>
                 {% endfor %}
             </div>
