@@ -44,8 +44,6 @@ class Persister
         foreach ($files as $file) {
             $content = simplexml_load_string($file->getContent());
             $cards = $transformer->transformToModels($content, $file, $cards);
-            $c = $cards['Regal Pier'];
-            $this->logger->debug($c->getName(). " A".$c->getAttack(). " Def".$c->getDefense(). " Del".$c->getDelay());
             $this->persistModels($cards);
         }
         $this->em->flush();

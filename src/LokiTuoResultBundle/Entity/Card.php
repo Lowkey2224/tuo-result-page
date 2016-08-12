@@ -119,7 +119,7 @@ class Card
      */
     public function setAttack($attack)
     {
-        $this->attack = $attack;
+        $this->attack = (int)$attack;
 
         return $this;
     }
@@ -143,7 +143,7 @@ class Card
      */
     public function setDefense($defense)
     {
-        $this->defense = $defense;
+        $this->defense = (int)$defense;
 
         return $this;
     }
@@ -167,7 +167,7 @@ class Card
      */
     public function setDelay($delay)
     {
-        $this->delay = $delay;
+        $this->delay = (int)$delay;
 
         return $this;
     }

@@ -1,33 +1,35 @@
-CTF Results 1,3,6-17,19-20
-member name phildouble2u2@6/2/2016/5/37/00 against the reckoning-10 with devour gbge
-Optimized Deck: 5 units: 96.2: Nexor, Vizier Shurixin, Atomic Wardriver, Sinuous Dam, Deserted Baughe, Unholy Cathedral
-member name flameshoot@6/2/2016/5/20/00 against the reckoning-10 with devour gbge
-Optimized Deck: 7 units: 55: Elder Constantine, Tripa Beama, Sacred Twin-Engines #3, Gravity Diminisher, Serraco Sire, Dreamhaunter
-member name lokimcfly@7/5/2016/13/41/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 76.8: Halcyon, Savant Ascendant, Menacing Interrogator, Sinuous Dam, Menacing Interrogator, Defended Kilnshop, Entangler Vast
-member name mrshine@6/3/2016/1/32/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 19.8: Alaric, Emergence, Shrill Whistler, Barracus Redeemed, Sage Ascendant, Sinuous Dam, Orion Scout
-member name nebukap1@6/8/2016/19/50/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 88.8: Daedalus, Vizier Shurixin, Worldship Guard, Orion Survivor, Sinuous Dam, Baughe, Worldship Guard
-member name petohtalrayn@6/2/2016/5/53/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 97.6: Silus the Corrupt, Extreme Barrager, Vizier Shurixin, Atomic Wardriver, Sinuous Dam, Dune Runner, Deserted Baughe
-member name cybertronftw@6/3/2016/1/31/00 against the reckoning-10 with devour gbge
-Optimized Deck: 5 units: 51.5: Daedalus, Lt. Col. Jane Duke, Grizzled Veteran, Mobile Munitions, Metalhouse, Harsh Symbiotic
-member name macash@6/2/2016/22/09/00 against the reckoning-10 with devour gbge
-Optimized Deck: 5 units: 88.1: Nexor, Chilling Howler, Dionysus, Sinuous Dam, Entangler Vast, Jilted Baughe
-member name windknight17@6/3/2016/8/42/00 against the reckoning-10 with devour gbge
-Optimized Deck: 5 units: 81.6: Halcyon, Lt. Col. Jane Duke, Donarrian Aircraft, X80 Drygo, Magnum, Magnum Jet
-member name michaelh689@7/6/2016/6/22/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 95: Silus the Corrupt, Extreme Barrager, Atomic Wardriver, Ternary Dreadshot, Sinuous Dam, Deserted Baughe, Blast Twin
-member name debje@6/3/2016/21/14/00 against the reckoning-10 with devour gbge
-Optimized Deck: 7 units: 73.2: Nexor, Chilling Howler, Zorbo the Master, Atomic Wardriver, Living Dam #2, Deserted Baughe #2
-member name bageda@6/6/2016/21/15/00 against the reckoning-10 with devour gbge
-Optimized Deck: 5 units: 89.5: Nexor, Chilling Howler, Ternary Dreadshot #2, Deserted Baughe, Tazerious
-member name violentmind21@6/7/2016/1/59/00 against the reckoning-10 with devour gbge
-Optimized Deck: 5 units: 62.3: Typhon Vex, Riktox Liquefier, Orion Survivor, Sinuous Dam, Defended Kilnshop, Gigantos Machine
-member name de1777@7/30/2016/17/26/00 against the reckoning-10 with devour gbge
+CTF Results 1,3,6-20
+member name phildouble2u2@6/2/2016/5/37/00 against iron mutant level 5
+Optimized Deck: 6 units: 80.87: Daedalus Enraged, Plague Belcher, Vizier Shurixin, Sinuous Dam, Atomic Wardriver, Deserted Baughe, Orion Survivor
+member name flameshoot@6/2/2016/5/20/00 against iron mutant level 5
+Optimized Deck: 8 units: 34.53: Elder Constantine, Tripa Beama, Ground Cutter, Tabernacle of Andor, Gravity Diminisher #2, Tabernacle of Andor, Gravity Stifler, Master of Rituals
+member name lokimcfly@7/5/2016/13/41/00 against iron mutant level 5
+Optimized Deck: 8 units: 59.38: Halcyon, Sinuous Dam, Stonewall Garrison, Entangler Vast, Menacing Interrogator, Bullet Virtuoso, Menacing Interrogator, Atomic Wardriver, Orion Survivor
+member name mrshine@6/3/2016/1/32/00 against iron mutant level 5
+Optimized Deck: 6 units: 32.77: Alaric, Shrill Whistler, Sinuous Dam, Barracus Redeemed, Gun Virtuoso, Patriarch's Bidding, Orion Scout
+member name nebukap1@6/8/2016/19/50/00 against iron mutant level 5
+Optimized Deck: 6 units: 87.17: Daedalus, Worldship Guard, Sinuous Dam, Worldship Guard, Vizier Shurixin, Bullet Virtuoso, Orion Survivor
+member name petohtalrayn@6/2/2016/5/53/00 against iron mutant level 5
+Optimized Deck: 6 units: 76.64: Silus the Corrupt, Worldship Guard, Vizier Shurixin, Sinuous Dam, Atomic Wardriver, Deserted Baughe, Master of Rituals
+member name cybertronftw@6/3/2016/1/31/00 against iron mutant level 5
+Optimized Deck: 5 units: 53.42: Daedalus, Entangler Vast, Lt. Col. Jane Duke, Stonewall Garrison, Grizzled Veteran, Metalhouse
+member name macash@6/2/2016/22/09/00 against iron mutant level 5
+Optimized Deck: 6 units: 67.97: Nexor, Plague Belcher, Sinuous Dam, Dionysus, Entangler Vast, Barracus Redeemed, Jilted Baughe
+member name windknight17@6/3/2016/8/42/00 against iron mutant level 5
+Optimized Deck: 5 units: 50.84: Halcyon, Lt. Col. Jane Duke, Donarrian Aircraft, Magnum Jet, Regal Wharf, X80 Drygo
+member name michaelh689@7/6/2016/6/22/00 against iron mutant level 5
+Optimized Deck: 7 units: 57.2: Daedalus, Vincentius Reforged, Sinuous Dam, Ternary Dreadshot, Atomic Wardriver, Deserted Baughe, Lt. Col. Jane Duke, Dune Runner
+member name debje@6/3/2016/21/14/00 against iron mutant level 5
+Optimized Deck: 8 units: 45.91: Nexor, Plague Belcher, Living Dam, Atomic Wardriver, Zorbo the Master, Deserted Baughe #3, Living Dam
+member name bageda@6/6/2016/21/15/00 against iron mutant level 5
+Optimized Deck: 7 units: 34.78: Nexor, Vile Emergence, Ternary Dreadshot #2, Atomic Wardriver, Unholy Cathedral, Deserted Baughe, Tazerious
+member name violentmind21@6/7/2016/1/59/00 against iron mutant level 5
+Optimized Deck: 7 units: 12.51: Typhon Vex, Ground Cutter, Sinuous Dam, Gigantos Machine, Orion Survivor, Pitched Whistler, Tormentor, Riktox Liquefier
+member name de1777@7/30/2016/17/26/00 against iron mutant level 5
 Optimized Deck: 0 units: 0: Typhon Vex
-member name petzda@7/6/2016/6/23/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 71: Malika, Vile Emergence, Ternary Dreadshot #2, Living Dam, Unholy Cathedral, Deserted Baughe
-member name zeatt@7/30/2016/17/49/00 against the reckoning-10 with devour gbge
-Optimized Deck: 6 units: 99.8: Typhon Vex, Thrilling Howler, Vizier Shurixin, Sinuous Dam, Arin Dunestalker, Deserted Baughe, Stonewall Garrison
+member name xtroyer@8/4/2016/23/47/00 against iron mutant level 5
+Optimized Deck: 7 units: 87.25: Daedalus Enraged, Frontier Sanctum, Lt. Col. Jane Duke #2, Grizzled Veteran #2, Agile Airship, Bullet Virtuoso
+member name petzda@7/6/2016/6/23/00 against iron mutant level 5
+Optimized Deck: 7 units: 27.77: Malika, Vile Emergence, Ternary Dreadshot, Living Dam, Atomic Wardriver, Deserted Baughe, Ternary Dreadshot, Atomic Wardriver
+member name zeatt@7/30/2016/17/49/00 against iron mutant level 5
+Optimized Deck: 6 units: 84.72: Daedalus, Vizier Shurixin, Sinuous Dam, Arin Dunestalker, Bullet Virtuoso, Deserted Baughe, Dune Runner
