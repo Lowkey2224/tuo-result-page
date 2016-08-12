@@ -47,6 +47,11 @@ class Persister
             $this->persistModels($cards);
         }
         $this->em->flush();
+        foreach ($files as $file) {
+            $file->setStatus(CardFile::STATUS_IMPORTED);
+            $this->em->persist($file);
+        }
+        $this->em->flush();
     }
 
         /**
