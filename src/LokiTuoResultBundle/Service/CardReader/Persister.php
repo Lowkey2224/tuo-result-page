@@ -77,6 +77,7 @@ class Persister
                 $dbEntity->setDefense($card->getDefense());
                 $dbEntity->setCardFile($card->getCardFile());
                 $dbEntity->setAttack($card->getAttack());
+                $dbEntity->setSkills($card->getSkills());
                 $this->em->persist($dbEntity);
 //                $this->logger->debug("Duplicate Card found: " . $card->getName() . " With id " . $dbEntity->getId());
             } else {
