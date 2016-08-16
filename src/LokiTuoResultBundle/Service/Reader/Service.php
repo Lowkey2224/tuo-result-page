@@ -21,7 +21,7 @@ use Psr\Log\NullLogger;
 class Service
 {
 
-     //TODO Change the import so it can use different persisters
+    //TODO Change the import so it can use different persisters
     //Maybe save the Import Simulation script too
     /** @var  EntityManager */
     private $em;
@@ -50,7 +50,7 @@ class Service
         $file->setContent($content);
         $this->em->persist($file);
         $this->em->flush();
-        $this->logger->info("Persisting file with Id ".$file->getId());
+        $this->logger->info("Persisting file with Id " . $file->getId());
         return $file->getId();
     }
 
@@ -61,12 +61,12 @@ class Service
             $this->logger->alert("No File with ID $fileId was found. Aborting");
             return 0;
         }
-        $this->logger->info("Using File with ID ".$file->getId()." for Import");
+        $this->logger->info("Using File with ID " . $file->getId() . " for Import");
 
         $content = explode("\n", $file->getContent());
         $transformed = $this->transformContent($content);
         $models = $this->transformToModels($transformed, $file);
-        $this->logger->info(count($models). " were Saved");
+        $this->logger->info(count($models) . " were Saved");
         $file->setStatus(ResultFile::STATUS_IMPORTED);
         $this->em->persist($file);
         $this->em->flush();
@@ -100,7 +100,7 @@ class Service
             } else {
                 if (preg_match('/units: (\d?\d.?\d?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
-                    $name = (int)($name*10);
+                    $name = (int)($name * 10);
                     $result[$count]['percent'] = $name;
                 }
                 if (preg_match('/units: \d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
@@ -122,7 +122,8 @@ class Service
         $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
         foreach ($transformed as $line) {
             if (!isset($line['deck'])) {
-                $this->logger->warning("Skipped result for Player ". $line['playername']. " agains ".$line['mission'].". Because no Deck was found");
+                $this->logger->warning("Skipped result for Player " .
+                    $line['playername'] . " against " . $line['mission'] . ". Because no Deck was found");
                 continue;
             }
 
