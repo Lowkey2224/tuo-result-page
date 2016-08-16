@@ -20,6 +20,9 @@ use Psr\Log\NullLogger;
  */
 class Service
 {
+
+     //TODO Change the import so it can use different persisters
+    //Maybe save the Import Simulation script too
     /** @var  EntityManager */
     private $em;
 
@@ -119,7 +122,7 @@ class Service
         $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
         foreach ($transformed as $line) {
             if (!isset($line['deck'])) {
-                $this->logger->warning("Skipped result for Player ". $line['playername']. " Because no Deck was found");
+                $this->logger->warning("Skipped result for Player ". $line['playername']. " agains ".$line['mission'].". Because no Deck was found");
                 continue;
             }
 
