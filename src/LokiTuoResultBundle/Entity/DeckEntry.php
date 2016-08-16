@@ -8,13 +8,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Deck
  *
- * @ORM\Table(name="deck")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\DeckRepository")
+ * @ORM\Table(name="deck_entry")
+ * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\DeckEntryRepository")
  * @UniqueEntity(fields={"playOrder", "card", "result"},
  *     message="There exists already this card for this result in this order")
  *
  */
-class Deck
+class DeckEntry
 {
     /**
      * @var int
@@ -85,7 +85,7 @@ class Deck
      *
      * @param integer $playOrder
      *
-     * @return Deck
+     * @return DeckEntry
      */
     public function setPlayOrder($playOrder)
     {

@@ -4,7 +4,7 @@ namespace LokiTuoResultBundle\Service\Reader;
 
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\Deck;
+use LokiTuoResultBundle\Entity\DeckEntry;
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\Result;
@@ -173,7 +173,7 @@ class Service
                 $this->em->persist($card);
                 $this->em->flush();
             }
-            $deckEntry = new Deck();
+            $deckEntry = new DeckEntry();
             $deckEntry->setPlayOrder($order);
             $deckEntry->setResult($result);
             $deckEntry->setCard($card);

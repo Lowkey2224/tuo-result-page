@@ -44,8 +44,8 @@ class Result
     private $player;
 
     /**
-     * @var Deck[]
-     * @ORM\OneToMany(targetEntity="Deck", mappedBy="result", cascade={"persist"}, fetch="EAGER")
+     * @var DeckEntry[]
+     * @ORM\OneToMany(targetEntity="DeckEntry", mappedBy="result", cascade={"persist"}, fetch="EAGER")
      */
     private $deck;
 
