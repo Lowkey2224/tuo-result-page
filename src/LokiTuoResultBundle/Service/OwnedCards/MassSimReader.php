@@ -69,7 +69,14 @@ class MassSimReader
     {
         $result = [];
         foreach ($map as $playerName => $cardArray) {
+            $this->logger->debug("Trying to persist ".count($cardArray). " cards for Player $playerName");
             $result[$playerName] = $this->saveCardsForPlayer($playerName, $cardArray);
+            foreach ($result[$playerName] as $card)
+            {
+                $this->em->persist($card);
+            }
+            $this->em->flush();
+            $this->logger->debug("persisted ".count($result[$playerName]). " cards for Player $playerName");
         }
         $this->em->flush();
         return $result;
@@ -185,13 +192,12 @@ class MassSimReader
             $oc->setLevel($cardEntry['level']);
             $oc->setPlayer($player);
             $oc->setInCurrentDeck($cardEntry['inDeck']);
-            $this->em->persist($oc);
             $result[] = $oc;
         }
 //        $ac = new ArrayCollection($result);
 //        $player->setOwnedCards($ac);
 //        $this->em->persist($player);
-//        $this->em->flush();
+
         return $result;
     }
 }
