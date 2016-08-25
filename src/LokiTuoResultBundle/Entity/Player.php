@@ -35,9 +35,16 @@ class Player
      */
     private $results;
 
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="OwnedCard", mappedBy="player")
+     */
+    private $ownedCards;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
+        $this->ownedCards = new ArrayCollection();
     }
 
     /**
@@ -89,5 +96,21 @@ class Player
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOwnedCards()
+    {
+        return $this->ownedCards;
+    }
+
+    /**
+     * @param ArrayCollection $ownedCards
+     */
+    public function setOwnedCards($ownedCards)
+    {
+        $this->ownedCards = $ownedCards;
     }
 }

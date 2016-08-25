@@ -9,8 +9,19 @@ services:
         class: LokiTuoResultBundle\Service\CardReader\Service
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
+
     loki_tuo_result.card.persister:
         class: LokiTuoResultBundle\Service\CardReader\Persister
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    loki_tuo_result.owned_card.mass_sim_reader:
+        class: LokiTuoResultBundle\Service\OwnedCards\MassSimReader
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    loki_tuo_result.owned_card.manager:
+        class: LokiTuoResultBundle\Service\OwnedCards\MassSimReader
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
         #arguments: ["@service_id", "plain_value", %parameter%]
