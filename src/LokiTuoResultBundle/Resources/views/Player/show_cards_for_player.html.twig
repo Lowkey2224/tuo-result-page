@@ -1,0 +1,30 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Owned Cards for Player {{ player.name }}{% endblock %}
+
+{% block body %}
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md 3">
+            <a href="{{ path("tuo.index") }}"><p class="pull-left">back to overview</p></a>
+        </div>
+        <div class="col-md-6 text-center">
+            <h2 style="margin-top: 0;">Owned Cards for Player {{ player.name }}</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+
+            Player: <b>{{ player.name }}</b>
+        </div>
+        <div class="panel-body">
+            {% for card in cards %}
+                {{ card.card.name }}<br/>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="pull-left"><a href="{{ path("tuo.index") }}">back to overview</a></div>
+    </div>
+{% endblock %}
