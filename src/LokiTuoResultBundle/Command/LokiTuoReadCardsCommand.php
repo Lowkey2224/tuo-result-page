@@ -40,5 +40,6 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $reader->saveCardFiles($filenames);
 
         $output->writeln('Command result.');
+        return 0;
     }
 }

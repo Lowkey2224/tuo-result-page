@@ -28,5 +28,6 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
         $count = $reader->importFileById($fileId);
 
         $output->writeln('Persisted '.$count. " Results");
+        return 0;
     }
 }

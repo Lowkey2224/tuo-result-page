@@ -32,5 +32,6 @@ class LokiTuoImportCardsCommand extends ContainerAwareCommand
         $reader->setLogger(new ConsoleLogger($output));
         $reader->importCards();
         $output->writeln('Command result.');
+        return 0;
     }
 }

@@ -40,5 +40,6 @@ class LokiTuoDeckImportCommand extends ContainerAwareCommand
 
 
         $output->writeln('Command result.');
+        return 0;
     }
 }
