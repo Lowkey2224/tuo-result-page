@@ -22,7 +22,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('filename');
+        $path = $input->getArgument('dataPath');
 
 //        $path = $this->getContainer()->get('kernel')->getRootDir() . "/../data/";
         if ($input->getOption('option')) {
