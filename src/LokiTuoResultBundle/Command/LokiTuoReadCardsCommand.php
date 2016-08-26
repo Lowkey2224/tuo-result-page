@@ -16,15 +16,15 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $this
             ->setName('loki:tuo:read:cards')
             ->setDescription('...')
-            ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
+            ->addArgument('dataPath', InputArgument::REQUIRED, 'Argument description ending with /')
             ->addOption('option', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-//        $argument = $input->getArgument('argument');
+        $path = $input->getArgument('filename');
 
-        $path = $this->getContainer()->get('kernel')->getRootDir() . "/../data/";
+//        $path = $this->getContainer()->get('kernel')->getRootDir() . "/../data/";
         if ($input->getOption('option')) {
             // ...
         }
