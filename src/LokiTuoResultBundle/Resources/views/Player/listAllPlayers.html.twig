@@ -1,0 +1,34 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="row">
+        <h2>This is the Website for the CarryNoSaints Guild.</h2>
+    </div>
+    <div class="row">
+        All Current and Past Players, who were simmed<br/>
+    </div>
+    <div class="row">
+        <a href="{{ path("tuo.index") }}"><h4>Back to landingpage</h4></a>
+    </div>
+    <div class="row">
+        Player Lists
+        <ul class="">
+            {% for player in players %}
+                <li>
+                    {{ player.name }}
+                    <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
+                        <b>Cards</b>
+                    </a>
+                    <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.id}) }}">
+                        <b>Simulations</b>
+                    </a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+
+    <div class="row" style="margin-top: 20px;">
+
+        Simulations and website done by LokiMcFly<br/>
+    </div>
+{% endblock %}

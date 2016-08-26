@@ -71,8 +71,7 @@ class MassSimReader
         foreach ($map as $playerName => $cardArray) {
             $this->logger->debug("Trying to persist ".count($cardArray). " cards for Player $playerName");
             $result[$playerName] = $this->saveCardsForPlayer($playerName, $cardArray);
-            foreach ($result[$playerName] as $card)
-            {
+            foreach ($result[$playerName] as $card) {
                 $this->em->persist($card);
             }
             $this->em->flush();

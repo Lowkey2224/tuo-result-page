@@ -6,15 +6,18 @@
             <a href="{{ path("tuo.index") }}"><p class="pull-left">back to overview</p></a>
         </div>
         <div class="col-md-6 text-center">
-            <h2 style="margin-top: 0;">Results for {{ mission.name }}</h2>
+            <h2 style="margin-top: 0;">Results for {{ player.name }}</h2>
         </div>
     </div>
     {% for result in results %}
         {% include '@LokiTuoResult/partials/showSingleResult.html.twig' with {'result': result} only %}
-
     {% endfor %}
     <div class="row" style="margin-top: 20px;">
         <div class="pull-left"><a href="{{ path("tuo.index") }}">back to overview</a></div>
     </div>
+{% endblock %}
+
+{% block title %}
+
 {% endblock %}
 
