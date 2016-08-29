@@ -105,12 +105,30 @@ class Service
                 }
                 if (preg_match('/units: \d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
                     $name = $name[1];
-                    $result[$count]['deck'] = explode(", ", $name);
+                    $cards = $this->transformToCardNames(explode(", ", $name));
+                    $result[$count]['deck'] = $cards;
                 }
                 $firstLine = true;
                 $count++;
             }
         }
+        return $result;
+    }
+
+    private function transformToCardNames(array $array)
+    {
+        $result = [];
+        foreach ($array as $name) {
+            $tmp = explode("#", $name);
+            if (count($tmp)==2) {
+                for ($i = 0; $i<$tmp[1]; $i++) {
+                    $result[] = trim($tmp[0]);
+                }
+            } else {
+                $result[] = trim($name);
+            }
+        }
+
         return $result;
     }
 

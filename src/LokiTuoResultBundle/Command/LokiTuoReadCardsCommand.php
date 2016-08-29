@@ -35,11 +35,10 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         for ($i = 1; $i <= 10; $i++) {
             $filenames[$i] = realpath($path."/cards_section_".$i.".xml");
             $logger->debug("Adding File to read: ".$filenames[$i]);
-
         }
-        $reader->saveCardFiles($filenames);
+        $count = $reader->saveCardFiles($filenames);
 
-        $output->writeln('Command result.');
+        $output->writeln("Persisted $count card Files.");
         return 0;
     }
 }

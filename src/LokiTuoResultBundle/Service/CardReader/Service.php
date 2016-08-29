@@ -29,20 +29,22 @@ class Service
 
     public function saveCardFiles(array $fileNames)
     {
+        $count = 0;
         foreach ($fileNames as $fileName) {
-            if(file_exists($fileName))
-            {
+            if (file_exists($fileName)) {
                 $content = file_get_contents($fileName);
                 $cardFile = new CardFile();
                 $cardFile->setContent($content);
                 $cardFile->setOriginalFileName($fileName);
                 $this->em->persist($cardFile);
                 $this->logger->debug("Read File: ".$fileName);
+                $count++;
             } else {
                 $this->logger->notice("File does not Exists: ".$fileName);
             }
         }
         $this->em->flush();
+        return $count;
     }
 
     /**

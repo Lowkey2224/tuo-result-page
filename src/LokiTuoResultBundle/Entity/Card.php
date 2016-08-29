@@ -21,6 +21,8 @@ class Card
      */
     private $id;
 
+    public $skillDelimiter = "|";
+
     /**
      * @var string
      *
@@ -68,6 +70,40 @@ class Card
      * @ORM\JoinColumn(referencedColumnName="id", name="cardfile_id")
      */
     private $cardFile;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    private $race;
+
+    public function __toString()
+    {
+        try {
+            $str = $this->getName();
+            $str .= " ";
+
+            $str .= ($this->getDelay()) ? $this->getDelay() : 0;
+
+            $str .= "/";
+            $str .= ($this->getAttack()) ? $this->getAttack() : 0;
+            $str .= "/";
+            $str .= ($this->getDefense()) ? $this->getDefense() : 0;
+            $str .= " ";
+
+            foreach ($this->getSkills() as $skill) {
+                $str .= $skill . " ";
+            }
+            $str .= " (".Card::getFactionName($this->getRace()).")";
+        } catch (\Exception $ex) {
+            var_dump($this);
+            echo $ex->getMessage() . "\n";
+            echo $ex->getTraceAsString();
+            $str = "";
+        }
+
+        return $str;
+    }
 
     public function __construct()
     {
@@ -244,5 +280,41 @@ class Card
     public function setSkills($skills)
     {
         $this->skills = $skills;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRace()
+    {
+        return $this->race;
+    }
+
+    /**
+     * @param int $race
+     */
+    public function setRace($race)
+    {
+        $this->race = $race;
+    }
+
+    public static function getFactionName($factionId)
+    {
+        switch ($factionId) {
+            case 1:
+                return "Imperial";
+            case 2:
+                return "Raider";
+            case 3:
+                return "Bloodthirsty";
+            case 4:
+                return "Xeno";
+            case 5:
+                return "Righteous";
+            case 6:
+                return "Progenitor";
+            default:
+                return $factionId;
+        }
     }
 }

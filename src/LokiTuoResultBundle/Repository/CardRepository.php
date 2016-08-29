@@ -10,4 +10,13 @@ namespace LokiTuoResultBundle\Repository;
  */
 class CardRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByStartingLetter($letter, $orderBy = 'name', $orderDirection = 'ASC')
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.name LIKE  :letter ')
+            ->orderBy('c.'.$orderBy, $orderDirection)
+            ->setParameter('letter', $letter."%")
+            ->getQuery()
+            ->getResult();
+    }
 }

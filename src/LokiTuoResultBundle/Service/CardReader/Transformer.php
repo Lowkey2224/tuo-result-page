@@ -33,13 +33,14 @@ class Transformer
             if (array_key_exists(trim($object->name), $result)) {
                 continue;
             }
-            $skills=[];
+            $skills = [];
             $card = new Card();
             $card->setName(trim($object->name));
+            $card->setRace($object->type);
             $card->setPicture($object->picture);
-            $card->setAttack(($object->attack)?$object->attack:0);
-            $card->setDefense(($object->health)?$object->health:0);
-            $card->setDelay(($object->cost)?$object->cost:0);
+            $card->setAttack(($object->attack) ? $object->attack : 0);
+            $card->setDefense(($object->health) ? $object->health : 0);
+            $card->setDelay(($object->cost) ? $object->cost : 0);
             $card->setCardFile($file);
             if (isset($object->skill)) {
                 $skills = array_merge($skills, $this->readSkill($object->skill));
@@ -91,7 +92,7 @@ class Transformer
             $countdown = (isset($skill['c'])) ? $skill['c'] : "";
             $race = $skill['y'];
             $skillLevel = (isset($skill['x'])) ? $skill['x'] : "";
-            $amountOfCards = (isset($skill['n'])) ? $skill['n'] : 1;
+            $amountOfCards = (isset($skill['n'])) ? $skill['n'] : "";
             $amountOfCards = ($all) ? "all" : $amountOfCards;
             switch ($id) {
                 case 'enhance':
@@ -101,7 +102,7 @@ class Transformer
                     $str = $id . " " . $amountOfCards . " " . $enhancedSkill . " to " . $evolvedSkill;
                     break;
                 default:
-                    $str = $id . " " . $amountOfCards . " " . $this->getFactionName($race) . " " . $skillLevel;
+                    $str = $id . " " . $amountOfCards . " " . Card::getFactionName($race) . " " . $skillLevel;
                     $str .= ($countdown) ? " every " . $countdown : "";
             }
             $res[$id] = $str;
@@ -109,25 +110,6 @@ class Transformer
         return $res;
     }
 
-    private function getFactionName($factionId)
-    {
-        switch ($factionId) {
-            case 1:
-                return "Imperial";
-            case 2:
-                return "Raider";
-            case 3:
-                return "Bloodthirsty";
-            case 4:
-                return "Xeno";
-            case 5:
-                return "Righteous";
-            case 6:
-                return "Progenitor";
-            default:
-                return $factionId;
-        }
-    }
 
     /**
      * @param LoggerInterface $logger

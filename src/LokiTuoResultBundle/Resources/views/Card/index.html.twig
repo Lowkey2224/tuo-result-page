@@ -1,0 +1,20 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}LokiTuoResultBundle:Card:index{% endblock %}
+
+{% block body %}
+    <h3 id="top">
+        {% for letter in letters %}
+            <a href="#{{ letter }}">{{ letter }}</a>
+        {% endfor %}
+    </h3>
+    {% for letter, cards in cardsArray %}
+        <h1 id="{{ letter }}">{{ letter }} <small><a href="#top">back to top</a> </small></h1>
+        {% for card in cards %}
+            {{ card.name }}<br/>
+        {% endfor %}
+    {% endfor %}
+    <br/>
+    Total Card count {{ count }}.<br/>
+    <a href="#top">back to top</a>
+{% endblock %}

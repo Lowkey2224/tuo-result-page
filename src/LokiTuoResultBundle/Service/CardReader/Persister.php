@@ -41,10 +41,11 @@ class Persister
         $transformer = new Transformer();
         $transformer->setLogger($this->logger);
         $cards = [];
+        $cardCount = 0;
         foreach ($files as $file) {
             $content = simplexml_load_string($file->getContent());
             $cards = $transformer->transformToModels($content, $file, $cards);
-            $this->persistModels($cards);
+            $cardCount += $this->persistModels($cards);
         }
         $this->em->flush();
         foreach ($files as $file) {
@@ -52,6 +53,7 @@ class Persister
             $this->em->persist($file);
         }
         $this->em->flush();
+        return $cardCount;
     }
 
         /**
@@ -68,13 +70,14 @@ class Persister
      */
     private function persistModels($cards)
     {
+        $count = 0;
         if (!$this->persist) {
             return $cards;
         }
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         foreach ($cards as $key => $card) {
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
-
+            $count++;
             if ($dbEntity) {
                 $card->setId($dbEntity->getId());
                 $dbEntity->setPicture($card->getPicture());
@@ -83,12 +86,13 @@ class Persister
                 $dbEntity->setCardFile($card->getCardFile());
                 $dbEntity->setAttack($card->getAttack());
                 $dbEntity->setSkills($card->getSkills());
+                $dbEntity->setRace($card->getRace());
                 $this->em->persist($dbEntity);
 //                $this->logger->debug("Duplicate Card found: " . $card->getName() . " With id " . $dbEntity->getId());
             } else {
                 $this->em->persist($card);
             }
         }
-        return true;
+        return $count;
     }
 }
