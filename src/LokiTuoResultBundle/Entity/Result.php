@@ -56,6 +56,12 @@ class Result
      */
     private $sourceFile;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $guild = "CTP";
+
     public function __construct()
     {
         $this->deck = new ArrayCollection();
@@ -151,4 +157,22 @@ class Result
     {
         $this->sourceFile = $sourceFile;
     }
+
+    /**
+     * @return string
+     */
+    public function getGuild()
+    {
+        return $this->guild;
+    }
+
+    /**
+     * @param string $guild
+     */
+    public function setGuild($guild)
+    {
+        $this->guild = $guild;
+    }
+
+
 }

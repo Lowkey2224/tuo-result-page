@@ -15,7 +15,8 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
         $this
             ->setName('loki:tuo:read:file')
             ->setDescription('this Method will read a Tuo Result File, and save it to the Database')
-            ->addArgument('filename', InputArgument::OPTIONAL, 'Argument description', "result.txt")
+            ->addArgument('filename', InputArgument::REQUIRED, 'Argument description', "result.txt")
+            ->addArgument('guild', InputArgument::OPTIONAL, 'Argument description', "CTP")
             ->setHelp("This command allows you to create users...")
 
         ;
@@ -27,7 +28,7 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
         $reader = $this->getContainer()->get('loki_tuo_result.reader');
         $logger = new ConsoleLogger($output);
         $reader->setLogger($logger);
-        $id = $reader->readFile($filePath);
+        $id = $reader->readFile($filePath, $input->getArgument('guild'));
 
         $output->writeln("Read File with id $id");
         return 0;

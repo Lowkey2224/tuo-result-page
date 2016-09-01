@@ -68,6 +68,12 @@ class ResultFile
      */
     private $updatedAt;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $guild;
+
 
     /**
      * Get id
@@ -182,4 +188,22 @@ class ResultFile
     {
         $this->results = $results;
     }
+
+    /**
+     * @return string
+     */
+    public function getGuild()
+    {
+        return $this->guild;
+    }
+
+    /**
+     * @param string $guild
+     */
+    public function setGuild($guild)
+    {
+        $this->guild = $guild;
+    }
+
+
 }

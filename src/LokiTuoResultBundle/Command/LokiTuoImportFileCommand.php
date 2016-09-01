@@ -16,6 +16,8 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
             ->setName('loki:tuo:import:file')
             ->setDescription('...')
             ->addArgument('fileId', InputArgument::OPTIONAL, 'Argument description', "next")
+            ->addArgument('guild', InputArgument::OPTIONAL, 'Argument description', "CTP")
+
         ;
     }
 
@@ -25,7 +27,7 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
         $reader = $this->getContainer()->get('loki_tuo_result.reader');
         $logger = new ConsoleLogger($output);
         $reader->setLogger($logger);
-        $count = $reader->importFileById($fileId);
+        $count = $reader->importFileById($fileId, $input->getArgument('guild'));
 
         $output->writeln('Persisted '.$count. " Results");
         return 0;

@@ -2,8 +2,10 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\Card;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class CardController
@@ -35,5 +37,18 @@ class CardController extends Controller
             'letters' => $letters,
             'count' => $count
         ));
+    }
+
+    /**
+     * @Route("/all", name="loki.tuo.cards.all")
+     * @return JsonResponse
+     */
+    public function getAllCards()
+    {
+        $cards = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findAll();
+        $names = array_map(function(Card $card){
+            return $card->getName();
+        }, $cards);
+        return new JsonResponse($names);
     }
 }

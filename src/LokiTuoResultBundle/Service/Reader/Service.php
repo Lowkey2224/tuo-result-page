@@ -42,19 +42,20 @@ class Service
         $this->logger = $logger;
     }
 
-    public function readFile($path)
+    public function readFile($path, $guild)
     {
         $this->logger->info("Reading file $path");
         $content = $this->getFileContents($path);
         $file = new ResultFile();
         $file->setContent($content);
+        $file->setGuild($guild);
         $this->em->persist($file);
         $this->em->flush();
         $this->logger->info("Persisting file with Id " . $file->getId());
         return $file->getId();
     }
 
-    public function importFileById($fileId)
+    public function importFileById($fileId, $guild)
     {
         $file = $this->getFileById($fileId);
         if (is_null($file)) {
@@ -65,7 +66,7 @@ class Service
 
         $content = explode("\n", $file->getContent());
         $transformed = $this->transformContent($content);
-        $models = $this->transformToModels($transformed, $file);
+        $models = $this->transformToModels($transformed, $file, $guild);
         $this->logger->info(count($models) . " were Saved");
         $file->setStatus(ResultFile::STATUS_IMPORTED);
         $this->em->persist($file);
@@ -132,7 +133,7 @@ class Service
         return $result;
     }
 
-    private function transformToModels($transformed, ResultFile $file)
+    private function transformToModels($transformed, ResultFile $file, $guild)
     {
         $results = [];
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
@@ -161,6 +162,7 @@ class Service
             if (is_null($result)) {
                 $result = new Result();
             }
+            $result->setGuild($guild);
             $result->setSourceFile($file);
             $result->setPlayer($player);
             $result->setPercent($line['percent']);
