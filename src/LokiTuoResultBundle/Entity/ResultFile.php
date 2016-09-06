@@ -204,6 +204,4 @@ class ResultFile
     {
         $this->guild = $guild;
     }
-
-
 }

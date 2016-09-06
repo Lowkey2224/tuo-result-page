@@ -173,6 +173,4 @@ class Result
     {
         $this->guild = $guild;
     }
-
-
 }

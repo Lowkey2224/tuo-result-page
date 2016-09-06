@@ -18,6 +18,10 @@
             Deck for Player: <b>{{ player.name }}</b>
         </div>
         <div class="panel-body">
+            <div class="ui-widget">
+                <label for="tags">Tags: </label>
+                <input id="tags">
+            </div>
             {% for card in deck %}
                 {{ card.card.name }}<br/>
             {% endfor %}
@@ -28,6 +32,7 @@
         <div class="panel-heading">
 
             Owned Cards for Player: <b>{{ player.name }}</b>
+            <i class="glyphicon glyphicon-plus"></i>
         </div>
         <div class="panel-body">
 
@@ -40,4 +45,21 @@
     <div class="row" style="margin-top: 20px;">
         <div class="pull-left"><a href="{{ path("tuo.index") }}">back to overview</a></div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( function() {
+            var availableTags = [];
+            $.get( "{{ path('loki.tuo.cards.all') }}", function( data ) {
+//                $( ".result" ).html( data );
+                availableTags = data;
+                $( "#tags" ).autocomplete({
+                    source: data
+                });
+                console.log(data);
+            });
+
+        } );
+    </script>
 {% endblock %}
