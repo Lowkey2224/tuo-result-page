@@ -37,23 +37,22 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/mission/{missionId}/guild/{guild}", requirements={"missionId":"\d+", "guild":"[a-zA-Z]+"}, name="tuo.showmission")
+     * @Route("/mission/{missionId}/guild/{guild}", requirements={"missionId":"\d+",
+     *     "guild":"[a-zA-Z]+"}, name="tuo.showmission")
      * @param int $missionId Id of the mission
      * @param string $guild name of the guild
      * @return Response
      */
     public function showMission($missionId, $guild)
     {
-        if(!in_array($guild, $this->getParameter('guilds')))
-        {
+        if (!in_array($guild, $this->getParameter('guilds'))) {
             throw new NotFoundHttpException();
         }
 
         $userManager = $this->get('loki_tuo_result.user.manager');
         $guilds = $userManager->getGuildsForUser($this->getUser());
 
-        if(!in_array($guild, $guilds))
-        {
+        if (!in_array($guild, $guilds)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -61,7 +60,8 @@ class DefaultController extends Controller
         if (!$mission) {
             throw new NotFoundHttpException();
         }
-        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission' => $mission, 'guild' => $guild]);
+        $criteria = ['mission' => $mission, 'guild' => $guild];
+        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy($criteria);
         return $this->render(
             'LokiTuoResultBundle:Default:showMission.html.twig',
             [
@@ -94,9 +94,8 @@ class DefaultController extends Controller
     {
         $path = "";
         $resultReader = $this->get('loki_tuo_result.reader');
-        $guild = "";
-        $id = $resultReader->readFile($path, $guild);
-        $resultCount = $resultReader->importFileById($id, $guild);
+        $id = $resultReader->readFile($path);
+        $resultCount = $resultReader->importFileById($id);
         return $resultCount;
     }
 }

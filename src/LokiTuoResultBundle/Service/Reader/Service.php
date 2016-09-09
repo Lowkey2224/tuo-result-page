@@ -43,20 +43,21 @@ class Service
         $this->logger = $logger;
     }
 
-    public function readFile($path, $guild)
+    public function readFile($path)
     {
         $this->logger->info("Reading file $path");
         $content = $this->getFileContents($path);
+
         $file = new ResultFile();
         $file->setContent($content);
-        $file->setGuild($guild);
+        $file->setGuild($this->getGuildName($content));
         $this->em->persist($file);
         $this->em->flush();
         $this->logger->info("Persisting file with Id " . $file->getId());
         return $file->getId();
     }
 
-    public function importFileById($fileId, $guild)
+    public function importFileById($fileId)
     {
         $file = $this->getFileById($fileId);
         if (is_null($file)) {
@@ -67,7 +68,7 @@ class Service
 
         $content = explode("\n", $file->getContent());
         $transformed = $this->transformContent($content);
-        $this->logger->info("Importing Result for Guild ".$transformed['guild']);
+        $this->logger->info("Importing Result for Guild " . $transformed['guild']);
         $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
         $this->logger->info(count($models) . " were Saved");
         $file->setStatus(ResultFile::STATUS_IMPORTED);
@@ -91,14 +92,9 @@ class Service
 
         $firstLine = true;
         $count = 0;
+        $result = ['guild' => $this->getGuildName($content)];
         //THrow away first line
-        $line = array_shift($content);
-        $guild = [];
-        if (preg_match('/([a-zA-z]+) Results/', $line, $guild) === 1) {
-            $result = ['guild' => $guild[1]];
-        }else {
-            throw new Exception("No Guild Found");
-        }
+        array_shift($content);
 
         foreach ($content as $line) {
             if ($firstLine) {
@@ -134,8 +130,8 @@ class Service
         $result = [];
         foreach ($array as $name) {
             $tmp = explode("#", $name);
-            if (count($tmp)==2) {
-                for ($i = 0; $i<$tmp[1]; $i++) {
+            if (count($tmp) == 2) {
+                for ($i = 0; $i < $tmp[1]; $i++) {
                     $result[] = trim($tmp[0]);
                 }
             } else {
@@ -236,6 +232,16 @@ class Service
             return $repo->findOneBy(['status' => ResultFile::STATUS_NOT_IMPORTED], ['id' => 'ASC']);
         } else {
             return $repo->find($fileId);
+        }
+    }
+
+    private function getGuildName($content)
+    {
+        $guild = [];
+        if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
+            return $guild[1];
+        } else {
+            throw new Exception("No Guild Found");
         }
     }
 }
