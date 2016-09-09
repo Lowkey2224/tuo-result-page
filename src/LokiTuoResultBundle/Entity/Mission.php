@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,13 @@ class Mission
      * @ORM\Column(name="Type", type="string", length=255)
      */
     private $type;
+
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Result", mappedBy="mission")
+     */
+    private $results;
 
 
     /**
@@ -92,5 +100,21 @@ class Mission
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    /**
+     * @param ArrayCollection $results
+     */
+    public function setResults($results)
+    {
+        $this->results = $results;
     }
 }

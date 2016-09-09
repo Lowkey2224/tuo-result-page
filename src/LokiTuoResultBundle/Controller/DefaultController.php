@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\Mission;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,24 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $missions = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission')->findAll();
+        $user = $this->getUser();
+        $um = $this->get('loki_tuo_result.user.manager');
+
+        $guilds = $um->getGuildsForUser($user);
+        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
+        $missions = $missionRepo->findMissionsForGuilds($guilds);
+        $groupedBy = [];
+        /** @var Mission $mission */
+        foreach ($missions as $mission) {
+            $guild = $mission->getResults();
+            $guild = $guild->first()->getGuild();
+            $groupedBy[$guild][] = $mission;
+        }
+
         return $this->render(
             'LokiTuoResultBundle:Default:index.html.twig',
             [
-                'missions' => $missions,
+                'missions' => $groupedBy,
             ]
         );
     }
@@ -59,5 +73,15 @@ class DefaultController extends Controller
             'cache-control' => 'private',
             'content-disposition' => 'attachment; filename="' . $filename . '";',
         ]);
+    }
+
+    public function uploadResult()
+    {
+        $path = "";
+        $resultReader = $this->get('loki_tuo_result.reader');
+        $guild = "";
+        $id = $resultReader->readFile($path, $guild);
+        $resultCount = $resultReader->importFileById($id, $guild);
+        return $resultCount;
     }
 }

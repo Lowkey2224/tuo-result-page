@@ -10,4 +10,17 @@ namespace LokiTuoResultBundle\Repository;
  */
 class MissionRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findMissionsForGuilds($guilds)
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->addSelect('r')
+            ->join('m.results', 'r')
+            ->where("r.guild IN(:guilds)")
+            ->setParameter('guilds', $guilds)
+//            ->groupBy('r.guild');
+            ->orderBy('r.guild', 'ASC');
+//        var_dump($qb->getQuery()->getSQL());
+        return $qb->getQuery()->getResult();
+    }
 }
