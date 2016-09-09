@@ -36,4 +36,9 @@ class Service
 
         return $guilds;
     }
+
+    public function canUserAccess(User $user, $guildNeeded)
+    {
+        return in_array($guildNeeded, $this->getGuildsForUser($user));
+    }
 }

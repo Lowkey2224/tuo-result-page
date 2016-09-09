@@ -30,7 +30,7 @@ class Player
     private $name;
 
     /**
-     * @var Result[]
+     * @var ArrayCollection[]
      * @ORM\OneToMany(targetEntity="Result", mappedBy="player")
      */
     private $results;
@@ -47,8 +47,13 @@ class Player
         $this->ownedCards = new ArrayCollection();
     }
 
+    public function getGuild()
+    {
+        return $this->results->last()->getGuild();
+    }
+
     /**
-     * @return Result[]
+     * @return ArrayCollection[]
      */
     public function getResults()
     {
@@ -56,7 +61,7 @@ class Player
     }
 
     /**
-     * @param Result[] $results
+     * @param ArrayCollection[] $results
      */
     public function setResults($results)
     {

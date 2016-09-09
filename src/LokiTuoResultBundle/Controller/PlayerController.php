@@ -3,8 +3,10 @@
 namespace LokiTuoResultBundle\Controller;
 
 use LokiTuoResultBundle\Entity\OwnedCard;
+use LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class PlayerController
@@ -19,6 +21,9 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction($playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+            throw new AccessDeniedHttpException();
+        }
 
         $allCards = $player->getOwnedCards();
         $deck = $allCards->filter(function (OwnedCard $item) {
@@ -34,12 +39,17 @@ class PlayerController extends Controller
             'cards' => $rest,
         ));
     }
+
     /**
      * @Route("/{playerId}/results", name="loki.tuo.player.results.show")
      */
     public function showResultsForPlayerAction($playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+
+        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+            throw new AccessDeniedHttpException();
+        }
 
         $results = $player->getResults();
 
@@ -55,6 +65,11 @@ class PlayerController extends Controller
     public function listAllPlayersAction()
     {
         $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findAll();
+        $userManager = $this->get('loki_tuo_result.user.manager');
+        $user = $this->getUser();
+        $players = array_filter($players, function (Player $player) use ($user, $userManager) {
+            return $userManager->canUserAccess($user, $player->getGuild());
+        });
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
         ]);

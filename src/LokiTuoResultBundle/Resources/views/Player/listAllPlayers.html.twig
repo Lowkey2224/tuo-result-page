@@ -14,7 +14,7 @@
         <ul class="">
             {% for player in players %}
                 <li>
-                    {{ player.name }}
+                    [{{ player.guild }}] {{ player.name }}
                     <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
                         <b>Cards</b>
                     </a>
