@@ -6,6 +6,7 @@ use LokiTuoResultBundle\Entity\Mission;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
@@ -37,6 +38,9 @@ class DefaultController extends Controller
 
     /**
      * @Route("/mission/{missionId}/guild/{guild}", requirements={"missionId":"\d+", "guild":"[a-zA-Z]+"}, name="tuo.showmission")
+     * @param int $missionId Id of the mission
+     * @param string $guild name of the guild
+     * @return Response
      */
     public function showMission($missionId, $guild)
     {
@@ -44,9 +48,18 @@ class DefaultController extends Controller
         {
             throw new NotFoundHttpException();
         }
+
+        $userManager = $this->get('loki_tuo_result.user.manager');
+        $guilds = $userManager->getGuildsForUser($this->getUser());
+
+        if(!in_array($guild, $guilds))
+        {
+            throw new AccessDeniedHttpException();
+        }
+
         $mission = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission')->find($missionId);
         if (!$mission) {
-            return $this->createNotFoundException();
+            throw new NotFoundHttpException();
         }
         $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission' => $mission, 'guild' => $guild]);
         return $this->render(
