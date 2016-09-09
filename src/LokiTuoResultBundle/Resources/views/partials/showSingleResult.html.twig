@@ -26,6 +26,9 @@
     <div class="panel-body">
         {% for deckEntry in result.deck %}
             {{ deckEntry.card }}
+            {% if deckEntry.level %}
+                Level {{ deckEntry.level }}
+            {% endif %}
             <br/>
         {% endfor %}
     </div>
