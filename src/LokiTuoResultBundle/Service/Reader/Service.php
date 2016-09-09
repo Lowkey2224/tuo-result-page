@@ -252,8 +252,7 @@ class Service
         }
     }
 
-    private
-    function getGuildName($content)
+    private function getGuildName($content)
     {
         $guild = [];
         if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
