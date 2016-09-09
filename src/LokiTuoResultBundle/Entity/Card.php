@@ -82,16 +82,10 @@ class Card
         try {
             $str = $this->getName();
             $str .= " ";
-
-//            $str .= ($this->getDelay()) ? $this->getDelay() : 0;
             $str .= $this->getDelay();
-
-
             $str .= "/";
-//            $str .= ($this->getAttack()) ? $this->getAttack() : 0;
             $str .= $this->getAttack();
             $str .= "/";
-//            $str .= ($this->getDefense()) ? $this->getDefense() : 0;
             $str .= $this->getDefense();
             $str .= " ";
 
