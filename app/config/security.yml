@@ -9,10 +9,16 @@ security:
                 users:
                     cns:
                         password: $2y$12$Pk7Hcx21hzd6VzF5gOE3LeV2yekW6EwoGCyCjcJDD8SZBZalpBq/O
-                        roles: 'ROLE_USER'
+                        roles: ['ROLE_USER', 'ROLE_CNS']
+                    ctp:
+                        password: $2y$12$ZV1SF3PtdLPAtHB4NrLLeulx3T5CY2hfsl.OJVuREjt8R9YC2vocm
+                        roles: ['ROLE_USER', 'ROLE_CTP']
+                    officer:
+                        password: $2y$12$ZokaklparLJq9IsDs5qjwOHQRnUfEWMW9XqHIPSUNDNJ96/NQZxgS
+                        roles: ['ROLE_USER', 'ROLE_CTP', 'ROLE_CNS']
                     Loki:
                         password: $2y$12$DC3uENQl.KpS80zyWAYNP.7CSO0NA3KlZp/OYXvnbOiOUg0IIUXiS
-                        roles: 'ROLE_ADMIN'
+                        roles: ['ROLE_ADMIN', 'ROLE_CNS', 'ROLE_CTP']
 
     encoders:
         Symfony\Component\Security\Core\User\User:
