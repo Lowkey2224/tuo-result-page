@@ -9,6 +9,7 @@ use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
+use LokiTuoResultBundle\Service\OwnedCards\MassSimReader;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -27,14 +28,18 @@ class Service
     /** @var  EntityManager */
     private $em;
 
+    /** @var MassSimReader */
+    private $cardManager;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, MassSimReader $massSimReader)
     {
         $this->em = $entityManager;
+        $this->cardManager = $massSimReader;
         $this->logger = new NullLogger();
     }
 
@@ -50,7 +55,7 @@ class Service
 
         $file = new ResultFile();
         $file->setContent($content);
-        $file->setGuild($this->getGuildName($content));
+        $file->setGuild($this->getGuildName(explode("\n", $content)));
         $this->em->persist($file);
         $this->em->flush();
         $this->logger->info("Persisting file with Id " . $file->getId());
@@ -59,22 +64,25 @@ class Service
 
     public function importFileById($fileId)
     {
-        $file = $this->getFileById($fileId);
-        if (is_null($file)) {
+        $files = $this->getFileById($fileId);
+        if (empty($files)) {
             $this->logger->alert("No File with ID $fileId was found. Aborting");
             return 0;
         }
-        $this->logger->info("Using File with ID " . $file->getId() . " for Import");
-
-        $content = explode("\n", $file->getContent());
-        $transformed = $this->transformContent($content);
-        $this->logger->info("Importing Result for Guild " . $transformed['guild']);
-        $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-        $this->logger->info(count($models) . " were Saved");
-        $file->setStatus(ResultFile::STATUS_IMPORTED);
-        $this->em->persist($file);
-        $this->em->flush();
-        return count($models);
+        $count = 0;
+        foreach ($files as $file) {
+            $this->logger->info("Using File with ID " . $file->getId() . " for Import");
+            $content = explode("\n", $file->getContent());
+            $transformed = $this->transformContent($content);
+            $this->logger->info("Importing Result for Guild " . $transformed['guild']);
+            $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
+            $this->logger->info(count($models) . " were Saved");
+            $count += count($models);
+            $file->setStatus(ResultFile::STATUS_IMPORTED);
+            $this->em->persist($file);
+            $this->em->flush();
+        }
+        return $count;
     }
 
     private function getFileContents($path)
@@ -194,21 +202,28 @@ class Service
         $resultDeck = [];
         $order = 0;
         foreach ($deck as $cardName) {
-            $card = $cardRepo->findOneBy(['name' => $cardName]);
+            $_tmp = $this->cardManager->transformCardString($cardName);
+            $amount = $_tmp['amount'];
+            $level = $_tmp['level'];
+            $name = $_tmp['name'];
+            $card = $cardRepo->findOneBy(['name' => $name]);
 
             if (!$card) {
                 $card = new Card();
-                $card->setName($cardName);
+                $card->setName($name);
                 $this->em->persist($card);
                 $this->em->flush();
             }
-            $deckEntry = new DeckEntry();
-            $deckEntry->setPlayOrder($order);
-            $deckEntry->setResult($result);
-            $deckEntry->setCard($card);
-            $this->em->persist($deckEntry);
-            $order++;
-            $resultDeck[] = $deckEntry;
+            for ($i = 0; $i < $amount; $i++) {
+                $deckEntry = new DeckEntry();
+                $deckEntry->setPlayOrder($order);
+                $deckEntry->setLevel($level);
+                $deckEntry->setResult($result);
+                $deckEntry->setCard($card);
+                $this->em->persist($deckEntry);
+                $order++;
+                $resultDeck[] = $deckEntry;
+            }
         }
         return $resultDeck;
     }
@@ -223,24 +238,28 @@ class Service
 
     /**
      * @param $fileId
-     * @return ResultFile|null
+     * @return ResultFile[]|null
      */
     private function getFileById($fileId)
     {
         $repo = $this->em->getRepository('LokiTuoResultBundle:ResultFile');
         if ($fileId === 'next') {
-            return $repo->findOneBy(['status' => ResultFile::STATUS_NOT_IMPORTED], ['id' => 'ASC']);
+            return [$repo->findOneBy(['status' => ResultFile::STATUS_NOT_IMPORTED], ['id' => 'ASC'])];
+        } elseif ($fileId === 'all') {
+            return $repo->findBy(['status' => ResultFile::STATUS_NOT_IMPORTED], ['id' => 'ASC']);
         } else {
-            return $repo->find($fileId);
+            return [$repo->find($fileId)];
         }
     }
 
-    private function getGuildName($content)
+    private
+    function getGuildName($content)
     {
         $guild = [];
         if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
-            return $guild[1];
+            return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
+            var_dump($guild, $content[0]);
             throw new Exception("No Guild Found");
         }
     }

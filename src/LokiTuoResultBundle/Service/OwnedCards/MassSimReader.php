@@ -140,7 +140,7 @@ class MassSimReader
         return $owned;
     }
 
-    private function transformCardString($card, $inDeck = false)
+    public function transformCardString($card, $inDeck = false)
     {
         $amount = 1;
         $level = null;

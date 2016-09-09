@@ -49,8 +49,11 @@ class DeckEntry
     private $card;
 
     /**
-     * @var Result
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
      */
+    private $level;
 
 
     /**
@@ -118,5 +121,21 @@ class DeckEntry
     public function setResult($result)
     {
         $this->result = $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
     }
 }
