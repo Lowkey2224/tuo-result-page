@@ -20,13 +20,11 @@ class DefaultController extends Controller
 
         $guilds = $um->getGuildsForUser($user);
         $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $missions = $missionRepo->findMissionsForGuilds($guilds);
+
         $groupedBy = [];
         /** @var Mission $mission */
-        foreach ($missions as $mission) {
-            $guild = $mission->getResults();
-            $guild = $guild->first()->getGuild();
-            $groupedBy[$guild][] = $mission;
+        foreach ($guilds as $guild) {
+            $groupedBy[$guild] = $missionRepo->findMissionsForGuild($guild);
         }
 
         return $this->render(
@@ -38,15 +36,19 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/mission/{missionId}", requirements={"missionId":"\d+"}, name="tuo.showmission")
+     * @Route("/mission/{missionId}/guild/{guild}", requirements={"missionId":"\d+", "guild":"[a-zA-Z]+"}, name="tuo.showmission")
      */
-    public function showMission($missionId)
+    public function showMission($missionId, $guild)
     {
+        if(!in_array($guild, $this->getParameter('guilds')))
+        {
+            throw new NotFoundHttpException();
+        }
         $mission = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission')->find($missionId);
         if (!$mission) {
             return $this->createNotFoundException();
         }
-        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission' => $mission]);
+        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy(['mission' => $mission, 'guild' => $guild]);
         return $this->render(
             'LokiTuoResultBundle:Default:showMission.html.twig',
             [

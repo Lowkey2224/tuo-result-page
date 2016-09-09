@@ -13,8 +13,8 @@
             <ul class="">
                 {% for mission in guildMissions %}
                     <li>
-                        <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
-                            <b>{{ mission.name }}</b>
+                        <a href="{{ path('tuo.showmission', {'missionId': mission.id, 'guild' : guild}) }}">
+                            <b>{{ mission.name }} {{ guild }}</b>
                         </a>
                     </li>
                 {% endfor %}

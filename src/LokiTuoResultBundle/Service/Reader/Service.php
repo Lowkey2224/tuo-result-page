@@ -11,6 +11,7 @@ use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Created by PhpStorm.
@@ -66,7 +67,8 @@ class Service
 
         $content = explode("\n", $file->getContent());
         $transformed = $this->transformContent($content);
-        $models = $this->transformToModels($transformed, $file, $guild);
+        $this->logger->info("Importing Result for Guild ".$transformed['guild']);
+        $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
         $this->logger->info(count($models) . " were Saved");
         $file->setStatus(ResultFile::STATUS_IMPORTED);
         $this->em->persist($file);
@@ -80,34 +82,45 @@ class Service
         return file_get_contents($path);
     }
 
+    /**
+     * @param $content
+     * @return array ['guild' => GuildName, 'result' => Results]
+     */
     private function transformContent($content)
     {
-        $result = [];
+
         $firstLine = true;
         $count = 0;
         //THrow away first line
-        array_shift($content);
+        $line = array_shift($content);
+        $guild = [];
+        if (preg_match('/([a-zA-z]+) Results/', $line, $guild) === 1) {
+            $result = ['guild' => $guild[1]];
+        }else {
+            throw new Exception("No Guild Found");
+        }
+
         foreach ($content as $line) {
             if ($firstLine) {
                 if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
                     $name = $name[1];
-                    $result[$count]['playername'] = $name;
+                    $result['result'][$count]['playername'] = $name;
                 }
                 if (preg_match('/against (.*)/', $line, $name) === 1) {
                     $name = $name[1];
-                    $result[$count]['mission'] = $name;
+                    $result['result'][$count]['mission'] = $name;
                 }
                 $firstLine = false;
             } else {
                 if (preg_match('/units: (\d?\d.?\d?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
                     $name = (int)($name * 10);
-                    $result[$count]['percent'] = $name;
+                    $result['result'][$count]['percent'] = $name;
                 }
                 if (preg_match('/units: \d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
                     $name = $name[1];
                     $cards = $this->transformToCardNames(explode(", ", $name));
-                    $result[$count]['deck'] = $cards;
+                    $result['result'][$count]['deck'] = $cards;
                 }
                 $firstLine = true;
                 $count++;
