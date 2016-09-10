@@ -10,7 +10,7 @@ namespace LokiTuoResultBundle\Service\CardReader;
 
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\CardFile;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 class Service
@@ -18,8 +18,7 @@ class Service
     /** @var EntityManager  */
     private $em;
 
-    /** @var LoggerInterface */
-    private $logger;
+    use LoggerAwareTrait;
 
     public function __construct(EntityManager $entityManager)
     {
@@ -45,13 +44,5 @@ class Service
         }
         $this->em->flush();
         return $count;
-    }
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }

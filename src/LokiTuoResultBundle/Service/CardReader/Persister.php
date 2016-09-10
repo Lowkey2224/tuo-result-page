@@ -11,7 +11,7 @@ namespace LokiTuoResultBundle\Service\CardReader;
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 class Persister
@@ -19,8 +19,7 @@ class Persister
     /** @var EntityManager */
     private $em;
 
-    /** @var  LoggerInterface */
-    private $logger;
+    use LoggerAwareTrait;
 
     private $persist = true;
 
@@ -56,13 +55,6 @@ class Persister
         return $cardCount;
     }
 
-        /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * @param Card[] $cards

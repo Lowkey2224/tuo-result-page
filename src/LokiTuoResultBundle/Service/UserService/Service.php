@@ -8,10 +8,14 @@
 
 namespace LokiTuoResultBundle\Service\UserService;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\Security\Core\User\User;
 
 class Service
 {
+
+    use LoggerAwareTrait;
     /**
      * @var array
      */
@@ -20,6 +24,7 @@ class Service
     public function __construct(array $guilds)
     {
         $this->guilds = $guilds;
+        $this->logger = new NullLogger();
     }
 
     public function getGuildsForUser(User $user)

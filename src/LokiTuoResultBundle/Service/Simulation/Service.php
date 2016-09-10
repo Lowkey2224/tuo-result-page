@@ -10,12 +10,21 @@ namespace LokiTuoResultBundle\Service\Simulation;
 
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 class Service
 {
 
+    use LoggerAwareTrait;
+
     private $resultFileName = "result.txt";
     private $iterations = 10000;
+
+    public function __construct()
+    {
+        $this->logger = new NullLogger();
+    }
 
     /**
      *

@@ -11,7 +11,7 @@ namespace LokiTuoResultBundle\Service\OwnedCards;
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 class MassSimReader
@@ -19,10 +19,7 @@ class MassSimReader
     /** @var  EntityManager */
     private $em;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    use LoggerAwareTrait;
 
     public function __construct(EntityManager $entityManager)
     {
@@ -91,13 +88,6 @@ class MassSimReader
         return explode("\n", file_get_contents($filePath));
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger($logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * @param $player

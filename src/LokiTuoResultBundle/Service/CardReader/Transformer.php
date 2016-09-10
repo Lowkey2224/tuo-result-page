@@ -10,13 +10,12 @@ namespace LokiTuoResultBundle\Service\CardReader;
 
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 class Transformer
 {
-    /** @var LoggerInterface */
-    private $logger;
+    use LoggerAwareTrait;
 
     public function __construct()
     {
@@ -108,14 +107,5 @@ class Transformer
             $res[$id] = $str;
         }
         return $res;
-    }
-
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger($logger)
-    {
-        $this->logger = $logger;
     }
 }

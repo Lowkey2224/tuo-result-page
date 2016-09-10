@@ -10,7 +10,7 @@ use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
 use LokiTuoResultBundle\Service\OwnedCards\MassSimReader;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -23,6 +23,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class Service
 {
 
+    use LoggerAwareTrait;
+
     //TODO Change the import so it can use different persisters
     //Maybe save the Import Simulation script too
     /** @var  EntityManager */
@@ -31,11 +33,6 @@ class Service
     /** @var MassSimReader */
     private $cardManager;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     public function __construct(EntityManager $entityManager, MassSimReader $massSimReader)
     {
         $this->em = $entityManager;
@@ -43,10 +40,6 @@ class Service
         $this->logger = new NullLogger();
     }
 
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
 
     public function readFile($path)
     {
