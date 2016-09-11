@@ -131,10 +131,11 @@ class DefaultController extends Controller
             $data = $form->getData();
             if ($data['file'] instanceof UploadedFile) {
                 $id = $resultReader->readFile($data['file']->getRealPath());
-                /*$resultCount =*/ $resultReader->importFileById($id);
-                //TODO Flashbag succesmeesage
+                $resultCount = $resultReader->importFileById($id);
+                $this->addFlash('success', "$resultCount Results have been imported");
+
             } else {
-                //TODO Flashbag Error
+                $this->addFlash('error', "There was an error importing Resultfile");
             }
         }
 //        $res = $this->get('loki_tuo_result.jenkins.manager')->startImport('Upload by user: ');
