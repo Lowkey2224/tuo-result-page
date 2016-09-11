@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Carry No Saints Simulations{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Carry No Saints Simulations{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.theme.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css') }}">
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-    <div class="container" role="main">
-        {% for flashMessage in app.session.flashbag.get('error') %}
-            <div class="alert alert-error alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Success!</strong> {{ flashMessage }}
-            </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('success') %}
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Success!</strong> {{ flashMessage }}
-            </div>
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.theme.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+<div class="container" role="main">
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-error alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            <strong>Success!</strong> {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            <strong>Success!</strong> {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% block body %}{% endblock %}
 
-
-        {% endfor %}
-        {% block body %}{% endblock %}
-
-    </div>
-    <script src="{{ asset('bundles/lokituoresult/vendor/jquery-3.1.0.min.js') }}"></script>
-    <script src="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
-    {% block javascripts %}{% endblock %}
-    </body>
+</div>
+<script src="{{ asset('bundles/lokituoresult/vendor/jquery-3.1.0.min.js') }}"></script>
+<script src="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
 </html>

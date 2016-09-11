@@ -133,7 +133,6 @@ class DefaultController extends Controller
                 $id = $resultReader->readFile($data['file']->getRealPath());
                 $resultCount = $resultReader->importFileById($id);
                 $this->addFlash('success', "$resultCount Results have been imported");
-
             } else {
                 $this->addFlash('error', "There was an error importing Resultfile");
             }
