@@ -5,6 +5,10 @@ namespace LokiTuoResultBundle\Controller;
 use LokiTuoResultBundle\Entity\Mission;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,12 +22,11 @@ class DefaultController extends Controller
     {
         $user = $this->getUser();
 
+        $form = $this->getUploadForm();
 
         $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
 
         $groupedBy = $missionRepo->findAll();
-
-
 
 
         return $this->render(
@@ -31,6 +34,7 @@ class DefaultController extends Controller
             [
                 'missions' => $groupedBy,
                 'user' => $user,
+                'form' => $form->createView()
             ]
         );
     }
@@ -115,17 +119,38 @@ class DefaultController extends Controller
 
     /**
      * @return int
-     * @Route("/upload", name="loki.tuo.result.upload", methods={"GET"})
+     * @Route("/upload", name="loki.tuo.result.upload", methods={"POST"})
      */
-    public function uploadResultAction()
+    public function uploadResultAction(Request $request)
     {
-//        $path = "";
-//        $resultReader = $this->get('loki_tuo_result.reader');
-//        $id = $resultReader->readFile($path);
-//        $resultCount = $resultReader->importFileById($id);
+
+        $form = $this->getUploadForm();
+        $resultReader = $this->get('loki_tuo_result.reader');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            if ($data['file'] instanceof UploadedFile) {
+                $id = $resultReader->readFile($data['file']->getRealPath());
+                /*$resultCount =*/ $resultReader->importFileById($id);
+                //TODO Flashbag succesmeesage
+            } else {
+                //TODO Flashbag Error
+            }
+        }
 //        $res = $this->get('loki_tuo_result.jenkins.manager')->startImport('Upload by user: ');
-
-
         return $this->redirectToRoute('tuo.index');
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function getUploadForm()
+    {
+        $formOptions= ['attr' => ['class' => 'form-control']];
+        return $this->createFormBuilder(null)
+            ->setAction($this->generateUrl('loki.tuo.result.upload'))
+            ->add('file', FileType::class, ['label' => 'Resultfile', 'attr' => ['class' => 'form-control']])
+            ->add('submit', SubmitType::class, $formOptions)
+            ->getForm();
     }
 }
