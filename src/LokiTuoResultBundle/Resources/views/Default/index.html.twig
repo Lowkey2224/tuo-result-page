@@ -5,22 +5,24 @@
     </div>
     <div class="row">
         Here you will see all Simulations done by LokiMcFly<br/>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('loki.tuo.result.upload') }}">Upload a new Result</a>
+        {% endif %}
     </div>
 
-    {% for guild, guildMissions in missions %}
         <div class="row">
-            Simulations for {{ guild }}
             <ul class="">
-                {% for mission in guildMissions %}
+                {% for mission in missions %}
                     <li>
-                        <a href="{{ path('tuo.showmission', {'missionId': mission.id, 'guild' : guild}) }}">
-                            <b>{{ mission.name }} {{ guild }}</b>
+                        <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
+                            <b>{{ mission.name }} {{ mission.guilds | join(', ') }}</b>
                         </a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
-    {% endfor %}
+
     <div class="row">
         <a href="{{ path('loki.tuo.player.all.show') }}"><h4>Playerlist</h4></a>
     </div>

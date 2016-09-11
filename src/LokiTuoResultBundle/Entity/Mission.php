@@ -43,6 +43,16 @@ class Mission
      */
     private $results;
 
+    public function getGuilds()
+    {
+        $guilds = [];
+        /** @var Result $result */
+        foreach ($this->results as $result) {
+            $guilds[$result->getGuild()] = $result->getGuild();
+        }
+        return $guilds;
+    }
+
 
     /**
      * Get id

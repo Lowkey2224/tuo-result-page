@@ -31,7 +31,7 @@ class Result
 
     /**
      * @var Mission
-     * @ORM\ManyToOne(targetEntity="Mission")
+     * @ORM\ManyToOne(targetEntity="Mission", inversedBy="results")
      * @ORM\JoinColumn(referencedColumnName="id", name="mission_id")
      */
     private $mission;
