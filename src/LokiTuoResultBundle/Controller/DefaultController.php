@@ -146,11 +146,10 @@ class DefaultController extends Controller
      */
     private function getUploadForm()
     {
-        $formOptions= ['attr' => ['class' => 'form-control']];
         return $this->createFormBuilder(null)
             ->setAction($this->generateUrl('loki.tuo.result.upload'))
-            ->add('file', FileType::class, ['label' => 'Resultfile', 'attr' => ['class' => 'form-control']])
-            ->add('submit', SubmitType::class, $formOptions)
+            ->add('file', FileType::class, ['label' => 'Resultfile', 'attr' => ['class' => '']])
+            ->add('submit', SubmitType::class)
             ->getForm();
     }
 }
