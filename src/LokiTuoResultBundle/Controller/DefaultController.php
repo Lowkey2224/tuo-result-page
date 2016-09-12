@@ -86,7 +86,7 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
         $criteria = ['mission' => $mission];
-        $orderBy = ['guild' => 'ASC', 'player.name' => 'ASC'];
+        $orderBy = ['guild' => 'ASC', 'id' => 'ASC'];
         $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy($criteria, $orderBy);
         return $this->render(
             'LokiTuoResultBundle:Default:showMission.html.twig',
