@@ -1,11 +1,8 @@
 {% extends '::base.html.twig' %}
+
+{% block title %}CTP/CNS Simming Results{% endblock %}
+
 {% block body %}
-    <div class="row">
-        <h2>This is the Website for the CarryNoSaints Guild.</h2>
-    </div>
-    <div class="row">
-        Here you will see all Simulations done by LokiMcFly<br/>
-    </div>
     {% if is_granted('ROLE_ADMIN') %}
         <div class="row" style="padding: 5px">
             <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal">

@@ -3,10 +3,9 @@
 namespace LokiTuoResultBundle\Controller;
 
 use LokiTuoResultBundle\Entity\Mission;
+use LokiTuoResultBundle\Form\ResultFileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -137,7 +136,6 @@ class DefaultController extends Controller
                 $this->addFlash('error', "There was an error importing Resultfile");
             }
         }
-//        $res = $this->get('loki_tuo_result.jenkins.manager')->startImport('Upload by user: ');
         return $this->redirectToRoute('tuo.index');
     }
 
@@ -146,10 +144,9 @@ class DefaultController extends Controller
      */
     private function getUploadForm()
     {
-        return $this->createFormBuilder(null)
-            ->setAction($this->generateUrl('loki.tuo.result.upload'))
-            ->add('file', FileType::class, ['label' => 'Resultfile', 'attr' => ['class' => '']])
-            ->add('submit', SubmitType::class)
-            ->getForm();
+        return $this->createForm(ResultFileType::class, null,[
+            'action' => $this->generateUrl('loki.tuo.result.upload'),
+            'method' => 'POST',
+        ]);
     }
 }

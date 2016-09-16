@@ -17,6 +17,12 @@
 </head>
 <body>
 <div class="container" role="main">
+    <div class="row">
+        <h2>
+            Carry No Saints & Carry The Phil Simulation Page
+            <a href="{{ path('tuo.index') }}"><small class="pull left">back to Landingpage</small></a>
+        </h2>
+    </div>
     {% for flashMessage in app.session.flashbag.get('error') %}
         <div class="alert alert-error alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -31,6 +37,7 @@
             <strong>Success!</strong> {{ flashMessage }}
         </div>
     {% endfor %}
+
     {% block body %}{% endblock %}
 
 </div>
