@@ -3,6 +3,49 @@
 {% block title %}Owned Cards for Player {{ player.name }}{% endblock %}
 
 {% block body %}
+
+    {% if canEdit %}
+        <!-- Modal -->
+        <div class="modal fade" id="addOwnedCardModal" tabindex="-1" role="dialog"
+             aria-labelledby="addOwnedCardModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addOwnedCardModalLabel">Upload your Simulation Result here</h4>
+                    </div>
+                    <div class="modal-body ui-front">
+                        <div id="jsFlash"></div>
+                        {#<div class="ui-widget">#}
+                        {#<label for="card">Card: </label>#}
+                        {#<input id="card">#}
+                        {#</div>#}
+                        {{ form_start(form) }}
+
+                        <div class=" ui-widget form-group">
+                            {{ form_row(form.card) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_row(form.level) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_row(form.amount) }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {{ form_widget(form.submit, {'attr' : {'class': 'btn btn-success'}}) }}
+                        {{ form_end(form) }}
+
+                        {#<button type="button" class="btn btn-primary">Save changes</button>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-6 col-md-offset-3 text-center">
             <h2 style="margin-top: 0;">Owned Cards for Player {{ player.name }}</h2>
@@ -15,27 +58,56 @@
             Deck for Player: <b>{{ player.name }}</b>
         </div>
         <div class="panel-body">
-            <div class="ui-widget">
-                <label for="tags">Tags: </label>
-                <input id="tags">
-            </div>
-            {% for card in deck %}
-                {{ card.card.name }}<br/>
-            {% endfor %}
+            <table id="deck" class="table table-striped">
+                <tbody>
+                {% for card in deck %}
+                    <tr class="row" id="{{ card }}">
+                        <td class="col-xs-11">
+                            {{ card }}
+                        </td>
+                        <td class="col-xs-1">
+                            <button type="button" class="pull-right btn btn-primary btn-xs">
+                                <i class="glyphicon glyphicon-minus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
     <div class="panel panel-info">
         <div class="panel-heading">
-
-            Owned Cards for Player: <b>{{ player.name }}</b>
-            <i class="glyphicon glyphicon-plus"></i>
+            <div class="row">
+                <p class="col-md-9 col-xs-9">
+                    Owned Cards for Player: <b>{{ player.name }}</b>
+                </p>
+                <div class="col-md-3 col-xs-3">
+                    <button type="button" class="pull-right btn btn-primary btn-md" data-toggle="modal"
+                            data-target="#addOwnedCardModal">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="panel-body">
-
-            {% for card in cards %}
-                {{ card.card.name }}<br/>
-            {% endfor %}
+            <table id="ownedCards" class="table table-striped">
+                <tbody>
+                {% for card in cards %}
+                    <tr class="row" id="{{ card }}">
+                        <td class="col-xs-11">
+                            {{ card }}
+                        </td>
+                        <td class="col-xs-1">
+                            <button type="button" class="pull-right btn btn-primary btn-xs">
+                                <i class="glyphicon glyphicon-minus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -46,17 +118,93 @@
 
 {% block javascripts %}
     <script>
-        $( function() {
+        $(function () {
             var availableTags = [];
-            $.get( "{{ path('loki.tuo.cards.all') }}", function( data ) {
+            $.get("{{ path('loki.tuo.cards.all') }}", function (data) {
 //                $( ".result" ).html( data );
                 availableTags = data;
-                $( "#tags" ).autocomplete({
-                    source: data
+                $("#owned_card_card").autocomplete({
+                    source: data,
+                    minLength: 3
                 });
-                console.log(data);
             });
 
-        } );
+
+            function sendAjaxRequest(data) {
+//                console.log('data', data);
+//                $.ajaxSetup({
+//                    headers: {
+//                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//                    }
+//                });
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}",
+                    data: data,
+                    error: function (response, textStatus, errorThrown) {
+                        console.log("Fail Response", response);
+                        console.log("Status", textStatus, " error", errorThrown);
+//                        $('#jsFlash').append(getFlashMessage(false, response['actual_arrival'], response['actual_departure'], text));
+
+                    },
+                    success: function (response) {
+                        console.log("Success Response", response);
+                        $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                        var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                        $('#ownedCards').find('tbody').append(getCardRow(combinedName));
+//                        $(".departure-" + data.stop_id).val(response['actual_departure']);
+//                        $(".arrival-" + data.stop_id).val(response['actual_arrival']);
+//                        $("td." + data.stop_id).addClass("success");
+                    }
+                });
+            }
+
+            function getCardRow(combinedName) {
+                var text = '<tr class="row" id="' + combinedName + '">' +
+                        '<td  class="col-xs-11">' +
+                        combinedName +
+                        '</td>' +
+                        '<td class="col-xs-1">' +
+                        '<button type="button" class="pull-right btn btn-primary btn-xs">' +
+                        '<i class="glyphicon glyphicon-minus"></i></button></td></tr>';
+                console.log(text);
+                return text;
+            }
+
+            function getCombinedCardName(name, level, amount) {
+                var combinedName = name;
+                combinedName += level ? "-" + level : "";
+                combinedName += amount ? " (" + amount + ")" : "";
+                return combinedName;
+            }
+
+            function getFlashMessage(successful, name, level, amount) {
+                var cssClass = (successful) ? 'alert-success' : 'alert-danger';
+//                var text = (overrideText) ? overrideText : "Zeiten nicht gespeichert";
+//                console.log("Text", text, "Override", overrideText);
+                if (successful) {
+                    text = "<strong>Success: </strong>" + name + " with level " + level + " added " + amount + " times";
+                }
+
+                return '<div class="alert alert-dismissible ' + cssClass + '" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + text + '</div>';
+            }
+
+            // send ajax request
+            $("form.data-remote").on("submit", function (e) {
+                e.preventDefault();
+                var $inputs = this.elements;
+//                console.log("inputs", $inputs);
+                var data = {
+                    owned_card_card: $inputs[0].value,
+                    owned_card_level: $inputs[1].value,
+                    owned_card_amount: $inputs[2].value,
+                    in_deck: false
+                };
+                console.log(data);
+                sendAjaxRequest(data);
+            });
+
+        });
     </script>
 {% endblock %}

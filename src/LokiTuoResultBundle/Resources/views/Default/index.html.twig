@@ -43,8 +43,15 @@
             {% for mission in missions %}
                 <li>
                     <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
-                        <b>{{ mission.name }} {{ mission.guilds | join(', ') }}</b>
+                        {{ mission.name }}
                     </a>
+                    {% for guild in mission.guilds %}
+                        [{{ guild }}]
+                        {% if not loop.first %}
+                            ,
+                            {% endif %}
+                        {#<b>{{ mission.guilds | join(', ') }}</b>#}
+                    {% endfor %}
                 </li>
             {% endfor %}
         </ul>

@@ -65,7 +65,7 @@ class OwnedCard
             $str.="-".$this->level;
         }
         if ($this->amount>1) {
-            $str.="(".$this->amount.")";
+            $str.=" (".$this->amount.")";
         }
         return $str;
     }
