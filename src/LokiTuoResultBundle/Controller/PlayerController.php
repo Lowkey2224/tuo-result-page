@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Form\OwnedCardType;
@@ -98,18 +99,18 @@ class PlayerController extends Controller
         $level = $request->get('owned_card_level');
         $amount = $request->get('owned_card_amount');
         $inDeck = $request->get('in_deck');
-        $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name'=>$name]);
+        $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
         if (!$card) {
             return new JsonResponse(['message' => 'Card not found', 420]);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $oc = $ownedCardRepo->findOneBy(['player'=> $player, 'card' => $card]);
+        $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card]);
         if (!$oc) {
             $oc = new OwnedCard();
             $oc->setPlayer($player);
             $oc->setCard($card);
         }
-        $level = (trim($level) == "")?null:$level;
+        $level = (trim($level) == "") ? null : $level;
         $oc->setLevel($level);
         $oc->setAmount($amount);
         $oc->setInCurrentDeck($inDeck);
@@ -131,16 +132,17 @@ class PlayerController extends Controller
             return new JsonResponse(['message' => 'Player not found', 404]);
         }
         $name = $request->get('owned_card_card');
-        $level = $request->get('owned_card_level');
+        $level = $request->get('owned_card_level') == "null" ? null : $request->get('owned_card_level');
         $amount = $request->get('owned_card_amount');
         $inDeck = $request->get('in_deck');
 
-        $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name'=>$name]);
+        $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
         if (!$card) {
             return new JsonResponse(['message' => 'Card not found', 420]);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $criteria = ['player'=> $player, 'card' => $card, 'level' => $level, 'amount' => $amount, 'inDeck' => $inDeck];
+        $criteria = ['player' => $player, 'card' => $card, 'level' => $level, 'amount' => $amount, 'inCurrentDeck' => $inDeck];
+
         $oc = $ownedCardRepo->findOneBy($criteria);
         if (!$oc) {
             return new JsonResponse(['message' => 'Card not found', 420]);
