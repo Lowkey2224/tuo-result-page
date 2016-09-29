@@ -10,16 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="card")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardRepository")
  */
-class Card
+class Card extends AbstractBaseEntity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
     public $skillDelimiter = "|";
 
@@ -108,16 +100,6 @@ class Card
         $this->defense = 0;
         $this->delay = 0;
         $this->attack = 0;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -256,13 +238,6 @@ class Card
         $this->cardFile = $cardFile;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return mixed

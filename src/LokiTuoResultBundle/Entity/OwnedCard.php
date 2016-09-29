@@ -10,16 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="owned_card")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\OwnedCardRepository")
  */
-class OwnedCard
+class OwnedCard extends AbstractBaseEntity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+
 
     /**
      * @var int
@@ -68,17 +61,6 @@ class OwnedCard
             $str.=" (".$this->amount.")";
         }
         return $str;
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

@@ -14,16 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="There exists already this card for this result in this order")
  *
  */
-class DeckEntry
+class DeckEntry extends AbstractBaseEntity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+
 
     /**
      * @var int
@@ -72,16 +65,6 @@ class DeckEntry
         $this->card = $card;
     }
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set playOrder
