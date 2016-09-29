@@ -9,23 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  * CardFile
  *
  * @ORM\Table(name="card_file")
- * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardFileRepository")
  */
-class CardFile
+class CardFile extends AbstractBaseEntity
 {
     const STATUS_NOT_IMPORTED = 0;
     const STATUS_IMPORTED = 1;
     const STATUS_IMPORTED_WITH_ERROR = 2;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
     /**
      * @var string
@@ -33,20 +24,6 @@ class CardFile
      * @ORM\Column(name="content", type="text")
      */
     private $content;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
 
     /**
      * @var ArrayCollection
@@ -69,21 +46,9 @@ class CardFile
     public function __construct()
     {
         $this->status = 0;
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
         $this->cards = new ArrayCollection();
     }
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set content
@@ -110,54 +75,6 @@ class CardFile
     }
 
     /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return CardFile
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return CardFile
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getCards()
@@ -173,13 +90,6 @@ class CardFile
         $this->cards = $cards;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->updatedAt = new \DateTime();
-    }
 
     /**
      * @return int

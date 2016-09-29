@@ -11,16 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="result")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\ResultRepository")
  */
-class Result
+class Result extends AbstractBaseEntity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+
 
     /**
      * @var integer
@@ -65,17 +58,6 @@ class Result
     public function __construct()
     {
         $this->deck = new ArrayCollection();
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
