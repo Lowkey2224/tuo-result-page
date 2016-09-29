@@ -100,9 +100,14 @@
                             {{ card }}
                         </td>
                         <td class="col-xs-1">
-                            <button type="button" class="pull-right btn btn-primary btn-xs">
+                            <form class="data-remote-remove">
+                                <input type="hidden" name="name" id="name" value="{{ card.card.name }}">
+                                <input type="hidden" name="level" id="level" value="{{ card.level }}">
+                                <input type="hidden" name="amount" id="amount" value="{{ card.amount }}">
+                                <button type="submit" class="pull-right btn btn-primary btn-xs">
                                 <i class="glyphicon glyphicon-minus"></i>
-                            </button>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
@@ -121,25 +126,27 @@
         $(function () {
             var availableTags = [];
             $.get("{{ path('loki.tuo.cards.all') }}", function (data) {
-//                $( ".result" ).html( data );
                 availableTags = data;
                 $("#owned_card_card").autocomplete({
-                    source: data,
+                    source: availableTags,
                     minLength: 3
                 });
             });
 
 
-            function sendAjaxRequest(data) {
-//                console.log('data', data);
-//                $.ajaxSetup({
-//                    headers: {
-//                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//                    }
-//                });
+            function sendAjaxRequest(data, remove) {
+                var method = "";
+                var url = "";
+                if (remove) {
+                    method = "DELETE";
+                    url = {{ path('loki.tuo.player.card.remove', {'playerId': player.id}) }};
+                } else {
+                    method = "POST";
+                    url = "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}";
+                }
                 $.ajax({
-                    method: "POST",
-                    url: "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}",
+                    method: method,
+                    url: url,
                     data: data,
                     error: function (response, textStatus, errorThrown) {
                         console.log("Fail Response", response);
@@ -151,15 +158,16 @@
                         console.log("Success Response", response);
                         $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                         var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
-                        $('#ownedCards').find('tbody').append(getCardRow(combinedName));
-//                        $(".departure-" + data.stop_id).val(response['actual_departure']);
-//                        $(".arrival-" + data.stop_id).val(response['actual_arrival']);
-//                        $("td." + data.stop_id).addClass("success");
+                        if (remove) {
+                            removeCardRow(combinedName)
+                        } else
+                            addCardRow('ownedCards', combinedName);
                     }
                 });
             }
 
-            function getCardRow(combinedName) {
+            function addCardRow(id, combinedName) {
+                $('#' + id).find('tbody').append(getCardRow(combinedName));
                 var text = '<tr class="row" id="' + combinedName + '">' +
                         '<td  class="col-xs-11">' +
                         combinedName +
@@ -169,6 +177,10 @@
                         '<i class="glyphicon glyphicon-minus"></i></button></td></tr>';
                 console.log(text);
                 return text;
+            }
+
+            function removeCardRow(combinedName) {
+                $('#' + combinedName).remove();
             }
 
             function getCombinedCardName(name, level, amount) {
@@ -202,7 +214,22 @@
                     in_deck: false
                 };
                 console.log(data);
-                sendAjaxRequest(data);
+                sendAjaxRequest(data, false);
+            });
+
+            // send ajax request
+            $("form.data-remote-remove").on("submit", function (e) {
+                e.preventDefault();
+                var $inputs = this.elements;
+//                console.log("inputs", $inputs);
+                var data = {
+                    owned_card_card: $inputs[0].value,
+                    owned_card_level: $inputs[1].value,
+                    owned_card_amount: $inputs[2].value,
+                    in_deck: false
+                };
+                console.log(data);
+                sendAjaxRequest(data, false);
             });
 
         });
