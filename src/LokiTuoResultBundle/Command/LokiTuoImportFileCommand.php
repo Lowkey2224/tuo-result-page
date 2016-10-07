@@ -13,8 +13,8 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('loki:tuo:import:file')
-            ->setDescription('...')
+            ->setName('loki:tuo:result:import')
+            ->setDescription('Imports the Result with the given Id')
             ->addArgument('fileId', InputArgument::OPTIONAL, 'Argument description', "next")
         ;
     }

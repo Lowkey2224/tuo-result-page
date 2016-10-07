@@ -3,12 +3,17 @@
 namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * OwnedCard
  *
  * @ORM\Table(name="owned_card")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\OwnedCardRepository")
+ * @UniqueEntity(
+ *     fields={"level", "amount", "player", "card", "inCurrentDeck"},
+ *     message="Dieser spieler hat diesen Eintrag bereits."
+ * )
  */
 class OwnedCard extends AbstractBaseEntity
 {
