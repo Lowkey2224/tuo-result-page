@@ -44,6 +44,21 @@ class Service
 
     public function canUserAccess(User $user, $guildNeeded)
     {
+        if($this->isAdmin($user)) {
+            return true;
+        }
         return in_array($guildNeeded, $this->getGuildsForUser($user));
+    }
+
+    private function isAdmin(User $user)
+    {
+        $roles = $user->getRoles();
+
+        foreach ($roles as $role) {
+            if($role === 'ROLE_ADMIN') {
+                return true;
+            }
+        }
+        return false;
     }
 }
