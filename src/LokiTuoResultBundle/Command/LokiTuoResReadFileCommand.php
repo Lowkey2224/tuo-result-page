@@ -13,7 +13,7 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('loki:tuo:read:file')
+            ->setName('loki:tuo:result:read')
             ->setDescription('this Method will read a Tuo Result File, and save it to the Database')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Argument description', "result.txt")
             ->addArgument('guild', InputArgument::OPTIONAL, 'Argument description', "CTP")

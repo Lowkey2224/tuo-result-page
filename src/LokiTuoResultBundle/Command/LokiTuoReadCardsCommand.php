@@ -14,8 +14,8 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('loki:tuo:read:cards')
-            ->setDescription('...')
+            ->setName('loki:tuo:cards:read')
+            ->setDescription('Reads all Files in the given Directory, and saves the data-files into the Database')
             ->addArgument('dataPath', InputArgument::REQUIRED, 'Argument description ending with /')
             ->addOption('option', null, InputOption::VALUE_NONE, 'Option description');
     }

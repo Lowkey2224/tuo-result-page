@@ -14,8 +14,8 @@ class LokiTuoImportCardsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('loki:tuo:import:cards')
-            ->setDescription('...')
+            ->setName('loki:tuo:cards:import')
+            ->setDescription('Imports Card Files from the Database, and creates Card Models from it')
             ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
             ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
         ;

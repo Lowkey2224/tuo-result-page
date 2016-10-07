@@ -15,7 +15,7 @@ class LokiTuoDeckImportCommand extends ContainerAwareCommand
     {
         $this
             ->setName('loki:tuo:deck:import')
-            ->setDescription('...')
+            ->setDescription('Imports the Owned Cards and Cards in Deck, into the Database from a Mass_Sim Script.')
             ->addArgument('simScript', InputArgument::OPTIONAL, 'Argument description', "mass_sim.sh")
             ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
         ;
