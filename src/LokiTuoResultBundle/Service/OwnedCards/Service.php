@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\Service\OwnedCards;
 
-
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
@@ -58,10 +57,8 @@ class Service
 
     public function persistOwnedCards(array $ownedCards)
     {
-        foreach ($ownedCards as $ownedCard)
-        {
-            if($ownedCard instanceof OwnedCard)
-            {
+        foreach ($ownedCards as $ownedCard) {
+            if ($ownedCard instanceof OwnedCard) {
                 $this->em->persist($ownedCard);
             }
         }
@@ -70,7 +67,7 @@ class Service
 
     /**
      * @param Player $player The Player which the Cards belong to.
-     * @param $cardArray array in the form of [0 => ['name'=> 'CARD_NAME', 'amount'=>'1', 'level'=>null, 'inDeck'=false]]
+     * @param $cardArray array in the form [0 => ['name'=> 'CARD_NAME', 'amount'=>'1', 'level'=>null, 'inDeck'=false]]
      * @return OwnedCard[]
      */
     public function transformArrayToModels(Player $player, $cardArray)

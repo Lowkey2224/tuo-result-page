@@ -14,7 +14,6 @@ use LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-
 class MassSimReader
 {
     /** @var  EntityManager */
@@ -80,7 +79,7 @@ class MassSimReader
                 $this->em->persist($card);
             }
             $this->em->flush();
-            $this->logger->debug("persisted ".count($result[$player->getName()]). " cards for Player ".$player->getName());
+            $this->logger->debug("persisted ".count($result[$playerName]). " cards for Player ".$playerName);
         }
         $this->em->flush();
         return $result;
@@ -90,15 +89,13 @@ class MassSimReader
     {
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
         $player = $playerRepo->findOneBy(['name' => $playerName]);
-        if(!$player)
-        {
+        if (!$player) {
             $this->logger->info("Created Player $playerName because no Player was found.");
             $player = new Player();
             $player->setName($playerName);
             $this->em->persist($player);
         }
         return $player;
-
     }
 
     /**
@@ -137,8 +134,4 @@ class MassSimReader
         }
         return $owned;
     }
-
-
-
-
 }
