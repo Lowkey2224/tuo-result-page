@@ -9,21 +9,26 @@
 namespace LokiTuoResultBundle\Service\OwnedCards;
 
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\OwnedCard;
+use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+
 
 class MassSimReader
 {
     /** @var  EntityManager */
     private $em;
 
+    /** @var OwnedCardManager */
+    private $ownedCardManager;
+
     use LoggerAwareTrait;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, OwnedCardManager $manager)
     {
         $this->em = $entityManager;
+        $this->ownedCardManager = $manager;
         $this->logger = new NullLogger();
     }
 
@@ -65,17 +70,35 @@ class MassSimReader
     public function savePlayerCardMap($map)
     {
         $result = [];
+
         foreach ($map as $playerName => $cardArray) {
-            $this->logger->debug("Trying to persist ".count($cardArray). " cards for Player $playerName");
-            $result[$playerName] = $this->saveCardsForPlayer($playerName, $cardArray);
-            foreach ($result[$playerName] as $card) {
+            $player = $this->findPlayerOrCreate($playerName);
+            $this->logger->debug("Trying to persist ".count($cardArray). " cards for Player ".$player->getName());
+            $result[$player->getName()] = $this->ownedCardManager->transformArrayToModels($player, $cardArray);
+            $this->ownedCardManager->removeOldOwnedCardsForPlayer($player);
+            foreach ($result[$player->getName()] as $card) {
                 $this->em->persist($card);
             }
             $this->em->flush();
-            $this->logger->debug("persisted ".count($result[$playerName]). " cards for Player $playerName");
+            $this->logger->debug("persisted ".count($result[$player->getName()]). " cards for Player ".$player->getName());
         }
         $this->em->flush();
         return $result;
+    }
+
+    private function findPlayerOrCreate($playerName)
+    {
+        $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
+        $player = $playerRepo->findOneBy(['name' => $playerName]);
+        if(!$player)
+        {
+            $this->logger->info("Created Player $playerName because no Player was found.");
+            $player = new Player();
+            $player->setName($playerName);
+            $this->em->persist($player);
+        }
+        return $player;
+
     }
 
     /**
@@ -88,21 +111,6 @@ class MassSimReader
         return explode("\n", file_get_contents($filePath));
     }
 
-
-    /**
-     * @param $player
-     * @return int
-     */
-    private function removeOldOwnedCardsForPlayer($player)
-    {
-        $ownderCardRepo = $this->em->getRepository('LokiTuoResultBundle:OwnedCard');
-        $oldCards = $ownderCardRepo->findBy(['player' => $player]);
-        foreach ($oldCards as $ownedCard) {
-            $this->em->remove($ownedCard);
-        }
-        $this->em->flush();
-        return count($oldCards);
-    }
 
     private function transformOwnedCards($line)
     {
@@ -125,68 +133,12 @@ class MassSimReader
         preg_match($regEx, $line, $matches);
         $cards = explode(",", $matches[1]);
         foreach ($cards as $card) {
-            $owned[] = $this->transformCardString(trim($card), $inDeck);
+            $owned[] = $this->ownedCardManager->transformCardString(trim($card), $inDeck);
         }
         return $owned;
     }
 
-    public function transformCardString($card, $inDeck = false)
-    {
-        $amount = 1;
-        $level = null;
-        $match = [];
-        $name = '';
-        preg_match('/.+ \((\d+)\)/', $card, $match);
-        if (count($match) == 2) {
-            $amount = $match[1];
-        }
-        $match = [];
 
-        preg_match('/.+-(\d)/', $card, $match);
-        if (count($match) == 2) {
-            $level = $match[1];
-        }
-        $match = [];
-        preg_match('/([a-zA-Z \- \. \' \d]+)\b/', $card, $match);
-        if (count($match) >= 2) {
-            $match2 =[];
-            preg_match('/(.*)\-\d/', $match[1], $match2);
 
-            $name = count($match2) == 2 ? $match2[1] : $match[1];
-        }
-        return ['amount' => $amount, 'level' => $level, 'name' => $name, 'inDeck' => $inDeck];
-    }
 
-    private function saveCardsForPlayer($playerName, $cardArray)
-    {
-
-        $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
-        $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
-        $player = $playerRepo->findOneBy(['name' => $playerName]);
-        if (!$player) {
-            $this->logger->notice("No player found for name ".$playerName);
-            return [];
-        }
-        $result = [];
-        foreach ($cardArray as $cardEntry) {
-            $this->removeOldOwnedCardsForPlayer($player);
-            $card = $cardRepo->findOneBy(['name' => $cardEntry['name']]);
-            if (!$card) {
-                $this->logger->notice("No Card found for name " . $cardEntry['name']);
-                continue;
-            }
-            $oc = new OwnedCard();
-            $oc->setCard($card);
-            $oc->setAmount($cardEntry['amount']);
-            $oc->setLevel($cardEntry['level']);
-            $oc->setPlayer($player);
-            $oc->setInCurrentDeck($cardEntry['inDeck']);
-            $result[] = $oc;
-        }
-//        $ac = new ArrayCollection($result);
-//        $player->setOwnedCards($ac);
-//        $this->em->persist($player);
-
-        return $result;
-    }
 }

@@ -42,6 +42,10 @@ class Player extends AbstractBaseEntity
 
     public function getGuild()
     {
+        if($this->results->isEmpty()){
+            return "";
+        }
+
         return $this->results->last()->getGuild();
     }
 

@@ -20,6 +20,12 @@ services:
         class: LokiTuoResultBundle\Service\OwnedCards\MassSimReader
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
+            ownedCardManager: "@loki_tuo_result.owned_card.manager"
+
+    loki_tuo_result.owned_card.manager:
+        class: LokiTuoResultBundle\Service\OwnedCards\Service
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
 
     loki_tuo_result.simulation.manager:
         class: LokiTuoResultBundle\Service\Simulation\Service

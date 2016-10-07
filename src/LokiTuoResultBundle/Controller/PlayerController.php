@@ -5,6 +5,7 @@ namespace LokiTuoResultBundle\Controller;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Form\MassOwnedCardType;
 use LokiTuoResultBundle\Form\OwnedCardType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,34 +20,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class PlayerController extends Controller
 {
-    /**
-     * @Route("/{playerId}/cards", name="loki.tuo.player.cards.show", requirements={"playerId":"\d+"})
-     */
-    public function showCardsForPlayerAction($playerId)
-    {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $allCards = $player->getOwnedCards();
-        $deck = $allCards->filter(function (OwnedCard $item) {
-            return $item->isInCurrentDeck();
-        });
-        $rest = $allCards->filter(function (OwnedCard $item) {
-            return !$item->isInCurrentDeck();
-        });
-        $formOptions = ['attr' => ['class' => 'data-remote']];
-        $form = $this->createForm(OwnedCardType::class, null, $formOptions);
-
-        return $this->render('LokiTuoResultBundle:Player:show_cards_for_player.html.twig', array(
-            'canEdit' => true,
-            'player' => $player,
-            'deck' => $deck,
-            'cards' => $rest,
-            'form' => $form->createView(),
-        ));
-    }
 
     /**
      * @Route("/{playerId}/results", name="loki.tuo.player.results.show", requirements={"playerId":"\d+"})
@@ -114,8 +87,8 @@ class PlayerController extends Controller
         $oc->setLevel($level);
         $oc->setAmount($amount);
         $oc->setInCurrentDeck($inDeck);
-//        $this->getDoctrine()->getEntityManager()->persist($oc);
-//        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getDoctrine()->getEntityManager()->persist($oc);
+        $this->getDoctrine()->getEntityManager()->flush();
         return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amount]);
     }
 
@@ -158,8 +131,81 @@ class PlayerController extends Controller
             return new JsonResponse(['message' => 'Card not found', 420]);
         }
 
-//        $this->getDoctrine()->getEntityManager()->remove($oc);
-//        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getDoctrine()->getEntityManager()->remove($oc);
+        $this->getDoctrine()->getEntityManager()->flush();
         return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amount]);
+    }
+
+    /**
+     * @Route("/{playerId}/cards",
+     *     name="loki.tuo.player.card.add.mass",
+     *     methods={"POST"},
+     *     requirements={"playerId":"\d+"}
+     *     )
+     * @param Request $request
+     * @param $playerId
+     * @return JsonResponse
+     */
+    public function addMassCardsForPlayer(Request $request, $playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$player) {
+            return new JsonResponse(['message' => 'Player not found', 404]);
+        }
+
+        $form = $this->createForm(MassOwnedCardType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $names = $form->getData();
+            $names = $names['cards'];
+
+            $manager = $this->get('loki_tuo_result.owned_card.manager');
+            $manager->setLogger($this->get('logger'));
+            $cards = [];
+            foreach (explode("\n", $names) as $line) {
+                $cards[] = $manager->transformCardString($line);
+            }
+            $cardModels = $manager->transformArrayToModels($player, $cards);
+            $manager->persistOwnedCards($cardModels);
+        }
+
+
+        return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
+    }
+
+    /**
+     * @Route("/{playerId}/cards", name="loki.tuo.player.cards.show", requirements={"playerId":"\d+"})
+     */
+    public function showCardsForPlayerAction($playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $allCards = $player->getOwnedCards();
+        $deck = $allCards->filter(function (OwnedCard $item) {
+            return $item->isInCurrentDeck();
+        });
+        $rest = $allCards->filter(function (OwnedCard $item) {
+            return !$item->isInCurrentDeck();
+        });
+        $formOptions = ['attr' => ['class' => 'data-remote']];
+        $ownedCardForm = $this->createForm(OwnedCardType::class, null, $formOptions);
+
+        $massOwnedCardForm = $this->createForm(MassOwnedCardType::class, null, array(
+            'action' => $this->generateUrl('loki.tuo.player.card.add.mass', ['playerId' => $playerId]),
+            'method' => 'POST',
+        ));
+
+        return $this->render('LokiTuoResultBundle:Player:show_cards_for_player.html.twig', array(
+            'canEdit' => true,
+            'player' => $player,
+            'deck' => $deck,
+            'cards' => $rest,
+            'form' => $ownedCardForm->createView(),
+            'massForm' => $massOwnedCardForm->createView(),
+        ));
     }
 }
