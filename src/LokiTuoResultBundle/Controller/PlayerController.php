@@ -120,7 +120,11 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/card", name="loki.tuo.player.card.remove", methods={"DELETE"}, requirements={"playerId":"\d+"})
+     * @Route("/{playerId}/card",
+     *     name="loki.tuo.player.card.remove",
+     *     methods={"DELETE"},
+     *     requirements={"playerId":"\d+"}
+     *     )
      * @param Request $request
      * @param $playerId
      * @return JsonResponse
@@ -141,7 +145,13 @@ class PlayerController extends Controller
             return new JsonResponse(['message' => 'Card not found', 420]);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $criteria = ['player' => $player, 'card' => $card, 'level' => $level, 'amount' => $amount, 'inCurrentDeck' => $inDeck];
+        $criteria = [
+            'player' => $player,
+            'card' => $card,
+            'level' => $level,
+            'amount' => $amount,
+            'inCurrentDeck' => $inDeck
+        ];
 
         $oc = $ownedCardRepo->findOneBy($criteria);
         if (!$oc) {

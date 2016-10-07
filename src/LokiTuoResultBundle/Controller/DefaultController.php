@@ -144,7 +144,7 @@ class DefaultController extends Controller
      */
     private function getUploadForm()
     {
-        return $this->createForm(ResultFileType::class, null,[
+        return $this->createForm(ResultFileType::class, null, [
             'action' => $this->generateUrl('loki.tuo.result.upload'),
             'method' => 'POST',
         ]);

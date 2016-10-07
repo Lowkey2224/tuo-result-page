@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\Form;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,9 +19,12 @@ class OwnedCardType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('card', TextType::class, ['label' => 'Cardname', 'attr' => ['class' => 'form-control']]);
-        $builder->add('level', NumberType::class, ['label' => 'Level', 'attr' => ['class' => 'form-control'], 'required' => false]);
+        $builder->add(
+            'level',
+            NumberType::class,
+            ['label' => 'Level', 'attr' => ['class' => 'form-control'], 'required' => false]
+        );
         $builder->add('amount', NumberType::class, ['label' => 'Amount', 'attr' => ['class' => 'form-control']]);
         $builder->add('submit', SubmitType::class, ['label' => 'Add Card', 'attr' => ['class' => 'btn btn-success']]);
     }
-
 }
