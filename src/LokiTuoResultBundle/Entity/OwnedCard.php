@@ -35,10 +35,10 @@ class OwnedCard extends AbstractBaseEntity
 
 
     /**
-     * @var boolean
-     * @ORM\Column(name="in_current_deck", type="boolean")
+     * @var int
+     * @ORM\Column(type="integer")
      */
-    private $inCurrentDeck;
+    private $amountInDeck = 0;
 
 
     /**
@@ -117,22 +117,6 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * @return boolean
-     */
-    public function isInCurrentDeck()
-    {
-        return $this->inCurrentDeck;
-    }
-
-    /**
-     * @param boolean $inCurrentDeck
-     */
-    public function setInCurrentDeck($inCurrentDeck)
-    {
-        $this->inCurrentDeck = $inCurrentDeck;
-    }
-
-    /**
      * @return Player
      */
     public function getPlayer()
@@ -163,4 +147,22 @@ class OwnedCard extends AbstractBaseEntity
     {
         $this->card = $card;
     }
+
+    /**
+     * @return int
+     */
+    public function getAmountInDeck()
+    {
+        return $this->amountInDeck;
+    }
+
+    /**
+     * @param int $amountInDeck
+     */
+    public function setAmountInDeck($amountInDeck)
+    {
+        $this->amountInDeck = $amountInDeck;
+    }
+
+
 }

@@ -45,6 +45,7 @@ class Service
             $level = $match[1];
         }
         $match = [];
+        $inDeck = ($inDeck)?$amount:0;
         preg_match('/([a-zA-Z \- \. \' \d]+)\b/', $card, $match);
         if (count($match) >= 2) {
             $match2 =[];
