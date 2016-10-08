@@ -88,7 +88,7 @@ class Service
             $oc->setAmount($cardEntry['amount']);
             $oc->setLevel($cardEntry['level']);
             $oc->setPlayer($player);
-            $oc->setInCurrentDeck($cardEntry['inDeck']);
+            $oc->setAmountInDeck($cardEntry['inDeck']);
             $this->logger->error("Persisting Card $oc");
             $result[] = $oc;
         }

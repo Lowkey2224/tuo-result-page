@@ -51,9 +51,7 @@ class Service
     {
         $string = "";
         foreach ($players as $player) {
-            $owned = $player->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
-                return !$ownedCard->isInCurrentDeck();
-            });
+            $owned = $player->getOwnedCards();
 
             $string .= "MemberDeck" . $player->getId() . "=\"" . implode(", ", $owned->toArray()) . "\"\n";
         }
@@ -86,7 +84,7 @@ class Service
         $str = "";
         $now = new \DateTime();
         $deck = $player->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
-            return $ownedCard->isInCurrentDeck();
+            return $ownedCard->getAmountInDeck() > 0;
         });
 
         $now = $now->format('m/d/y/h/i/s');

@@ -86,7 +86,7 @@ class PlayerController extends Controller
         $level = (trim($level) == "") ? null : $level;
         $oc->setLevel($level);
         $oc->setAmount($amount);
-        $oc->setInCurrentDeck($inDeck);
+        $oc->setAmountInDeck($inDeck);
         $this->getDoctrine()->getEntityManager()->persist($oc);
         $this->getDoctrine()->getEntityManager()->flush();
         return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amount]);
@@ -123,7 +123,7 @@ class PlayerController extends Controller
             'card' => $card,
             'level' => $level,
             'amount' => $amount,
-            'inCurrentDeck' => $inDeck
+            'amountInDeck' => $inDeck
         ];
 
         $oc = $ownedCardRepo->findOneBy($criteria);
@@ -186,10 +186,7 @@ class PlayerController extends Controller
 
         $allCards = $player->getOwnedCards();
         $deck = $allCards->filter(function (OwnedCard $item) {
-            return $item->isInCurrentDeck();
-        });
-        $rest = $allCards->filter(function (OwnedCard $item) {
-            return !$item->isInCurrentDeck();
+            return $item->getAmountInDeck()>0;
         });
         $formOptions = ['attr' => ['class' => 'data-remote']];
         $ownedCardForm = $this->createForm(OwnedCardType::class, null, $formOptions);
@@ -203,7 +200,7 @@ class PlayerController extends Controller
             'canEdit' => true,
             'player' => $player,
             'deck' => $deck,
-            'cards' => $rest,
+            'cards' => $allCards,
             'form' => $ownedCardForm->createView(),
             'massForm' => $massOwnedCardForm->createView(),
         ));
