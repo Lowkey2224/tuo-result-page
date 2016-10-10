@@ -82,14 +82,15 @@ class PlayerController extends Controller
             $oc = new OwnedCard();
             $oc->setPlayer($player);
             $oc->setCard($card);
+            $oc->setAmount(0);
         }
         $level = (trim($level) == "") ? null : $level;
         $oc->setLevel($level);
-        $oc->setAmount($amount);
+        $oc->setAmount($oc->getAmount()+$amount);
         $oc->setAmountInDeck($inDeck);
         $this->getDoctrine()->getEntityManager()->persist($oc);
         $this->getDoctrine()->getEntityManager()->flush();
-        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amount]);
+        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $oc->getAmount(), 'id' => $oc->getId()]);
     }
 
     /**
@@ -102,7 +103,7 @@ class PlayerController extends Controller
      * @param $playerId
      * @return JsonResponse
      */
-    public function removeCardAction(Request $request, $playerId)
+    public function reduceCardAction(Request $request, $playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
         if (!$player) {
@@ -110,8 +111,6 @@ class PlayerController extends Controller
         }
         $name = $request->get('owned_card_card');
         $level = $request->get('owned_card_level') == "null" ? null : $request->get('owned_card_level');
-        $amount = $request->get('owned_card_amount');
-        $inDeck = $request->get('in_deck');
 
         $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
         if (!$card) {
@@ -121,19 +120,29 @@ class PlayerController extends Controller
         $criteria = [
             'player' => $player,
             'card' => $card,
-            'level' => $level,
-            'amount' => $amount,
-            'amountInDeck' => $inDeck
+            'level' => $level
         ];
 
         $oc = $ownedCardRepo->findOneBy($criteria);
         if (!$oc) {
             return new JsonResponse(['message' => 'Card not found', 420]);
         }
+        $amt = $oc->getAmount();
+        $id = $oc->getId();
+        if($amt == 1) {
+            $this->getDoctrine()->getEntityManager()->remove($oc);
 
-        $this->getDoctrine()->getEntityManager()->remove($oc);
+        }else {
+            $oc->setAmount($amt-1);
+            if($oc->getAmountInDeck()>$oc->getAmount())
+            {
+                $oc->setAmountInDeck($oc->getAmount());
+            }
+        }
+
         $this->getDoctrine()->getEntityManager()->flush();
-        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amount]);
+
+        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amt-1, 'id' => $id]);
     }
 
     /**
