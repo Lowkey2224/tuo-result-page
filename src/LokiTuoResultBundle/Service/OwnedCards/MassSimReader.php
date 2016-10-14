@@ -35,13 +35,14 @@ class MassSimReader
     {
         $content = $this->getContentArray($filePath);
         $map = array();
-        $_tmpMap = [];
+        $ownedCards = [];
+        $result = [];
         $currentPlayerName = "";
         foreach ($content as $line) {
             $match = [];
             preg_match('/MemberDeck(\d+)=/', $line, $match);
             if (count($match) == 2) {
-                $_tmpMap[$match[1]] = $this->transformOwnedCards($line);
+                $ownedCards[$match[1]] = $this->transformOwnedCards($line);
             }
 
             preg_match('/echo "member name (.+)@/', $line, $match);
@@ -53,17 +54,27 @@ class MassSimReader
             }
 
             if (strpos($line, "./tuo") !== false) {
-                $map[$currentPlayerName] = array_merge($map[$currentPlayerName], $this->transformDeckCards($line));
+                $deck =$this->transformDeckCards($line);
+                $map[$currentPlayerName] = array_merge($map[$currentPlayerName], $deck);
             }
 
             preg_match('/-o="\$MemberDeck(\d+)"/', $line, $match);
             if (count($match) == 2) {
                 $playerId = $match[1];
-                $map[$currentPlayerName] = array_merge($map[$currentPlayerName], $_tmpMap[$playerId]);
+
+                foreach ($map[$currentPlayerName] as $card)
+                {
+                    $key = $card['name'].$card['level'];
+                    $ownedCards[$playerId][$key]['inDeck'] = $card['inDeck'];
+                }
+                foreach ($ownedCards[$playerId] as $card) {
+                    $key = $card['name'].$card['level'];
+                    $result[$currentPlayerName][$key] = $card;
+                }
             }
         }
 
-        return $map;
+        return $result;
     }
 
     public function savePlayerCardMap($map)
@@ -130,7 +141,9 @@ class MassSimReader
         preg_match($regEx, $line, $matches);
         $cards = explode(",", $matches[1]);
         foreach ($cards as $card) {
-            $owned[] = $this->ownedCardManager->transformCardString(trim($card), $inDeck);
+            $entry = $this->ownedCardManager->transformCardString(trim($card), $inDeck);
+            $key = $entry['name'].$entry['level'];
+            $owned[$key] = $entry;
         }
         return $owned;
     }
