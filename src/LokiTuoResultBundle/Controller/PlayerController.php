@@ -57,7 +57,10 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/playerId/card/deck/{playerId}", name="loki.tuo.player.card.deck.add", methods={"POST"}, requirements={"playerId":"\d+"})
+     * @Route("/playerId/card/deck/{playerId}",
+     *     name="loki.tuo.player.card.deck.add",
+     *     methods={"POST"},
+     *     requirements={"playerId":"\d+"})
      * @param $playerId
      * @return JsonResponse
      */
@@ -77,17 +80,21 @@ class PlayerController extends Controller
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
         $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card, 'level' => $level]);
         if (!$oc) {
-            return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player', 420]);
+            return new JsonResponse(['message' => 'Card ' . $card->getName() . ' not found for Player', 420]);
         }
-        if ($oc->getAmount() < $oc->getAmountInDeck() + $amount)
-        {
+        if ($oc->getAmount() < $oc->getAmountInDeck() + $amount) {
             $oc->setAmountInDeck($oc->getAmount());
-        }else {
+        } else {
             $oc->setAmountInDeck($oc->getAmountInDeck() + $amount);
         }
         $this->getDoctrine()->getEntityManager()->persist($oc);
         $this->getDoctrine()->getEntityManager()->flush();
-        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $oc->getAmountInDeck(), 'id' => $oc->getId()]);
+        return new JsonResponse([
+            'name' => $name,
+            'level' => $level,
+            'amount' => $oc->getAmountInDeck(),
+            'id' => $oc->getId()
+        ]);
     }
 
     /**
@@ -118,12 +125,17 @@ class PlayerController extends Controller
             $oc->setAmount(0);
         }
 
-        $level = (is_null($level) || $level == "null" || trim($level) == "" ) ? null : $level;
+        $level = (is_null($level) || $level == "null" || trim($level) == "") ? null : $level;
         $oc->setLevel($level);
         $oc->setAmount($oc->getAmount() + $amount);
         $this->getDoctrine()->getEntityManager()->persist($oc);
         $this->getDoctrine()->getEntityManager()->flush();
-        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $oc->getAmount(), 'id' => $oc->getId()]);
+        return new JsonResponse([
+            'name' => $name,
+            'level' => $level,
+            'amount' => $oc->getAmount(),
+            'id' => $oc->getId()
+        ]);
     }
 
     /**
@@ -158,13 +170,12 @@ class PlayerController extends Controller
 
         $oc = $ownedCardRepo->findOneBy($criteria);
         if (!$oc) {
-            return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player', 420]);
+            return new JsonResponse(['message' => 'Card ' . $card->getName() . ' not found for Player', 420]);
         }
         $amt = $oc->getAmount();
         $id = $oc->getId();
         if ($amt == 1) {
             $this->getDoctrine()->getEntityManager()->remove($oc);
-
         } else {
             $oc->setAmount($amt - 1);
             if ($oc->getAmountInDeck() > $oc->getAmount()) {

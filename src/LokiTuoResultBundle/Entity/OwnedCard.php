@@ -163,6 +163,4 @@ class OwnedCard extends AbstractBaseEntity
     {
         $this->amountInDeck = $amountInDeck;
     }
-
-
 }
