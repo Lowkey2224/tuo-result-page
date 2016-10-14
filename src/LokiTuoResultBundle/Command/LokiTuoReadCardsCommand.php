@@ -23,6 +23,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = new ConsoleLogger($output);
+        $numberOfCardFiles = 11;
         $path = $input->getArgument('dataPath');
         $logger->debug(" Filepath Read: ".$path);
 //        $path = $this->getContainer()->get('kernel')->getRootDir() . "/../data/";
@@ -32,7 +33,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $reader = $this->getContainer()->get('loki_tuo_result.card.reader');
         $reader->setLogger($logger);
         $filenames = [];
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= $numberOfCardFiles; $i++) {
             $filenames[$i] = realpath($path."/cards_section_".$i.".xml");
             $logger->debug("Adding File to read: ".$filenames[$i]);
         }
