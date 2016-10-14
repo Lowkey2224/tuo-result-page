@@ -57,6 +57,40 @@ class PlayerController extends Controller
     }
 
     /**
+     * @Route("/playerId/card/deck/{playerId}", name="loki.tuo.player.card.deck.add", methods={"POST"}, requirements={"playerId":"\d+"})
+     * @param $playerId
+     * @return JsonResponse
+     */
+    public function addCardToDeckAction(Request $request, $playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$player) {
+            return new JsonResponse(['message' => 'Player not found', 404]);
+        }
+        $name = $request->get('owned_card_card');
+        $level = $request->get('owned_card_level') == "null" ? null : $request->get('owned_card_level');
+        $amount = $request->get('owned_card_amount');
+        $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
+        if (!$card) {
+            return new JsonResponse(['message' => 'Card not found', 420]);
+        }
+        $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
+        $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card, 'level' => $level]);
+        if (!$oc) {
+            return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player', 420]);
+        }
+        if ($oc->getAmount() < $oc->getAmountInDeck() + $amount)
+        {
+            $oc->setAmountInDeck($oc->getAmount());
+        }else {
+            $oc->setAmountInDeck($oc->getAmountInDeck() + $amount);
+        }
+        $this->getDoctrine()->getEntityManager()->persist($oc);
+        $this->getDoctrine()->getEntityManager()->flush();
+        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $oc->getAmountInDeck(), 'id' => $oc->getId()]);
+    }
+
+    /**
      * @Route("/{playerId}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"playerId":"\d+"})
      * @param Request $request
      * @param $playerId
@@ -84,9 +118,10 @@ class PlayerController extends Controller
             $oc->setCard($card);
             $oc->setAmount(0);
         }
-        $level = (trim($level) == "") ? null : $level;
+
+        $level = (is_null($level) || $level == "null" || trim($level) == "" ) ? null : $level;
         $oc->setLevel($level);
-        $oc->setAmount($oc->getAmount()+$amount);
+        $oc->setAmount($oc->getAmount() + $amount);
         $oc->setAmountInDeck($inDeck);
         $this->getDoctrine()->getEntityManager()->persist($oc);
         $this->getDoctrine()->getEntityManager()->flush();
@@ -125,24 +160,23 @@ class PlayerController extends Controller
 
         $oc = $ownedCardRepo->findOneBy($criteria);
         if (!$oc) {
-            return new JsonResponse(['message' => 'Card not found', 420]);
+            return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player', 420]);
         }
         $amt = $oc->getAmount();
         $id = $oc->getId();
-        if($amt == 1) {
+        if ($amt == 1) {
             $this->getDoctrine()->getEntityManager()->remove($oc);
 
-        }else {
-            $oc->setAmount($amt-1);
-            if($oc->getAmountInDeck()>$oc->getAmount())
-            {
+        } else {
+            $oc->setAmount($amt - 1);
+            if ($oc->getAmountInDeck() > $oc->getAmount()) {
                 $oc->setAmountInDeck($oc->getAmount());
             }
         }
 
         $this->getDoctrine()->getEntityManager()->flush();
 
-        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amt-1, 'id' => $id]);
+        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amt - 1, 'id' => $id]);
     }
 
     /**
@@ -195,7 +229,7 @@ class PlayerController extends Controller
 
         $allCards = $player->getOwnedCards();
         $deck = $allCards->filter(function (OwnedCard $item) {
-            return $item->getAmountInDeck()>0;
+            return $item->getAmountInDeck() > 0;
         });
         $formOptions = ['attr' => ['class' => 'data-remote']];
         $ownedCardForm = $this->createForm(OwnedCardType::class, null, $formOptions);

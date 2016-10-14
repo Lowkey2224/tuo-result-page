@@ -85,16 +85,25 @@
         </div>
         <div class="panel-body">
             <table id="deck" class="table table-striped">
-                <tbody>
+                <tbody id="deck">
                 {% for card in deck %}
-                    <tr class="row">
-                        <td class="col-xs-11">
-                            {{ card }}
+                    <tr class="row" id="deck{{ card.id }}">
+                        <td class="col-xs-9 card-name">
+                            {{ card.card.name }} {% if card.level %}-{{ card.level }}{% endif %}{% if card.amountInDeck > 1 %}({{ card.amountInDeck}}){% endif %}
                         </td>
-                        <td class="col-xs-1">
-                            <button type="button" class="pull-right btn btn-primary btn-xs">
-                                <i class="glyphicon glyphicon-minus"></i>
-                            </button>
+                        <td class="col-xs-3">
+                            <form class="data-remote-remove-from-deck form-inline">
+                                <div class="form-group pull-right">
+
+                                    <input type="hidden" name="name" id="name" value="{{ card.card.name }}">
+                                    <input type="hidden" name="level" id="level"
+                                           value="{{ card.level?card.level:'null' }}">
+                                    <input type="hidden" name="id" id="id" value="{{ card.id }}">
+                                    <button type="submit" class="btn btn-danger btn-xs submitbutton" name="remove-card">
+                                        <i class="glyphicon glyphicon-minus"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
@@ -126,19 +135,29 @@
             <table id="ownedCards" class="table table-striped">
                 <tbody>
                 {% for card in cards %}
-                    <tr class="row" id="{{ card.id }}" data-level="{{ card.amount }}">
-                        <td class="col-xs-11">
+                    <tr class="row" id="{{ card.id }}">
+                        <td class="col-xs-9 card-name">
                             {{ card }}
                         </td>
-                        <td class="col-xs-1">
-                            <form class="data-remote-remove">
-                                <input type="hidden" name="name" id="name" value="{{ card.card.name }}">
-                                <input type="hidden" name="level" id="level" value="{{ card.level?card.level:'null' }}">
-                                <input type="hidden" name="amount" id="amount" value="{{ card.amount }}">
-                                <input type="hidden" name="id" id="id" value="{{ card.id }}">
-                                <button type="submit" class="pull-right btn btn-primary btn-xs">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                </button>
+                        <td class="col-xs-3">
+                            <form class="data-remote-remove form-inline">
+                                <div class="form-group pull-right">
+
+                                    <input type="hidden" name="name" id="name" value="{{ card.card.name }}">
+                                    <input type="hidden" name="level" id="level"
+                                           value="{{ card.level?card.level:'null' }}">
+                                    <input type="hidden" name="id" id="id" value="{{ card.id }}">
+                                    <button type="submit" class="btn btn-success btn-xs submitbutton"
+                                            name="add-to-deck">
+                                        Add to Deck
+                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-xs submitbutton" name="remove-card">
+                                        <i class="glyphicon glyphicon-minus"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-xs submitbutton" name="add-card">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </button>
+                                </div>
                             </form>
                         </td>
                     </tr>
@@ -165,38 +184,128 @@
                 });
             });
 
+            var buttonpressed;
+            $('.submitbutton').click(function () {
+                buttonpressed = $(this).attr('name')
+            });
 
-            function sendAjaxRequest(data, remove) {
-                var method = "";
-                this.data = data;
-                var url = "";
-                var successCallback;
-                if (remove) {
-                    method = "DELETE";
-                    url = "{{ path('loki.tuo.player.card.remove', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
-                    successCallback = function (response) {
-                        $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
-                        var id = response['id'];
-                        var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
-                        if (response['amount'] > 0) {
-                            console.log('UPdate');
-                            changeAmountOfCardRow(id, combinedName, response['amount']);
-                        } else {
-                            console.log('Delete', id);
+            // send ajax request
+            $("form.data-remote").on("submit", function (e) {
+                e.preventDefault();
+                var $inputs = this.elements;
+//                console.log("inputs", $inputs);
+                var data = {
+                    owned_card_card: $inputs[0].value,
+                    owned_card_level: $inputs[1].value,
+                    owned_card_amount: $inputs[2].value
+                };
+                console.log(data);
+                sendAddCardRequest(data);
+            });
 
-                            removeCardRow(id)
-                        }
-                    };
-                } else {
-                    method = "POST";
-                    url = "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}";
-                    successCallback = function (response) {
-                        $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
-                        var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
-                        addCardRow(response['id'], combinedName, response['id'], response['amount']);
-                        console.log("Add");
-                    };
+            // send ajax request
+            $("form.data-remote-remove").on("submit", function (e) {
+                e.preventDefault();
+                console.log(buttonpressed);
+                var $inputs = this.elements;
+                console.log("inputs", $inputs);
+                var data = {
+                    owned_card_card: $inputs[0].value,
+                    owned_card_level: $inputs[1].value,
+                    owned_card_amount: 1
+                };
+
+                if (buttonpressed == 'remove-card') {
+                    sendRemoveCardRequest(data);
+                } else if (buttonpressed == "add-to-deck") {
+                    sendAddToDeckRequest(data);
+                } else if (buttonpressed == 'add-card') {
+                    sendAddCardRequest(data)
                 }
+//                console.log(data);
+            });
+
+            $("form.data-remote-remove-from-deck").on("submit", function (e) {
+                e.preventDefault();
+                console.log("Remove form Deck");
+                var $inputs = this.elements;
+                var data = {
+                    owned_card_card: $inputs[0].value,
+                    owned_card_level: $inputs[1].value,
+                    owned_card_amount: -1
+                };
+                sendRemoveFromDeckRequest(data);
+
+//                console.log(data);
+            });
+
+            function sendRemoveCardRequest(data) {
+                var method = "DELETE";
+                var url = "{{ path('loki.tuo.player.card.remove', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
+                var succCB = function (response) {
+                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                    var id = response['id'];
+                    var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                    if (response['amount'] > 0) {
+                        console.log('UPdate');
+                        changeAmountOfCardRow(id, combinedName);
+                    } else {
+                        console.log('Delete', id);
+
+                        removeCardRow(id)
+                    }
+                };
+                sendAjaxRequest(data, succCB, method, url)
+            }
+
+            function sendRemoveFromDeckRequest(data) {
+                var method = "POST";
+                var url = "{{ path('loki.tuo.player.card.deck.add', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
+                var succCB = function (response) {
+//                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                    var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                    if(response['amount'] == 0) {
+
+                        removeCardRow('deck'+response['id']);
+                    }else {
+                        changeAmountOfCardRow("deck"+response['id'], combinedName);
+
+                    }
+                };
+                sendAjaxRequest(data, succCB, method, url)
+
+            }
+
+            function sendAddToDeckRequest(data) {
+                var method = "POST";
+                var url = "{{ path('loki.tuo.player.card.deck.add', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
+                var succCB = function (response) {
+//                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                    var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                    addCardToDeck(response['id'], combinedName, response['amount'], response['level']);
+                };
+                sendAjaxRequest(data, succCB, method, url)
+            }
+
+            function sendAddCardRequest(data) {
+                var succCB = function (response) {
+                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                    var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                    addCardRow(response['id'], combinedName, response['amount'], response['level']);
+                };
+                var method = "POST";
+                var url = "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}";
+                sendAjaxRequest(data, succCB, method, url)
+            }
+
+            /**
+             * Sends an Ajax Request, with the given Data to the URL with its method
+             * @param data Request Data
+             * @param successCallback Method to be executed, if the Request is Successful
+             * @param method Request method e.g. "GET"
+             * @param url Url of the request
+             */
+            function sendAjaxRequest(data, successCallback, method, url) {
                 $.ajax({
                     method: method,
                     url: url,
@@ -204,7 +313,6 @@
                     error: function (response, textStatus, errorThrown) {
                         console.log("Fail Response", response);
                         console.log("Status", textStatus, " error", errorThrown);
-//                        $('#jsFlash').append(getFlashMessage(false, response['actual_arrival'], response['actual_departure'], text));
 
                     },
                     success: successCallback
@@ -212,20 +320,22 @@
             }
 
             function addCardRow(id, combinedName, amount, name, level) {
+                console.log(id, combinedName, amount, name, level);
                 if ($('#' + id).length != 0) {
-                    changeAmountOfCardRow(id, combinedName, amount);
+                    changeAmountOfCardRow(id, combinedName);
                     console.log('UPdate Add');
 
                 } else {
+                    console.log("Create new Content line");
                     var text = '<tr class="row" id="' + combinedName + '">' +
-                            '<td  class="col-xs-11">' +
+                            '<td  class="col-xs-9 card-name">' +
                             combinedName +
                             '</td>' +
-                            '<td class="col-xs-1">' +
+                            '<td class="col-xs-3">' +
                             '<form class="data-remote-remove">' +
-                            '<input type="hidden" name="name" id="name" value="'+name+'">' +
-                            '<input type="hidden" name="level" id="level" value="'+level+'">' +
-                            '<input type="hidden" name="id" id="id" value="'+id+'">' +
+                            '<input type="hidden" name="name" id="name" value="' + name + '">' +
+                            '<input type="hidden" name="level" id="level" value="' + level + '">' +
+                            '<input type="hidden" name="id" id="id" value="' + id + '">' +
                             '<button type="submit" class="pull-right btn btn-primary btn-xs">' +
                             '<i class="glyphicon glyphicon-minus"></i>' +
                             '</button>' +
@@ -239,13 +349,46 @@
 
             }
 
-            function changeAmountOfCardRow(id, combinedName, amount) {
-                $("#" + id + " .col-xs-11").text(combinedName);
-                $("#" + id + " #amount").attr('value', amount);
+            function addCardToDeck(id, combinedName, amount, name, level) {
+                console.log(id, combinedName, amount, name, level);
+                if ($('#deck' + id).length != 0) {
+                    changeAmountOfCardRow(id, combinedName);
+                    console.log('UPdate Add');
+
+                } else {
+                    console.log("Create new Content line");
+                    var text = '<tr class="row" id="deck' + id + '">' +
+                            '<td  class="col-xs-9 card-name">' +
+                            combinedName +
+                            '</td>' +
+                            '<td class="col-xs-1">' +
+                            '<form class="data-remote-remove-from-deck">' +
+                            '<input type="hidden" name="name" id="name" value="' + name + '">' +
+                            '<input type="hidden" name="level" id="level" value="' + level + '">' +
+                            '<input type="hidden" name="id" id="id" value="' + id + '">' +
+                            '<button type="submit" class="pull-right btn btn-danger btn-xs">' +
+                            '<i class="glyphicon glyphicon-minus"></i>' +
+                            '</button>' +
+                            '</form>' +
+                            '</td></tr>';
+                    console.log("Insert before ", id);
+//                $(text).insertBefore(id);
+                    $('#deck').find('tbody').append(text);
+                    return text;
+                }
+
+            }
+
+            function changeAmountOfCardRow(id, combinedName) {
+                console.log("Changing", id);
+                var td = $("#" + id + " .card-name");
+                td.text(combinedName);
+//                $("#" + id + " #amount").attr('value', amount);
             }
 
             function removeCardRow(id) {
                 $('#' + id).remove();
+                console.log("Remove row with id ",id);
             }
 
             function getCombinedCardName(name, level, amount) {
@@ -266,36 +409,6 @@
                 return '<div class="alert alert-dismissible ' + cssClass + '" role="alert">' +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + text + '</div>';
             }
-
-            // send ajax request
-            $("form.data-remote").on("submit", function (e) {
-                e.preventDefault();
-                var $inputs = this.elements;
-//                console.log("inputs", $inputs);
-                var data = {
-                    owned_card_card: $inputs[0].value,
-                    owned_card_level: $inputs[1].value,
-                    owned_card_amount: $inputs[2].value,
-                    in_deck: false
-                };
-                console.log(data);
-                sendAjaxRequest(data, false);
-            });
-
-            // send ajax request
-            $("form.data-remote-remove").on("submit", function (e) {
-                e.preventDefault();
-                var $inputs = this.elements;
-                console.log("inputs", $inputs);
-                var data = {
-                    owned_card_card: $inputs[0].value,
-                    owned_card_level: $inputs[1].value,
-                    owned_card_amount: $inputs[2].value,
-                    in_deck: false
-                };
-//                console.log(data);
-                sendAjaxRequest(data, true);
-            });
 
         });
     </script>
