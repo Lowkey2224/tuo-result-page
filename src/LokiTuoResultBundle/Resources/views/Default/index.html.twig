@@ -38,24 +38,41 @@
     {% endif %}
 
 
-    <div class="row">
-        <ul class="">
-            {% for mission in missions %}
-                <li>
+
+    <table class="table table-striped data-table">
+        <thead>
+        <tr>
+            {#<th>#</th>#}
+            <th>Mission</th>
+            <th>Guilds</th>
+            {#<th>Type</th>#}
+        </tr>
+        </thead>
+        <tbody>
+        {% for mission in missions %}
+            <tr>
+                {#<td>{{ loop.index }}</td>#}
+                <td>
                     <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
                         {{ mission.name }}
                     </a>
+                </td>
+                <td>
                     {% for guild in mission.guilds %}
                         [{{ guild }}]
                         {% if not loop.first %}
                             ,
-                            {% endif %}
-                        {#<b>{{ mission.guilds | join(', ') }}</b>#}
+                        {% endif %}
                     {% endfor %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+                </td>
+                {#<td>Type</td>#}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+
 
     <div class="row">
         <a href="{{ path('loki.tuo.player.all.show') }}"><h4>Playerlist</h4></a>

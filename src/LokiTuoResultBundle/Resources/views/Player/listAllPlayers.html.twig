@@ -6,23 +6,35 @@
         </h3>
     </div>
 
-    <div class="row">
-        <h3><small>Player Lists</small></h3>
-        <ul class="">
-            {% for player in players %}
-                <li>
-                    [{{ player.guild }}] {{ player.name }}
-                    <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
-                        <b>Cards</b>
-                    </a>
-                    <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.id}) }}">
-                        <b>Simulations</b>
-                    </a>
-                </li>
-            {% endfor %}
-
-        </ul>
-    </div>
+    <table class="table table-striped data-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Guild</th>
+            <th>Links</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for player in players %}
+            <tr>
+                <td>
+                    {{ player.name }}
+                </td>
+                <td>
+                    {{ player.guild }}
+                </td>
+                <td>
+                <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
+                    <b>Cards</b>
+                </a>
+                <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.id}) }}">
+                    <b>Simulations</b>
+                </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     <div class="row" style="margin-top: 20px;">
 
