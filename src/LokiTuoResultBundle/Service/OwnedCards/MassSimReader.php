@@ -62,10 +62,14 @@ class MassSimReader
             if (count($match) == 2) {
                 $playerId = $match[1];
 
-                foreach ($map[$currentPlayerName] as $card)
-                {
+                foreach ($map[$currentPlayerName] as $card) {
                     $key = $card['name'].$card['level'];
-                    $ownedCards[$playerId][$key]['inDeck'] = $card['inDeck'];
+                    $e = array_key_exists($key, $ownedCards[$playerId]);
+                    if (!$e) {
+                        var_dump($card, $currentPlayerName);
+                    } else {
+                        $ownedCards[$playerId][$key]['inDeck'] = $card['inDeck'];
+                    }
                 }
                 foreach ($ownedCards[$playerId] as $card) {
                     $key = $card['name'].$card['level'];
