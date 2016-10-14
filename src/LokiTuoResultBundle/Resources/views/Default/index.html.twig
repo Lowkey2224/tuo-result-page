@@ -60,7 +60,7 @@
                 <td>
                     {% for guild in mission.guilds %}
                         [{{ guild }}]
-                        {% if not loop.first %}
+                        {% if not loop.last %}
                             ,
                         {% endif %}
                     {% endfor %}
