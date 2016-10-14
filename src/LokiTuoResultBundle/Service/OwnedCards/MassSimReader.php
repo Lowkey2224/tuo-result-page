@@ -54,7 +54,7 @@ class MassSimReader
             }
 
             if (strpos($line, "./tuo") !== false) {
-                $deck =$this->transformDeckCards($line);
+                $deck = $this->transformDeckCards($line);
                 $map[$currentPlayerName] = array_merge($map[$currentPlayerName], $deck);
             }
 
@@ -63,16 +63,13 @@ class MassSimReader
                 $playerId = $match[1];
 
                 foreach ($map[$currentPlayerName] as $card) {
-                    $key = $card['name'].$card['level'];
-                    $e = array_key_exists($key, $ownedCards[$playerId]);
-                    if (!$e) {
-                        var_dump($card, $currentPlayerName);
-                    } else {
+                    $key = $card['name'] . $card['level'];
+                    if (array_key_exists($key, $ownedCards[$playerId])) {
                         $ownedCards[$playerId][$key]['inDeck'] = $card['inDeck'];
                     }
                 }
                 foreach ($ownedCards[$playerId] as $card) {
-                    $key = $card['name'].$card['level'];
+                    $key = $card['name'] . $card['level'];
                     $result[$currentPlayerName][$key] = $card;
                 }
             }
@@ -87,14 +84,14 @@ class MassSimReader
 
         foreach ($map as $playerName => $cardArray) {
             $player = $this->findPlayerOrCreate($playerName);
-            $this->logger->debug("Trying to persist ".count($cardArray). " cards for Player ".$player->getName());
+            $this->logger->debug("Trying to persist " . count($cardArray) . " cards for Player " . $player->getName());
             $result[$player->getName()] = $this->ownedCardManager->transformArrayToModels($player, $cardArray);
             $this->ownedCardManager->removeOldOwnedCardsForPlayer($player);
             foreach ($result[$player->getName()] as $card) {
                 $this->em->persist($card);
             }
             $this->em->flush();
-            $this->logger->debug("persisted ".count($result[$playerName]). " cards for Player ".$playerName);
+            $this->logger->debug("persisted " . count($result[$playerName]) . " cards for Player " . $playerName);
         }
         $this->em->flush();
         return $result;
@@ -146,7 +143,7 @@ class MassSimReader
         $cards = explode(",", $matches[1]);
         foreach ($cards as $card) {
             $entry = $this->ownedCardManager->transformCardString(trim($card), $inDeck);
-            $key = $entry['name'].$entry['level'];
+            $key = $entry['name'] . $entry['level'];
             $owned[$key] = $entry;
         }
         return $owned;
