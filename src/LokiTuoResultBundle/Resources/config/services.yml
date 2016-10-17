@@ -3,7 +3,7 @@ services:
         class: LokiTuoResultBundle\Service\Reader\Service
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
-            cardManager: "@loki_tuo_result.owned_card.mass_sim_reader"
+            cardManager: "@loki_tuo_result.owned_card.manager"
         #arguments: ["@service_id", "plain_value", %parameter%]
 
     loki_tuo_result.card.reader:

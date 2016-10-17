@@ -9,7 +9,7 @@ use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
-use LokiTuoResultBundle\Service\OwnedCards\MassSimReader;
+use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -30,13 +30,13 @@ class Service
     /** @var  EntityManager */
     private $em;
 
-    /** @var MassSimReader */
-    private $cardManager;
+    /** @var CardManager  */
+    private $ownedCardManager;
 
-    public function __construct(EntityManager $entityManager, MassSimReader $massSimReader)
+    public function __construct(EntityManager $entityManager, CardManager $manager)
     {
         $this->em = $entityManager;
-        $this->cardManager = $massSimReader;
+        $this->ownedCardManager = $manager;
         $this->logger = new NullLogger();
     }
 
@@ -195,7 +195,7 @@ class Service
         $resultDeck = [];
         $order = 0;
         foreach ($deck as $cardName) {
-            $_tmp = $this->cardManager->transformCardString($cardName);
+            $_tmp = $this->ownedCardManager->transformCardString($cardName);
             $amount = $_tmp['amount'];
             $level = $_tmp['level'];
             $name = $_tmp['name'];
