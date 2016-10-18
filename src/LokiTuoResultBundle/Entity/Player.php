@@ -34,10 +34,26 @@ class Player extends AbstractBaseEntity
      */
     private $ownedCards;
 
+    /**
+     * @var String
+     * @ORM\Column(name="currentGuild", type="string", length=20)
+     */
+    private $currentGuild;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
         $this->ownedCards = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    public function getFullName()
+    {
+        return "[".$this->getGuild()."] ".$this->getName();
     }
 
     public function getGuild()
@@ -105,4 +121,22 @@ class Player extends AbstractBaseEntity
     {
         $this->ownedCards = $ownedCards;
     }
+
+    /**
+     * @return String
+     */
+    public function getCurrentGuild()
+    {
+        return $this->currentGuild;
+    }
+
+    /**
+     * @param String $currentGuild
+     */
+    public function setCurrentGuild($currentGuild)
+    {
+        $this->currentGuild = $currentGuild;
+    }
+
+
 }

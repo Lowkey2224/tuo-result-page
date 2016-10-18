@@ -20,6 +20,7 @@ class Service
 
     private $resultFileName = "result.txt";
     private $iterations = 10000;
+    private $simType = "climb";
 
     public function __construct()
     {
@@ -38,7 +39,18 @@ class Service
         $script .= "echo \"CTF Results 1,3,6-24\" > ./result.txt\n";
         $script .= $this->getMemberCards($players);
         $script .= "\n\n";
-        $script .= $this->getExecutionLines($mission, $players);
+        $script .= $this->getExecutionLines($mission, $players, $this->simType);
+
+        return $script;
+    }
+
+    public function getSimulation(Simulation $simulation)
+    {
+        $script = "echo \"".$simulation->getGuild()." Results 1,3,6-24\"\n";
+        $script .= "echo \"".$simulation->getGuild()." 1,3,6-24\" > ./result.txt\n";
+        $script .= $this->getMemberCards($simulation->getPlayers());
+        $script .= "\n\n";
+        $script .= $this->getExecutionLines($simulation->getMissions(), $simulation->getPlayers(), $simulation->getSimType());
 
         return $script;
     }
@@ -47,7 +59,7 @@ class Service
      * @param Player[] $players
      * @return string
      */
-    private function getMemberCards(array $players)
+    private function getMemberCards($players)
     {
         $string = "";
         foreach ($players as $player) {
@@ -64,11 +76,11 @@ class Service
      * @param Player[] $players
      * @return string
      */
-    private function getExecutionLines(array $missions, array $players)
+    private function getExecutionLines( $missions,  $players, $simTypes)
     {
         $result = "";
         foreach ($players as $player) {
-            $result .= $this->getMissionExecutionsForPlayer($missions, $player);
+            $result .= $this->getMissionExecutionsForPlayer($missions, $player, $simTypes);
         }
 
         return $result;
@@ -79,7 +91,7 @@ class Service
      * @param Player $player
      * @return string
      */
-    private function getMissionExecutionsForPlayer(array $missions, Player $player)
+    private function getMissionExecutionsForPlayer($missions, Player $player, $simType)
     {
         $str = "";
         $now = new \DateTime();
@@ -94,7 +106,7 @@ class Service
             $str .= 'echo "member name ' . $player->getName() . '@'
                 . $now . ' against ' . $mission . '" >> ./' . $this->resultFileName . "\n";
             $str .= './tuo "' . implode(", ", $deck->toArray()) . '" "'
-                . $mission . '" -o="$MemberDeck' . $player->getId() . '" -r climb '
+                . $mission . '" -o="$MemberDeck' . $player->getId() . '" -r '.$simType.' '
                 . $this->iterations . ' > ./tempRes.txt' . "\n";
             $str .= 'tail -1 ./tempRes.txt | head -1 >> ./' . $this->resultFileName . "\n\n";
         }
