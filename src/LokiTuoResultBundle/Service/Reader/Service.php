@@ -109,12 +109,12 @@ class Service
                 }
                 $firstLine = false;
             } else {
-                if (preg_match('/units: (\d?\d.?\d?\d?):/', $line, $name) === 1) {
+                if (preg_match('/(\d?\d.?\d?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
                     $name = (int)($name * 10);
                     $result['result'][$count]['percent'] = $name;
                 }
-                if (preg_match('/units: \d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
+                if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
                     $name = $name[1];
                     $cards = $this->transformToCardNames(explode(", ", $name));
                     $result['result'][$count]['deck'] = $cards;
@@ -177,6 +177,8 @@ class Service
             $result->setPlayer($player);
             $result->setPercent($line['percent']);
             $result->setMission($mission);
+            $player->setCurrentGuild($guild);
+            $this->em->persist($player);
             $this->em->persist($result);
             $this->deleteOldDeck($result);
             $deck = $this->createDeck($line['deck'], $result);
