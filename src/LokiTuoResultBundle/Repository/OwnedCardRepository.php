@@ -14,12 +14,13 @@ class OwnedCardRepository extends \Doctrine\ORM\EntityRepository
 
     public function countCardsInDeckForPlayer(Player $player)
     {
-        return $this->createQueryBuilder('c')
+        $res =  $this->createQueryBuilder('c')
             ->select('sum(c.amountInDeck)')
             ->where('c.player =  :player')
             ->andWhere('c.amountInDeck > 0')
             ->setParameter('player', $player)
             ->getQuery()
             ->getResult();
+        return $res[0][1];
     }
 }
