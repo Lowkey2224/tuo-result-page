@@ -32,12 +32,12 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         }
         $reader = $this->getContainer()->get('loki_tuo_result.card.reader');
         $reader->setLogger($logger);
-        $filenames = [];
-        for ($i = 1; $i <= $numberOfCardFiles; $i++) {
-            $filenames[$i] = realpath($path."/cards_section_".$i.".xml");
-            $logger->debug("Adding File to read: ".$filenames[$i]);
-        }
-        $count = $reader->saveCardFiles($filenames);
+        $files = scandir(realpath($path));
+        $pattern = '/^cards_section_\d\d?.xml/m';
+        $cardFiles = array_filter($files, function($item) use ($pattern){
+            return preg_match($pattern, $item) === 1;
+        });
+        $count = $reader->saveCardFiles($cardFiles);
 
         $output->writeln("Persisted $count card Files.");
         return 0;
