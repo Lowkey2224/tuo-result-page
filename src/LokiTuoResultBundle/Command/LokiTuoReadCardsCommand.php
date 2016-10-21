@@ -34,7 +34,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         });
         $cardFiles = array_map(function ($item) use ($path) {
             return $path."/".$item;
-        },$cardFiles);
+        }, $cardFiles);
         $count = $reader->saveCardFiles($cardFiles);
 
         $output->writeln("Persisted $count card Files.");

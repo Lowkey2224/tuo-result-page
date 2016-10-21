@@ -27,6 +27,4 @@ class Service
         $service->setLogger($this->logger);
         return $service->getSimulation($simulation);
     }
-
-
 }

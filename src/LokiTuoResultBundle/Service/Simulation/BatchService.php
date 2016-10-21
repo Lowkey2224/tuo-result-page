@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\Service\Simulation;
 
-
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
@@ -130,8 +129,6 @@ pause\n";
             //Move Result to Resultfile
             $str .= "echo %line% >> %TARGET%\n";
             $str .= "SET /A NBSIM+=1\n\n";
-
-
         }
         return $str;
     }

@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\Service\Simulation;
 
-
 interface SimulationCreatorInterface
 {
 
