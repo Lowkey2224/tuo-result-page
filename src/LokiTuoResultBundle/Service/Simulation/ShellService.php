@@ -25,7 +25,7 @@ class ShellService implements SimulationCreatorInterface
     public function getSimulation(Simulation $simulation)
     {
         $script = "echo \"" . $simulation->getGuild() . " Results 1,3,6-24\"\n";
-        $script .= "echo \"" . $simulation->getGuild() . " 1,3,6-24\" > ./result.txt\n";
+        $script .= "echo \"" . $simulation->getGuild() . " Results 1,3,6-24\" > ./result.txt\n";
         $script .= $this->getMemberCards($simulation->getPlayers());
         $script .= "\n\n";
 
