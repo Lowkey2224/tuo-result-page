@@ -120,7 +120,6 @@ class Service
                     $result['result'][$count]['deck'] = $cards;
                 }
                 if (preg_match('/(\d\d?% win)/', $line) === 1) {
-
                     $result['result'][$count]['simType'] = 'Raid';
                 }
                 $firstLine = true;

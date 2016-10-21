@@ -83,9 +83,9 @@ class PlayerController extends Controller
             return new JsonResponse(['message' => 'Card ' . $card->getName() . ' not found for Player'], 420);
         }
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
-        if($count>10){
-            return new JsonResponse(['message' => "Can't add more cards to Deck for player, because you have already $count "],420);
-        }elseif ((10-$count) > $amount) {
+        if ($count>10) {
+            return new JsonResponse(['message' => "Can't add more cards to Deck for player."], 420);
+        } elseif ((10-$count) > $amount) {
             $amount = 10-$count;
         }
         if ($oc->getAmount() < $oc->getAmountInDeck() + $amount) {
@@ -244,7 +244,6 @@ class PlayerController extends Controller
 
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
-        var_dump($count);
 
         $allCards = $player->getOwnedCards();
         $deck = $allCards->filter(function (OwnedCard $item) {

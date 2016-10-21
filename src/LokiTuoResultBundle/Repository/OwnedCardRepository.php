@@ -1,6 +1,7 @@
 <?php
 
 namespace LokiTuoResultBundle\Repository;
+
 use LokiTuoResultBundle\Entity\Player;
 
 /**
