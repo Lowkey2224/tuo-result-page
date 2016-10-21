@@ -53,7 +53,7 @@ class Player extends AbstractBaseEntity
 
     public function getFullName()
     {
-        return "[".$this->getGuild()."] ".$this->getName();
+        return "[".$this->getCurrentGuild()."] ".$this->getName();
     }
 
     public function getGuild()
@@ -137,6 +137,4 @@ class Player extends AbstractBaseEntity
     {
         $this->currentGuild = $currentGuild;
     }
-
-
 }

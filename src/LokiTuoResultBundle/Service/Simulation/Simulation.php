@@ -8,13 +8,15 @@
 
 namespace LokiTuoResultBundle\Service\Simulation;
 
-
 use LokiTuoResultBundle\Entity\Player;
 
 class Simulation
 {
     /** @var  array */
     private $missions;
+
+    /** @var  array */
+    private $structures;
 
     /** @var  String */
     private $backgroundEffect;
@@ -34,20 +36,29 @@ class Simulation
     /** @var  String */
     private $guild;
 
+    /** @var  string */
+    private $scriptType;
+
     public function __construct()
     {
         $this->iterations = 10000;
         $this->simType = "climb";
         $this->backgroundEffect = "";
-        $this->backgroundEffect = "result.txt";
-        $this->level = 10;
+        $this->resultFile = "result.txt";
         $this->guild = [];
         $this->players = [];
+        $this->scriptType = "shell";
+        $this->structures = [];
+    }
+
+    public function setStructures($structures)
+    {
+        $this->structures = explode(",", $structures);
     }
 
     public function setMissions($missions)
     {
-        $this->missions = explode(",",$missions);
+        $this->missions = explode(",", $missions);
     }
 
     public function addMission($mission)
@@ -166,7 +177,27 @@ class Simulation
         $this->resultFile = $resultFile;
     }
 
+    /**
+     * @return string
+     */
+    public function getScriptType()
+    {
+        return $this->scriptType;
+    }
 
+    /**
+     * @param string $scriptType
+     */
+    public function setScriptType($scriptType)
+    {
+        $this->scriptType = $scriptType;
+    }
 
-
+    /**
+     * @return array
+     */
+    public function getStructures()
+    {
+        return $this->structures;
+    }
 }

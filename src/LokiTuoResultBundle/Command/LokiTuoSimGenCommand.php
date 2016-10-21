@@ -22,8 +22,7 @@ class LokiTuoSimGenCommand extends ContainerAwareCommand
         $repo = $em->getRepository('LokiTuoResultBundle:Player');
         $players = $repo->findAll();
         /** @var Player $player */
-        foreach ($players as $player)
-        {
+        foreach ($players as $player) {
             $g = $player->getGuild();
             $player->setCurrentGuild($g);
             $em->persist($player);

@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="mission")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\MissionRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Mission extends AbstractBaseEntity
 {
@@ -44,6 +45,27 @@ class Mission extends AbstractBaseEntity
             $guilds[$result->getGuild()] = $result->getGuild();
         }
         return $guilds;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @ORM\PrePersist
+     */
+    public function setCreatedAt()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAt()
+    {
+        $this->updatedAt = new \DateTime();
     }
 
 

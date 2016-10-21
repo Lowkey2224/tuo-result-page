@@ -23,18 +23,13 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = new ConsoleLogger($output);
-        $numberOfCardFiles = 11;
         $path = $input->getArgument('dataPath');
         $logger->debug(" Filepath Read: ".$path);
-//        $path = $this->getContainer()->get('kernel')->getRootDir() . "/../data/";
-        if ($input->getOption('option')) {
-            // ...
-        }
         $reader = $this->getContainer()->get('loki_tuo_result.card.reader');
         $reader->setLogger($logger);
         $files = scandir(realpath($path));
         $pattern = '/^cards_section_\d\d?.xml/m';
-        $cardFiles = array_filter($files, function($item) use ($pattern){
+        $cardFiles = array_filter($files, function ($item) use ($pattern) {
             return preg_match($pattern, $item) === 1;
         });
         $count = $reader->saveCardFiles($cardFiles);

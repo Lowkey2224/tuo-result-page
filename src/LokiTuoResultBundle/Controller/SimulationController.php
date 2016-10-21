@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\Controller;
 
-
 use LokiTuoResultBundle\Form\SimulationType;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -54,5 +53,4 @@ class SimulationController extends Controller
             'form' => $form->createView(),
         ));
     }
-
 }
