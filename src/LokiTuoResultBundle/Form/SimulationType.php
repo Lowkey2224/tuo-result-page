@@ -41,6 +41,7 @@ class SimulationType extends AbstractType
             ])
             ->add('structures', TextType::class, [
                 'label' => "Structures (comma-separated)",
+                'required' => false,
                 'attr' => [
                 'class' => 'form-control'
                 ]
@@ -66,7 +67,7 @@ class SimulationType extends AbstractType
                 'label' => "Players to Sim",
 
                 // use the User.username property as the visible option string
-                'choice_label' => 'fullName',
+                'choice_label' => 'name',
                 'choice_attr' => function (Player $val) {
                     return ['data-guild' => $val->getCurrentGuild()];
                 },

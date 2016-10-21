@@ -119,6 +119,10 @@ class Service
                     $cards = $this->transformToCardNames(explode(", ", $name));
                     $result['result'][$count]['deck'] = $cards;
                 }
+                if (preg_match('/(\d\d?% win)/', $line) === 1) {
+
+                    $result['result'][$count]['simType'] = 'Raid';
+                }
                 $firstLine = true;
                 $count++;
             }
@@ -165,9 +169,10 @@ class Service
             if (!($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
                 $mission = new Mission();
                 $mission->setName($line['mission']);
-                $mission->setType("Mission");
-                $this->em->persist($mission);
             }
+            $mission->setType($line['simType']);
+            $this->em->persist($mission);
+
             $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
             if (is_null($result)) {
                 $result = new Result();
