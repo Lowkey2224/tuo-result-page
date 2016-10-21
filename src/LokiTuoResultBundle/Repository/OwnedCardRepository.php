@@ -1,6 +1,7 @@
 <?php
 
 namespace LokiTuoResultBundle\Repository;
+use LokiTuoResultBundle\Entity\Player;
 
 /**
  * OwnedCardRepository
@@ -10,4 +11,15 @@ namespace LokiTuoResultBundle\Repository;
  */
 class OwnedCardRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function countCardsInDeckForPlayer(Player $player)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('sum(c.amountInDeck)')
+            ->where('c.player =  :player')
+            ->andWhere('c.amountInDeck > 0')
+            ->setParameter('player', $player)
+            ->getQuery()
+            ->getResult();
+    }
 }
