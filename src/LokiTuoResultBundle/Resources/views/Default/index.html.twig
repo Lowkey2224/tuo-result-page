@@ -4,11 +4,6 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-        <div class="row" style="padding: 5px">
-            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal">
-                Upload Sim Result
-            </button>
-        </div>
         <!-- Modal -->
         <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">
             <div class="modal-dialog" role="document">
@@ -29,8 +24,6 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         {{ form_widget(form.submit, {'attr' : {'class': 'btn btn-success'}}) }}
                         {{ form_end(form) }}
-
-                        {#<button type="button" class="btn btn-primary">Save changes</button>#}
                     </div>
                 </div>
             </div>
@@ -38,6 +31,18 @@
     {% endif %}
 
 
+    <div class="row" style="padding: 5px">
+    {% if is_granted('ROLE_ADMIN') %}
+        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal">
+            Upload Sim Result
+        </button>
+    {% endif %}
+        <a href="{{ path('loki.tuo.sim.create') }}">
+        <button type="button" class="btn btn-info btn-md pull-right">
+            Create Simulation Script
+        </button>
+        </a>
+    </div>
 
     <table class="table table-striped data-table">
         <thead>
