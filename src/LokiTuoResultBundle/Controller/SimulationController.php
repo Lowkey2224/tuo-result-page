@@ -42,7 +42,7 @@ class SimulationController extends Controller
 
             $res = $this->get('loki_tuo_result.simulation.manager')->getSimulation($sim);
 //            echo $res;
-            $filename = "mass_sim.sh";
+            $filename = $sim->getScriptType() == "shell" ?"mass_sim.sh":"mass_sim.bat";
             return new Response($res, 200, [
                 'content-type' => 'text/text',
                 'cache-control' => 'private',
