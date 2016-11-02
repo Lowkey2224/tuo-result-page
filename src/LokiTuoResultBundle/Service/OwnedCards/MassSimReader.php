@@ -9,6 +9,7 @@
 namespace LokiTuoResultBundle\Service\OwnedCards;
 
 use Doctrine\ORM\EntityManager;
+use Exception;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Psr\Log\LoggerAwareTrait;
