@@ -9,6 +9,7 @@
 namespace LokiTuoResultBundle\Service\OwnedCards;
 
 use Doctrine\ORM\EntityManager;
+use Exception;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Psr\Log\LoggerAwareTrait;
@@ -36,7 +37,8 @@ class MassSimReader
         $content = $this->getContentArray($filePath);
         $map = array();
         $ownedCards = [];
-        $result = [];
+        $guild = $this->getGuildName($content);
+        $result = ['players' => [], 'guild' => $guild];
         $currentPlayerName = "";
         foreach ($content as $line) {
             $match = [];
@@ -70,7 +72,7 @@ class MassSimReader
                 }
                 foreach ($ownedCards[$playerId] as $card) {
                     $key = $card['name'] . $card['level'];
-                    $result[$currentPlayerName][$key] = $card;
+                    $result['players'][$currentPlayerName][$key] = $card;
                 }
             }
         }
@@ -81,9 +83,9 @@ class MassSimReader
     public function savePlayerCardMap($map)
     {
         $result = [];
-
-        foreach ($map as $playerName => $cardArray) {
-            $player = $this->findPlayerOrCreate($playerName);
+        $guild = $map['guild'];
+        foreach ($map['players'] as $playerName => $cardArray) {
+            $player = $this->findPlayerOrCreate($playerName, $guild);
             $this->logger->debug("Trying to persist " . count($cardArray) . " cards for Player " . $player->getName());
             $result[$player->getName()] = $this->ownedCardManager->transformArrayToModels($player, $cardArray);
             $this->ownedCardManager->removeOldOwnedCardsForPlayer($player);
@@ -97,7 +99,7 @@ class MassSimReader
         return $result;
     }
 
-    private function findPlayerOrCreate($playerName)
+    private function findPlayerOrCreate($playerName, $guild)
     {
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
         $player = $playerRepo->findOneBy(['name' => $playerName]);
@@ -105,6 +107,7 @@ class MassSimReader
             $this->logger->info("Created Player $playerName because no Player was found.");
             $player = new Player();
             $player->setName($playerName);
+            $player->setCurrentGuild($guild);
             $this->em->persist($player);
         }
         return $player;
@@ -147,5 +150,18 @@ class MassSimReader
             $owned[$key] = $entry;
         }
         return $owned;
+    }
+
+
+
+    private function getGuildName($content)
+    {
+        $guild = [];
+        if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
+            return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
+        } else {
+            var_dump($guild, $content[0]);
+            throw new Exception("No Guild Found");
+        }
     }
 }

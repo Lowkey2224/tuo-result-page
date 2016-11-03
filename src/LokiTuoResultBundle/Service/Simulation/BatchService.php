@@ -71,7 +71,7 @@ pause\n";
         foreach ($players as $player) {
             $owned = $player->getOwnedCards();
 
-            $string .= "SET MemberDeck" . $player->getId() . "=\"" . implode(", ", $owned->toArray()) . "\"\n";
+            $string .= "SET MemberDeck" . $player->getId() . "=" . implode(", ", $owned->toArray()) . "\n";
         }
 
         return $string;
@@ -116,7 +116,7 @@ pause\n";
             $str .= $now . ' against ' . $mission . "\" >> ./ %TARGET%\n";
             //Simulation Call
             $str .= 'tuo.exe "' . implode(", ", $deck->toArray()) . '" "';
-            $str .= $mission . '" -o="$MemberDeck' . $player->getId() . '"';
+            $str .= $mission . '" -o="%MemberDeck%' . $player->getId() . '"';
             if (!empty($simulation->getStructures())) {
                 $str .= ' yf "' . implode(", ", $simulation->getStructures()) . '"';
             }
