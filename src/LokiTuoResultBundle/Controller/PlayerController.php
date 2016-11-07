@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class PlayerController
@@ -27,9 +28,9 @@ class PlayerController extends Controller
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
 
-//        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-//            throw new AccessDeniedHttpException();
-//        }
+        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+            throw new AccessDeniedHttpException();
+        }
 
         $results = $player->getResults();
 
@@ -47,9 +48,9 @@ class PlayerController extends Controller
         $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findAll();
         $userManager = $this->get('loki_tuo_result.user.manager');
         $user = $this->getUser();
-//        $players = array_filter($players, function (Player $player) use ($user, $userManager) {
-//            return $userManager->canUserAccess($user, $player->getGuild());
-//        });
+        $players = array_filter($players, function (Player $player) use ($user, $userManager) {
+            return $userManager->canUserAccess($user, $player->getGuild());
+        });
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
         ]);
@@ -237,10 +238,10 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction($playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        //As of now everyone can access
-//        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-//            throw new AccessDeniedHttpException();
-//        }
+        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+            throw new AccessDeniedHttpException();
+        }
+
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
 

@@ -44,10 +44,13 @@ class Service
 
     public function canUserAccess(User $user, $guildNeeded)
     {
+
         if ($this->isAdmin($user)) {
             return true;
         }
-        return in_array($guildNeeded, $this->getGuildsForUser($user));
+        return true;
+        //Now everyone can access
+//        return in_array($guildNeeded, $this->getGuildsForUser($user));
     }
 
     private function isAdmin(User $user)
