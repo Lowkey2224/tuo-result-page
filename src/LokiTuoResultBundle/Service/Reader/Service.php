@@ -92,14 +92,15 @@ class Service
     {
 
         $firstLine = true;
-        $count = 0;
+        $count = -1;
         $result = ['guild' => $this->getGuildName($content)];
         //THrow away first line
         array_shift($content);
 
         foreach ($content as $line) {
-            if ($firstLine) {
+
                 if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
+                    $count++;
                     $name = $name[1];
                     $result['result'][$count]['playername'] = $name;
                 }
@@ -108,7 +109,7 @@ class Service
                     $result['result'][$count]['mission'] = $name;
                 }
                 $firstLine = false;
-            } else {
+
                 $result['result'][$count]['simType'] = 'Mission';
                 if (preg_match('/(\d?\d.?\d?\d?):/', $line, $name) === 1) {
                     $name = $name[1];
@@ -123,9 +124,6 @@ class Service
                 if (preg_match('/(\d\d?% win)/', $line) === 1) {
                     $result['result'][$count]['simType'] = 'Raid';
                 }
-                $firstLine = true;
-                $count++;
-            }
         }
         return $result;
     }
@@ -190,6 +188,7 @@ class Service
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
+            $this->logger->debug("Saving Result for Player ". $player->getName());
         }
 
         $this->em->flush();
