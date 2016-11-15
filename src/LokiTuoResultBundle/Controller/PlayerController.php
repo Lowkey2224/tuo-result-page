@@ -88,11 +88,16 @@ class PlayerController extends Controller
             return new JsonResponse(['message' => 'Card ' . $card->getName() . ' not found for Player'], 420);
         }
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
-        if ($count>10) {
-            return new JsonResponse(['message' => "Can't add more cards to Deck for player."], 420);
-        } elseif ((10-$count) > $amount) {
-            $amount = 10-$count;
+        //If there are more than 1 Cards in the Dack we cant add more cards
+        if($amount> 0)
+        {
+            if ($count>10) {
+                return new JsonResponse(['message' => "Can't add more cards to Deck for player."], 420);
+            } elseif ((10-$count) > $amount) {
+                $amount = 10-$count;
+            }
         }
+
         if ($oc->getAmount() < $oc->getAmountInDeck() + $amount) {
             $oc->setAmountInDeck($oc->getAmount());
         } else {
@@ -150,7 +155,7 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/card",
+     * @Route("/{playerId}/card/reduce",
      *     name="loki.tuo.player.card.remove",
      *     methods={"DELETE"},
      *     requirements={"playerId":"\d+"}
