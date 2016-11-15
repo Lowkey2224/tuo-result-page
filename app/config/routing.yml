@@ -3,3 +3,5 @@ loki_tuo_result:
     type:     annotation
     prefix:   /
 
+logout:
+    path: /logout

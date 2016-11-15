@@ -1,22 +1,24 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: jenz
+ * Date: 15.11.16
+ * Time: 13:31
+ */
 
 namespace LokiTuoResultBundle\Controller;
+
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+
 /**
- * Class DefaultController
+ * Class SimuationController
  * @package LokiTuoResultBundle\Controller
- * @Route("/")
+ * @Route("/simulation")
  */
-class DefaultController extends Controller
+class SimuationController extends Controller
 {
-    /**
-     * @route("/")
-     */
-    public function indexAction()
-    {
-        return $this->redirectToRoute('tuo.index');
-    }
+
 }
