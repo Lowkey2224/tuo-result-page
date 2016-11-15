@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\PlayerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Player extends AbstractBaseEntity
 {

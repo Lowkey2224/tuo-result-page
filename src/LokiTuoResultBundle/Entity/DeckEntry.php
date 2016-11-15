@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\DeckEntryRepository")
  * @UniqueEntity(fields={"playOrder", "card", "result"},
  *     message="There exists already this card for this result in this order")
+ * @ORM\HasLifecycleCallbacks()
  *
  */
 class DeckEntry extends AbstractBaseEntity

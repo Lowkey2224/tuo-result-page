@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="result_file")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\ResultFileRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class ResultFile extends AbstractBaseEntity
 {
