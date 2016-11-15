@@ -29,7 +29,7 @@ class PlayerController extends Controller
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
 
-        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+        if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -47,7 +47,7 @@ class PlayerController extends Controller
     public function listAllPlayersAction()
     {
         $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findAll();
-        $userManager = $this->get('loki_tuo_result.user.manager');
+        $userManager = $this->get('loki.user.user.manager');
 
 
         $form = $this->getPlayerForm();
@@ -247,7 +247,7 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction($playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$this->get('loki_tuo_result.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
+        if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
             throw new AccessDeniedHttpException();
         }
 
