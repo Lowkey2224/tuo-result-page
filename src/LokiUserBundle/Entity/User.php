@@ -6,7 +6,7 @@
  * Time: 14:19
  */
 
-namespace LokiTuoResultBundle\Entity;
+namespace LokiUserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -24,9 +24,31 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    protected $registrationCode;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegistrationCode()
+    {
+        return $this->registrationCode;
+    }
+
+    /**
+     * @param string $registrationCode
+     */
+    public function setRegistrationCode($registrationCode)
+    {
+        $this->registrationCode = $registrationCode;
     }
 }

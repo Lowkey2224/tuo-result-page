@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new LokiTuoResultBundle\LokiTuoResultBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new LokiUserBundle\LokiUserBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

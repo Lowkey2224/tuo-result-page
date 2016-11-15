@@ -1,3 +1,8 @@
+loki_user:
+    resource: "@LokiUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 loki_tuo_result:
     resource: "@LokiTuoResultBundle/Controller/"
     type:     annotation

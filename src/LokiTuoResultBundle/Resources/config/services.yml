@@ -31,9 +31,10 @@ services:
         class: LokiTuoResultBundle\Service\Simulation\Service
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
-
-    loki_tuo_result.user.manager:
-        class: LokiTuoResultBundle\Service\UserService\Service
-        arguments:
-            guilds: "%guilds%"
         #arguments: ["@service_id", "plain_value", %parameter%]
+
+    loki_tuo_result.password_resetting:
+        class: LokiTuoResultBundle\EventListener\RegistrationListener
+        arguments: ['@router']
+        tags:
+            - { name: kernel.event_subscriber }

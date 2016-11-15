@@ -19,3 +19,4 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     guilds: ['CTP', 'CNS']
+    registration_codes: []
