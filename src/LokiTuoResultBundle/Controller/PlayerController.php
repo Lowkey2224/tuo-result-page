@@ -89,8 +89,7 @@ class PlayerController extends Controller
         }
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
         //If there are more than 1 Cards in the Dack we cant add more cards
-        if($amount> 0)
-        {
+        if ($amount> 0) {
             if ($count>10) {
                 return new JsonResponse(['message' => "Can't add more cards to Deck for player."], 420);
             } elseif ((10-$count) > $amount) {
@@ -287,10 +286,9 @@ class PlayerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
-        }else
-        {
-            var_dump($form->isSubmitted(), $form->isValid());die();
-
+        } else {
+            var_dump($form->isSubmitted(), $form->isValid());
+            die();
         }
 
         return $this->redirectToRoute('loki.tuo.player.all.show');
