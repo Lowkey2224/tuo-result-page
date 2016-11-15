@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\EventListener;
 
-
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,6 +42,7 @@ class RegistrationListener implements EventSubscriberInterface
 
     public function onRegistrationConfirm(FormEvent $event)
     {
-        var_dump($event);die();
+        var_dump($event);
+        die();
     }
 }

@@ -60,8 +60,7 @@ class Service
 
     public function isRegistrationCodeValid($code)
     {
-        if(empty($this->registrationCodes))
-        {
+        if (empty($this->registrationCodes)) {
             return true;
         }
         return in_array($code, $this->registrationCodes);

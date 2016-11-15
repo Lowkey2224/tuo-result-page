@@ -8,7 +8,6 @@
 
 namespace LokiUserBundle\Controller;
 
-
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
@@ -60,15 +59,17 @@ class RegistrationController extends BaseController
                     $response = new RedirectResponse($url);
                 }
 
-                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+                $dispatcher->dispatch(
+                    FOSUserEvents::REGISTRATION_COMPLETED,
+                    new FilterUserResponseEvent($user, $request, $response)
+                );
 
                 return $response;
             }
             // Form invalid
             $event = new FormEvent($form, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
-            if(!$userService->isRegistrationCodeValid($user->getRegistrationCode()))
-            {
+            if (!$userService->isRegistrationCodeValid($user->getRegistrationCode())) {
                 $this->addFlash('error', "Registration Code not Correct. Please Contact a Guild Officer");
             }
 
