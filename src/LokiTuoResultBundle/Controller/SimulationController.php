@@ -13,6 +13,7 @@ use LokiTuoResultBundle\Form\ResultFileType;
 use LokiTuoResultBundle\Form\SimulationType;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class SimulationController extends Controller
 
     /**
      * @Route("/create", name="loki.tuo.sim.create")
+     * @Security("has_role('ROLE_USER')")
      */
     public function createSimulationAction(Request $request)
     {
@@ -86,6 +88,7 @@ class SimulationController extends Controller
      * @Route("/mission/{missionId}", requirements={"missionId":"\d+"}, name="tuo.showmission")
      * @param int $missionId Id of the mission
      * @return Response
+     * @Security("has_role('ROLE_USER')")
      */
     public function showMissionAction($missionId)
     {
@@ -110,6 +113,7 @@ class SimulationController extends Controller
      * @return Response
      * @Route("/file/{fileId}", requirements={"fileId":"\d+"}, name="tuo.resultfile.show")
      * @throws NotFoundHttpException
+     * @Security("has_role('ROLE_USER')")
      */
     public function getFileAction($fileId)
     {
@@ -128,6 +132,7 @@ class SimulationController extends Controller
     /**
      * @return int
      * @Route("/upload", name="loki.tuo.result.upload", methods={"POST"})
+     * @Security("has_role('ROLE_USER')")
      */
     public function uploadResultAction(Request $request)
     {

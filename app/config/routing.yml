@@ -3,5 +3,5 @@ loki_tuo_result:
     type:     annotation
     prefix:   /
 
-logout:
-    path: /logout
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

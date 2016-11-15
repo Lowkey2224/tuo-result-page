@@ -8,9 +8,9 @@
 
 namespace LokiTuoResultBundle\Service\UserService;
 
+use LokiTuoResultBundle\Entity\User;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Symfony\Component\Security\Core\User\User;
 
 class Service
 {

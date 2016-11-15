@@ -23,7 +23,7 @@
 <div class="container" role="main">
     {% set currentPath = path(app.request.attributes.get('_route'),
     app.request.attributes.get('_route_params')) %}
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -46,20 +46,29 @@
                     </li>
                     <li {% if currentPath starts with '/player/' %} class="active" {% endif %}><a
                                 href="{{ path('loki.tuo.player.all.show') }}">Players</a></li>
-                    {% if is_granted('ROLE_ADMIN') %}<li><a href="#">Imports</a></li>{% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="#">Imports</a></li>{% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Welcome, {{ app.user }}<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            {#<li><a href="#">Another action</a></li>#}
-                            {#<li><a href="#">Something else here</a></li>#}
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{ logout_path() }}">Logout (not yet working)</a></li>
-                            {#<li><a href="#">Separated link</a></li>#}
-                        </ul>
-                    </li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">Welcome, {{ app.user }}<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                {#<li><a href="#">Another action</a></li>#}
+                                {#<li><a href="#">Something else here</a></li>#}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+                                {#<li><a href="#">Separated link</a></li>#}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}">Login<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li><a href="{{ path('fos_user_registration_register') }}">Register<span class="sr-only">(current)</span></a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
