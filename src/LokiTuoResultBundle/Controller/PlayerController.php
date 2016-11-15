@@ -7,6 +7,7 @@ use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Form\MassOwnedCardType;
 use LokiTuoResultBundle\Form\OwnedCardType;
+use LokiTuoResultBundle\Form\PlayerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,18 +42,22 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/", name="loki.tuo.player.all.show")
+     * @Route("/", name="loki.tuo.player.all.show", methods={"GET"})
      */
     public function listAllPlayersAction()
     {
         $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findAll();
         $userManager = $this->get('loki_tuo_result.user.manager');
+
+
+        $form = $this->getPlayerForm();
         $user = $this->getUser();
         $players = array_filter($players, function (Player $player) use ($user, $userManager) {
             return $userManager->canUserAccess($user, $player->getGuild());
         });
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
+            'form' => $form->createView()
         ]);
     }
 
@@ -242,8 +247,6 @@ class PlayerController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
 
         $allCards = $player->getOwnedCards();
         $deck = $allCards->filter(function (OwnedCard $item) {
@@ -265,5 +268,34 @@ class PlayerController extends Controller
             'form' => $ownedCardForm->createView(),
             'massForm' => $massOwnedCardForm->createView(),
         ));
+    }
+
+    /**
+     * @Route("/", name="loki.tuo.player.add", methods={"POST"})
+     */
+    public function addPlayerAction(Request $request)
+    {
+
+        $player = new Player();
+        $form = $this->getPlayerForm($player);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($player);
+            $this->getDoctrine()->getManager()->flush();
+        }else
+        {
+            var_dump($form->isSubmitted(), $form->isValid());die();
+
+        }
+
+        return $this->redirectToRoute('loki.tuo.player.all.show');
+    }
+
+    private function getPlayerForm(Player $player = null)
+    {
+        return  $this->createForm(PlayerType::class, $player, [
+            'action' => $this->generateUrl('loki.tuo.player.add'),
+            'method' => 'POST',
+        ]);
     }
 }
