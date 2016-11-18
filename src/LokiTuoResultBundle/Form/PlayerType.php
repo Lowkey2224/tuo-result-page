@@ -19,10 +19,13 @@ class PlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class, ['label' => 'Playername', 'attr' => ['class' => 'form-control']])
+        $builder->add('name', TextType::class, ['label' => 'form.player.playername',
+            'translation_domain' => 'LokiTuoResultBundle.forms',
+            'attr' => ['class' => 'form-control']])
 
             ->add('currentGuild', ChoiceType::class, array(
-                'label' => "Guild",
+                'label' => "form.player.guild",
+                'translation_domain' => 'LokiTuoResultBundle.forms',
                 'choices' => [
                     'CNS' => "CNS",
                     'CTP' => "CTP",

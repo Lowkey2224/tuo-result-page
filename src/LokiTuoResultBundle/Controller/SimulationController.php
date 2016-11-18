@@ -154,6 +154,19 @@ class SimulationController extends Controller
     }
 
     /**
+     * @Route("/upload/form", name="loki.tuo.result.upload.form")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function UploadFormAction()
+    {
+        $sim = new Simulation();
+        $form = $this->getUploadForm();
+        return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
      * @return \Symfony\Component\Form\FormInterface
      */
     private function getUploadForm()

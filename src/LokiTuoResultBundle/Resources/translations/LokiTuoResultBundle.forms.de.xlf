@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="de" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="form.resultfile.comment">
+                <source>form.resultfile.comment</source>
+                <target>Kommentar (z.B. wer hat Simuliert)</target>
+            </trans-unit>
+            <trans-unit id="form.resultfile.resultfile">
+                <source>form.resultfile.resultfile</source>
+                <target>Ergebnisdatei</target>
+            </trans-unit>
+            <trans-unit id="form.player.playername">
+                <source>form.player.playername</source>
+                <target>Spielername</target>
+            </trans-unit>
+            <trans-unit id="form.player.guild">
+                <source>form.player.guild</source>
+                <target>Gilde</target>
+            </trans-unit>
+            <trans-unit id="Submit">
+                <source>Submit</source>
+                <target>Absenden</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
