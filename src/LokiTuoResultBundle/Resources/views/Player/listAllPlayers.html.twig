@@ -1,13 +1,13 @@
 {% extends '::base.html.twig' %}
 {% block body %}
 
-    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">
+    <div class="modal fade" id="addPlayerModal" tabindex="-1" role="dialog" aria-labelledby="addPlayerModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="uploadModalLabel">Upload your Simulation Result here</h4>
+                    <h4 class="modal-title" id="addPlayerModalLabel">Upload your Simulation Result here</h4>
                 </div>
                 <div class="modal-body">
                     {{ form_start(form) }}
@@ -34,7 +34,7 @@
         </h3>
     </div>
 
-    <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal">
+    <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addPlayerModal">
         Add Player
     </button>
 

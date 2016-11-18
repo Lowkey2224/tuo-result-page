@@ -1,0 +1,73 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    {#<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">#}
+    {#<div class="modal-dialog" role="document">#}
+    {#<div class="modal-content">#}
+    {#<div class="modal-header">#}
+    {#<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+    {#aria-hidden="true">&times;</span></button>#}
+    {#<h4 class="modal-title" id="uploadModalLabel">Upload your Simulation Result here</h4>#}
+    {#</div>#}
+    {#<div class="modal-body">#}
+    {#{{ form_start(form) }}#}
+
+    {#<div class="form-group">#}
+    {#{{ form_row(form.name) }}#}
+    {#</div>#}
+    {#<div class="form-group">#}
+    {#{{ form_row(form.currentGuild) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="modal-footer">#}
+    {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+    {#{{ form_widget(form.submit, {'attr' : {'class': 'btn btn-success'}}) }}#}
+    {#{{ form_end(form) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+
+    <div class="row">
+        <h3 class="col-md-6 col-md-offset-3 text-center">
+            All Users </h3>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addUser">
+        Add User
+    </button>
+
+    <table class="table table-striped data-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Players</th>
+            <th class="text-right">Links</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr class="{{ user.enabled?"success":"danger" }}">
+                <td>
+                    {{ user.username }}
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td>
+                </td>
+                <td class="text-right">
+                    TODO Disable/Enable Users
+                    <span class="glyphicon glyphicon-{{ user.enabled?"ok":"remove" }}"></span>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row" style="margin-top: 20px;">
+
+        Simulations and website done by LokiMcFly<br/>
+    </div>
+{% endblock %}

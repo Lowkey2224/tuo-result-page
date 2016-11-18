@@ -47,6 +47,13 @@ class ResultFile extends AbstractBaseEntity
 
 
     /**
+     * @var Result[]
+     * @ORM\Column(type="string")
+     */
+    private $comment;
+
+
+    /**
      * @var string
      * @ORM\Column(type="string")
      */
@@ -123,5 +130,21 @@ class ResultFile extends AbstractBaseEntity
     public function setGuild($guild)
     {
         $this->guild = $guild;
+    }
+
+    /**
+     * @return Result[]
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param Result[] $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
     }
 }
