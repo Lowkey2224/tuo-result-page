@@ -4,6 +4,7 @@ namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 /**
  * ResultFile
@@ -17,6 +18,7 @@ class ResultFile extends AbstractBaseEntity
     const STATUS_NOT_IMPORTED = 0;
     const STATUS_IMPORTED = 1;
     const STATUS_IMPORTED_WITH_ERROR = 2;
+    const STATUS_ERROR = 3;
 
     public function __construct()
     {
@@ -47,6 +49,12 @@ class ResultFile extends AbstractBaseEntity
 
 
     /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $missions;
+
+    /**
      * @var Result[]
      * @ORM\Column(type="string")
      */
@@ -59,6 +67,28 @@ class ResultFile extends AbstractBaseEntity
      */
     private $guild;
 
+
+    /**
+     * @return string
+     * @throws Exception If there is no valid State
+     */
+    public function getStatusName()
+    {
+        switch ($this->status)
+        {
+            case ResultFile::STATUS_NOT_IMPORTED:
+                return "Not yet Imported";
+            case ResultFile::STATUS_IMPORTED:
+                return "Successfully Imported";
+            case ResultFile::STATUS_IMPORTED_WITH_ERROR:
+                return "Imported with Errors";
+            case ResultFile::STATUS_ERROR:
+                return "Not Imported because of Errors";
+            default:
+                throw new Exception("File has Invalid State");
+        }
+
+    }
 
     /**
      * Set content
@@ -147,4 +177,22 @@ class ResultFile extends AbstractBaseEntity
     {
         $this->comment = $comment;
     }
+
+    /**
+     * @return string
+     */
+    public function getMissions()
+    {
+        return $this->missions;
+    }
+
+    /**
+     * @param string $missions
+     */
+    public function setMissions($missions)
+    {
+        $this->missions = $missions;
+    }
+
+
 }

@@ -10,7 +10,9 @@
     <table class="table table-striped data-table">
         <thead>
         <tr>
+            <th>#</th>
             <th>Guild</th>
+            <th>Missions</th>
             <th>comment</th>
             <th>Status</th>
             <th>Date</th>
@@ -19,15 +21,21 @@
         </thead>
         <tbody>
         {% for file in resultFiles %}
-            <tr>
+            <tr class="{{ file.status==1?"success":"warning" }}">
+                <td>
+                    {{ file.id}}
+                </td>
                 <td>
                     {{ file.guild }}
+                </td>
+                <td>
+                    {{ file.missions }}
                 </td>
                 <td>
                     {{ file.comment }}
                 </td>
                 <td>
-                    {{ file.status }}
+                    {{ file.statusName }}
                 </td>
                 <td>
                     {{ file.updatedAt | date("Y-m-d H:i")}}
