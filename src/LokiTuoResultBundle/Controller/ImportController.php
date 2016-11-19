@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\Controller;
 
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -25,11 +24,12 @@ class ImportController extends Controller
     public function indexAction()
     {
         $resultFileRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:ResultFile');
-        $results = $resultFileRepo->findBy([],['id'=>'ASC']);
-        return $this->render('LokiTuoResultBundle:Import:index.html.twig',
+        $results = $resultFileRepo->findBy([], ['id'=>'ASC']);
+        return $this->render(
+            'LokiTuoResultBundle:Import:index.html.twig',
             [
                'resultFiles' => $results,
-            ]);
-
+            ]
+        );
     }
 }

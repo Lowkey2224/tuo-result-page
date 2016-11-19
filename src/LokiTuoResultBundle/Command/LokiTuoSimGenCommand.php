@@ -24,11 +24,10 @@ class LokiTuoSimGenCommand extends ContainerAwareCommand
         $reader->setLogger($logger);
         $repo =$this->getContainer()->get('doctrine')->getRepository('LokiTuoResultBundle:ResultFile');
         $all = $repo->findAll();
-        for($i=0;$i<count($all); $i++) {
+        for ($i=0; $i<count($all); $i++) {
             $all[$i] = $all[$i]->getId();
         }
-        foreach ($all as $id)
-        {
+        foreach ($all as $id) {
             $output->writeln("Reimporting File with ID $id");
             $count = $reader->importFileById($id);
             $output->writeln('Persisted a total of '.$count. " Results");

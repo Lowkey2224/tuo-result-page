@@ -74,9 +74,8 @@ class Service
                 $count += count($models);
                 $file->setGuild($transformed['guild']);
                 $file->setStatus(ResultFile::STATUS_IMPORTED);
-                $file->setMissions(implode(", ",$transformed['missions']));
-            }catch (Exception $ex)
-            {
+                $file->setMissions(implode(", ", $transformed['missions']));
+            } catch (Exception $ex) {
                 $file->setStatus(ResultFile::STATUS_ERROR);
             }
             $this->em->persist($file);

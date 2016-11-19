@@ -74,8 +74,7 @@ class ResultFile extends AbstractBaseEntity
      */
     public function getStatusName()
     {
-        switch ($this->status)
-        {
+        switch ($this->status) {
             case ResultFile::STATUS_NOT_IMPORTED:
                 return "Not yet Imported";
             case ResultFile::STATUS_IMPORTED:
@@ -87,7 +86,6 @@ class ResultFile extends AbstractBaseEntity
             default:
                 throw new Exception("File has Invalid State");
         }
-
     }
 
     /**
@@ -193,6 +191,4 @@ class ResultFile extends AbstractBaseEntity
     {
         $this->missions = $missions;
     }
-
-
 }
