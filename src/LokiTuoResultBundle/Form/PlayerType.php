@@ -19,18 +19,17 @@ class PlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $options['guilds'] = $this->transformGuilds($options['guilds']);
+
         $builder->add('name', TextType::class, ['label' => 'form.player.playername',
             'translation_domain' => 'LokiTuoResultBundle.forms',
             'attr' => ['class' => 'form-control']])
-
             ->add('currentGuild', ChoiceType::class, array(
                 'label' => "form.player.guild",
                 'translation_domain' => 'LokiTuoResultBundle.forms',
-                'choices' => [
-                    'CNS' => "CNS",
-                    'CTP' => "CTP",
-                    'CTN' => "CTN",
-                ], 'attr' => [
+                'choices' => $options['guilds'],
+                'attr' => [
                     'class' => 'form-control'
                 ]
             ))
@@ -38,11 +37,26 @@ class PlayerType extends AbstractType
     }
 
 
-
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'LokiTuoResultBundle\Entity\Player',
+            'guilds' => [
+                'Please Select your Guild...' => null,
+            ],
         ));
+    }
+
+
+    private function transformGuilds(array $guilds)
+    {
+        $return = ['Please Select your Guild...' => null];
+        foreach ($guilds as $guild) {
+            $return[$guild] = $guild;
+        }
+        return $return;
     }
 }

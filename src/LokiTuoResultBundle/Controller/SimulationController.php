@@ -37,7 +37,10 @@ class SimulationController extends Controller
 
 
         $sim = new Simulation();
-        $form = $this->createForm(SimulationType::class, $sim);
+        $options = [
+            'guilds' => $this->getParameter('guilds'),
+        ];
+        $form = $this->createForm(SimulationType::class, $sim, $options);
         if ($request->getMethod() == "POST") {
             $form->handleRequest($request);
             if (!$form->isValid()) {
@@ -157,9 +160,8 @@ class SimulationController extends Controller
      * @Route("/upload/form", name="loki.tuo.result.upload.form")
      * @Security("has_role('ROLE_USER')")
      */
-    public function UploadFormAction()
+    public function uploadFormAction()
     {
-        $sim = new Simulation();
         $form = $this->getUploadForm();
         return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', array(
             'form' => $form->createView(),

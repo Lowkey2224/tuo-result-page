@@ -299,6 +299,7 @@ class PlayerController extends Controller
         return  $this->createForm(PlayerType::class, $player, [
             'action' => $this->generateUrl('loki.tuo.player.add'),
             'method' => 'POST',
+            'guilds' => $this->getParameter('guilds'),
         ]);
     }
 }

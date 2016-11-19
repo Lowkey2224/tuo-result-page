@@ -33,8 +33,6 @@ class LokiTuoSimGenCommand extends ContainerAwareCommand
             $output->writeln('Persisted a total of '.$count. " Results");
         }
 
-//razogoth, serapherus, excelsitus, tyr cannon, protomech, miasma, albatross-10, iron mutant level 5, iron mutant-10, steel mutant level-5, steel mutant-10, pantheon powered-10, fiercy fury-10, brimstone beckons-10, paramount patriarch-10, the gateway anomaly-10, shot the sheriff-10, supremacy mutant-10, malaphir malevolence-10, emrys' eminence-10, ultimate uruk-10
-
         return 0;
     }
 }

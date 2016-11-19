@@ -25,6 +25,10 @@ class SimulationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $options['guilds'] = $this->transformGuilds($options['guilds']);
+
+
         $builder
             ->add('missions', TextareaType::class, [
                 'label' => "Missions (comma-separated)",
@@ -53,12 +57,8 @@ class SimulationType extends AbstractType
                 ]])
             ->add('guild', ChoiceType::class, array(
                 'label' => "Guild",
-                'choices' => [
-                    'Please Select your Guild...' => null,
-                    'CNS' => "CNS",
-                    'CTP' => "CTP",
-                    'CTN' => "CTN",
-                ], 'attr' => [
+                'choices' => $options['guilds']
+                , 'attr' => [
                     'class' => 'form-control'
                 ]
             ))
@@ -114,11 +114,25 @@ class SimulationType extends AbstractType
             ]);
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'LokiTuoResultBundle\Service\Simulation\Simulation',
+            'guilds' => [
+                'Please Select your Guild...' => null,
+            ],
         ));
+    }
+
+    private function transformGuilds(array $guilds)
+    {
+        $return = ['Please Select your Guild...' => null];
+        foreach ($guilds as $guild) {
+            $return[$guild] = $guild;
+        }
+        return $return;
     }
 }
