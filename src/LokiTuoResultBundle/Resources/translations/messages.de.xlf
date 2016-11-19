@@ -18,6 +18,10 @@
                 <source>CTP</source>
                 <target>CTP</target>
             </trans-unit>
+            <trans-unit id="CTN">
+                <source>CTN</source>
+                <target>CTN</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

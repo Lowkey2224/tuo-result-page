@@ -29,6 +29,7 @@ class PlayerType extends AbstractType
                 'choices' => [
                     'CNS' => "CNS",
                     'CTP' => "CTP",
+                    'CTN' => "CTN",
                 ], 'attr' => [
                     'class' => 'form-control'
                 ]

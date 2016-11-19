@@ -158,6 +158,8 @@ class MassSimReader
     {
         $guild = [];
         if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
+            //Special Case where the Guild CNS had the PRefix CTF
+            //FIXME seems legacy now
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
             var_dump($guild, $content[0]);

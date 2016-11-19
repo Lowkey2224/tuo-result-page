@@ -261,6 +261,8 @@ class Service
     {
         $guild = [];
         if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
+            //Special case where CNS had the Name CTF seems legacy now
+            //FIXME
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
             var_dump($guild, $content[0]);
