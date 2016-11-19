@@ -57,6 +57,7 @@ class SimulationType extends AbstractType
                     'Please Select your Guild...' => null,
                     'CNS' => "CNS",
                     'CTP' => "CTP",
+                    'CTN' => "CTN",
                 ], 'attr' => [
                     'class' => 'form-control'
                 ]
