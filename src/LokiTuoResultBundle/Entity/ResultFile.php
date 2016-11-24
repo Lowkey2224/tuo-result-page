@@ -50,20 +50,20 @@ class ResultFile extends AbstractBaseEntity
 
     /**
      * @var string
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $missions;
 
     /**
      * @var Result[]
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $comment;
 
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $guild;
 
