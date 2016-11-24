@@ -297,11 +297,13 @@ class PlayerController extends Controller
         }
 
 
-        return $this->render('@LokiTuoResult/Player/edit.html.twig',
+        return $this->render(
+            '@LokiTuoResult/Player/edit.html.twig',
             [
                 'player' => $player,
                 'form' => $form->createView(),
-            ]);
+            ]
+        );
     }
 
     /**
