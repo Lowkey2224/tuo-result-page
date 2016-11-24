@@ -274,6 +274,36 @@ class PlayerController extends Controller
         ));
     }
 
+
+    /**
+     * @param Request $request
+     * @param $playerId
+     * @Route("/{playerId}/edit", name="loki.tuo.player.edit")
+     */
+    public function editPlayer(Request $request, $playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$player) {
+            return new JsonResponse(['message' => 'Player not found', 404]);
+        }
+
+        $form = $this->createForm(PlayerType::class, $player);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($player);
+            $this->getDoctrine()->getManager()->flush();
+            $this->redirectToRoute('loki.tuo.player.all.show');
+        }
+
+
+        return $this->render('@LokiTuoResult/Player/edit.html.twig',
+            [
+                'player' => $player,
+                'form' => $form->createView(),
+            ]);
+    }
+
     /**
      * @Route("/", name="loki.tuo.player.add", methods={"POST"})
      */
