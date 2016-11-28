@@ -43,7 +43,8 @@
         <tr>
             <th>Name</th>
             <th>Guild</th>
-            <th>Links</th>
+            <th>Last Updated</th>
+            <th class="text-right">Links</th>
         </tr>
         </thead>
         <tbody>
@@ -55,12 +56,16 @@
                 <td>
                     {{ player.currentGuild }}
                 </td>
-                <td>
+                <td></td>
+                <td class="text-right">
                 <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
                     <b>Cards</b>
                 </a>
                 <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.id}) }}">
                     <b>Simulations</b>
+                </a>
+                <a href="{{ path('loki.tuo.player.edit', {'playerId': player.id}) }}">
+                    <b>Edit</b>
                 </a>
                 </td>
             </tr>

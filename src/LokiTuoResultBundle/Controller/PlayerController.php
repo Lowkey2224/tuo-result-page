@@ -46,7 +46,7 @@ class PlayerController extends Controller
      */
     public function listAllPlayersAction()
     {
-        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findAll();
+        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy([],['name' => 'ASC']);
         $userManager = $this->get('loki.user.user.manager');
 
 
@@ -278,6 +278,7 @@ class PlayerController extends Controller
     /**
      * @param Request $request
      * @param $playerId
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/{playerId}/edit", name="loki.tuo.player.edit")
      */
     public function editPlayer(Request $request, $playerId)
@@ -286,14 +287,14 @@ class PlayerController extends Controller
         if (!$player) {
             return new JsonResponse(['message' => 'Player not found', 404]);
         }
-
-        $form = $this->createForm(PlayerType::class, $player);
+        $action = $this->generateUrl('loki.tuo.player.edit', ['playerId' => $playerId]);
+        $form = $this->getPlayerForm($player, $action);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
-            $this->redirectToRoute('loki.tuo.player.all.show');
+            return $this->redirectToRoute('loki.tuo.player.all.show');
         }
 
 
@@ -326,10 +327,14 @@ class PlayerController extends Controller
         return $this->redirectToRoute('loki.tuo.player.all.show');
     }
 
-    private function getPlayerForm(Player $player = null)
+    private function getPlayerForm(Player $player = null, $action = null)
     {
+        if($action === null)
+        {
+            $action = $this->generateUrl("loki.tuo.player.add");
+        }
         return  $this->createForm(PlayerType::class, $player, [
-            'action' => $this->generateUrl('loki.tuo.player.add'),
+            'action' => $action,
             'method' => 'POST',
             'guilds' => $this->getParameter('guilds'),
         ]);
