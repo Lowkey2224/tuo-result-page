@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use Illuminate\Support\Collection;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
@@ -46,18 +47,22 @@ class PlayerController extends Controller
      */
     public function listAllPlayersAction()
     {
-        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy([],['name' => 'ASC']);
+        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy([], ['name' => 'ASC']);
         $userManager = $this->get('loki.user.user.manager');
-
+        $ocRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
+        $coll = new Collection($ocRepo->getLastUpdatedDate());
+        $updatedAt = $coll->keyBy('id');
 
         $form = $this->getPlayerForm();
         $user = $this->getUser();
         $players = array_filter($players, function (Player $player) use ($user, $userManager) {
+
             return $userManager->canUserAccess($user, $player->getGuild());
         });
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
-            'form' => $form->createView()
+            'updatedAt' => $updatedAt,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -329,8 +334,7 @@ class PlayerController extends Controller
 
     private function getPlayerForm(Player $player = null, $action = null)
     {
-        if($action === null)
-        {
+        if ($action === null) {
             $action = $this->generateUrl("loki.tuo.player.add");
         }
         return  $this->createForm(PlayerType::class, $player, [

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "07a08d33432eff56574e8257fd7c1bc7",
-    "content-hash": "ff4480edc7e0284824a5c058cd70f42b",
+    "hash": "7b1d33797d52636efef1ad52e0425396",
+    "content-hash": "f8f39b49734d3d25caafcd70feb2f9bd",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2075,6 +2075,53 @@
                 "framework"
             ],
             "time": "2016-10-27 02:38:53"
+        },
+        {
+            "name": "tightenco/collect",
+            "version": "v5.3.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tightenco/collect.git",
+                "reference": "bd8b80d4c8f7cc61dc150ab2f01a98dca04b0f7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tightenco/collect/zipball/bd8b80d4c8f7cc61dc150ab2f01a98dca04b0f7c",
+                "reference": "bd8b80d4c8f7cc61dc150ab2f01a98dca04b0f7c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.4",
+                "phpunit/phpunit": "~4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Illuminate/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "Illuminate\\": "src/Illuminate"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "Collect - Illuminate Collections as a separate package.",
+            "keywords": [
+                "collection",
+                "laravel"
+            ],
+            "time": "2016-11-18 16:30:02"
         },
         {
             "name": "twig/twig",
