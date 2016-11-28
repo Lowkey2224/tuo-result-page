@@ -50,11 +50,13 @@
                         <li {% if currentPath starts with '/import/' %} class="active" {% endif %}><a href="{{ path('loki.tuo.import.index') }}">Imports</a></li>
                         <li {% if currentPath starts with '/user/' %} class="active" {% endif %}><a href="{{ path('loki.user.user.index') }}">Users</a></li>
                     {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li>
                         <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal" style="padding-top: 10px">
                             Upload Sim Result
                         </button>
                     </li>
+                    {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -81,9 +83,10 @@
         </div><!-- /.container-fluid -->
     </nav>
     <div style="padding-top: 70px;">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
         {{ render(controller("LokiTuoResultBundle:Simulation:uploadForm")) }}
-
+{% endif %}
     </div>
 
     {% for flashMessage in app.session.flashbag.get('error') %}
