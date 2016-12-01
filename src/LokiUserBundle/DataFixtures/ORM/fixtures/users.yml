@@ -1,0 +1,8 @@
+LokiUserBundle\Entity\User:
+    user_{foo, bar, baz}:
+        username (unique): <current()>
+        email (unique): <current()>@bar.baz
+        plainpassword: <current()>
+        enabled: true
+        roles: [ROLE_SUPERADMIN]
+        salt: <current()>

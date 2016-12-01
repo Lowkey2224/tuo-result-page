@@ -2,19 +2,15 @@
 
 namespace LokiTuoResultBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends \AbstractControllerTest
 {
     public function testIndex()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'Loki',
-            'PHP_AUTH_PW'   => 'wus3ldus3l',
-        ));
-
-        $crawler = $client->request('GET', '/');
-
+        $client = $this->loginAs();
+        $client->request( 'GET', '/');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertContains('Create Simulation Script', $client->getResponse()->getContent());
     }
 }

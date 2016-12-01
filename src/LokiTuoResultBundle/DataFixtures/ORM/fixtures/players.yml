@@ -1,0 +1,4 @@
+LokiTuoResultBundle\Entity\Player:
+    player-loki:
+        name: loki
+        currentGuild: CTN
