@@ -18,6 +18,9 @@ class Simulation
     /** @var  array */
     private $structures;
 
+    /** @var  array */
+    private $enemyStructures;
+
     /** @var  String */
     private $backgroundEffect;
 
@@ -54,11 +57,23 @@ class Simulation
     public function setStructures($structures)
     {
         $this->structures = explode(",", $structures);
+        $this->structures = array_map(function($element){ return trim($element);}, $this->structures);
     }
+
+    /**
+     * @param array $enemyStructures
+     */
+    public function setEnemyStructures($enemyStructures)
+    {
+        $this->enemyStructures = explode(",", $enemyStructures);
+        $this->enemyStructures = array_map(function($element){ return trim($element);}, $this->enemyStructures);
+    }
+
 
     public function setMissions($missions)
     {
         $this->missions = explode(",", $missions);
+        $this->missions = array_map(function($element){ return trim($element);}, $this->missions);
     }
 
     public function addMission($mission)
@@ -200,4 +215,14 @@ class Simulation
     {
         return $this->structures;
     }
+
+    /**
+     * @return array
+     */
+    public function getEnemyStructures()
+    {
+        return $this->enemyStructures;
+    }
+
+
 }

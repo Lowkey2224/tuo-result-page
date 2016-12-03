@@ -50,6 +50,13 @@ class SimulationType extends AbstractType
                 'class' => 'form-control'
                 ]
             ])
+            ->add('enemyStructures', TextType::class, [
+                'label' => "Enemy Structures (comma-separated)",
+                'required' => false,
+                'attr' => [
+                'class' => 'form-control'
+                ]
+            ])
             ->add('iterations', NumberType::class, [
                 'label' => '# of Iterations',
                 'attr' => [
