@@ -59,6 +59,10 @@ class Simulation
         $this->threadCount = 4;
     }
 
+    public function getNumberOfSimulations(){
+        return count($this->getPlayers()) * count($this->getMissions());
+    }
+
     public function setStructures($structures)
     {
         $this->structures = explode(",", $structures);
@@ -168,7 +172,7 @@ class Simulation
      */
     public function setBackgroundEffect($backgroundEffect)
     {
-        $this->backgroundEffect = $backgroundEffect;
+        $this->backgroundEffect = trim($backgroundEffect);
     }
 
     /**

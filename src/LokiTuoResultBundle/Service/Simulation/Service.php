@@ -10,20 +10,24 @@ namespace LokiTuoResultBundle\Service\Simulation;
 
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class Service
 {
 
     use LoggerAwareTrait;
 
-    public function __construct()
+    private $engine;
+
+    public function __construct(EngineInterface $templating)
     {
         $this->logger = new NullLogger();
+        $this->engine = $templating;
     }
 
     public function getSimulation(Simulation $simulation)
     {
-        $service = $simulation->getScriptType() == "shell" ? new ShellService() : new BatchService();
+        $service = $simulation->getScriptType() == "shell" ? new ShellService($this->engine) : new BatchService();
         $service->setLogger($this->logger);
         return $service->getSimulation($simulation);
     }

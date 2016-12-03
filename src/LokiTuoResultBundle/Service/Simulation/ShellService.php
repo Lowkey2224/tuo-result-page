@@ -12,25 +12,34 @@ use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ShellService implements SimulationCreatorInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct()
+    private $engine;
+
+    public function __construct(EngineInterface $engine)
     {
         $this->logger = new NullLogger();
+        $this->engine = $engine;
     }
 
     public function getSimulation(Simulation $simulation)
     {
+        $result = $this->engine->render('@LokiTuoResult/Simulation/shell_script.sh.twig', [
+            'simulation' => $simulation
+        ]);
+
+        return $result;
         $script = "echo \"" . $simulation->getGuild() . " Results 1,3,6-24\"\n";
         $script .= "echo \"" . $simulation->getGuild() . " Results 1,3,6-24\" > ./result.txt\n";
         $script .= $this->getMemberCards($simulation->getPlayers());
         $script .= "\n\n";
 
-        $numberOfSims = count($simulation->getPlayers()) * count($simulation->getMissions());
-        $script .= "echo Number of sims pending : ".$numberOfSims."\n";
+
+        $script .= "echo Number of sims pending : ".$simulation->getNumberOfSimulations()."\n";
 
         $script .= $this->getExecutionLines($simulation);
 

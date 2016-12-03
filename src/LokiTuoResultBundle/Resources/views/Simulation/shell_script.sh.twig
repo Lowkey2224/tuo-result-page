@@ -1,0 +1,34 @@
+guild="{{ simulation.guild }}"
+{% for mission in simulation.missions%}
+mission{{ loop.index }}="{{ mission }}"
+{% endfor %}
+resultFile="{{ simulation.resultFile }}"
+echo "{{ simulation.guild }} Results 1,3,6-24"
+echo "CTP Results 1,3,6-24" > ./${resultFile}
+{% for player in simulation.players %}
+MemberDeck{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
+{% endfor %}
+
+myStructures="{{ simulation.structures|join(', ') }}"
+enemyStructures="{{ simulation.enemyStructures|join(', ') }}"
+iterations={{ simulation.iterations }} {# TODO use #}
+
+
+{#
+ {% if simulation.backgroundEffect %}-e "{{ simulation.backgroundEffect}} " {% endif %}
+
+#}
+
+echo Number of sims pending : {{ simulation.numberOfSimulations }}
+{% for mission in simulation.missions %}
+{% set missionIndex = loop.index %}
+{% for player in simulation.players %}
+echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against ${mission{{ missionIndex}}}"
+echo "member name acoola@12/03/16/06/02/25 against ${mission{{ missionIndex}}}" >> ./${resultFile}
+./tuo "{{ player.deck|join(', ')|raw }}" "${mission{{ missionIndex}}}" -o="$MemberDeck{{ player.id }}" yf "${myStructures}" ef "${enemyStructures}" -r climb {{ simulation.iterations }}  > ./tempRes.txt
+tail -1 ./tempRes.txt | head -1 >> ./${resultFile}
+
+
+    {% endfor %} {# End Player Loop #}
+{% endfor %} {# End mission loop #}
+
