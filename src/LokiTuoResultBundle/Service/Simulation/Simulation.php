@@ -42,6 +42,9 @@ class Simulation
     /** @var  string */
     private $scriptType;
 
+    /** @var  integer the number of Threads used for Simulation */
+    private $threadCount;
+
     public function __construct()
     {
         $this->iterations = 10000;
@@ -52,12 +55,16 @@ class Simulation
         $this->players = [];
         $this->scriptType = "shell";
         $this->structures = [];
+        $this->enemyStructures = [];
+        $this->threadCount = 4;
     }
 
     public function setStructures($structures)
     {
         $this->structures = explode(",", $structures);
-        $this->structures = array_map(function($element){ return trim($element);}, $this->structures);
+        $this->structures = array_map(function ($element) {
+            return trim($element);
+        }, $this->structures);
     }
 
     /**
@@ -66,14 +73,18 @@ class Simulation
     public function setEnemyStructures($enemyStructures)
     {
         $this->enemyStructures = explode(",", $enemyStructures);
-        $this->enemyStructures = array_map(function($element){ return trim($element);}, $this->enemyStructures);
+        $this->enemyStructures = array_map(function ($element) {
+            return trim($element);
+        }, $this->enemyStructures);
     }
 
 
     public function setMissions($missions)
     {
         $this->missions = explode(",", $missions);
-        $this->missions = array_map(function($element){ return trim($element);}, $this->missions);
+        $this->missions = array_map(function ($element) {
+            return trim($element);
+        }, $this->missions);
     }
 
     public function addMission($mission)
@@ -224,5 +235,19 @@ class Simulation
         return $this->enemyStructures;
     }
 
+    /**
+     * @return int
+     */
+    public function getThreadCount()
+    {
+        return $this->threadCount;
+    }
 
+    /**
+     * @param int $threadCount
+     */
+    public function setThreadCount($threadCount)
+    {
+        $this->threadCount = $threadCount;
+    }
 }

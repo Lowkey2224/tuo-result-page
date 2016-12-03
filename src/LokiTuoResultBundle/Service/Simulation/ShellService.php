@@ -95,6 +95,7 @@ class ShellService implements SimulationCreatorInterface
             if (!empty($simulation->getEnemyStructures())) {
                 $str.= ' ef "'. implode(", ", $simulation->getEnemyStructures()).'"';
             }
+            $str .= ' -t ' . $simulation->getThreadCount() . ' ';
             $str .= ' -r ' . $simulation->getSimType() . ' ';
             $str .= $simulation->getIterations() . ' > ./tempRes.txt' . "\n";
             $str .= 'tail -1 ./tempRes.txt | head -1 >> ./' . $simulation->getResultFile() . "\n\n";

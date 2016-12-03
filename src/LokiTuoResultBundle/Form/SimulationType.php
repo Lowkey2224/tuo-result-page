@@ -62,6 +62,11 @@ class SimulationType extends AbstractType
                 'attr' => [
                 'class' => 'form-control'
                 ]])
+            ->add('threadCount', NumberType::class, [
+                'label' => '# of Threads per Sim',
+                'attr' => [
+                'class' => 'form-control'
+                ]])
             ->add('guild', ChoiceType::class, array(
                 'label' => "Guild",
                 'choices' => $options['guilds']
