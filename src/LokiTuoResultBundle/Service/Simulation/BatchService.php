@@ -27,6 +27,12 @@ class BatchService implements SimulationCreatorInterface
     {
 
 
+        $result = $this->engine->render('@LokiTuoResult/Simulation/batch_script.twig', [
+            'simulation' => $simulation
+        ]);
+
+        return $result;
+
         $script = "echo \"" . $simulation->getGuild() . " Results 1-50\"\n";
         $script .= "setlocal EnableDelayedExpansion\n";
         $script .= "CLS\n";
