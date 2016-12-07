@@ -27,7 +27,9 @@ class Service
 
     public function getSimulation(Simulation $simulation)
     {
-        $service = $simulation->getScriptType() == "shell" ? new ShellService($this->engine) : new BatchService($this->engine);
+        $service = $simulation->getScriptType() == "shell" ?
+            new ShellService($this->engine) :
+            new BatchService($this->engine);
         $service->setLogger($this->logger);
         return $service->getSimulation($simulation);
     }

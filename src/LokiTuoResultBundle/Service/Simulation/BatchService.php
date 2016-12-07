@@ -33,6 +33,5 @@ class BatchService implements SimulationCreatorInterface
         ]);
 
         return $result;
-
     }
 }

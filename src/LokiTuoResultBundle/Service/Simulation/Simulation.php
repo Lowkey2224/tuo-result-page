@@ -59,7 +59,8 @@ class Simulation
         $this->threadCount = 4;
     }
 
-    public function getNumberOfSimulations(){
+    public function getNumberOfSimulations()
+    {
         return count($this->getPlayers()) * count($this->getMissions());
     }
 

@@ -27,6 +27,19 @@ services:
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
 
+    loki_tuo_result.persister.database:
+        class: LokiTuoResultBundle\Service\Persister\DatabasePersister
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    loki_tuo_result.persister.null:
+        class: LokiTuoResultBundle\Service\Persister\NullPersister
+
+    loki_tuo_result.battlegroundeffect.reader:
+        class: LokiTuoResultBundle\Service\BattleGroundEffectReader\Service
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
     loki_tuo_result.simulation.manager:
         class: LokiTuoResultBundle\Service\Simulation\Service
         arguments:
