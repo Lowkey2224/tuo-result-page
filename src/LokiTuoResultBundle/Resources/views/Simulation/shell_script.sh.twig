@@ -1,6 +1,6 @@
 guild="{{ simulation.guild }}"
 {% for mission in simulation.missions%}
-mission{{ loop.index }}="{{ mission }}"
+mission{{ loop.index }}="{{ mission | raw}}"
 {% endfor %}
 resultFile="{{ simulation.resultFile }}"
 echo "{{ simulation.guild }} Results 1,3,6-24"
