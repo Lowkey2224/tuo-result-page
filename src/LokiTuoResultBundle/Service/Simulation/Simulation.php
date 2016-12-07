@@ -8,6 +8,7 @@
 
 namespace LokiTuoResultBundle\Service\Simulation;
 
+use LokiTuoResultBundle\Entity\BattleGroundEffect;
 use LokiTuoResultBundle\Entity\Player;
 
 class Simulation
@@ -21,7 +22,7 @@ class Simulation
     /** @var  array */
     private $enemyStructures;
 
-    /** @var  String */
+    /** @var  BattleGroundEffect */
     private $backgroundEffect;
 
     /** @var  integer */
@@ -45,11 +46,13 @@ class Simulation
     /** @var  integer the number of Threads used for Simulation */
     private $threadCount;
 
+    private $ordered;
+
     public function __construct()
     {
         $this->iterations = 10000;
         $this->simType = "climb";
-        $this->backgroundEffect = "";
+        $this->backgroundEffect = null;
         $this->resultFile = "result.txt";
         $this->guild = [];
         $this->players = [];
@@ -57,6 +60,23 @@ class Simulation
         $this->structures = [];
         $this->enemyStructures = [];
         $this->threadCount = 4;
+        $this->ordered = true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOrdered()
+    {
+        return $this->ordered;
+    }
+
+    /**
+     * @param boolean $ordered
+     */
+    public function setOrdered($ordered)
+    {
+        $this->ordered = $ordered;
     }
 
     public function getNumberOfSimulations()
@@ -121,7 +141,7 @@ class Simulation
     }
 
     /**
-     * @return String
+     * @return BattleGroundEffect
      */
     public function getBackgroundEffect()
     {
@@ -169,11 +189,11 @@ class Simulation
     }
 
     /**
-     * @param String $backgroundEffect
+     * @param BattleGroundEffect $backgroundEffect
      */
     public function setBackgroundEffect($backgroundEffect)
     {
-        $this->backgroundEffect = trim($backgroundEffect);
+        $this->backgroundEffect = $backgroundEffect;
     }
 
     /**
