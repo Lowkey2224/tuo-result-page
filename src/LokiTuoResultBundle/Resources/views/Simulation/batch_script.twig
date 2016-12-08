@@ -10,6 +10,7 @@ SET "TARGET=Result_%FILENAME%.txt"
 SET "TEMPRES=tempRes_%FILENAME%.txt"
 SET /A NBSIM=0
 SET STARTTIME=%TIME%
+
 echo "{{ simulation.guild }} Results 1,6-7,9-11,15-16,18-21,23,25,28-31,33,36-37,40-47,49-50" > %TARGET%
 
 {% for mission in simulation.missions%}
@@ -17,7 +18,9 @@ echo "{{ simulation.guild }} Results 1,6-7,9-11,15-16,18-21,23,25,28-31,33,36-37
 {% endfor %}
 
 {% for player in simulation.players %}
-    SET MemberDeck{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
+    SET Member{{ player.id }}="{{ player.name|raw }}"
+    SET Inventory{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
+    SET Deck{{ player.id }}="{{ player.deck|join(', ')|raw }}"
 {% endfor %}
 
 SET myStructures="{{ simulation.structures|join(', ') }}"
@@ -26,14 +29,16 @@ SET iterations={{ simulation.iterations }}
 
 echo Number of sims pending : {{ simulation.numberOfSimulations }}
 
+
 {% for mission in simulation.missions %}
 {% set missionIndex = loop.index %}
 {% for player in simulation.players %}
 
 echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %mission{{ missionIndex}}%"
 echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %mission{{ missionIndex}}%" >> ./ %TARGET%
-tuo.exe "{{ player.deck|join(', ')|raw }}" "%mission{{ missionIndex}}%" -o="%MemberDeck{{ player.id }}%" yf "%myStructures%" yf "%enemyStructures%" {% if not simulation.ordered %}-r{% endif %} {{ simulation.simType }} %iterations% > %TEMPRES%
-set "line="for /f "tokens=*" %%b in ('findstr Optimized %TEMPRES%') do set "line=%%b"
+tuo.exe "%Deck{{ player.id }}%" "%mission{{ missionIndex}}%" -o="%Inventory{{ player.id }}%" yf "%myStructures%" yf "%enemyStructures%" {% if not simulation.ordered %}-r{% endif %} {{ simulation.simType }} %iterations% > %TEMPRES%
+set "line="
+for /f "tokens=*" %%b in ('findstr Optimized %TEMPRES%') do set "line=%%b"
 for /f "tokens=*" %%b in ('findstr /b /l win %TEMPRES%') do set "line=%%b"
 echo %line% >> %TARGET%
 SET /A NBSIM+=1

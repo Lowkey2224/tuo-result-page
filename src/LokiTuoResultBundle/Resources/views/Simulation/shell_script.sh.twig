@@ -6,26 +6,22 @@ resultFile="{{ simulation.resultFile }}"
 echo "{{ simulation.guild }} Results 1,3,6-24"
 echo "CTP Results 1,3,6-24" > ./${resultFile}
 {% for player in simulation.players %}
-MemberDeck{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
+Member{{ player.id }}="{{ player.name|raw }}"
+Inventory{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
+Deck{{ player.id }}="{{ player.deck|join(', ')|raw }}"
 {% endfor %}
 
 myStructures="{{ simulation.structures|join(', ') }}"
 enemyStructures="{{ simulation.enemyStructures|join(', ') }}"
 iterations={{ simulation.iterations }}
 
-
-{#
- {% if simulation.backgroundEffect %}-e "{{ simulation.backgroundEffect}} " {% endif %}
-
-#}
-
 echo Number of sims pending : {{ simulation.numberOfSimulations }}
 {% for mission in simulation.missions %}
 {% set missionIndex = loop.index %}
 {% for player in simulation.players %}
-echo "member name {{ player.name | raw }}@{{ 'now'|date('m/d/y/h/i/s') }} against ${mission{{ missionIndex}}}"
-echo "member name {{ player.name | raw }@12/03/16/06/02/25 against ${mission{{ missionIndex}}}" >> ./${resultFile}
-./tuo "{{ player.deck|join(', ')|raw }}" "${mission{{ missionIndex}}}" -o="$MemberDeck{{ player.id }}" yf "${myStructures}" ef "${enemyStructures}" {% if not simulation.ordered %}-r{% endif %} {{ simulation.simType }} {{ simulation.iterations }}  > ./tempRes.txt
+echo "member name $Member{{ player.id }}@{{ 'now'|date('m/d/y/h/i/s') }} against ${mission{{ missionIndex}}}"
+echo "member name $Member{{ player.id }}@12/03/16/06/02/25 against ${mission{{ missionIndex}}}" >> ./${resultFile}
+./tuo "${Deck{{ player.id }}}" "${mission{{ missionIndex}}}" -o="$Inventory{{ player.id }}" yf "${myStructures}" ef "${enemyStructures}" {% if not simulation.ordered %}-r{% endif %} {% if simulation.backgroundEffect %}-e "{{ simulation.backgroundEffect.name}}" {% endif %} {{ simulation.simType }} {{ simulation.iterations }}  > ./tempRes.txt
 tail -1 ./tempRes.txt | head -1 >> ./${resultFile}
 
 
