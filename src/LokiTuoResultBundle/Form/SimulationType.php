@@ -113,7 +113,7 @@ class SimulationType extends AbstractType
                 'label' => "Simulation Type",
                 'choices' => [
                     'climb' => "climb",
-                    'raid' => "raid",
+                    'raid' => "raid climb",
 //                    'No Guild' => null,
                 ], 'attr' => [
                     'class' => 'form-control'
