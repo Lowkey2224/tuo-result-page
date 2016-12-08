@@ -3,8 +3,8 @@ guild="{{ simulation.guild }}"
 mission{{ loop.index }}="{{ mission | raw}}"
 {% endfor %}
 resultFile="{{ simulation.resultFile }}"
-echo "{{ simulation.guild }} Results 1,3,6-24"
-echo "CTP Results 1,3,6-24" > ./${resultFile}
+echo "${guild} Results 1,3,6-24"
+echo "${guild} Results 1,3,6-24" > ./${resultFile}
 {% for player in simulation.players %}
 Member{{ player.id }}="{{ player.name|raw }}"
 Inventory{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
