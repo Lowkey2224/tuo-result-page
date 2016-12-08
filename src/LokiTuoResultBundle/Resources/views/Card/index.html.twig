@@ -9,12 +9,12 @@
         {% endfor %}
     </h3>
     {% for letter, cards in cardsArray %}
-        <h1 id="{{ letter }}">{{ letter }} <small><a href="#top">back to top</a> </small></h1>
+        <h1 id="{{ letter }}">{{ letter }} <small><a href="#top">{% trans %}Back to top{% endtrans %}</a> </small></h1>
         {% for card in cards %}
             {{ card.name }}<br/>
         {% endfor %}
     {% endfor %}
     <br/>
-    Total Card count {{ count }}.<br/>
-    <a href="#top">back to top</a>
+    {% trans %}TotalCardCount{% endtrans %} {{ count }}.<br/>
+    <a href="#top">{% trans %}Back to top{% endtrans %}</a>
 {% endblock %}

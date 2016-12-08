@@ -9,6 +9,7 @@
 namespace LokiTuoResultBundle\Service\OwnedCards;
 
 use Doctrine\ORM\EntityManager;
+use Illuminate\Support\Collection;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
@@ -110,5 +111,20 @@ class Service
         }
         $this->em->flush();
         return count($oldCards);
+    }
+
+    public function deckToSpreadsheetFormat(Player $player)
+    {
+        $ocs = new Collection($player->getOwnedCards());
+        $deck = $ocs->filter(function (OwnedCard $oc) {
+            return $oc->getAmountInDeck()>0;
+        });
+        return $deck->map(", ");
+    }
+
+    public function ownedCardToSpreadsheetFormat(Player $player)
+    {
+        $ocs = new Collection($player->getOwnedCards());
+        return $ocs->map("\n");
     }
 }

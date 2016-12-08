@@ -27,13 +27,33 @@ services:
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
 
-    loki_tuo_result.simulation.manager:
-        class: LokiTuoResultBundle\Service\Simulation\Service
+    loki_tuo_result.persister.database:
+        class: LokiTuoResultBundle\Service\Persister\DatabasePersister
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
 
-    loki_tuo_result.user.manager:
-        class: LokiTuoResultBundle\Service\UserService\Service
+    loki_tuo_result.persister.null:
+        class: LokiTuoResultBundle\Service\Persister\NullPersister
+
+    loki_tuo_result.battlegroundeffect.reader:
+        class: LokiTuoResultBundle\Service\BattleGroundEffectReader\Service
         arguments:
-            guilds: "%guilds%"
+            entityManager: "@doctrine.orm.entity_manager"
+
+    loki_tuo_result.simulation.manager:
+        class: LokiTuoResultBundle\Service\Simulation\Service
+        arguments:
+            twig: '@templating'
         #arguments: ["@service_id", "plain_value", %parameter%]
+
+    loki_tuo_result.password_resetting:
+        class: LokiTuoResultBundle\EventListener\RegistrationListener
+        arguments: ['@router']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.exception_listener:
+        class: LokiTuoResultBundle\EventListener\LocaleListener
+        arguments: ['%kernel.default_locale%']
+        tags:
+            - { name: kernel.event_subscriber }

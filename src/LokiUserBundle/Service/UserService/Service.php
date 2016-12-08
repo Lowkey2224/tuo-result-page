@@ -6,11 +6,11 @@
  * Time: 12:51
  */
 
-namespace LokiTuoResultBundle\Service\UserService;
+namespace LokiUserBundle\Service\UserService;
 
+use LokiUserBundle\Entity\User;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Symfony\Component\Security\Core\User\User;
 
 class Service
 {
@@ -20,10 +20,15 @@ class Service
      * @var array
      */
     private $guilds;
+    /**
+     * @var array
+     */
+    private $registrationCodes;
 
-    public function __construct(array $guilds)
+    public function __construct(array $guilds, array $registrationCodes)
     {
         $this->guilds = $guilds;
+        $this->registrationCodes = $registrationCodes;
         $this->logger = new NullLogger();
     }
 
@@ -44,10 +49,21 @@ class Service
 
     public function canUserAccess(User $user, $guildNeeded)
     {
+
         if ($this->isAdmin($user)) {
             return true;
         }
-        return in_array($guildNeeded, $this->getGuildsForUser($user));
+        return true;
+        //Now everyone can access
+//        return in_array($guildNeeded, $this->getGuildsForUser($user));
+    }
+
+    public function isRegistrationCodeValid($code)
+    {
+        if (empty($this->registrationCodes)) {
+            return true;
+        }
+        return in_array($code, $this->registrationCodes);
     }
 
     private function isAdmin(User $user)

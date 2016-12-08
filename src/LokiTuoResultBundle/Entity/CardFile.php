@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="card_file")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardFileRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class CardFile extends AbstractBaseEntity
 {

@@ -18,4 +18,5 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    guilds: ['CTP', 'CNS']
+    guilds: ['CTP', 'CNS', 'CTN']
+    registration_codes: []

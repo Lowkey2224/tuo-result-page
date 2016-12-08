@@ -15,7 +15,7 @@ class OwnedCardRepository extends \Doctrine\ORM\EntityRepository
 
     public function countCardsInDeckForPlayer(Player $player)
     {
-        $res =  $this->createQueryBuilder('c')
+        $res = $this->createQueryBuilder('c')
             ->select('sum(c.amountInDeck)')
             ->where('c.player =  :player')
             ->andWhere('c.amountInDeck > 0')
@@ -23,5 +23,18 @@ class OwnedCardRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
         return $res[0][1];
+    }
+
+    public function getLastUpdatedDate()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select(['max(c.updatedAt) as updated', 'player.id'])
+            ->join('c.player', 'player')
+//            ->select('c.player_id as playerId')
+//            ->where('c.player = :player')
+//            ->setParameter('player', $player)
+            ->groupBy('c.player');
+        return $qb->getQuery()
+            ->getArrayResult();
     }
 }

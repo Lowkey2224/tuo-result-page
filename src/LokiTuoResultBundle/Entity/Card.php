@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="card")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Card extends AbstractBaseEntity
 {
@@ -86,7 +87,6 @@ class Card extends AbstractBaseEntity
             }
             $str .= " (".Card::getFactionName($this->getRace()).")";
         } catch (\Exception $ex) {
-            var_dump($this);
             echo $ex->getMessage() . "\n";
             echo $ex->getTraceAsString();
             $str = "";

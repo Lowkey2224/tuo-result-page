@@ -1,5 +1,12 @@
+loki_user:
+    resource: "@LokiUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 loki_tuo_result:
     resource: "@LokiTuoResultBundle/Controller/"
     type:     annotation
     prefix:   /
 
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

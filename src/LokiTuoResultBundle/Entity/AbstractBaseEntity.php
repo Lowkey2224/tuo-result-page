@@ -13,10 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class AbstractBaseEntity
  * @package LokiTuoResultBundle\Entity
- * @ORM\HasLifecycleCallbacks()
  */
 abstract class AbstractBaseEntity
 {
+
+    public function getClassName()
+    {
+        return static::class;
+    }
 
     /**
      * @var int
@@ -32,21 +36,21 @@ abstract class AbstractBaseEntity
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
-    protected $created_at;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    protected $updated_at;
+    protected $updatedAt;
 
     /**
      * Set createdAt
      *
      * @ORM\PrePersist
      */
-    public function setCreatedAt()
+    public function setCreatedAtValue()
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
@@ -57,7 +61,7 @@ abstract class AbstractBaseEntity
      *
      * @ORM\PreUpdate
      */
-    public function setUpdatedAt()
+    public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTime();
     }
@@ -83,7 +87,7 @@ abstract class AbstractBaseEntity
      */
     public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
@@ -91,6 +95,6 @@ abstract class AbstractBaseEntity
      */
     public function getUpdatedAt()
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 }

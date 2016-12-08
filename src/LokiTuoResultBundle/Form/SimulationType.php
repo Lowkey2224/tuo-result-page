@@ -8,10 +8,13 @@
 
 namespace LokiTuoResultBundle\Form;
 
+use LokiTuoResultBundle\Entity\BattleGroundEffect;
 use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Repository\BattleGroundEffectRepository;
 use LokiTuoResultBundle\Repository\PlayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,6 +28,10 @@ class SimulationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $options['guilds'] = $this->transformGuilds($options['guilds']);
+
+
         $builder
             ->add('missions', TextareaType::class, [
                 'label' => "Missions (comma-separated)",
@@ -32,9 +39,18 @@ class SimulationType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('backgroundeffect', TextType::class, [
+            ->add('backgroundeffect', EntityType::class, [
+                'class' => 'LokiTuoResultBundle\Entity\BattleGroundEffect',
                 'label' => "Background Effect (leave empty if none)",
                 'required' => false,
+                'choice_label' => function(BattleGroundEffect $bge) {
+                    return $bge->getName()." (".$bge->getDescription().")";
+                },
+                'multiple' => false,
+                'query_builder' => function (BattleGroundEffectRepository $br) {
+                    return $br->createQueryBuilder('p')
+                        ->orderBy('p.category', 'ASC');
+                },
                 'attr' => [
                 'class' => 'form-control'
                 ]
@@ -46,18 +62,27 @@ class SimulationType extends AbstractType
                 'class' => 'form-control'
                 ]
             ])
+            ->add('enemyStructures', TextType::class, [
+                'label' => "Enemy Structures (comma-separated)",
+                'required' => false,
+                'attr' => [
+                'class' => 'form-control'
+                ]
+            ])
             ->add('iterations', NumberType::class, [
                 'label' => '# of Iterations',
                 'attr' => [
                 'class' => 'form-control'
                 ]])
+            ->add('threadCount', NumberType::class, [
+                'label' => '# of Threads per Sim',
+                'attr' => [
+                'class' => 'form-control'
+                ]])
             ->add('guild', ChoiceType::class, array(
                 'label' => "Guild",
-                'choices' => [
-                    'Please Select your Guild...' => null,
-                    'CNS' => "CNS",
-                    'CTP' => "CTP",
-                ], 'attr' => [
+                'choices' => $options['guilds']
+                , 'attr' => [
                     'class' => 'form-control'
                 ]
             ))
@@ -88,7 +113,7 @@ class SimulationType extends AbstractType
                 'label' => "Simulation Type",
                 'choices' => [
                     'climb' => "climb",
-                    'raid' => "raid",
+                    'raid' => "raid climb",
 //                    'No Guild' => null,
                 ], 'attr' => [
                     'class' => 'form-control'
@@ -104,6 +129,13 @@ class SimulationType extends AbstractType
                     'class' => 'form-control'
                 ]
             ))
+            ->add('ordered', CheckboxType::class, array(
+                'label' => "your deck Ordered",
+                'required' => false,
+                'attr' => [
+//                    'class' => 'form-control'
+                ]
+            ))
             ->add('save', SubmitType::class, [
                 'label' => "Generate Script",
                 'attr' => [
@@ -113,11 +145,25 @@ class SimulationType extends AbstractType
             ]);
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'LokiTuoResultBundle\Service\Simulation\Simulation',
+            'guilds' => [
+                'Please Select your Guild...' => null,
+            ],
         ));
+    }
+
+    private function transformGuilds(array $guilds)
+    {
+        $return = ['Please Select your Guild...' => null];
+        foreach ($guilds as $guild) {
+            $return[$guild] = $guild;
+        }
+        return $return;
     }
 }

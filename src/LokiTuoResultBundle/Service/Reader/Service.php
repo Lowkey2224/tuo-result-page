@@ -64,17 +64,24 @@ class Service
         }
         $count = 0;
         foreach ($files as $file) {
-            $this->logger->info("Using File with ID " . $file->getId() . " for Import");
-            $content = explode("\n", $file->getContent());
-            $transformed = $this->transformContent($content);
-            $this->logger->info("Importing Result for Guild " . $transformed['guild']);
-            $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-            $this->logger->info(count($models) . " were Saved");
-            $count += count($models);
-            $file->setStatus(ResultFile::STATUS_IMPORTED);
+            try {
+                $this->logger->info("Using File with ID " . $file->getId() . " for Import");
+                $content = explode("\n", $file->getContent());
+                $transformed = $this->transformContent($content);
+                $this->logger->info("Importing Result for Guild " . $transformed['guild']);
+                $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
+                $this->logger->info(count($models) . " were Saved");
+                $count += count($models);
+                $file->setGuild($transformed['guild']);
+                $file->setStatus(ResultFile::STATUS_IMPORTED);
+                $file->setMissions(implode(", ", $transformed['missions']));
+            } catch (Exception $ex) {
+                $file->setStatus(ResultFile::STATUS_ERROR);
+            }
             $this->em->persist($file);
-            $this->em->flush();
         }
+        $this->em->flush();
+
         return $count;
     }
 
@@ -91,40 +98,36 @@ class Service
     private function transformContent($content)
     {
 
-        $firstLine = true;
-        $count = 0;
+        $count = -1;
         $result = ['guild' => $this->getGuildName($content)];
         //THrow away first line
         array_shift($content);
 
         foreach ($content as $line) {
-            if ($firstLine) {
-                if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
-                    $name = $name[1];
-                    $result['result'][$count]['playername'] = $name;
-                }
-                if (preg_match('/against (.*)/', $line, $name) === 1) {
-                    $name = $name[1];
-                    $result['result'][$count]['mission'] = $name;
-                }
-                $firstLine = false;
-            } else {
-                $result['result'][$count]['simType'] = 'Mission';
-                if (preg_match('/(\d?\d.?\d?\d?):/', $line, $name) === 1) {
-                    $name = $name[1];
-                    $name = (int)($name * 10);
-                    $result['result'][$count]['percent'] = $name;
-                }
-                if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
-                    $name = $name[1];
-                    $cards = $this->transformToCardNames(explode(", ", $name));
-                    $result['result'][$count]['deck'] = $cards;
-                }
-                if (preg_match('/(\d\d?% win)/', $line) === 1) {
-                    $result['result'][$count]['simType'] = 'Raid';
-                }
-                $firstLine = true;
+            if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
                 $count++;
+                $name = $name[1];
+                $result['result'][$count]['playername'] = $name;
+            }
+            if (preg_match('/against (.*)/', $line, $name) === 1) {
+                $name = $name[1];
+                $result['result'][$count]['mission'] = $name;
+                $result['missions'][$name] = $name;
+            }
+
+                $result['result'][$count]['simType'] = 'Mission';
+            if (preg_match('/(\d?\d.?\d?\d?):/', $line, $name) === 1) {
+                $name = $name[1];
+                $name = (int)($name * 10);
+                $result['result'][$count]['percent'] = $name;
+            }
+            if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
+                $name = $name[1];
+                $cards = $this->transformToCardNames(explode(", ", $name));
+                $result['result'][$count]['deck'] = $cards;
+            }
+            if (preg_match('/(\d\d?% win)/', $line) === 1) {
+                $result['result'][$count]['simType'] = 'Raid';
             }
         }
         return $result;
@@ -190,6 +193,7 @@ class Service
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
+            $this->logger->debug("Saving Result for Player ". $player->getName());
         }
 
         $this->em->flush();
@@ -256,6 +260,8 @@ class Service
     {
         $guild = [];
         if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
+            //Special case where CNS had the Name CTF seems legacy now
+            //FIXME
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
             var_dump($guild, $content[0]);

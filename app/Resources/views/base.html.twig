@@ -14,25 +14,86 @@
     <link rel="stylesheet" type="text/css"
           href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
 <div class="container" role="main">
-    <div class="row">
-        <h2>
-            Carry No Saints & Carry The Phil Simulation Page
-            <a href="{{ path('tuo.index') }}">
-                <small class="pull left">back to Landingpage</small>
-            </a>
-        </h2>
+    {% set currentPath = path(app.request.attributes.get('_route'),
+    app.request.attributes.get('_route_params')) %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('tuo.index') }}">CTP/CNS SImulations</a>
+            </div>
+
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li {% if currentPath starts with '/simulation/' %} class="active" {% endif %}><a
+                                href="{{ path('tuo.index') }}">Simulations <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li {% if currentPath starts with '/player/' %} class="active" {% endif %}><a
+                                href="{{ path('loki.tuo.player.all.show') }}">Players</a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li {% if currentPath starts with '/import/' %} class="active" {% endif %}><a href="{{ path('loki.tuo.import.index') }}">Imports</a></li>
+                        <li {% if currentPath starts with '/user/' %} class="active" {% endif %}><a href="{{ path('loki.user.user.index') }}">Users</a></li>
+                    {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li>
+                        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal" style="padding-top: 10px">
+                            Upload Sim Result
+                        </button>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">Welcome, {{ app.user }}<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                {#<li><a href="#">Another action</a></li>#}
+                                {#<li><a href="#">Something else here</a></li>#}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+                                {#<li><a href="#">Separated link</a></li>#}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}">Login<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li><a href="{{ path('fos_user_registration_register') }}">Register<span class="sr-only">(current)</span></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div style="padding-top: 70px;">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+        {{ render(controller("LokiTuoResultBundle:Simulation:uploadForm")) }}
+{% endif %}
     </div>
+
     {% for flashMessage in app.session.flashbag.get('error') %}
-        <div class="alert alert-error alert-dismissible" role="alert">
+        <div class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-            <strong>Success!</strong> {{ flashMessage }}
+            <strong>Error!</strong> {{ flashMessage }}
         </div>
     {% endfor %}
     {% for flashMessage in app.session.flashbag.get('success') %}
@@ -50,13 +111,14 @@
 <script src="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.data-table').DataTable({
             paging: false,
             searching: true,
-            ordering:  true
+            ordering: true
         });
     });
 </script>

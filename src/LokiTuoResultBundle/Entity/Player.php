@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\PlayerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Player extends AbstractBaseEntity
 {
@@ -81,6 +82,12 @@ class Player extends AbstractBaseEntity
         $this->results = $results;
     }
 
+    public function getDeck()
+    {
+        return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
+            return $ownedCard->getAmountInDeck() > 0;
+        });
+    }
 
     /**
      * Set name

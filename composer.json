@@ -23,12 +23,16 @@
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^2.8",
+        "symfony/monolog-bundle": "3.0.1",
         "symfony/polyfill-apcu": "^1.0",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "sensio/buzz-bundle": "^1.1"
+        "sensio/buzz-bundle": "^1.1",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "tightenco/collect": "^5.3",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "doctrine/doctrine-migrations-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -37,7 +41,10 @@
         "squizlabs/php_codesniffer": "^2.6",
         "phpmd/phpmd": "^2.4",
         "sebastian/phpcpd": "^2.0",
-        "pdepend/pdepend": "^2.2"
+        "pdepend/pdepend": "^2.2",
+        "laravel/homestead": "^3.0",
+        "fzaninotto/faker": "^1.6",
+        "nelmio/alice": "^2.1"
     },
     "scripts": {
         "post-install-cmd": [

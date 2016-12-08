@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="Back_to_top">
+                <source>Back to top</source>
+                <target>Back to top</target>
+            </trans-unit>
+            <trans-unit id="TotalCardCount">
+                <source>TotalCardCount</source>
+                <target>Total Amount of Cards</target>
+            </trans-unit>
+            <trans-unit id="CNS">
+                <source>CNS</source>
+                <target>CNS</target>
+            </trans-unit>
+            <trans-unit id="CTP">
+                <source>CTP</source>
+                <target>CTP</target>
+            </trans-unit>
+            <trans-unit id="CTN">
+                <source>CTN</source>
+                <target>CTN</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

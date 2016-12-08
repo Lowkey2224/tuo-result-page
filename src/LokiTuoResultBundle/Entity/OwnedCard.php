@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     fields={"level", "amount", "player", "card", "inCurrentDeck"},
  *     message="Dieser spieler hat diesen Eintrag bereits."
  * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class OwnedCard extends AbstractBaseEntity
 {
