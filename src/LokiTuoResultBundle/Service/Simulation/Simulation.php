@@ -63,6 +63,18 @@ class Simulation
         $this->ordered = true;
     }
 
+    public function getName(int $i = 0):string
+    {
+        $bge = $this->getBackgroundEffect();
+        $missions = $this->getMissions();
+        $str = $missions[$i];
+        if($bge)
+        {
+            $str.= " with ".$bge->getName();
+        }
+        return $str;
+    }
+
     /**
      * @return boolean
      */
