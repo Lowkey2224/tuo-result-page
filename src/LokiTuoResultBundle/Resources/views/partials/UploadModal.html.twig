@@ -1,5 +1,7 @@
 {#{% if is_granted('ROLE_ADMIN') %}#}
 <!-- Modal -->
+{% trans_default_domain "LokiTuoResultBundle" %}
+
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -20,7 +22,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    {{ "form.close"|trans}}
+                </button>
                 {{ form_widget(form.submit) }}
                 {{ form_end(form) }}
             </div>

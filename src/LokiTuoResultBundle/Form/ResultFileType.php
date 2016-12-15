@@ -20,16 +20,17 @@ class ResultFileType extends AbstractType
     {
         $builder->add('file', FileType::class, [
             'label' => 'form.resultfile.resultfile',
-            'translation_domain' => 'LokiTuoResultBundle.forms',
+            'translation_domain' => 'LokiTuoResultBundle',
             'attr' => ['class' => '']
         ])
             ->add('comment', TextType::class, [
                 'label' => 'form.resultfile.comment',
-                'translation_domain' => 'LokiTuoResultBundle.forms',
+                'translation_domain' => 'LokiTuoResultBundle',
                 'attr' => ['class' => 'form-control']
             ])
             ->add('submit', SubmitType::class, [
-                'translation_domain' => 'LokiTuoResultBundle.forms',
+                'translation_domain' => 'LokiTuoResultBundle',
+                'label' => 'form.save',
                 'attr' => ['class' => 'btn btn-success']
             ]);
     }

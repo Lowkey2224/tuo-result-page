@@ -20,13 +20,13 @@ class MissionType extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'label' => 'form.mission.name',
-            'translation_domain' => 'LokiTuoResultBundle.forms',
+            'translation_domain' => 'LokiTuoResultBundle',
             'attr' => [
                 'class' => 'form-control',
             ]])
             ->add('type', TextType::class, [
             'label' => 'form.mission.type',
-            'translation_domain' => 'LokiTuoResultBundle.forms',
+            'translation_domain' => 'LokiTuoResultBundle',
             'attr' => [
                 'class' => 'form-control',
             ]])

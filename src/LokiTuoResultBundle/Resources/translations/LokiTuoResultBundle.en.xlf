@@ -30,6 +30,42 @@
                 <source>form.mission.type</source>
                 <target>Missiontype</target>
             </trans-unit>
+            <trans-unit id="CNS">
+                <source>CNS</source>
+                <target>CNS</target>
+            </trans-unit>
+            <trans-unit id="CTP">
+                <source>CTP</source>
+                <target>CTP</target>
+            </trans-unit>
+            <trans-unit id="CTN">
+                <source>CTN</source>
+                <target>CTN</target>
+            </trans-unit>
+            <trans-unit id="XXX">
+                <source>XXX</source>
+                <target>Testguild</target>
+            </trans-unit>
+            <trans-unit id="selectGuild">
+                <source>Please Select your Guild...</source>
+                <target>Please Select your Guild...</target>
+            </trans-unit>
+            <trans-unit id="Back_to_top">
+                <source>BackToTop</source>
+                <target>Back to top</target>
+            </trans-unit>
+            <trans-unit id="TotalCardCount">
+                <source>TotalCardCount</source>
+                <target>Total Amount of Cards</target>
+            </trans-unit>
+            <trans-unit id="form.save">
+                <source>form.save</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="form.close">
+                <source>form.close</source>
+                <target>Close</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
