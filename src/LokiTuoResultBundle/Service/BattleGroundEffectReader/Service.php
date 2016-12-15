@@ -49,16 +49,13 @@ class Service
         $repo = $this->em->getRepository('LokiTuoResultBundle:BattleGroundEffect');
         foreach ($models as $battleGroundEffect) {
             $old = $repo->findOneBy(['name' => $battleGroundEffect->getName()]);
-            if($old) {
+            if ($old) {
                 $old->setCategory($battleGroundEffect->getCategory());
                 $old->setDescription($battleGroundEffect->getDescription());
                 $this->em->persist($old);
-            }else {
+            } else {
                 $this->em->persist($battleGroundEffect);
-
             }
-
-
         }
         $this->em->flush();
 //        return $persister->persistObjects($models, ['name']);

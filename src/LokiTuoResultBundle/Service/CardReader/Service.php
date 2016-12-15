@@ -47,7 +47,6 @@ class Service
                 } else {
                     $this->logger->info("File " . $fileName . " exists already in Database");
                 }
-
             } else {
                 $this->logger->warning("File does not exist: " . $fileName);
             }

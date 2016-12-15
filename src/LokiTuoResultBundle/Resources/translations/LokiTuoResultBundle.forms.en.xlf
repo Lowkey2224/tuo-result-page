@@ -22,6 +22,14 @@
                 <source>form.player.guild</source>
                 <target>Guild</target>
             </trans-unit>
+            <trans-unit id="form.mission.name">
+                <source>form.mission.name</source>
+                <target>Missionname (with BGE)</target>
+            </trans-unit>
+            <trans-unit id="form.mission.type">
+                <source>form.mission.type</source>
+                <target>Missiontype</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

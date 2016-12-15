@@ -8,17 +8,18 @@
 
 namespace LokiTuoResultBundle\Controller;
 
-use LokiTuoResultBundle\Entity\Mission;
+use LokiTuoResultBundle\Form\MissionType;
 use LokiTuoResultBundle\Form\ResultFileType;
 use LokiTuoResultBundle\Form\SimulationType;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 
 /**
  * Class SimulationController
@@ -51,7 +52,7 @@ class SimulationController extends Controller
 
             $res = $this->get('loki_tuo_result.simulation.manager')->getSimulation($sim);
 //            echo $res;
-            $filename = $sim->getScriptType() == "shell" ?"mass_sim.sh":"mass_sim.bat";
+            $filename = $sim->getScriptType() == "shell" ? "mass_sim.sh" : "mass_sim.bat";
             return new Response($res, 200, [
                 'content-type' => 'text/text',
                 'cache-control' => 'private',
@@ -68,23 +69,70 @@ class SimulationController extends Controller
      */
     public function indexAction()
     {
-        $user = $this->getUser();
-
-        $form = $this->getUploadForm();
-
         $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-
         $groupedBy = $missionRepo->findAll();
-
 
         return $this->render(
             'LokiTuoResultBundle:Default:index.html.twig',
             [
-                'missions' => $groupedBy,
-                'user' => $user,
-                'form' => $form->createView()
+                'missions' => $groupedBy
             ]
         );
+    }
+
+    /**
+     * @Route("/edit/{missionId}",name="loki.tuo.mission.edit", methods={"GET","POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     * @param int $missionId
+     * @return Response
+     */
+    public function editMissionAction(Request $request, int $missionId)
+    {
+        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
+        $mission = $missionRepo->find($missionId);
+        if (!$mission) {
+            throw  $this->createNotFoundException("Mission not Found");
+        }
+
+        $options = [
+//            'guilds' => $this->getParameter('guilds'),
+        ];
+        $form = $this->createForm(MissionType::class, $mission, $options);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($mission);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('tuo.index');
+        }
+
+
+        return $this->render(
+            'LokiTuoResultBundle:Simulation:editMission.html.twig',
+            [
+                'mission' => $mission,
+                'form' => $form->createView(),
+            ]
+        );
+    }
+
+
+    /**
+     * @Route("/delete/{missionId}",name="loki.tuo.mission.delete")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @param int $missionId
+     * @return Response
+     */
+    public function deleteMissionAction(int $missionId)
+    {
+        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
+        $mission = $missionRepo->find($missionId);
+        if (!$mission) {
+            throw  $this->createNotFoundException("Mission not Found");
+        }
+
+        $this->getDoctrine()->getManager()->remove($mission);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('tuo.index');
     }
 
     /**
@@ -133,7 +181,6 @@ class SimulationController extends Controller
     }
 
     /**
-     * @return int
      * @Route("/upload", name="loki.tuo.result.upload", methods={"POST"})
      * @Security("has_role('ROLE_USER')")
      */

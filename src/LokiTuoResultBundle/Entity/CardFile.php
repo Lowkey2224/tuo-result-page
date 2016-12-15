@@ -145,6 +145,4 @@ class CardFile extends AbstractBaseEntity
     {
         $this->checksum = $checksum;
     }
-
-
 }

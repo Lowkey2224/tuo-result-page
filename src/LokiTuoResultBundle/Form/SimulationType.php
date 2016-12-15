@@ -43,7 +43,7 @@ class SimulationType extends AbstractType
                 'class' => 'LokiTuoResultBundle\Entity\BattleGroundEffect',
                 'label' => "Background Effect (leave empty if none)",
                 'required' => false,
-                'choice_label' => function(BattleGroundEffect $bge) {
+                'choice_label' => function (BattleGroundEffect $bge) {
                     return $bge->getName()." (".$bge->getDescription().")";
                 },
                 'multiple' => false,

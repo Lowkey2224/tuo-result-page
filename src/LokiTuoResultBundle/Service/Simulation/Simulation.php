@@ -68,8 +68,7 @@ class Simulation
         $bge = $this->getBackgroundEffect();
         $missions = $this->getMissions();
         $str = $missions[$i];
-        if($bge)
-        {
+        if ($bge) {
             $str.= " with ".$bge->getName();
         }
         return $str;
