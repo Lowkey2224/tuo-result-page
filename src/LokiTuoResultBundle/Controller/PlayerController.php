@@ -258,6 +258,9 @@ class PlayerController extends Controller
 
 
         $allCards = $player->getOwnedCards();
+        $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem){
+            return $elem->getCard()->getName();
+        });
         $deck = $allCards->filter(function (OwnedCard $item) {
             return $item->getAmountInDeck() > 0;
         });
