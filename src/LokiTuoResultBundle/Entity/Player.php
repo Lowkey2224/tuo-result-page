@@ -41,6 +41,12 @@ class Player extends AbstractBaseEntity
      */
     private $currentGuild;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
@@ -143,5 +149,21 @@ class Player extends AbstractBaseEntity
     public function setCurrentGuild($currentGuild)
     {
         $this->currentGuild = $currentGuild;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
     }
 }
