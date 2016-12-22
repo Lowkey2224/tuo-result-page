@@ -51,6 +51,7 @@ class Player extends AbstractBaseEntity
     {
         $this->results = new ArrayCollection();
         $this->ownedCards = new ArrayCollection();
+        $this->active = true;
     }
 
     public function __toString()
