@@ -36,12 +36,12 @@ echo Number of sims pending : {{ simulation.numberOfSimulations }}
 {% for player in simulation.players %}
 
 echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %missionName{{ missionIndex}}%"
-echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %missionName{{ missionIndex}}%" >> ./ %TARGET%
-tuo.exe "%Deck{{ player.id }}%" "%mission{{ missionIndex}}%" -o="%Inventory{{ player.id }}%" yf "%myStructures%" yf "%enemyStructures%" {% if simulation.ordered %}-r{% endif %} {% if simulation.backgroundEffect %}-e "{{ simulation.backgroundEffect.name}}"{% endif %} {{ simulation.simType }} %iterations% > %TEMPRES%
+echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %missionName{{ missionIndex}}%" >> ./%TARGET%
+tuo.exe %Deck{{ player.id }}% %mission{{ missionIndex}}% -o=%Inventory{{ player.id }}% yf %myStructures% yf %enemyStructures% {% if simulation.ordered %}-r{% endif %} {% if simulation.backgroundEffect %}-e {{ simulation.backgroundEffect.name}}{% endif %} {{ simulation.simType }} %iterations% > %TEMPRES%
 set "line="
 for /f "tokens=*" %%b in ('findstr Optimized %TEMPRES%') do set "line=%%b"
 for /f "tokens=*" %%b in ('findstr /b /l win %TEMPRES%') do set "line=%%b"
-echo %line% >> %TARGET%
+echo %line% >> ./%TARGET%
 SET /A NBSIM+=1
 
 {% endfor %} {# End Player Loop #}
