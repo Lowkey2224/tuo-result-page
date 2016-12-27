@@ -10,6 +10,7 @@ use LokiTuoResultBundle\Form\MassOwnedCardType;
 use LokiTuoResultBundle\Form\OwnedCardType;
 use LokiTuoResultBundle\Form\PlayerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +48,12 @@ class PlayerController extends Controller
      */
     public function listAllPlayersAction()
     {
-        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy([], ['name' => 'ASC']);
+
+        $criteria = ['active' => true];
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $criteria = [];
+        }
+        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy($criteria, ['name' => 'ASC']);
         $userManager = $this->get('loki.user.user.manager');
         $ocRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
         $coll = new Collection($ocRepo->getLastUpdatedDate());
@@ -94,11 +100,11 @@ class PlayerController extends Controller
         }
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
         //If there are more than 1 Cards in the Dack we cant add more cards
-        if ($amount> 0) {
-            if ($count>10) {
+        if ($amount > 0) {
+            if ($count > 10) {
                 return new JsonResponse(['message' => "Can't add more cards to Deck for player."], 420);
-            } elseif ((10-$count) > $amount) {
-                $amount = 10-$count;
+            } elseif ((10 - $count) > $amount) {
+                $amount = 10 - $count;
             }
         }
 
@@ -258,7 +264,7 @@ class PlayerController extends Controller
 
 
         $allCards = $player->getOwnedCards();
-        $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem){
+        $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
             return $elem->getCard()->getName();
         });
         $deck = $allCards->filter(function (OwnedCard $item) {
@@ -335,12 +341,30 @@ class PlayerController extends Controller
         return $this->redirectToRoute('loki.tuo.player.all.show');
     }
 
+    /**
+     * @Route("/{playerId}/disable", name="loki.tuo.player.disable")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @param $playerId
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function disablePlayerAction($playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$player) {
+            return new JsonResponse(['message' => 'Player not found', 404]);
+        }
+        $player->setActive(false);
+        $this->getDoctrine()->getManager()->persist($player);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('loki.tuo.player.all.show');
+    }
+
     private function getPlayerForm(Player $player = null, $action = null)
     {
         if ($action === null) {
             $action = $this->generateUrl("loki.tuo.player.add");
         }
-        return  $this->createForm(PlayerType::class, $player, [
+        return $this->createForm(PlayerType::class, $player, [
             'action' => $action,
             'method' => 'POST',
             'guilds' => $this->getParameter('guilds'),

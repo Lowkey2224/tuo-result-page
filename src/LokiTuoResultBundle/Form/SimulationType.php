@@ -44,7 +44,7 @@ class SimulationType extends AbstractType
                 'label' => "Background Effect (leave empty if none)",
                 'required' => false,
                 'choice_label' => function (BattleGroundEffect $bge) {
-                    return $bge->getName()." (".$bge->getDescription().")";
+                    return $bge->getName() . " (" . $bge->getDescription() . ")";
                 },
                 'multiple' => false,
                 'query_builder' => function (BattleGroundEffectRepository $br) {
@@ -52,37 +52,37 @@ class SimulationType extends AbstractType
                         ->orderBy('p.category', 'ASC');
                 },
                 'attr' => [
-                'class' => 'form-control'
+                    'class' => 'form-control'
                 ]
             ])
             ->add('structures', TextType::class, [
                 'label' => "Structures (comma-separated)",
                 'required' => false,
                 'attr' => [
-                'class' => 'form-control'
+                    'class' => 'form-control'
                 ]
             ])
             ->add('enemyStructures', TextType::class, [
                 'label' => "Enemy Structures (comma-separated)",
                 'required' => false,
                 'attr' => [
-                'class' => 'form-control'
+                    'class' => 'form-control'
                 ]
             ])
             ->add('iterations', NumberType::class, [
                 'label' => '# of Iterations',
                 'attr' => [
-                'class' => 'form-control'
+                    'class' => 'form-control'
                 ]])
             ->add('threadCount', NumberType::class, [
                 'label' => '# of Threads per Sim',
                 'attr' => [
-                'class' => 'form-control'
+                    'class' => 'form-control'
                 ]])
             ->add('guild', ChoiceType::class, array(
                 'label' => "Guild",
                 'choices' => $options['guilds']
-                , 'attr' => [
+            , 'attr' => [
                     'class' => 'form-control'
                 ]
             ))
@@ -101,7 +101,10 @@ class SimulationType extends AbstractType
                 'multiple' => true,
                 'query_builder' => function (PlayerRepository $pr) {
                     return $pr->createQueryBuilder('p')
-                        ->where('p.currentGuild != :empty')->setParameter('empty', "") //not empty
+                        ->where('p.currentGuild != :empty')
+                        ->where('p.active = 1')
+                        ->setParameter('empty', "")//not empty
+//                        ->setParameter('true', true)//not empty
                         ->orderBy('p.name', 'ASC');
                 },
                 'attr' => [

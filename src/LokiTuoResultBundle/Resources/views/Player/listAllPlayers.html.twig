@@ -44,6 +44,8 @@
             <th>Name</th>
             <th>Guild</th>
             <th>Last Updated</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th>Active</th>{% endif %}
             <th class="text-right">Links</th>
         </tr>
         </thead>
@@ -63,6 +65,11 @@
                         Never Updated
                     {% endif %}
                 </td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                        {{ player.active ? "active":"inactive" }}
+                    </td>
+                {% endif %}
                 <td class="text-right">
                     <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
                         <b>Cards</b>

@@ -36,6 +36,9 @@ class PlayerType extends AbstractType
             ))
             ->add('submit', SubmitType::class, [
                 'label' => 'save',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ]);
     }
 
