@@ -100,12 +100,13 @@ class SimulationType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => true,
                 'query_builder' => function (PlayerRepository $pr) {
-                    return $pr->createQueryBuilder('p')
-                        ->where('p.currentGuild != :empty')
-                        ->where('p.active = 1')
-                        ->setParameter('empty', "")//not empty
-//                        ->setParameter('true', true)//not empty
+                    $qb = $pr->createQueryBuilder('p')
+                        ->where('p.currentGuild != ?1')
+                        ->andWhere('p.active = ?2')
+                        ->setParameter(1, "")//not empty
+                        ->setParameter(2, true)//not empty
                         ->orderBy('p.name', 'ASC');
+                    return $qb;
                 },
                 'attr' => [
                     'class' => 'form-control',
