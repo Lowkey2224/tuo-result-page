@@ -8,3 +8,67 @@ LokiTuoResultBundle\Entity\Card:
         skills: [strike  1, heal Raider 1, counter 1]
         race: 2
         cardFile: '@CardFile1'
+    StonewallGarrison:
+        name: Stonewall Garrison
+        attack: 0
+        defense: 32
+        delay: 2
+        picture: raiderlady.jpg
+        skills: [evolve 2 weaken to sunder, heal all 5, weaken all 4]
+        race: 1
+        cardFile: '@CardFile1'
+    Inheritor:
+        name: Inheritor of Hope
+        attack: 6
+        defense: 30
+        delay: 1
+        picture: rightoldhoney_lv3
+        skills: [mend  7, rally  Righteous 6, flurry every 3]
+        race: 5
+        cardFile: '@CardFile1'
+    MenInt:
+        name: Menacing Interrogator
+        attack: 8
+        defense: 34
+        delay: 1
+        picture: whereistheambassador_lv1
+        skills: [avenge 8, pierce 8, berserk 5]
+        race: 2
+        cardFile: '@CardFile1'
+    Rick:
+        name: Rumbler Rickshaw
+        attack: 14
+        defense: 44
+        delay: 2
+        picture: rumblekart_lv3
+        skills: [enrage 3  8, berserk 8, flurry every 3]
+        race: 2
+        cardFile: '@CardFile1'
+    Dam:
+        name: Sinuous Dam
+        attack: 0
+        defense: 40
+        delay: 2
+        picture: xenosinewwall_lv3
+        skills: [wall, enfeeble all  6, jam 2   every 3]
+        race: 4
+        cardFile: '@CardFile1'
+    Comet:
+        name: Xebor Comet
+        attack: 10
+        defense: 44
+        delay: 1
+        picture: xenocharges_lv3
+        skills: [evade   5, enfeeble 16, strike all  4]
+        race: 4
+        cardFile: '@CardFile1'
+    Reanimator:
+        name: Xeno Reanimator
+        attack: 7
+        defense: 47
+        delay: 2
+        picture: deathmongerer_lv1
+        a:3:{s:5:"evade";s:9:"evade   7";s:6:"avenge";s:11:"avenge   17";s:6:"weaken";s:13:"weaken all  7";}
+        skills: [evade 7, avenge 17, weaken all 7]
+        race: 4
+        cardFile: '@CardFile1'
