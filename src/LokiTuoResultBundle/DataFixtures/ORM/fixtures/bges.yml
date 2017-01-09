@@ -1,0 +1,13 @@
+LokiTuoResultBundle\Entity\BattleGroundEffect:
+    Inspired:
+        name: Inspired
+        description:  Rally all 3
+        category: Guild War BGEs
+    Blightblast:
+        name: Blightblast
+        description:  Enfeeble all 3
+        category: Guild War BGEs
+    BombingRun:
+        name: Bombing Run
+        description:  Strike all 3
+        category: Guild War BGEs

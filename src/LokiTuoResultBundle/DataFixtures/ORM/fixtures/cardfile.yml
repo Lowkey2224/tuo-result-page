@@ -2,4 +2,4 @@ LokiTuoResultBundle\Entity\CardFile:
     CardFile1:
         originalFileName: TestFile1.xml
         status: 1
-        content: TestContent
+        content: "TestContent \nMultiple \nLines"

@@ -1,0 +1,11 @@
+LokiTuoResultBundle\Entity\ResultFile:
+  resultFile5:
+    status: 1
+    comment: done by fixtures
+    guild: CTN
+    content: "CTN Results 1\nmember name loki@6/2/2016/5/37/00 against iron mutant-5\nOptimized Deck: 3 units: 80.87: Malika, Stonewall Garrison, Inheritor of Hope"
+  resultFile6:
+    status: 0
+    comment: done by fixtures
+    guild: CTN
+    content: "CTN Results 1\nmember name loki@6/2/2016/5/37/00 against iron mutant-6\nOptimized Deck: 3 units: 80.87: Malika, Stonewall Garrison, Inheritor of Hope"

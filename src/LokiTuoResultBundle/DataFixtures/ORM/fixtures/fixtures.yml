@@ -1,5 +1,0 @@
-include:
-    - cardfile.yml
-    - cards.yml
-    - players.yml
-    - ownedCards.yml
