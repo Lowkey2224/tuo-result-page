@@ -4,6 +4,6 @@ LokiUserBundle\Entity\User:
         email (unique): <current()>@bar.baz
         plainpassword: <current()>
         enabled: true
-        roles: [ROLE_SUPERADMIN]
+        roles: [ROLE_ADMIN]
         salt: <current()>
         registrationCode: Fixtures

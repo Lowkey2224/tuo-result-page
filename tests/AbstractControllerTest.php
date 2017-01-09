@@ -14,7 +14,7 @@ abstract class AbstractControllerTest extends WebTestCase
 {
 
     const USER = "foo";
-    const PASSWORD_CORRECT = "qwer";
+    const PASSWORD_CORRECT = "foo";
 
 
     /**
