@@ -2,13 +2,12 @@
 
 namespace LokiTuoResultBundle\Tests\Controller;
 
-use LokiTuoResultBundle\Controller\PlayerController;
 
 class PlayerControllerTest extends \AbstractControllerTest
 {
 
     /**
-     * @covers PlayerController::listAllPlayersAction()
+     * covers PlayerController::listAllPlayersAction()
      */
     public function testListAllPlayersAction()
     {
@@ -43,7 +42,7 @@ class PlayerControllerTest extends \AbstractControllerTest
     }
 
     /**
-     * @covers PlayerController::showResultsForPlayerAction()
+     * covers LokiTuoResultBundle\Controller\PlayerController::showResultsForPlayerAction()
      */
     public function testShowResultsForPlayerAction()
     {

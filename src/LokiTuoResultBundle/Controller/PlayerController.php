@@ -30,7 +30,7 @@ class PlayerController extends Controller
     {
 
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if(!$player) {
+        if (!$player) {
             return $this->createNotFoundException("Player not Found");
         }
         if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
@@ -263,7 +263,7 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction($playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if(!$player) {
+        if (!$player) {
             return $this->createNotFoundException("Player not Found");
         }
         if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
