@@ -3,7 +3,6 @@
 namespace LokiTuoResultBundle\Controller;
 
 use Illuminate\Support\Collection;
-use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Form\MassOwnedCardType;
@@ -53,7 +52,10 @@ class PlayerController extends Controller
         if ($this->isGranted('ROLE_ADMIN')) {
             $criteria = [];
         }
-        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy($criteria, ['name' => 'ASC']);
+        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy(
+            $criteria,
+            ['name' => 'ASC']
+        );
         $userManager = $this->get('loki.user.user.manager');
         $ocRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
         $coll = new Collection($ocRepo->getLastUpdatedDate());
@@ -222,7 +224,7 @@ class PlayerController extends Controller
      *     )
      * @param Request $request
      * @param $playerId
-     * @return JsonResponse
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addMassCardsForPlayer(Request $request, $playerId)
     {
@@ -343,7 +345,7 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{playerId}/disable", name="loki.tuo.player.disable")
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_ADMIN', 'ROLE_MODERATOR')")
      * @param $playerId
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
