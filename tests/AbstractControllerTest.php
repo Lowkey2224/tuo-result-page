@@ -8,10 +8,21 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 abstract class AbstractControllerTest extends WebTestCase
 {
+
+    /** @var  ContainerInterface */
+    protected $container;
+
+    public function setUp()
+    {
+        self::bootKernel();
+
+        $this->container = self::$kernel->getContainer();
+    }
 
     const USER = "foo";
     const PASSWORD_CORRECT = "foo";

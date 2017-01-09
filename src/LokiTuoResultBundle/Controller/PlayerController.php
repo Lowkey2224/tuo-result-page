@@ -28,8 +28,11 @@ class PlayerController extends Controller
      */
     public function showResultsForPlayerAction($playerId)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
 
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if(!$player) {
+            return $this->createNotFoundException("Player not Found");
+        }
         if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
             throw new AccessDeniedHttpException();
         }
@@ -260,6 +263,9 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction($playerId)
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if(!$player) {
+            return $this->createNotFoundException("Player not Found");
+        }
         if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
             throw new AccessDeniedHttpException();
         }

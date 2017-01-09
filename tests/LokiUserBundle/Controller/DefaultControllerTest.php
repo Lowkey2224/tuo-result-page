@@ -11,8 +11,9 @@ class DefaultControllerTest extends \AbstractControllerTest
         $client = $this->loginAs(self::USER, self::PASSWORD_CORRECT);
         $this->assertContains('Welcome, '.self::USER, $client->getResponse()->getContent());
 
-        $crawler = $client->request('GET', '/user/');
+//        $crawler = $client->request('GET', '/user/');
         $client->request( 'GET', '/user/');
+
         $this->assertContains('All Users', $client->getResponse()->getContent());
     }
 

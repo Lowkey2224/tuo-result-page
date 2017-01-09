@@ -1,6 +1,6 @@
 LokiTuoResultBundle\Entity\Result:
   result1:
-    percent: 8087
+    percent: 808
     mission: "@mission1"
     player: '@player-loki'
     sourceFile: "@resultFile5"
