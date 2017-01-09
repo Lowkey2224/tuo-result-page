@@ -2,13 +2,11 @@
 
 namespace LokiTuoResultBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class CardControllerTest extends WebTestCase
+class CardControllerTest extends \AbstractControllerTest
 {
     public function testIndex()
     {
-        $client = static::createClient();
+        $client = $this->loginAs();
 
         $crawler = $client->request('GET', '/');
     }
