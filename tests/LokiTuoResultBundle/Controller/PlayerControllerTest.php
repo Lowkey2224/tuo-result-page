@@ -8,10 +8,13 @@ class PlayerControllerTest extends \AbstractControllerTest
 
     /**
      * covers PlayerController::listAllPlayersAction()
+     * @dataProvider adminUserProvider
+     * @param $user
+     * @param $password
      */
-    public function testListAllPlayersAction()
+    public function testListAllPlayersAction($user, $password)
     {
-        $client = $this->loginAs();
+        $client = $this->loginAs($user, $password);
 
         $crawler = $client->request('GET', '/player/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

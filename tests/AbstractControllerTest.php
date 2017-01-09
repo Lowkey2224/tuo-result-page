@@ -47,14 +47,24 @@ abstract class AbstractControllerTest extends WebTestCase
 
 
         $client->followRedirects();
-        /*$crawler =*/ $client->submit($form);
+        /*$crawler =*/
+        $client->submit($form);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $client->followRedirects(false);
 
 
-
         return $client;
+    }
+
+    public function adminUserProvider()
+    {
+        return [
+            'foo' => ['foo', 'foo'],
+            'bar' => ['bar', 'bar'],
+            'baz' => ['baz', 'baz'],
+        ];
+
     }
 
 }
