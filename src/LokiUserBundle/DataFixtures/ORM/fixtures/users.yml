@@ -6,3 +6,4 @@ LokiUserBundle\Entity\User:
         enabled: true
         roles: [ROLE_SUPERADMIN]
         salt: <current()>
+        registrationCode: Fixtures
