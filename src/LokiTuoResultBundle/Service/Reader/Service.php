@@ -119,7 +119,6 @@ class Service
             if (preg_match('/(\d?\d(.\d*)?):/', $line, $name) === 1) {
                 $name = $name[1];
                 $name = (int)($name * 10);
-
                 $result['result'][$count]['percent'] = $name;
             }
             if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
