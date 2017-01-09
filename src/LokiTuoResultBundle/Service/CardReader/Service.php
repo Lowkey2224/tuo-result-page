@@ -35,12 +35,10 @@ class Service
         foreach ($fileNames as $fileName) {
             if (file_exists($fileName)) {
                 $content = file_get_contents($fileName);
-                $hash = md5($content);
-                if (!$cfRepo->findOneBy(['checksum' => $hash])) {
-                    $cardFile = new CardFile();
-                    $cardFile->setContent($content);
-                    $cardFile->setOriginalFileName($fileName);
-                    $cardFile->setChecksum($hash);
+                $cardFile = new CardFile();
+                $cardFile->setContent($content);
+                $cardFile->setOriginalFileName($fileName);
+                if (!$cfRepo->findOneBy(['checksum' => $cardFile->getChecksum()])) {
                     $this->em->persist($cardFile);
                     $this->logger->debug("Read File: " . $fileName);
                     $count++;

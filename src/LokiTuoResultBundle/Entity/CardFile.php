@@ -67,6 +67,7 @@ class CardFile extends AbstractBaseEntity
     public function setContent($content)
     {
         $this->content = $content;
+        $this->setChecksum();
 
         return $this;
     }
@@ -138,11 +139,8 @@ class CardFile extends AbstractBaseEntity
         return $this->checksum;
     }
 
-    /**
-     * @param string $checksum
-     */
-    public function setChecksum($checksum)
+    private function setChecksum()
     {
-        $this->checksum = $checksum;
+        $this->checksum = md5($this->getContent());
     }
 }
