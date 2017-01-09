@@ -1,7 +1,7 @@
 LokiTuoResultBundle\Entity\OwnedCard:
-  loki-malika:
+  loki_{Malika, StonewallGarrison, Inheritor}:
     level: null
     amount: 1
     amountInDeck: 1
     player: '@player-loki'
-    card: '@Malika'
+    card: '@<current()>'

@@ -68,7 +68,6 @@ LokiTuoResultBundle\Entity\Card:
         defense: 47
         delay: 2
         picture: deathmongerer_lv1
-        a:3:{s:5:"evade";s:9:"evade   7";s:6:"avenge";s:11:"avenge   17";s:6:"weaken";s:13:"weaken all  7";}
         skills: [evade 7, avenge 17, weaken all 7]
         race: 4
         cardFile: '@CardFile1'
