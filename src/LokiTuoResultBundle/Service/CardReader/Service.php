@@ -15,7 +15,9 @@ use Psr\Log\NullLogger;
 
 class Service
 {
-    /** @var EntityManager  */
+
+
+    /** @var EntityManager */
     private $em;
 
     use LoggerAwareTrait;
@@ -28,18 +30,25 @@ class Service
 
     public function saveCardFiles(array $fileNames)
     {
+        $cfRepo = $this->em->getRepository('LokiTuoResultBundle:CardFile');
         $count = 0;
         foreach ($fileNames as $fileName) {
             if (file_exists($fileName)) {
                 $content = file_get_contents($fileName);
-                $cardFile = new CardFile();
-                $cardFile->setContent($content);
-                $cardFile->setOriginalFileName($fileName);
-                $this->em->persist($cardFile);
-                $this->logger->debug("Read File: ".$fileName);
-                $count++;
+                $hash = md5($content);
+                if (!$cfRepo->findOneBy(['checksum' => $hash])) {
+                    $cardFile = new CardFile();
+                    $cardFile->setContent($content);
+                    $cardFile->setOriginalFileName($fileName);
+                    $cardFile->setChecksum($hash);
+                    $this->em->persist($cardFile);
+                    $this->logger->debug("Read File: " . $fileName);
+                    $count++;
+                } else {
+                    $this->logger->info("File " . $fileName . " exists already in Database");
+                }
             } else {
-                $this->logger->notice("File does not Exists: ".$fileName);
+                $this->logger->warning("File does not exist: " . $fileName);
             }
         }
         $this->em->flush();

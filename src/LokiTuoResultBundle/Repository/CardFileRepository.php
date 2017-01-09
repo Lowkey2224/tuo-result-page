@@ -10,4 +10,13 @@ namespace LokiTuoResultBundle\Repository;
  */
 class CardFileRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getAllIds()
+    {
+        return $this->createQueryBuilder('cf')
+            ->select('cf.id')
+            ->orderBy('cf.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

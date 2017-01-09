@@ -33,7 +33,7 @@ class Mission extends AbstractBaseEntity
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="Result", mappedBy="mission")
+     * @ORM\OneToMany(targetEntity="Result", mappedBy="mission", cascade={"remove"})
      */
     private $results;
 

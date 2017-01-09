@@ -20,7 +20,13 @@
                     {{ form_row(form.structures) }}
                 </div>
                 <div class="form-group">
+                    {{ form_row(form.enemyStructures) }}
+                </div>
+                <div class="form-group">
                     {{ form_row(form.iterations) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.threadCount) }}
                 </div>
                 <div class="form-group">
                     {{ form_row(form.guild) }}
@@ -30,6 +36,14 @@
                 </div>
                 <div class="form-group">
                     {{ form_row(form.simType) }}
+                </div>
+                {#<div class="checkbox">#}
+                    {#<label>#}
+                        {#<input type="checkbox"> Check me out#}
+                    {#</label>#}
+                {#</div>#}
+                <div class="form-group">
+                    {{ form_row(form.ordered) }}
                 </div>
                 <div class="form-group">
                     {{ form_row(form.scriptType) }}

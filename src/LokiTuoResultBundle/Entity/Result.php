@@ -39,7 +39,7 @@ class Result extends AbstractBaseEntity
 
     /**
      * @var DeckEntry[]
-     * @ORM\OneToMany(targetEntity="DeckEntry", mappedBy="result", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="DeckEntry", mappedBy="result", cascade={"persist", "remove"}, fetch="EAGER")
      */
     private $deck;
 

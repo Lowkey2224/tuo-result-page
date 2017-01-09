@@ -1,0 +1,56 @@
+echo "{{ simulation.guild }} Results 1-50"
+setlocal EnableDelayedExpansion
+CLS
+@ECHO OFF
+
+echo "{{ simulation.guild }} Results 1-50"
+SET FILENAME=%~n0
+SET FILENAME=%FILENAME: =%
+SET "TARGET=Result_%FILENAME%.txt"
+SET "TEMPRES=tempRes_%FILENAME%.txt"
+SET /A NBSIM=0
+SET STARTTIME=%TIME%
+
+echo "{{ simulation.guild }} Results 1,6-7,9-11,15-16,18-21,23,25,28-31,33,36-37,40-47,49-50" > %TARGET%
+
+{% for mission in simulation.missions%}
+    SET mission{{ loop.index }}="{{ mission | raw}}"
+    SET missionName{{ loop.index }}="{{ simulation.getName(loop.index-1) | raw}}"
+{% endfor %}
+
+{% for player in simulation.players %}
+    SET Member{{ player.id }}="{{ player.name|raw }}"
+    SET Inventory{{ player.id }}="{{ player.ownedCards|join(', ')|raw }}"
+    SET Deck{{ player.id }}="{{ player.deck|join(', ')|raw }}"
+{% endfor %}
+
+SET myStructures="{{ simulation.structures|join(', ') }}"
+SET enemyStructures="{{ simulation.enemyStructures|join(', ') }}"
+SET iterations={{ simulation.iterations }}
+
+echo Number of sims pending : {{ simulation.numberOfSimulations }}
+
+
+{% for mission in simulation.missions %}
+{% set missionIndex = loop.index %}
+{% for player in simulation.players %}
+
+echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %missionName{{ missionIndex}}%"
+echo "member name {{ player.name }}@{{ 'now'|date('m/d/y/h/i/s') }} against %missionName{{ missionIndex}}%" >> ./%TARGET%
+tuo.exe %Deck{{ player.id }}% %mission{{ missionIndex}}% -o=%Inventory{{ player.id }}% yf %myStructures% yf %enemyStructures% {% if simulation.ordered %}-r{% endif %} {% if simulation.backgroundEffect %}-e {{ simulation.backgroundEffect.name}}{% endif %} {{ simulation.simType }} %iterations% > %TEMPRES%
+set "line="
+for /f "tokens=*" %%b in ('findstr Optimized %TEMPRES%') do set "line=%%b"
+for /f "tokens=*" %%b in ('findstr /b /l win %TEMPRES%') do set "line=%%b"
+echo %line% >> ./%TARGET%
+SET /A NBSIM+=1
+
+{% endfor %} {# End Player Loop #}
+{% endfor %} {# End mission loop #}
+
+
+del %TEMPRES%
+SET ENDTIME=%TIME%
+echo Sims Done : %NBSIM%
+echo START :  %STARTTIME%
+echo FINISH : %ENDTIME%
+pause

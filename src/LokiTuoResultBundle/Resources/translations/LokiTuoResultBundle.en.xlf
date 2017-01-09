@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="form.resultfile.comment">
+                <source>form.resultfile.comment</source>
+                <target>Comment (e.g. who simmed)</target>
+            </trans-unit>
+            <trans-unit id="form.resultfile.resultfile">
+                <source>form.resultfile.resultfile</source>
+                <target>Resultfile</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>Submit</source>
+                <target>Submit</target>
+            </trans-unit>
+            <trans-unit id="form.player.playername">
+                <source>form.player.playername</source>
+                <target>Playername</target>
+            </trans-unit>
+            <trans-unit id="form.player.guild">
+                <source>form.player.guild</source>
+                <target>Guild</target>
+            </trans-unit>
+            <trans-unit id="form.mission.name">
+                <source>form.mission.name</source>
+                <target>Missionname (with BGE)</target>
+            </trans-unit>
+            <trans-unit id="form.mission.type">
+                <source>form.mission.type</source>
+                <target>Missiontype</target>
+            </trans-unit>
+            <trans-unit id="CNS">
+                <source>CNS</source>
+                <target>CNS</target>
+            </trans-unit>
+            <trans-unit id="CTP">
+                <source>CTP</source>
+                <target>CTP</target>
+            </trans-unit>
+            <trans-unit id="CTN">
+                <source>CTN</source>
+                <target>CTN</target>
+            </trans-unit>
+            <trans-unit id="XXX">
+                <source>XXX</source>
+                <target>Testguild</target>
+            </trans-unit>
+            <trans-unit id="selectGuild">
+                <source>Please Select your Guild...</source>
+                <target>Please Select your Guild...</target>
+            </trans-unit>
+            <trans-unit id="Back_to_top">
+                <source>BackToTop</source>
+                <target>Back to top</target>
+            </trans-unit>
+            <trans-unit id="TotalCardCount">
+                <source>TotalCardCount</source>
+                <target>Total Amount of Cards</target>
+            </trans-unit>
+            <trans-unit id="form.save">
+                <source>form.save</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="form.close">
+                <source>form.close</source>
+                <target>Close</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

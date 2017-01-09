@@ -10,17 +10,13 @@
                 <source>TotalCardCount</source>
                 <target>Total Amount of Cards</target>
             </trans-unit>
-            <trans-unit id="CNS">
-                <source>CNS</source>
-                <target>CNS</target>
+            <trans-unit id="save">
+                <source>save</source>
+                <target>Save</target>
             </trans-unit>
-            <trans-unit id="CTP">
-                <source>CTP</source>
-                <target>CTP</target>
-            </trans-unit>
-            <trans-unit id="CTN">
-                <source>CTN</source>
-                <target>CTN</target>
+            <trans-unit id="close">
+                <source>close</source>
+                <target>Close</target>
             </trans-unit>
         </body>
     </file>

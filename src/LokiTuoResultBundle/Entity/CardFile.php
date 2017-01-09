@@ -44,6 +44,12 @@ class CardFile extends AbstractBaseEntity
      */
     private $status;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $checksum;
+
     public function __construct()
     {
         $this->status = 0;
@@ -122,5 +128,21 @@ class CardFile extends AbstractBaseEntity
     public function setOriginalFileName($originalFileName)
     {
         $this->originalFileName = $originalFileName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChecksum()
+    {
+        return $this->checksum;
+    }
+
+    /**
+     * @param string $checksum
+     */
+    public function setChecksum($checksum)
+    {
+        $this->checksum = $checksum;
     }
 }

@@ -22,18 +22,24 @@ class PlayerType extends AbstractType
 
         $options['guilds'] = $this->transformGuilds($options['guilds']);
 
-        $builder->add('name', TextType::class, ['label' => 'form.player.playername',
-            'translation_domain' => 'LokiTuoResultBundle.forms',
-            'attr' => ['class' => 'form-control']])
+        $builder
+            ->add('name', TextType::class, ['label' => 'form.player.playername',
+                'translation_domain' => 'LokiTuoResultBundle',
+                'attr' => ['class' => 'form-control']])
             ->add('currentGuild', ChoiceType::class, array(
                 'label' => "form.player.guild",
-                'translation_domain' => 'LokiTuoResultBundle.forms',
+                'translation_domain' => 'LokiTuoResultBundle',
                 'choices' => $options['guilds'],
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ))
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'label' => 'save',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ]);
     }
 
 

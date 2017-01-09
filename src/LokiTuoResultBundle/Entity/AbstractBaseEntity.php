@@ -17,6 +17,11 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractBaseEntity
 {
 
+    public function getClassName()
+    {
+        return static::class;
+    }
+
     /**
      * @var int
      *

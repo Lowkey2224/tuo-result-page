@@ -41,10 +41,17 @@ class Player extends AbstractBaseEntity
      */
     private $currentGuild;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
         $this->ownedCards = new ArrayCollection();
+        $this->active = true;
     }
 
     public function __toString()
@@ -82,6 +89,12 @@ class Player extends AbstractBaseEntity
         $this->results = $results;
     }
 
+    public function getDeck()
+    {
+        return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
+            return $ownedCard->getAmountInDeck() > 0;
+        });
+    }
 
     /**
      * Set name
@@ -137,5 +150,21 @@ class Player extends AbstractBaseEntity
     public function setCurrentGuild($currentGuild)
     {
         $this->currentGuild = $currentGuild;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
     }
 }
