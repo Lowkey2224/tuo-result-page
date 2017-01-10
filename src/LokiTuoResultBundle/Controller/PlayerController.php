@@ -13,7 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class PlayerController
@@ -74,6 +76,33 @@ class PlayerController extends Controller
             'players' => $players,
             'updatedAt' => $updatedAt,
             'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @param $playerId
+     * @return Response
+     * @Route("/{playerId}/inventory", requirements={"playerId":"\d+"}, name="loki.tuo.player.inventory.show")
+     * @throws NotFoundHttpException
+     */
+    public function getFileAction($playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (is_null($player)) {
+            throw $this->createNotFoundException("Player with this ID not found");
+        }
+        $content = "";
+        /** @var OwnedCard $ownedCard */
+        foreach($player->getOwnedCards() as $ownedCard)
+        {
+            $content.=$ownedCard."\n";
+        }
+        $filename = "ownedcards.txt";
+        return new Response($content, 200, [
+            'content-type' => 'text/text',
+            'cache-control' => 'private',
+            'content-disposition' => 'attachment; filename="' . $filename . '";',
         ]);
     }
 

@@ -72,7 +72,7 @@
             </div>
         </div>
     {% endif %}
-    <div class="row" >
+    <div class="row">
         <div class="col-md-12 text-center">
             <a href="{{ path('loki.tuo.player.all.show') }}">
                 <h3>Player Overview</h3>
@@ -96,7 +96,7 @@
                 {% for card in deck %}
                     <tr class="row" id="deck{{ card.id }}">
                         <td class="col-xs-9 card-name">
-                            {{ card.card.name }} {% if card.level %}-{{ card.level }}{% endif %}{% if card.amountInDeck > 1 %}({{ card.amountInDeck}}){% endif %}
+                            {{ card.card.name }} {% if card.level %}-{{ card.level }}{% endif %}{% if card.amountInDeck > 1 %}({{ card.amountInDeck }}){% endif %}
                         </td>
                         <td class="col-xs-3">
                             <form class="data-remote-remove-from-deck form-inline">
@@ -126,6 +126,11 @@
                     Owned Cards for Player: <b>{{ player.name }}</b>
                 </p>
                 <div class="col-md-3 col-xs-3">
+                    <a href="{{ path("loki.tuo.player.inventory.show", {'playerId':player.id}) }}">
+                        <button type="button" class="pull-right btn btn-primary btn-md">
+                            <i class="glyphicon glyphicon-save"></i>
+                        </button>
+                    </a>
                     <button type="button" class="pull-right btn btn-primary btn-md" data-toggle="modal"
                             data-target="#addOwnedCardModal">
                         <i class="glyphicon glyphicon-plus"></i>
@@ -271,11 +276,11 @@
                 var succCB = function (response) {
 //                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                     var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
-                    if(response['amount'] == 0) {
+                    if (response['amount'] == 0) {
 
-                        removeCardRow('deck'+response['id']);
-                    }else {
-                        changeAmountOfCardRow("deck"+response['id'], combinedName);
+                        removeCardRow('deck' + response['id']);
+                    } else {
+                        changeAmountOfCardRow("deck" + response['id'], combinedName);
 
                     }
                 };
@@ -335,19 +340,19 @@
                 } else {
                     console.log("Create new Content line");
                     var text = '<tr class="row" id="' + combinedName + '">' +
-                            '<td  class="col-xs-9 card-name">' +
-                            combinedName +
-                            '</td>' +
-                            '<td class="col-xs-3">' +
-                            '<form class="data-remote-remove">' +
-                            '<input type="hidden" name="name" id="name" value="' + name + '">' +
-                            '<input type="hidden" name="level" id="level" value="' + level + '">' +
-                            '<input type="hidden" name="id" id="id" value="' + id + '">' +
-                            '<button type="submit" class="pull-right btn btn-primary btn-xs">' +
-                            '<i class="glyphicon glyphicon-minus"></i>' +
-                            '</button>' +
-                            '</form>' +
-                            '</td></tr>';
+                        '<td  class="col-xs-9 card-name">' +
+                        combinedName +
+                        '</td>' +
+                        '<td class="col-xs-3">' +
+                        '<form class="data-remote-remove">' +
+                        '<input type="hidden" name="name" id="name" value="' + name + '">' +
+                        '<input type="hidden" name="level" id="level" value="' + level + '">' +
+                        '<input type="hidden" name="id" id="id" value="' + id + '">' +
+                        '<button type="submit" class="pull-right btn btn-primary btn-xs">' +
+                        '<i class="glyphicon glyphicon-minus"></i>' +
+                        '</button>' +
+                        '</form>' +
+                        '</td></tr>';
                     console.log("Insert before ", id);
 //                $(text).insertBefore(id);
                     $('#ownedCards').find('tbody').append(text);
@@ -365,19 +370,19 @@
                 } else {
                     console.log("Create new Content line");
                     var text = '<tr class="row" id="deck' + id + '">' +
-                            '<td  class="col-xs-9 card-name">' +
-                            combinedName +
-                            '</td>' +
-                            '<td class="col-xs-3">' +
-                            '<form class="data-remote-remove-from-deck">' +
-                            '<input type="hidden" name="name" id="name" value="' + name + '">' +
-                            '<input type="hidden" name="level" id="level" value="' + level + '">' +
-                            '<input type="hidden" name="id" id="id" value="' + id + '">' +
-                            '<button type="submit" class="pull-right btn btn-danger btn-xs">' +
-                            '<i class="glyphicon glyphicon-minus"></i>' +
-                            '</button>' +
-                            '</form>' +
-                            '</td></tr>';
+                        '<td  class="col-xs-9 card-name">' +
+                        combinedName +
+                        '</td>' +
+                        '<td class="col-xs-3">' +
+                        '<form class="data-remote-remove-from-deck">' +
+                        '<input type="hidden" name="name" id="name" value="' + name + '">' +
+                        '<input type="hidden" name="level" id="level" value="' + level + '">' +
+                        '<input type="hidden" name="id" id="id" value="' + id + '">' +
+                        '<button type="submit" class="pull-right btn btn-danger btn-xs">' +
+                        '<i class="glyphicon glyphicon-minus"></i>' +
+                        '</button>' +
+                        '</form>' +
+                        '</td></tr>';
                     console.log("Insert before ", id);
 //                $(text).insertBefore(id);
                     $('#deck').find('tbody').append(text);
@@ -395,7 +400,7 @@
 
             function removeCardRow(id) {
                 $('#' + id).remove();
-                console.log("Remove row with id ",id);
+                console.log("Remove row with id ", id);
             }
 
             function getCombinedCardName(name, level, amount) {
@@ -414,7 +419,7 @@
                 }
 
                 return '<div class="alert alert-dismissible ' + cssClass + '" role="alert">' +
-                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + text + '</div>';
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + text + '</div>';
             }
 
         });
