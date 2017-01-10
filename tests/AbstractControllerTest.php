@@ -57,7 +57,7 @@ abstract class AbstractControllerTest extends WebTestCase
         return $client;
     }
 
-    public function adminUserProvider()
+    public static function adminUserProvider()
     {
         return [
             'foo' => ['foo', 'foo'],
@@ -65,6 +65,21 @@ abstract class AbstractControllerTest extends WebTestCase
             'baz' => ['baz', 'baz'],
         ];
 
+    }
+
+
+    public static function playerProvider()
+    {
+        return [
+            'loki' => ['loki']
+        ];
+    }
+
+    public static function playerResultProvider()
+    {
+        return [
+            'loki' => ['loki', 'iron mutant-5', '80.8']
+        ];
     }
 
 }

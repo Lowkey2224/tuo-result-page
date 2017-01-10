@@ -4,3 +4,4 @@ LokiTuoResultBundle\Entity\Result:
     mission: "@mission1"
     player: '@player-loki'
     sourceFile: "@resultFile5"
+    guild: CTN
