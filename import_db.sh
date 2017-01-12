@@ -79,8 +79,8 @@ done
 
 
 echo "Spiele Datenbank von Zeitenmeldung ein"
-dbName="tuo_results"
-dbNameLocal="homestead"
+#dbName="tuo_results"
+#dbNameLocal="homestead"
 dbUserRemote="tuo-results"
 dbPassRemote="yxBc2DystzQN"
 

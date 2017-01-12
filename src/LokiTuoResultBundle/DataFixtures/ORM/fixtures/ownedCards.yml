@@ -5,3 +5,15 @@ LokiTuoResultBundle\Entity\OwnedCard:
     amountInDeck: 1
     player: '@player-loki'
     card: '@<current()>'
+  lowkey_{Malika, StonewallGarrison, Inheritor}:
+    level: null
+    amount: 1
+    amountInDeck: 1
+    player: '@player-lowkey'
+    card: '@<current()>'
+  loken_{Malika, StonewallGarrison, Inheritor}:
+    level: null
+    amount: 1
+    amountInDeck: 1
+    player: '@player-loken'
+    card: '@<current()>'

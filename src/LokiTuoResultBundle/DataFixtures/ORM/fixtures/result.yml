@@ -1,7 +1,7 @@
 LokiTuoResultBundle\Entity\Result:
-  result1:
+  result-{loki,loken,lowkey}:
     percent: 808
     mission: "@mission1"
-    player: '@player-loki'
+    player: '@player-<current()>'
     sourceFile: "@resultFile5"
     guild: CTN
