@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new LokiUserBundle\LokiUserBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
