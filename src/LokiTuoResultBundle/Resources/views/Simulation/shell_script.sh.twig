@@ -22,7 +22,7 @@ echo Number of sims pending : {{ simulation.numberOfSimulations }}
 {% for player in simulation.players %}
 echo "member name $Member{{ player.id }}@{{ 'now'|date('m/d/y/h/i/s') }} against ${missionName{{ missionIndex}}}"
 echo "member name $Member{{ player.id }}@12/03/16/06/02/25 against ${missionName{{ missionIndex}}}" >> ./${resultFile}
-./tuo "${Deck{{ player.id }}}" "${mission{{ missionIndex}}}" -o="$Inventory{{ player.id }}" yf "${myStructures}" ef "${enemyStructures}" {% if simulation.ordered %}-r{% endif %} {% if simulation.backgroundEffect %}-e "{{ simulation.backgroundEffect.name}}"{% endif %} {{ simulation.simType }} ${iterations}  > ./tempRes.txt
+./tuo "${Deck{{ player.id }}}" "${mission{{ missionIndex}}}" -o="$Inventory{{ player.id }}" yf "${myStructures}" ef "${enemyStructures}" {% if simulation.ordered %}-r{% endif %} {% if simulation.backgroundEffect %}-e "{{ simulation.backgroundEffect.name | raw}}"{% endif %} {{ simulation.simType }} ${iterations}  > ./tempRes.txt
 tail -1 ./tempRes.txt | head -1 >> ./${resultFile}
 
 
