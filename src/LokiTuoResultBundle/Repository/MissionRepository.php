@@ -22,4 +22,24 @@ class MissionRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllWithGuilds()
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->addSelect('r.guild')
+            ->join('m.results', 'r')
+            ->orderBy('m.name', 'ASC');
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllWithGuilds2()
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->addSelect('group_concat(r.guild)')
+            ->join('m.results', 'r')
+            ->orderBy('m.name', 'ASC')
+            ->groupBy('m.id');
+
+        return $qb->getQuery()->getResult();
+    }
 }

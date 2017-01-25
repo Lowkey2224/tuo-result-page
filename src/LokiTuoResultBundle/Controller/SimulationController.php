@@ -69,8 +69,8 @@ class SimulationController extends Controller
     public function indexAction()
     {
         $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $groupedBy = $missionRepo->findAll();
-
+        $groupedBy = $missionRepo->findAllWithGuilds2();
+//        var_dump(array_pop($groupedBy));die();
         return $this->render(
             'LokiTuoResultBundle:Default:index.html.twig',
             [
@@ -208,6 +208,31 @@ class SimulationController extends Controller
      */
     public function uploadFormAction()
     {
+        $form = $this->getUploadForm();
+        return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/test", name="loki.tuo.test")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function testAction()
+    {
+        $pr = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
+        $player = $pr->find(36);
+        $sim = new Simulation();
+        $sim->setPlayer([$player]);
+        $sim->setGuild("CTN");
+        $sim->setMissions("Steel Mutant-10");
+        $sim->setIterations(1);
+        $sim->setSimType("climb");
+
+
+        $m = $this->get('loki_tuo_result.vpc_simulation.manager');
+        $m->postSimulation($sim);
+
         $form = $this->getUploadForm();
         return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', array(
             'form' => $form->createView(),
