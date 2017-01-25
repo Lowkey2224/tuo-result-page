@@ -36,22 +36,17 @@
             <tr>
 
                 <td>
-                    <a href="{{ path('tuo.showmission', {'missionId': mission.id}) }}">
-                        {{ mission.name }}
+                    <a href="{{ path('tuo.showmission', {'missionId': mission.0.id}) }}">
+                        {{ mission.0.name }}
                     </a>
                 </td>
                 <td>
-                    {% for guild in mission.guilds %}
-                        [{{ guild }}]
-                        {% if not loop.last %}
-                            ,
-                        {% endif %}
-                    {% endfor %}
+                    {{ mission.1 }}
                 </td>
-                <td>{{ mission.type }}</td>
+                <td>{{ mission.0.type }}</td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        <a href="{{ path('loki.tuo.mission.edit', {'missionId': mission.id}) }}">
+                        <a href="{{ path('loki.tuo.mission.edit', {'missionId': mission.0.id}) }}">
                             Edit
                         </a>
                     </td>
