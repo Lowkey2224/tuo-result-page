@@ -2,6 +2,8 @@
 
 namespace LokiTuoResultBundle\Repository;
 
+//use Doctrine\ORM\Query\Expr\Join;
+
 /**
  * PlayerRepository
  *
@@ -15,7 +17,7 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
     public function getPlayerWithLastUpdatedDate($active = true)
     {
         $qb = $this->createQueryBuilder('p')
-            ->join('p.ownedCards', 'ownedCards')
+            ->leftJoin('p.ownedCards', 'ownedCards')
             ->addSelect(['max(ownedCards.updatedAt) as updated'])
             ->groupBy('p.id');
         if ($active) {
