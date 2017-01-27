@@ -59,15 +59,11 @@
                     {{ player.0.currentGuild }}
                 </td>
                 <td>
-                    {#{% if player.updated is defined %}#}
                         {{ player.updated }}
-                    {#{% else %}#}
-                        {#Never Updated#}
-                    {#{% endif %}#}
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        {{ player.0.active ? "active":"inactive" }}
+                        {{ player.0.active ? "active":"deactivated" }}
                     </td>
                 {% endif %}
                 <td class="text-right">
