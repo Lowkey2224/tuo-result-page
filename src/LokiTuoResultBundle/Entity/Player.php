@@ -89,6 +89,9 @@ class Player extends AbstractBaseEntity
         $this->results = $results;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
     public function getDeck()
     {
         return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {

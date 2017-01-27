@@ -10,4 +10,19 @@ namespace LokiTuoResultBundle\Repository;
  */
 class PlayerRepository extends \Doctrine\ORM\EntityRepository
 {
+
+
+    public function getPlayerWithLastUpdatedDate($active = true)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.ownedCards', 'ownedCards')
+            ->addSelect(['max(ownedCards.updatedAt) as updated'])
+            ->groupBy('p.id');
+        if ($active) {
+            $qb->where('p.active = :active')
+                ->setParameter('active', $active);
+        }
+//        var_dump($qb->getQuery()->getSQL());die();
+        return $qb->getQuery()->getResult();
+    }
 }

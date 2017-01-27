@@ -53,31 +53,31 @@
         {% for player in players %}
             <tr>
                 <td>
-                    {{ player.name }}
+                    {{ player.0.name }}
                 </td>
                 <td>
-                    {{ player.currentGuild }}
+                    {{ player.0.currentGuild }}
                 </td>
                 <td>
-                    {% if updatedAt[player.id] is defined %}
-                        {{ updatedAt[player.id].updated }}
-                    {% else %}
-                        Never Updated
-                    {% endif %}
+                    {#{% if player.updated is defined %}#}
+                        {{ player.updated }}
+                    {#{% else %}#}
+                        {#Never Updated#}
+                    {#{% endif %}#}
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        {{ player.active ? "active":"inactive" }}
+                        {{ player.0.active ? "active":"inactive" }}
                     </td>
                 {% endif %}
                 <td class="text-right">
-                    <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">
+                    <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.0.id}) }}">
                         <b>Cards</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.id}) }}">
+                    <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.0.id}) }}">
                         <b>Simulations</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.edit', {'playerId': player.id}) }}">
+                    <a href="{{ path('loki.tuo.player.edit', {'playerId': player.0.id}) }}">
                         <b>Edit</b>
                     </a>
                 </td>

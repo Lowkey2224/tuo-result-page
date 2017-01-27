@@ -53,28 +53,11 @@ class PlayerController extends Controller
     public function listAllPlayersAction()
     {
 
-        $criteria = ['active' => true];
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $criteria = [];
-        }
-        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy(
-            $criteria,
-            ['name' => 'ASC']
-        );
-        $userManager = $this->get('loki.user.user.manager');
-        $ocRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $coll = new Collection($ocRepo->getLastUpdatedDate());
-        $updatedAt = $coll->keyBy('id');
+        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->getPlayerWithLastUpdatedDate(false);
 
         $form = $this->getPlayerForm();
-        $user = $this->getUser();
-        $players = array_filter($players, function (Player $player) use ($user, $userManager) {
-
-            return $userManager->canUserAccess($user, $player->getGuild());
-        });
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
-            'updatedAt' => $updatedAt,
             'form' => $form->createView(),
         ]);
     }
@@ -173,6 +156,7 @@ class PlayerController extends Controller
         $level = $request->get('owned_card_level');
         $amount = $request->get('owned_card_amount');
         $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
+//        var_dump($name, $card);
         if (!$card) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
