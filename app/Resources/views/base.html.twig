@@ -51,8 +51,8 @@
                                     href="{{ path('loki.tuo.import.index') }}">Imports</a></li>
                         <li {% if currentPath starts with '/user/' %} class="active" {% endif %}><a
                                     href="{{ path('loki.user.user.index') }}">Users</a></li>
-                        {#<li {% if currentPath starts with '/card/' %} class="active" {% endif %}><a#}
-                                    {#href="{{ path('loki.tuo.card.index') }}">Cards</a></li>#}
+                        <li {% if currentPath starts with '/card/' %} class="active" {% endif %}><a
+                                    href="{{ path('loki.tuo.card.index') }}">Cards</a></li>
                     {% endif %}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li>

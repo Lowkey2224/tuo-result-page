@@ -22,7 +22,6 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
             $qb->where('p.active = :active')
                 ->setParameter('active', $active);
         }
-//        var_dump($qb->getQuery()->getSQL());die();
         return $qb->getQuery()->getResult();
     }
 }

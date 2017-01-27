@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CardController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="loki.tuo.card.index")
      */
     public function indexAction()
     {

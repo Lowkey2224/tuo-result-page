@@ -20,9 +20,13 @@
                 <div class="form-group">
                     {{ form_widget(form.submit) }}
                     {% if is_granted('ROLE_MODERATOR') %}
-                        <a href="{{ path('loki.tuo.player.disable', {'playerId':player.id}) }}" class="pull-right">
-                            <button class="btn btn-warning">Delete</button>
-                        </a>
+                        <div class="pull-right">
+                            <button class="btn btn-warning"
+                                    formaction="{{ path('loki.tuo.player.disable', {'playerId':player.id}) }}">
+                                Delete
+                            </button>
+                        </div>
+
                     {% endif %}
                 </div>
                 {{ form_end(form) }}

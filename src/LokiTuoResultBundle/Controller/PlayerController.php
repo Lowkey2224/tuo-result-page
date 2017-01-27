@@ -309,12 +309,31 @@ class PlayerController extends Controller
         ));
     }
 
+    /**
+     * @Route("/{playerId}/disable", name="loki.tuo.player.disable", requirements={"playerId":"\d+"})
+     * @Security("has_role('ROLE_ADMIN', 'ROLE_MODERATOR')")
+     * @param $playerId
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function disablePlayerAction($playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$player) {
+            return new JsonResponse(['message' => 'Player not found', 404]);
+        }
+        $player->setActive(false);
+        $this->getDoctrine()->getManager()->persist($player);
+        $this->getDoctrine()->getManager()->flush();
+//        var_dump($player);die();
+        return $this->redirectToRoute('loki.tuo.player.all.show');
+    }
+
 
     /**
      * @param Request $request
      * @param $playerId
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/{playerId}/edit", name="loki.tuo.player.edit")
+     * @Route("/{playerId}/edit", name="loki.tuo.player.edit", requirements={"playerId":"\d+"})
      */
     public function editPlayer(Request $request, $playerId)
     {
@@ -352,32 +371,28 @@ class PlayerController extends Controller
         $form = $this->getPlayerForm($player);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Check if Player already exists
+
+            // Add a single Card
+            $malikaCriteria = ['name' => "Malika"];
+            $malika = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
+            $oc = new OwnedCard();
+            $oc->setPlayer($player);
+            $oc->setCard($malika);
+            $oc->setAmount(1);
+            $oc->setAmountInDeck(1);
             $this->getDoctrine()->getManager()->persist($player);
+            $this->getDoctrine()->getManager()->persist($oc);
             $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
         } else {
             var_dump($form->isSubmitted(), $form->isValid());
-            die();
+//            die();
+            return $this->redirectToRoute('loki.tuo.player.all.show');
         }
 
-        return $this->redirectToRoute('loki.tuo.player.all.show');
-    }
 
-    /**
-     * @Route("/{playerId}/disable", name="loki.tuo.player.disable")
-     * @Security("has_role('ROLE_ADMIN', 'ROLE_MODERATOR')")
-     * @param $playerId
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function disablePlayerAction($playerId)
-    {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
-        $player->setActive(false);
-        $this->getDoctrine()->getManager()->persist($player);
-        $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute('loki.tuo.player.all.show');
     }
 
     private function getPlayerForm(Player $player = null, $action = null)
