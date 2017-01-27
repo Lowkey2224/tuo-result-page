@@ -155,6 +155,7 @@ class PlayerController extends Controller
         }
         $name = trim($request->get('owned_card_card'));
         $level = $request->get('owned_card_level');
+        $level = (is_null($level) || $level == "null" || trim($level) == "") ? null : $level;
         $amount = $request->get('owned_card_amount');
         $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
 //        var_dump($name, $card);
@@ -162,7 +163,8 @@ class PlayerController extends Controller
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card]);
+
+        $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card, 'level' => $level]);
         if (!$oc) {
             $oc = new OwnedCard();
             $oc->setPlayer($player);
@@ -170,7 +172,7 @@ class PlayerController extends Controller
             $oc->setAmount(0);
         }
 
-        $level = (is_null($level) || $level == "null" || trim($level) == "") ? null : $level;
+
         $oc->setLevel($level);
         $oc->setAmount($oc->getAmount() + $amount);
         $this->getDoctrine()->getEntityManager()->persist($oc);
