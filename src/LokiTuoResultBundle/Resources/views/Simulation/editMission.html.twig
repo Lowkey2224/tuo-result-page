@@ -27,11 +27,17 @@
                     {{ form_row(form.type) }}
                 </div>
                 <div class="form-group">
-                    {{ form_row(form.submit) }}
-                    <a href="{{ path('loki.tuo.mission.delete', {'missionId': mission.id}) }}">
-                        <button class="btn btn-warning">Delete</button>
-                        {# TODO replace with Translation#}
-                    </a>
+                    {{ form_widget(form.submit) }}
+                    {% if is_granted('ROLE_MODERATOR') %}
+                        <div class="pull-right">
+                            <button class="btn btn-warning"
+                                    formaction="{{ path('loki.tuo.mission.delete', {'missionId': mission.id}) }}">
+                                {# TODO replace with Translation#}
+                                Delete
+                            </button>
+                        </div>
+
+                    {% endif %}
                 </div>
                 {{ form_end(form) }}
             </div>
