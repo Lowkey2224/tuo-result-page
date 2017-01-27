@@ -53,7 +53,8 @@ class PlayerController extends Controller
     public function listAllPlayersAction()
     {
 
-        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->getPlayerWithLastUpdatedDate(false);
+        $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')
+            ->getPlayerWithLastUpdatedDate(false);
 
         $form = $this->getPlayerForm();
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
@@ -77,8 +78,7 @@ class PlayerController extends Controller
         }
         $content = "";
         /** @var OwnedCard $ownedCard */
-        foreach($player->getOwnedCards() as $ownedCard)
-        {
+        foreach ($player->getOwnedCards() as $ownedCard) {
             $content.=$ownedCard."\n";
         }
         $filename = "ownedcards.txt";
@@ -371,7 +371,6 @@ class PlayerController extends Controller
         $form = $this->getPlayerForm($player);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             // Check if Player already exists
 
             // Add a single Card
@@ -391,8 +390,6 @@ class PlayerController extends Controller
 //            die();
             return $this->redirectToRoute('loki.tuo.player.all.show');
         }
-
-
     }
 
     private function getPlayerForm(Player $player = null, $action = null)

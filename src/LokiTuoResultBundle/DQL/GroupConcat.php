@@ -8,7 +8,6 @@
 
 namespace LokiTuoResultBundle\DQL;
 
-
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 
