@@ -3,6 +3,7 @@
 namespace LokiTuoResultBundle\Controller;
 
 use Illuminate\Support\Collection;
+use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Form\MassOwnedCardType;
@@ -152,7 +153,7 @@ class PlayerController extends Controller
         if (!$player) {
             return new JsonResponse(['message' => 'Player not found', 404]);
         }
-        $name = $request->get('owned_card_card');
+        $name = trim($request->get('owned_card_card'));
         $level = $request->get('owned_card_level');
         $amount = $request->get('owned_card_amount');
         $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
@@ -367,22 +368,18 @@ class PlayerController extends Controller
     public function addPlayerAction(Request $request)
     {
 
+
         $player = new Player();
         $form = $this->getPlayerForm($player);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Check if Player already exists
+            $player = $this->findOrCreatePlayer($player);
 
+            // Check if Player already exists
+            $this->addDefaultCardToPlayer($player);
             // Add a single Card
-            $malikaCriteria = ['name' => "Malika"];
-            $malika = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
-            $oc = new OwnedCard();
-            $oc->setPlayer($player);
-            $oc->setCard($malika);
-            $oc->setAmount(1);
-            $oc->setAmountInDeck(1);
             $this->getDoctrine()->getManager()->persist($player);
-            $this->getDoctrine()->getManager()->persist($oc);
+
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
         } else {
@@ -390,6 +387,52 @@ class PlayerController extends Controller
 //            die();
             return $this->redirectToRoute('loki.tuo.player.all.show');
         }
+    }
+
+    /**
+     *
+     * @param Player $player
+     */
+    private function addDefaultCardToPlayer(Player $player)
+    {
+        if(!$player->getOwnedCards()->count())
+        {
+            $malikaCriteria = ['name' => "Malika"];
+            $malika = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
+            $this->addCardToPlayer($player, $malika, 1,1);
+        }
+    }
+
+    private function findOrCreatePlayer(Player $player)
+    {
+        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
+        $playerOld = $repo->findOneBy(['name' => $player->getName()]);
+        if($playerOld) {
+            $playerOld->setCurrentGuild($player->getCurrentGuild());
+            $playerOld->setActive(true);
+            $player = $playerOld;
+        }
+
+        return $player;
+    }
+
+    private function addCardToPlayer(Player $player, Card $card, int $amount, int $amountInDeck, int $level = null)
+    {
+        $criteria = ['card' => $card, 'player' => $player, 'level' => $level];
+        $oc = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
+        if ($oc){
+            $amount += $oc->getAmount();
+
+        }else {
+            $oc = new OwnedCard();
+        }
+        $oc->setPlayer($player);
+        $oc->setCard($card);
+        $oc->setAmount($amount);
+        $oc->setAmountInDeck($amountInDeck);
+        $oc->setLevel($level);
+        $this->getDoctrine()->getManager()->persist($oc);
+        return $oc;
     }
 
     private function getPlayerForm(Player $player = null, $action = null)
