@@ -140,6 +140,13 @@ class SimulationType extends AbstractType
 //                    'class' => 'form-control'
                 ]
             ))
+            ->add('surge', CheckboxType::class, array(
+                'label' => "Enemy goes first",
+                'required' => false,
+                'attr' => [
+//                    'class' => 'form-control'
+                ]
+            ))
             ->add('save', SubmitType::class, [
                 'label' => "Generate Script",
                 'attr' => [

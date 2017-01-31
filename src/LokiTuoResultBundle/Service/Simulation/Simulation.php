@@ -46,7 +46,11 @@ class Simulation
     /** @var  integer the number of Threads used for Simulation */
     private $threadCount;
 
+    /** @var bool  */
     private $ordered;
+
+    /** @var bool true if enemy goes first  */
+    private $surge;
 
     public function __construct()
     {
@@ -61,6 +65,7 @@ class Simulation
         $this->enemyStructures = [];
         $this->threadCount = 4;
         $this->ordered = true;
+        $this->surge = false;
     }
 
     public function getName(int $i = 0):string
@@ -285,5 +290,21 @@ class Simulation
     public function setThreadCount($threadCount)
     {
         $this->threadCount = $threadCount;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSurge(): bool
+    {
+        return $this->surge;
+    }
+
+    /**
+     * @param bool $surge
+     */
+    public function setSurge(bool $surge)
+    {
+        $this->surge = $surge;
     }
 }
