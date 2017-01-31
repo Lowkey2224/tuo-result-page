@@ -18,6 +18,58 @@
                 <source>close</source>
                 <target>Close</target>
             </trans-unit>
+            <trans-unit id="form.simulation.missions">
+                <source>form.simulation.missions</source>
+                <target>Missions (comma separated)</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.backgroundEffect">
+                <source>form.simulation.backgroundEffect</source>
+                <target>Background Effect (leave empty if none)</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.structures">
+                <source>form.simulation.structures</source>
+                <target>Structures (comma-separated)</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.enemystructures">
+                <source>form.simulation.enemystructures</source>
+                <target>Enemy Structures (comma-separated)</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.iterations">
+                <source>form.simulation.iterations</source>
+                <target># of Iterations</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.threads">
+                <source>form.simulation.threads</source>
+                <target># of Threads per Sim</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.guild">
+                <source>form.simulation.guild</source>
+                <target>Guild</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.players">
+                <source>form.simulation.players</source>
+                <target>Players to Sim</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.type">
+                <source>form.simulation.type</source>
+                <target>Simulation Type</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.ordered">
+                <source>form.simulation.ordered</source>
+                <target>your deck Ordered</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.surge">
+                <source>form.simulation.surge</source>
+                <target>Enemy goes first</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.scripttype">
+                <source>form.simulation.scripttype</source>
+                <target>Script Type</target>
+            </trans-unit>
+            <trans-unit id="form.simulation.generate">
+                <source>form.simulation.generate</source>
+                <target>Generate Script</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

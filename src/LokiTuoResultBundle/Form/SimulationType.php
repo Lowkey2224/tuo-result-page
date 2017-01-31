@@ -34,14 +34,14 @@ class SimulationType extends AbstractType
 
         $builder
             ->add('missions', TextareaType::class, [
-                'label' => "Missions (comma-separated)",
+                'label' => "form.simulation.missions",
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
             ->add('backgroundeffect', EntityType::class, [
                 'class' => 'LokiTuoResultBundle\Entity\BattleGroundEffect',
-                'label' => "Background Effect (leave empty if none)",
+                'label' => "form.simulation.backgroundEffect",
                 'required' => false,
                 'choice_label' => function (BattleGroundEffect $bge) {
                     return $bge->getName() . " (" . $bge->getDescription() . ")";
@@ -56,31 +56,31 @@ class SimulationType extends AbstractType
                 ]
             ])
             ->add('structures', TextType::class, [
-                'label' => "Structures (comma-separated)",
+                'label' => "form.simulation.structures",
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
             ->add('enemyStructures', TextType::class, [
-                'label' => "Enemy Structures (comma-separated)",
+                'label' => "form.simulation.enemystructures",
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
             ->add('iterations', NumberType::class, [
-                'label' => '# of Iterations',
+                'label' => 'form.simulation.iterations',
                 'attr' => [
                     'class' => 'form-control'
                 ]])
             ->add('threadCount', NumberType::class, [
-                'label' => '# of Threads per Sim',
+                'label' => 'form.simulation.threads',
                 'attr' => [
                     'class' => 'form-control'
                 ]])
             ->add('guild', ChoiceType::class, array(
-                'label' => "Guild",
+                'label' => "form.simulation.guild",
                 'choices' => $options['guilds']
             , 'attr' => [
                     'class' => 'form-control'
@@ -89,7 +89,7 @@ class SimulationType extends AbstractType
             ->add('players', EntityType::class, array(
                 // query choices from this entity
                 'class' => 'LokiTuoResultBundle:Player',
-                'label' => "Players to Sim",
+                'label' => "form.simulation.players",
 
                 // use the User.username property as the visible option string
                 'choice_label' => 'name',
@@ -114,7 +114,7 @@ class SimulationType extends AbstractType
                 // 'expanded' => true,
             ))
             ->add('simType', ChoiceType::class, array(
-                'label' => "Simulation Type",
+                'label' => "form.simulation.type",
                 'choices' => [
                     'climb' => "climb",
                     'raid' => "raid climb",
@@ -124,7 +124,7 @@ class SimulationType extends AbstractType
                 ]
             ))
             ->add('scriptType', ChoiceType::class, array(
-                'label' => "Script Type",
+                'label' => "form.simulation.scripttype",
                 'choices' => [
                     'Shell Script' => "shell",
                     'Windows command Script' => "command",
@@ -134,21 +134,21 @@ class SimulationType extends AbstractType
                 ]
             ))
             ->add('ordered', CheckboxType::class, array(
-                'label' => "your deck Ordered",
+                'label' => "form.simulation.ordered",
                 'required' => false,
                 'attr' => [
 //                    'class' => 'form-control'
                 ]
             ))
             ->add('surge', CheckboxType::class, array(
-                'label' => "Enemy goes first",
+                'label' => "form.simulation.surge",
                 'required' => false,
                 'attr' => [
 //                    'class' => 'form-control'
                 ]
             ))
             ->add('save', SubmitType::class, [
-                'label' => "Generate Script",
+                'label' => "form.simulation.generate",
                 'attr' => [
                     'size' => 20,
                     'class' => 'btn btn-info form-control'
