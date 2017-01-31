@@ -397,11 +397,10 @@ class PlayerController extends Controller
      */
     private function addDefaultCardToPlayer(Player $player)
     {
-        if(!$player->getOwnedCards()->count())
-        {
+        if (!$player->getOwnedCards()->count()) {
             $malikaCriteria = ['name' => "Malika"];
             $malika = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
-            $this->addCardToPlayer($player, $malika, 1,1);
+            $this->addCardToPlayer($player, $malika, 1, 1);
         }
     }
 
@@ -409,7 +408,7 @@ class PlayerController extends Controller
     {
         $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
         $playerOld = $repo->findOneBy(['name' => $player->getName()]);
-        if($playerOld) {
+        if ($playerOld) {
             $playerOld->setCurrentGuild($player->getCurrentGuild());
             $playerOld->setActive(true);
             $player = $playerOld;
@@ -422,10 +421,9 @@ class PlayerController extends Controller
     {
         $criteria = ['card' => $card, 'player' => $player, 'level' => $level];
         $oc = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
-        if ($oc){
+        if ($oc) {
             $amount += $oc->getAmount();
-
-        }else {
+        } else {
             $oc = new OwnedCard();
         }
         $oc->setPlayer($player);
