@@ -54,8 +54,9 @@ class PlayerController extends Controller
     public function listAllPlayersAction()
     {
 
+
         $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')
-            ->getPlayerWithLastUpdatedDate(false);
+            ->getPlayerWithLastUpdatedDate(!$this->isGranted('ROLE_ADMIN'));
 
         $form = $this->getPlayerForm();
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
@@ -314,7 +315,7 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{playerId}/disable", name="loki.tuo.player.disable", requirements={"playerId":"\d+"})
-     * @Security("has_role('ROLE_ADMIN', 'ROLE_MODERATOR')")
+     * @Security("has_role( 'ROLE_MODERATOR')")
      * @param $playerId
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
