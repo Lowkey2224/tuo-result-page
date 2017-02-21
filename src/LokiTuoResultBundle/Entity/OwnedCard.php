@@ -70,6 +70,21 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
+     * @return string
+     */
+    public function toDeckString()
+    {
+        $str = $this->card->getName();
+        if ($this->level) {
+            $str.="-".$this->level;
+        }
+        if ($this->amountInDeck>1) {
+            $str.=" (".$this->amountInDeck.")";
+        }
+        return $str;
+    }
+
+    /**
      * Set level
      *
      * @param integer $level

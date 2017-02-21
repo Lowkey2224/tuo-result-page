@@ -295,6 +295,9 @@ class PlayerController extends Controller
         $deck = $allCards->filter(function (OwnedCard $item) {
             return $item->getAmountInDeck() > 0;
         });
+        $combined = $deck->map(function (OwnedCard $item) {
+            return $item->toDeckString();
+        });
         $formOptions = ['attr' => ['class' => 'data-remote']];
         $ownedCardForm = $this->createForm(OwnedCardType::class, null, $formOptions);
 
@@ -307,6 +310,7 @@ class PlayerController extends Controller
             'canEdit' => true,
             'player' => $player,
             'deck' => $deck,
+            'deckName' => $combined,
             'cards' => $allCards,
             'form' => $ownedCardForm->createView(),
             'massForm' => $massOwnedCardForm->createView(),
