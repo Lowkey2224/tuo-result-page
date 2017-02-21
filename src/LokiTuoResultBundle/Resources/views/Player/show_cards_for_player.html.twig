@@ -98,7 +98,7 @@
                 {% for card in deck %}
                     <tr class="row" id="deck{{ card.id }}">
                         <td class="col-xs-9 card-name">
-                            {{ card.card.name }} {% if card.level %}-{{ card.level }}{% endif %}{% if card.amountInDeck > 1 %}({{ card.amountInDeck }}){% endif %}
+                            {{ card.toDeckString }}
                         </td>
                         <td class="col-xs-3">
                             <form class="data-remote-remove-from-deck form-inline">
