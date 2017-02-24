@@ -296,7 +296,6 @@ class PlayerController extends Controller
         $manager->setLogger($this->get('logger'));
         $manager->removeOldOwnedCardsForPlayer($player);
         $this->addDefaultCardToPlayer($player);
-
         return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
     }
 
@@ -410,10 +409,6 @@ class PlayerController extends Controller
 
             // Check if Player already exists
             $this->addDefaultCardToPlayer($player);
-            // Add a single Card
-            $this->getDoctrine()->getManager()->persist($player);
-
-            $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
         } else {
             var_dump($form->isSubmitted(), $form->isValid());
@@ -432,6 +427,10 @@ class PlayerController extends Controller
             $malikaCriteria = ['name' => "Malika"];
             $malika = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
             $this->addCardToPlayer($player, $malika, 1, 1);
+
+            $this->getDoctrine()->getManager()->persist($player);
+
+            $this->getDoctrine()->getManager()->flush();
         }
     }
 
