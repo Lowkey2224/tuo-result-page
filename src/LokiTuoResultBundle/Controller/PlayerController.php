@@ -81,7 +81,7 @@ class PlayerController extends Controller
         $content = "";
         /** @var OwnedCard $ownedCard */
         foreach ($player->getOwnedCards() as $ownedCard) {
-            $content.=$ownedCard."\n";
+            $content .= $ownedCard . "\n";
         }
         $filename = "ownedcards.txt";
         return new Response($content, 200, [
@@ -270,6 +270,32 @@ class PlayerController extends Controller
             $manager->persistOwnedCards($cardModels);
         }
 
+
+        return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
+    }
+
+    /**
+     * @Route("/{playerId}/cards/delete",
+     *     name="loki.tuo.player.card.delete.mass",
+     *     methods={"GET"},
+     *     requirements={"playerId":"\d+"}
+     *     )
+     * @param Request $request
+     * @Security("has_role( 'ROLE_MODERATOR')")
+     * @param $playerId
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteMassCardsForPlayer(Request $request, $playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        if (!$player) {
+            return new JsonResponse(['message' => 'Player not found', 404]);
+        }
+
+        $manager = $this->get('loki_tuo_result.owned_card.manager');
+        $manager->setLogger($this->get('logger'));
+        $manager->removeOldOwnedCardsForPlayer($player);
+        $this->addDefaultCardToPlayer($player);
 
         return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
     }
