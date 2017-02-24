@@ -35,7 +35,7 @@ class Service
         $level = null;
         $match = [];
         $name = '';
-        preg_match('/.+ \((\d+)\)/', $card, $match);
+        preg_match('/.+\((\d+)\)/', $card, $match);
         if (count($match) == 2) {
             $amount = $match[1];
         }
