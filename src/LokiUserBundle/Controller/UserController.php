@@ -9,6 +9,7 @@
 namespace LokiUserBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -24,9 +25,48 @@ class UserController extends Controller
     public function indexAction()
     {
         $userRepo = $this->getDoctrine()->getRepository('LokiUserBundle:User');
-        $users = $userRepo->findBy([], ['enabled'=> 'ASC', 'username' => 'ASC']);
+        $users = $userRepo->findBy([], ['enabled' => 'ASC', 'username' => 'ASC']);
         return $this->render('LokiUserBundle:User:index.html.twig', [
             'users' => $users,
         ]);
+    }
+
+    /**
+     * @param $userId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/{userId}/promote",
+     *     name="loki.user.promote",
+     *     requirements={"userId":"\d+"}
+     *     )
+     * @Security("has_role( 'ROLE_MODERATOR')")
+     */
+    public function promoteAction($userId)
+    {
+        $userRepo = $this->getDoctrine()->getRepository('LokiUserBundle:User');
+        $user = $userRepo->find($userId);
+        $manipulator = $this->get('fos_user.util.user_manipulator');
+        $manipulator->addRole($user->getUsername(), 'ROLE_MODERATOR');
+
+        return $this->redirect($this->generateUrl('loki.user.user.index'));
+
+    }
+
+    /**
+     * @param $userId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/{userId}/demote",
+     *     name="loki.user.demote",
+     *     requirements={"userId":"\d+"}
+     *     )
+     * @Security("has_role( 'ROLE_MODERATOR')")
+     */
+    public function demoteAction($userId)
+    {
+        $userRepo = $this->getDoctrine()->getRepository('LokiUserBundle:User');
+        $user = $userRepo->find($userId);
+        $manipulator = $this->get('fos_user.util.user_manipulator');
+        $manipulator->removeRole($user->getUsername(), 'ROLE_MODERATOR');
+        return $this->redirect($this->generateUrl('loki.user.user.index'));
+
     }
 }

@@ -43,6 +43,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Players</th>
+            <th>Roles</th>
             <th class="text-right">Links</th>
         </tr>
         </thead>
@@ -57,7 +58,12 @@
                 </td>
                 <td>
                 </td>
+                <td>
+                    {{ user.roles | join(", ") }}
+                </td>
                 <td class="text-right">
+                    <a href="{{ path('loki.user.promote', {'userId': user.id}) }}">Promote</a>
+                    <a href="{{ path('loki.user.demote', {'userId': user.id}) }}">Demote</a>
                     TODO Disable/Enable Users
                     <span class="glyphicon glyphicon-{{ user.enabled?"ok":"remove" }}"></span>
                 </td>
