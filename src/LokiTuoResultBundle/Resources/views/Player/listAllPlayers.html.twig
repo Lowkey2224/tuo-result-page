@@ -43,6 +43,7 @@
         <tr>
             <th>Name</th>
             <th>Guild</th>
+            <th>Owner</th>
             <th>Last Updated</th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th>Active</th>{% endif %}
@@ -57,6 +58,9 @@
                 </td>
                 <td>
                     {{ player.0.currentGuild }}
+                </td>
+                <td>
+                    {{ player.0.owner?player.0.owner.username:"" }}
                 </td>
                 <td>
                         {{ player.updated }}

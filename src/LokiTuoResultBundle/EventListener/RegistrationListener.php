@@ -8,12 +8,31 @@
 
 namespace LokiTuoResultBundle\EventListener;
 
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\FOSUserEvents;
+use Doctrine\ORM\EntityManagerInterface;
+use LokiTuoResultBundle\Entity\Player;
+use LokiUserBundle\Event\RegistrationCompleteEvent;
+use LokiUserBundle\LokiUserEvents;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class RegistrationListener implements EventSubscriberInterface
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(LoggerInterface $logger, EntityManagerInterface $playerRepository)
+    {
+        $this->logger = $logger;
+        $this->entityManager = $playerRepository;
+    }
 
     /**
      * Returns an array of event names this subscriber wants to listen to.
@@ -36,13 +55,24 @@ class RegistrationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FOSUserEvents::REGISTRATION_CONFIRM => 'onRegistrationConfirm',
+            LokiUserEvents::REGISTRATION_COMPLETE => 'onRegistrationConfirm',
         );
     }
 
-    public function onRegistrationConfirm(FormEvent $event)
+    public function onRegistrationConfirm(RegistrationCompleteEvent $event)
     {
-        var_dump($event);
-        die();
+        $user = $event->getUser();
+        $repo = $this->entityManager->getRepository('LokiTuoResultBundle:Player');
+        /** @var Player $player */
+        $player = $repo->findOneBy(['name' => $user->getUsername()]);
+        // If Player exists claim player.
+        if($player && !$player->getOwner())
+        {
+            $player->setOwner($user);
+            $this->entityManager->persist($player);
+            $this->entityManager->flush();
+//            var_dump("Changed", $player);die();
+        }
+//        var_dump("not", $player);die();
     }
 }

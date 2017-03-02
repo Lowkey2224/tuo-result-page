@@ -15,6 +15,8 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserManagerInterface;
+use LokiUserBundle\Event\RegistrationCompleteEvent;
+use LokiUserBundle\LokiUserEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +64,11 @@ class RegistrationController extends BaseController
                 $dispatcher->dispatch(
                     FOSUserEvents::REGISTRATION_COMPLETED,
                     new FilterUserResponseEvent($user, $request, $response)
+                );
+
+                $dispatcher->dispatch(
+                    LokiUserEvents::REGISTRATION_COMPLETE,
+                    new RegistrationCompleteEvent($user, $request)
                 );
 
                 return $response;

@@ -4,6 +4,7 @@ namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use LokiUserBundle\Entity\User;
 
 /**
  * Player
@@ -46,6 +47,12 @@ class Player extends AbstractBaseEntity
      * @ORM\Column(type="boolean")
      */
     private $active;
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="LokiUserBundle\Entity\User")
+     * @ORM\JoinColumn(referencedColumnName="id", name="user_id")
+     */
+    private $owner;
 
     public function __construct()
     {
@@ -170,4 +177,22 @@ class Player extends AbstractBaseEntity
     {
         $this->active = $active;
     }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     */
+    public function setOwner(User $owner)
+    {
+        $this->owner = $owner;
+    }
+
+
 }
