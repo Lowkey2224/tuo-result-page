@@ -217,5 +217,8 @@ class Player extends AbstractBaseEntity
         $this->ownershipConfirmed = $ownershipConfirmed;
     }
 
-
+    public function isOwnedBy(User $user)
+    {
+        return $this->isOwnershipConfirmed() && $this->getOwner()->getId() == $user->getId();
+    }
 }

@@ -315,21 +315,22 @@ class PlayerController extends Controller
      *     requirements={"playerId":"\d+"}
      *     )
      * @param Request $request
-     * @Security("has_role( 'ROLE_MODERATOR')")
      * @param $playerId
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteMassCardsForPlayer(Request $request, $playerId)
     {
+
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
         if (!$player) {
             return new JsonResponse(['message' => 'Player not found', 404]);
         }
-
-        $manager = $this->get('loki_tuo_result.owned_card.manager');
-        $manager->setLogger($this->get('logger'));
-        $manager->removeOldOwnedCardsForPlayer($player);
-        $this->addDefaultCardToPlayer($player);
+        if($this->isGranted('ROLE_MODERATOR') || $player->isOwnedBy($this->getUser())){
+            $manager = $this->get('loki_tuo_result.owned_card.manager');
+            $manager->setLogger($this->get('logger'));
+            $manager->removeOldOwnedCardsForPlayer($player);
+            $this->addDefaultCardToPlayer($player);
+        }
         return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
     }
 

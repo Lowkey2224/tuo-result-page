@@ -62,7 +62,7 @@
                 <td>
                     {% if player.0.owner %}
                         {{ player.0.owner.username }}
-                        {% if is_granted('ROLE_ADMIN') and not player.0.ownershipConfirmed%}
+                        {% if is_granted('ROLE_MODERATOR') and not player.0.ownershipConfirmed%}
                             <a href="{{ path('loki.tuo.player.claim.confirm', {'playerId': player.0.id}) }}">
                                 <b>confirm</b>
                             </a>

@@ -128,7 +128,7 @@
                     Owned Cards for Player: <b>{{ player.name }}</b>
                 </p>
                 <div class="col-md-3 col-xs-3">
-                    {% if is_granted('ROLE_MODERATOR') %}
+                    {% if is_granted('ROLE_MODERATOR') or player.isOwnedBy(app.user) %}
                     <a href="{{ path("loki.tuo.player.card.delete.mass", {'playerId':player.id}) }}">
                         <button type="button" class="pull-right btn btn-danger btn-md">
                             <i class="glyphicon glyphicon-minus"></i>
