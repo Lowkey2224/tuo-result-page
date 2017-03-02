@@ -34,8 +34,8 @@ class Version20170302183108 extends AbstractMigration
         $this->addSql('ALTER TABLE `result` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
         $this->addSql('ALTER TABLE `result_file` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
         $this->addSql('ALTER TABLE `result_file` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
-        $this->addSql('ALTER TABLE `user` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
-        $this->addSql('ALTER TABLE `user` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+//        $this->addSql('ALTER TABLE `user` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+//        $this->addSql('ALTER TABLE `user` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
         $this->addSql('ALTER TABLE `player` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
         $this->addSql('ALTER TABLE `player` CHANGE `created_at` `created_at` DATETIME NULL DEFAULT NULL;');
         $this->addSql('ALTER TABLE player ADD user_id INT DEFAULT NULL');
