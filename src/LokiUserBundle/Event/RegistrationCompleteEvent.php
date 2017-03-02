@@ -3,7 +3,6 @@
 
 namespace LokiUserBundle\Event;
 
-
 use LokiUserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,5 +46,4 @@ class RegistrationCompleteEvent extends Event
     {
         return $this->request;
     }
-
 }

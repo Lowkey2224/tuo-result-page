@@ -48,7 +48,6 @@ class UserController extends Controller
         $manipulator->addRole($user->getUsername(), 'ROLE_MODERATOR');
 
         return $this->redirect($this->generateUrl('loki.user.user.index'));
-
     }
 
     /**
@@ -67,6 +66,5 @@ class UserController extends Controller
         $manipulator = $this->get('fos_user.util.user_manipulator');
         $manipulator->removeRole($user->getUsername(), 'ROLE_MODERATOR');
         return $this->redirect($this->generateUrl('loki.user.user.index'));
-
     }
 }

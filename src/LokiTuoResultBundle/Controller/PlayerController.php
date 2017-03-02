@@ -74,8 +74,7 @@ class PlayerController extends Controller
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
         /** @var Player $player */
         // If Player exists claim player.
-        if($player && !$player->isOwnershipConfirmed())
-        {
+        if ($player && !$player->isOwnershipConfirmed()) {
             $player->setOwner($user);
             $this->getDoctrine()->getEntityManager()->persist($player);
             $this->getDoctrine()->getEntityManager()->flush();
@@ -91,8 +90,7 @@ class PlayerController extends Controller
     {
         $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
         /** @var Player $player */
-        if($player && !$player->isOwnershipConfirmed() && $player->getOwner())
-        {
+        if ($player && !$player->isOwnershipConfirmed() && $player->getOwner()) {
             $player->setOwnershipConfirmed(true);
             $this->getDoctrine()->getEntityManager()->persist($player);
             $this->getDoctrine()->getEntityManager()->flush();
@@ -325,7 +323,7 @@ class PlayerController extends Controller
         if (!$player) {
             return new JsonResponse(['message' => 'Player not found', 404]);
         }
-        if($this->isGranted('ROLE_MODERATOR') || $player->isOwnedBy($this->getUser())){
+        if ($this->isGranted('ROLE_MODERATOR') || $player->isOwnedBy($this->getUser())) {
             $manager = $this->get('loki_tuo_result.owned_card.manager');
             $manager->setLogger($this->get('logger'));
             $manager->removeOldOwnedCardsForPlayer($player);

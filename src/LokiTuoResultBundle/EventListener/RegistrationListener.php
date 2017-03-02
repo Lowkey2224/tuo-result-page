@@ -66,8 +66,7 @@ class RegistrationListener implements EventSubscriberInterface
         /** @var Player $player */
         $player = $repo->findOneBy(['name' => $user->getUsername()]);
         // If Player exists claim player.
-        if($player && !$player->getOwner())
-        {
+        if ($player && !$player->getOwner()) {
             $player->setOwner($user);
             $this->entityManager->persist($player);
             $this->entityManager->flush();
