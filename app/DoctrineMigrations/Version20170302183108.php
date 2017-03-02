@@ -18,6 +18,26 @@ class Version20170302183108 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('ALTER TABLE `battle_ground_effect` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `battle_ground_effect` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `card` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `card` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `card_file` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `card_file` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `deck_entry` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `deck_entry` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `mission` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `mission` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `owned_card` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `owned_card` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `result` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `result` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `result_file` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `result_file` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `user` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `user` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `player` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;');
+        $this->addSql('ALTER TABLE `player` CHANGE `created_at` `created_at` DATETIME NULL DEFAULT NULL;');
         $this->addSql('ALTER TABLE player ADD user_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE player ADD CONSTRAINT FK_98197A65A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_98197A65A76ED395 ON player (user_id)');
