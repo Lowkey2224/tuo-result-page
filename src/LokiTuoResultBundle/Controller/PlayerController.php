@@ -65,11 +65,45 @@ class PlayerController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/{playerId}/claim", requirements={"playerId":"\d+"}, name="loki.tuo.player.claim")
+     */
+    public function claimPlayerAction($playerId)
+    {
+        $user = $this->getUser();
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        /** @var Player $player */
+        // If Player exists claim player.
+        if($player && !$player->isOwnershipConfirmed())
+        {
+            $player->setOwner($user);
+            $this->getDoctrine()->getEntityManager()->persist($player);
+            $this->getDoctrine()->getEntityManager()->flush();
+        }
+        return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
+    }
+
+    /**
+     * @Route("/{playerId}/claim/confirm", requirements={"playerId":"\d+"}, name="loki.tuo.player.claim.confirm")
+     * @Security("has_role('ROLE_MODERATOR')")
+     */
+    public function conformClaimAction($playerId)
+    {
+        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
+        /** @var Player $player */
+        if($player && !$player->isOwnershipConfirmed() && $player->getOwner())
+        {
+            $player->setOwnershipConfirmed(true);
+            $this->getDoctrine()->getEntityManager()->persist($player);
+            $this->getDoctrine()->getEntityManager()->flush();
+        }
+        return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
+    }
 
     /**
      * @param $playerId
-     * @return Response
      * @Route("/{playerId}/inventory", requirements={"playerId":"\d+"}, name="loki.tuo.player.inventory.show")
+     * @return Response
      * @throws NotFoundHttpException
      */
     public function getFileAction($playerId)

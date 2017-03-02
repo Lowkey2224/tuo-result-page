@@ -54,11 +54,18 @@ class Player extends AbstractBaseEntity
      */
     private $owner;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $ownershipConfirmed;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
         $this->ownedCards = new ArrayCollection();
         $this->active = true;
+        $this->ownershipConfirmed = false;
     }
 
     public function __toString()
@@ -192,6 +199,22 @@ class Player extends AbstractBaseEntity
     public function setOwner(User $owner)
     {
         $this->owner = $owner;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOwnershipConfirmed(): bool
+    {
+        return $this->ownershipConfirmed;
+    }
+
+    /**
+     * @param bool $ownershipConfirmed
+     */
+    public function setOwnershipConfirmed(bool $ownershipConfirmed)
+    {
+        $this->ownershipConfirmed = $ownershipConfirmed;
     }
 
 
