@@ -96,13 +96,19 @@ class PlayerControllerTest extends \AbstractControllerTest
         /** @var OwnedCard $ownedCard */
         foreach ($deck as $ownedCard)
         {
-            $xpaths[$ownedCard->getCard()->getName()] ='.//td[normalize-space()="'.$ownedCard->getCard()->getName().'"]';
+            $xpaths[$ownedCard->getCard()->getName()] = [
+                'path' => './/td[normalize-space()="'.$ownedCard->getCard()->getName().'"]',
+                'amount' => 2
+
+            ];
         }
 
-        foreach ($xpaths as $xpath)
+        foreach ($xpaths as $cardName => $xpath)
         {
-            $this->assertGreaterThan(1, $crawler->filterXPath($xpath)->count());
+            $this->assertEquals($xpath['amount'], $crawler->filterXPath($xpath['path'])->count(), "With Card: ".$cardName);
         }
+
+        // Add Card
         $cardToAdd = "Rumbler Rickshaw";
         $amount = 1;
         $level = null;
@@ -119,15 +125,43 @@ class PlayerControllerTest extends \AbstractControllerTest
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals($cardToAdd, $responseData['name']);
         $this->assertEquals($level, $responseData['level']);
-        $this->assertGreaterThan($amount, $responseData['amount']);
-        $crawler = $client->request('GET', '/player/'.$player->getId().'/cards');
-        $amountString = $responseData['amount']==1?"":" (".$responseData['amount'].")";
-        $xpaths[$cardToAdd]  ='.//td[normalize-space()="'.$cardToAdd.$amountString.'"]';
+        $this->assertEquals($amount, $responseData['amount']);
 
+        //Check if Card is shown
+        $crawler = $client->request('GET', '/player/'.$player->getId().'/cards');
+        $xpaths[$cardToAdd]  = [
+            'path'=> './/td[normalize-space()="'.$cardToAdd.'"]',
+            'amount' => 1,
+        ];
 
         foreach ($xpaths as $cardName => $xpath)
         {
-            $this->assertGreaterThan(0, $crawler->filterXPath($xpath)->count(), "With Card: ".$cardName);
+            $this->assertEquals($xpath['amount'], $crawler->filterXPath($xpath['path'])->count(), "With Card: ".$cardName);
+        }
+
+        //Remove Card
+        $url = '/player/'.$player->getId().'/card/reduce';
+        $client->request('DELETE', $url, $body);
+
+
+        $response = $client->getResponse();
+//        var_dump($response->getContent());die();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals($cardToAdd, $responseData['name']);
+        $this->assertEquals($level, $responseData['level']);
+        $this->assertEquals(0, $responseData['amount']);
+
+
+        $crawler = $client->request('GET', '/player/'.$player->getId().'/cards');
+        $xpaths[$cardToAdd]  = [
+            'path'=> './/td[normalize-space()="'.$cardToAdd.'"]',
+            'amount' => 0,
+        ];
+
+        foreach ($xpaths as $cardName => $xpath)
+        {
+            $this->assertEquals($xpath['amount'], $crawler->filterXPath($xpath['path'])->count(), "With Card: ".$cardName);
         }
     }
 }
