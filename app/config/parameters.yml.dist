@@ -23,3 +23,4 @@ parameters:
 
     guilds: ['CTP', 'CNS', 'CTN']
     registration_codes: []
+    vpc_url: tuo.throwingbones.com
