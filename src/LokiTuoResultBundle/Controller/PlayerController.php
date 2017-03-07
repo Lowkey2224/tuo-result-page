@@ -76,8 +76,8 @@ class PlayerController extends Controller
         // If Player exists claim player.
         if ($player && !$player->isOwnershipConfirmed()) {
             $player->setOwner($user);
-            $this->getDoctrine()->getEntityManager()->persist($player);
-            $this->getDoctrine()->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->persist($player);
+            $this->getDoctrine()->getManager()->flush();
         }
         return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
     }
@@ -92,8 +92,8 @@ class PlayerController extends Controller
         /** @var Player $player */
         if ($player && !$player->isOwnershipConfirmed() && $player->getOwner()) {
             $player->setOwnershipConfirmed(true);
-            $this->getDoctrine()->getEntityManager()->persist($player);
-            $this->getDoctrine()->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->persist($player);
+            $this->getDoctrine()->getManager()->flush();
         }
         return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
     }
@@ -164,8 +164,8 @@ class PlayerController extends Controller
         } else {
             $oc->setAmountInDeck($oc->getAmountInDeck() + $amount);
         }
-        $this->getDoctrine()->getEntityManager()->persist($oc);
-        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->persist($oc);
+        $this->getDoctrine()->getManager()->flush();
         return new JsonResponse([
             'name' => $name,
             'level' => $level,
@@ -208,8 +208,8 @@ class PlayerController extends Controller
 
         $oc->setLevel($level);
         $oc->setAmount($oc->getAmount() + $amount);
-        $this->getDoctrine()->getEntityManager()->persist($oc);
-        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->persist($oc);
+        $this->getDoctrine()->getManager()->flush();
         return new JsonResponse([
             'name' => $name,
             'level' => $level,
@@ -255,7 +255,7 @@ class PlayerController extends Controller
         $amt = $oc->getAmount();
         $id = $oc->getId();
         if ($amt == 1) {
-            $this->getDoctrine()->getEntityManager()->remove($oc);
+            $this->getDoctrine()->getManager()->remove($oc);
         } else {
             $oc->setAmount($amt - 1);
             if ($oc->getAmountInDeck() > $oc->getAmount()) {
@@ -263,7 +263,7 @@ class PlayerController extends Controller
             }
         }
 
-        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amt - 1, 'id' => $id]);
     }
