@@ -49,7 +49,7 @@ class Player extends AbstractBaseEntity
     private $active;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="LokiUserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="LokiUserBundle\Entity\User", inversedBy="players")
      * @ORM\JoinColumn(referencedColumnName="id", name="user_id")
      */
     private $owner;

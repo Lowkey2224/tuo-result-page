@@ -25,6 +25,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var
+     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Player", mappedBy="owner")
+     */
+    protected $players;
+    /**
      * @var string
      * @ORM\Column(type="string")
      */
@@ -51,4 +56,22 @@ class User extends BaseUser
     {
         $this->registrationCode = $registrationCode;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+
+    /**
+     * @param mixed $players
+     */
+    public function setPlayers($players)
+    {
+        $this->players = $players;
+    }
+
+
 }
