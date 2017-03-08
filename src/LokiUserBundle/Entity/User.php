@@ -72,6 +72,4 @@ class User extends BaseUser
     {
         $this->players = $players;
     }
-
-
 }
