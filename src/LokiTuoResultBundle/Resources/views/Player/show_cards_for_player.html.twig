@@ -316,7 +316,7 @@
                     addCardRow(response['id'], combinedName, response['amount'], response['level']);
                 };
                 var method = "POST";
-                var url = "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}";
+                var url = "{{ path('loki.tuo.player.card.add', {'id': player.id}) }}";
                 sendAjaxRequest(data, succCB, method, url)
             }
 

@@ -175,17 +175,13 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"playerId":"\d+"})
+     * @Route("/{id}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"playerId":"\d+"})
      * @param Request $request
      * @param $playerId
      * @return JsonResponse
      */
-    public function addOwnedCardAction(Request $request, $playerId)
+    public function addOwnedCardAction(Request $request, Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
         $name = trim($request->get('owned_card_card'));
         $level = $request->get('owned_card_level');
         $level = (is_null($level) || $level == "null" || trim($level) == "") ? null : $level;
