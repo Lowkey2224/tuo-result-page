@@ -1,6 +1,8 @@
 Tyrant unleashed optimizer Result Page
 =========
-<a href="https://travis-ci.org/Lowkey2224/tuo-result-page"><img src="https://travis-ci.org/Lowkey2224/tuo-result-page.svg?branch=master" alt="Build Status"></a>
+[![Build Status](https://travis-ci.org/Lowkey2224/tuo-result-page.svg?branch=master)](https://travis-ci.org/Lowkey2224/tuo-result-page)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page)
 
 This is a Symfony Project, designed in use with the [Tyrant unleashed Optimizer](https://sourceforge.net/p/tyrant-unleashed-optimizer/).
 
