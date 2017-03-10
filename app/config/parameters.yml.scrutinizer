@@ -18,5 +18,5 @@ parameters:
     registration_codes:
         - RegMe
     database_name_test: tuorp_test
-    database_user_test: travis
+    database_user_test: root
     database_password_test: ~
