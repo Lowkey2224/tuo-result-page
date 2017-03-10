@@ -1,0 +1,22 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: tuo_results
+    database_user: root
+    database_password: ~
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: root
+    mailer_password: null
+    secret: 68c0ef7235ed5f1d45cd5d31165d1f039e747a6c
+    guilds:
+        - CTP
+        - CTN
+        - CNS
+        - XXX
+    registration_codes:
+        - RegMe
+    database_name_test: tuorp_test
+    database_user_test: travis
+    database_password_test: ~

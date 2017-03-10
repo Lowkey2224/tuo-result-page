@@ -18,7 +18,7 @@ coding_style:
 build:
     tests:
         before:
-            - cp app/config/parameters.yml.travis app/config/parameters.yml
+            - cp app/config/parameters.yml.scrutinizer app/config/parameters.yml
             - php bin/console doctrine:database:create --env=test
             - php bin/console doctrine:schema:create --env=test
             - php bin/console doctrine:fixtures:load -n --env=test
