@@ -17,6 +17,11 @@ class PlayerVoter extends AbstractVoter
 
     protected function canEdit(Player $player, User $user)
     {
+        return !$player->isOwnershipConfirmed() || $this->canDelete($player, $user);
+    }
+
+    protected function canDelete(Player $player, User $user)
+    {
         $correctRole = $user->hasRole('ROLE_MODERATOR')
             || $user->hasRole('ROLE_ADMIN')
             || $user->hasRole('ROLE_SUPER_ADMIN');

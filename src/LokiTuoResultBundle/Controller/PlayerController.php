@@ -29,21 +29,15 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{id}/results", name="loki.tuo.player.results.show", requirements={"id":"\d+"})
+     * @Security("is_granted('view', player)")
      * @param Player $player
      * @return Response
      */
     public function showResultsForPlayerAction(Player $player)
     {
-
-        if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $results = $player->getResults();
-
         return $this->render('LokiTuoResultBundle:Player:showResultsForPlayer.html.twig', array(
             'player' => $player,
-            'results' => $results
+            'results' => $player->getResults(),
         ));
     }
 
@@ -70,12 +64,13 @@ class PlayerController extends Controller
      * @param Player $player
      * @return RedirectResponse
      * @Route("/{id}/claim", requirements={"id":"\d+"}, name="loki.tuo.player.claim")
+     * @Security("is_granted('edit', player)")
      */
     public function claimPlayerAction(Player $player)
     {
         $user = $this->getUser();
         // If Player exists claim player.
-        if ($player && !$player->isOwnershipConfirmed()) {
+        if (!$player->isOwnershipConfirmed()) {
             $player->setOwner($user);
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
@@ -92,7 +87,7 @@ class PlayerController extends Controller
      */
     public function conformClaimAction(Player $player)
     {
-        if ($player && !$player->isOwnershipConfirmed() && $player->getOwner()) {
+        if (!$player->isOwnershipConfirmed() && $player->getOwner()) {
             $player->setOwnershipConfirmed(true);
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
@@ -103,6 +98,7 @@ class PlayerController extends Controller
     /**
      * @param Player $player
      * @Route("/{id}/inventory", requirements={"id":"\d+"}, name="loki.tuo.player.inventory.show")
+     * @Security("is_granted('view', player)")
      * @return Response
      * @throws NotFoundHttpException
      */
@@ -126,6 +122,7 @@ class PlayerController extends Controller
      *     name="loki.tuo.player.card.deck.add",
      *     methods={"POST"},
      *     requirements={"id":"\d+"})
+     * @Security("is_granted('edit', player)")
      * @param Player $player
      * @return JsonResponse
      */
@@ -170,6 +167,7 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{id}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"id":"\d+"})
+     * @Security("is_granted('edit', player)")
      * @param Request $request
      * @param Player $player
      * @return JsonResponse
@@ -214,6 +212,7 @@ class PlayerController extends Controller
      *     methods={"DELETE"},
      *     requirements={"id":"\d+"}
      *     )
+     * @Security("is_granted('edit', player)")
      * @param Request $request
      * @param Player $player
      * @return JsonResponse
@@ -260,6 +259,7 @@ class PlayerController extends Controller
      *     methods={"POST"},
      *     requirements={"id":"\d+"}
      *     )
+     * @Security("is_granted('edit', player)")
      * @param Request $request
      * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -295,17 +295,15 @@ class PlayerController extends Controller
      *     )
      * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     * @Security("is_granted('edit', player)")
+     * @Security("is_granted('delete', player)")
      */
     public function deleteMassCardsForPlayer(Player $player)
     {
 
-        if ($this->isGranted('ROLE_MODERATOR') || $player->isOwnedBy($this->getUser())) {
-            $manager = $this->get('loki_tuo_result.owned_card.manager');
-            $manager->setLogger($this->get('logger'));
-            $manager->removeOldOwnedCardsForPlayer($player);
-            $this->addDefaultCardToPlayer($player);
-        }
+        $manager = $this->get('loki_tuo_result.owned_card.manager');
+        $manager->setLogger($this->get('logger'));
+        $manager->removeOldOwnedCardsForPlayer($player);
+        $this->addDefaultCardToPlayer($player);
         return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
     }
 
@@ -314,14 +312,10 @@ class PlayerController extends Controller
      * @param Player $player
      * @Route("/{id}/cards", name="loki.tuo.player.cards.show", requirements={"id":"\d+"})
      * @return Response
+     * @Security("is_granted('view', player)")
      */
     public function showCardsForPlayerAction(Player $player)
     {
-        if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-            throw new AccessDeniedHttpException();
-        }
-
-
         $allCards = $player->getOwnedCards();
         $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
             return $elem->getCard()->getName();
@@ -353,7 +347,7 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{id}/disable", name="loki.tuo.player.disable", requirements={"id":"\d+"})
-     * @Security("has_role( 'ROLE_MODERATOR')")
+     * @Security("is_granted('delete', player)")
      * @param Player $player
      * @return RedirectResponse
      */
