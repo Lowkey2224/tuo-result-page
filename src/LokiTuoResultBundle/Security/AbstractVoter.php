@@ -3,7 +3,6 @@
 
 namespace LokiTuoResultBundle\Security;
 
-
 use LokiUserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -71,7 +70,7 @@ abstract class AbstractVoter extends Voter
             return false;
         }
         $map = $this->getAttributeMethodMap();
-        if(isset($map[$attribute])) {
+        if (isset($map[$attribute])) {
             $method = $map[$attribute];
             return $this->$method($subject, $user);
         }

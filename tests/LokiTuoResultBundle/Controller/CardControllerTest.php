@@ -11,7 +11,6 @@ class CardControllerTest extends AbstractControllerTest
         $client = $this->loginAs();
         $client->request('GET', '/card');
         $client->followRedirect();
-//        var_dump($client->getResponse()->getContent());
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
