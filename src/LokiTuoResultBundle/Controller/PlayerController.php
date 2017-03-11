@@ -295,6 +295,7 @@ class PlayerController extends Controller
      *     )
      * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("is_granted('edit', player)")
      */
     public function deleteMassCardsForPlayer(Player $player)
     {
