@@ -1,6 +1,7 @@
 Tyrant unleashed optimizer Result Page
 =========
 [![Build Status](https://travis-ci.org/Lowkey2224/tuo-result-page.svg?branch=master)](https://travis-ci.org/Lowkey2224/tuo-result-page)
+[![Dependency Status](https://www.versioneye.com/user/projects/58c3e32262d6020040aec79e/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58c3e32262d6020040aec79e)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page)
 
