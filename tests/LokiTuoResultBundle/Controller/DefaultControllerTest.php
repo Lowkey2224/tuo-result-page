@@ -2,7 +2,7 @@
 
 namespace LokiTuoResultBundle\Tests\Controller;
 
-class DefaultControllerTest extends \AbstractControllerTest
+class DefaultControllerTest extends AbstractControllerTest
 {
     public function testIndex()
     {

@@ -7,6 +7,8 @@
  * Time: 16:38
  */
 
+namespace LokiTuoResultBundle\Tests\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,20 +39,11 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Log in', $client->getResponse()->getContent());
         $form = $crawler->selectButton('_submit')->form();
-
-
         $form['_username'] = $user;
         $form['_password'] = $password;
-
-
         $client->followRedirects();
-        /*$crawler =*/
         $client->submit($form);
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $client->followRedirects(false);
 
 
