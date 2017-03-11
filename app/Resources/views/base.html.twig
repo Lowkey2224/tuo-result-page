@@ -73,7 +73,7 @@
                                 {% if app.user.players is not empty%}
                                     <li role="separator" class="divider"></li>
                                     {% for player in app.user.players %}
-                                        <li><a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.id}) }}">{{ player.name }}</a></li>
+                                        <li><a href="{{ path('loki.tuo.player.cards.show', {'id': player.id}) }}">{{ player.name }}</a></li>
                                     {% endfor %}
                                 {% endif %}
                                 {#<li><a href="#">Another action</a></li>#}
