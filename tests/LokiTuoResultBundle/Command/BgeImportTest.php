@@ -13,7 +13,9 @@ class BgeImportTest extends KernelTestCase
     {
         self::bootKernel();
         $application = new Application(self::$kernel);
-
+        $em = static::$kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
         $application->add(new LokiTuoBgeImportCommand());
         $filePath      = __DIR__.'/../files/bges.txt';
         /** @var ContainerAwareCommand $command */
@@ -29,5 +31,8 @@ class BgeImportTest extends KernelTestCase
         $output   = $commandTester->getDisplay();
         $expected = 'There were 7 Entries to be persisted.';
         $this->assertContains($expected, $output);
+        // Test they are really in the DB
+        $bges = $em->getRepository('LokiTuoResultBundle:BattleGroundEffect')->findAll();
+        $this->assertCount(9, $bges);
     }
 }
