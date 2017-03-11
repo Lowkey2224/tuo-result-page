@@ -122,7 +122,7 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/playerId/card/deck/{id}",
+     * @Route("/id/card/deck/{id}",
      *     name="loki.tuo.player.card.deck.add",
      *     methods={"POST"},
      *     requirements={"id":"\d+"})
@@ -284,14 +284,14 @@ class PlayerController extends Controller
         }
 
 
-        return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
+        return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
     }
 
     /**
      * @Route("/{id}/cards/delete",
      *     name="loki.tuo.player.card.delete.mass",
      *     methods={"GET"},
-     *     requirements={"playerId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
      * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -306,13 +306,13 @@ class PlayerController extends Controller
             $manager->removeOldOwnedCardsForPlayer($player);
             $this->addDefaultCardToPlayer($player);
         }
-        return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
+        return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
     }
 
     /**
      *
      * @param Player $player
-     * @Route("/{id}/cards", name="loki.tuo.player.cards.show", requirements={"playerId":"\d+"})
+     * @Route("/{id}/cards", name="loki.tuo.player.cards.show", requirements={"id":"\d+"})
      * @return Response
      */
     public function showCardsForPlayerAction(Player $player)
@@ -352,7 +352,7 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{id}/disable", name="loki.tuo.player.disable", requirements={"playerId":"\d+"})
+     * @Route("/{id}/disable", name="loki.tuo.player.disable", requirements={"id":"\d+"})
      * @Security("has_role( 'ROLE_MODERATOR')")
      * @param Player $player
      * @return RedirectResponse
@@ -371,7 +371,7 @@ class PlayerController extends Controller
      * @param Request $request
      * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/[player}/edit", name="loki.tuo.player.edit", requirements={"playerId":"\d+"})
+     * @Route("/[player}/edit", name="loki.tuo.player.edit", requirements={"id":"\d+"})
      */
     public function editPlayer(Request $request, Player $player)
     {
@@ -412,7 +412,7 @@ class PlayerController extends Controller
 
             // Check if Player already exists
             $this->addDefaultCardToPlayer($player);
-            return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
+            return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
         } else {
             var_dump($form->isSubmitted(), $form->isValid());
 //            die();
