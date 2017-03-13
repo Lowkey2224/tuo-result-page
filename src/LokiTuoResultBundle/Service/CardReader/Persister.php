@@ -70,7 +70,7 @@ class Persister
         foreach ($cards as $key => $card) {
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
             $count++;
-            $this->logger->error("Persisting card number $card with name". $card->getName());
+            $this->logger->error("Persisting card number $card with name" . $card->getName());
             if ($dbEntity) {
                 $card->setId($dbEntity->getId());
                 $dbEntity->setPicture($card->getPicture());
