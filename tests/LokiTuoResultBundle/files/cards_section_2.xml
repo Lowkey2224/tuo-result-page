@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+
+<!-- November 2013 Event Mission Cards -->
+
+	<unit>
+		<id>739</id>
+		<name>Plated Defender</name>
+		<picture>robot2.jpg</picture>
+		<attack>2</attack>
+		<health>5</health>
+		<cost>2</cost>
+		<rarity>3</rarity>
+		<skill id='armored' x='1' />
+		<type>2</type>
+		<set>6000</set>
+		<upgrade>
+			<level>2</level>
+			<card_id>740</card_id>
+			<skill id='armored' x='2' />
+			<health>8</health>
+		</upgrade>
+		<upgrade>
+			<level>3</level>
+			<card_id>741</card_id>
+			<skill id='armored' x='2' />
+			<skill id='enfeeble' x='1' />
+			<attack>3</attack>
+		</upgrade>
+		<upgrade>
+			<level>4</level>
+			<card_id>742</card_id>
+			<attack>4</attack>
+			<health>10</health>
+		</upgrade>
+		<upgrade>
+			<level>5</level>
+			<card_id>743</card_id>
+			<skill id='armored' x='3' />
+			<skill id='enfeeble' x='1' />
+			<health>12</health>
+		</upgrade>
+		<upgrade>
+			<level>6</level>
+			<card_id>744</card_id>
+			<skill id='armored' x='3' />
+			<skill id='enfeeble' x='1' all='1' />
+			<attack>5</attack>
+		</upgrade>
+	</unit>
+</root>
