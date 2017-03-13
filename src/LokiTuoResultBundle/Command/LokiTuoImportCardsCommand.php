@@ -31,7 +31,7 @@ class LokiTuoImportCardsCommand extends ContainerAwareCommand
         $reader = $this->getContainer()->get('loki_tuo_result.card.persister');
         $reader->setLogger(new ConsoleLogger($output));
         $count = $reader->importCards();
-        $output->writeln("Imported $count cards");
+        $output->writeln("Imported $count cards.");
         return 0;
     }
 }

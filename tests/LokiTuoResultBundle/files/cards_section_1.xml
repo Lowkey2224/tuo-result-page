@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+
+<!-- SET 1000 - Standard -->
+
+	<!-- Assault -->
+
+		<!-- Imperials -->
+		
+			<!-- Commons -->
+    
+    <unit>
+        <id>6793</id>
+        <name>Sinew Shredder</name> <!-- Sinew Sticher -->
+        <picture>bloodbather_lv6</picture>
+        <asset_bundle>103</asset_bundle>
+        <fusion_level>2</fusion_level>
+        <attack>4</attack>
+        <health>25</health>
+        <cost>4</cost>
+        <rarity>3</rarity>
+        <skill id='evade' x='1' />
+        <skill id='leech' x='8' />
+        <skill id='berserk' x='2' />
+        <type>3</type>
+        <set>2500</set>
+        <upgrade>
+            <level>2</level>
+            <card_id>6794</card_id>
+            <health>27</health>
+        </upgrade>
+        <upgrade>
+            <level>3</level>
+            <card_id>6795</card_id>
+            <attack>5</attack>
+        </upgrade>
+        <upgrade>
+            <level>4</level>
+            <card_id>6796</card_id>
+            <skill id='evade' x='2' />
+            <skill id='leech' x='8' />
+            <skill id='berserk' x='2' />
+        </upgrade>
+        <upgrade>
+            <level>5</level>
+            <card_id>6797</card_id>
+            <skill id='evade' x='3' />
+            <skill id='leech' x='9' />
+            <skill id='berserk' x='2' />
+        </upgrade>
+        <upgrade>
+            <level>6</level>
+            <card_id>6798</card_id>
+            <skill id='evade' x='3' />
+            <skill id='leech' x='10' />
+            <skill id='berserk' x='3' />
+            <health>29</health>
+        </upgrade>
+    </unit>
+
+	
+	<!-- END Halloween 2013 Event Rewards -->
+	
+	<!-- END Standard Pack -->
+</root>
