@@ -44,8 +44,8 @@ class Persister
         foreach ($files as $file) {
             $content = simplexml_load_string($file->getContent());
             $cards = $transformer->transformToModels($content, $file, $cards);
-            $cardCount += $this->persistModels($cards);
         }
+        $cardCount += $this->persistModels($cards);
         $this->em->flush();
         foreach ($files as $file) {
             $file->setStatus(CardFile::STATUS_IMPORTED);
@@ -70,6 +70,7 @@ class Persister
         foreach ($cards as $key => $card) {
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
             $count++;
+            $this->logger->error("Persisting card number $card with name". $card->getName());
             if ($dbEntity) {
                 $card->setId($dbEntity->getId());
                 $dbEntity->setPicture($card->getPicture());
