@@ -63,7 +63,7 @@
                     {% if player.0.owner %}
                         {{ player.0.owner.username }}
                         {% if is_granted('ROLE_MODERATOR') and not player.0.ownershipConfirmed%}
-                            <a href="{{ path('loki.tuo.player.claim.confirm', {'playerId': player.0.id}) }}">
+                            <a href="{{ path('loki.tuo.player.claim.confirm', {'id': player.0.id}) }}">
                                 <b>confirm</b>
                             </a>
                             {% endif %}
@@ -78,16 +78,16 @@
                     </td>
                 {% endif %}
                 <td class="text-right">
-                    <a href="{{ path('loki.tuo.player.claim', {'playerId': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.claim', {'id': player.0.id}) }}">
                         <b>Claim</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.cards.show', {'playerId': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.cards.show', {'id': player.0.id}) }}">
                         <b>Cards</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.results.show', {'playerId': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.results.show', {'id': player.0.id}) }}">
                         <b>Simulations</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.edit', {'playerId': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.edit', {'id': player.0.id}) }}">
                         <b>Edit</b>
                     </a>
                 </td>

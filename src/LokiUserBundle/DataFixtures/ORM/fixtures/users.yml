@@ -7,3 +7,11 @@ LokiUserBundle\Entity\User:
         roles: [ROLE_ADMIN]
         salt: <current()>
         registrationCode: Fixtures
+    user_{user, moderator}:
+        username (unique): <current()>
+        email (unique): <current()>@bar.baz
+        plainpassword: <current()>
+        enabled: true
+        roles: [ROLE_<current()>]
+        salt: <current()>
+        registrationCode: Fixtures

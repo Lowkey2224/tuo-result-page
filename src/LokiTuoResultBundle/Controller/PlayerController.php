@@ -13,9 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -27,29 +27,22 @@ class PlayerController extends Controller
 {
 
     /**
-     * @Route("/{playerId}/results", name="loki.tuo.player.results.show", requirements={"playerId":"\d+"})
+     * @Route("/{id}/results", name="loki.tuo.player.results.show", requirements={"id":"\d+"})
+     * @Security("is_granted('view', player)")
+     * @param Player $player
+     * @return Response
      */
-    public function showResultsForPlayerAction($playerId)
+    public function showResultsForPlayerAction(Player $player)
     {
-
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return $this->createNotFoundException("Player not Found");
-        }
-        if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $results = $player->getResults();
-
         return $this->render('LokiTuoResultBundle:Player:showResultsForPlayer.html.twig', array(
             'player' => $player,
-            'results' => $results
+            'results' => $player->getResults(),
         ));
     }
 
     /**
      * @Route("/", name="loki.tuo.player.all.show", methods={"GET"})
+     * @return Response
      */
     public function listAllPlayersAction()
     {
@@ -66,15 +59,17 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/claim", requirements={"playerId":"\d+"}, name="loki.tuo.player.claim")
+     *
+     * @param Player $player
+     * @return RedirectResponse
+     * @Route("/{id}/claim", requirements={"id":"\d+"}, name="loki.tuo.player.claim")
+     * @Security("is_granted('edit', player)")
      */
-    public function claimPlayerAction($playerId)
+    public function claimPlayerAction(Player $player)
     {
         $user = $this->getUser();
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        /** @var Player $player */
         // If Player exists claim player.
-        if ($player && !$player->isOwnershipConfirmed()) {
+        if (!$player->isOwnershipConfirmed()) {
             $player->setOwner($user);
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
@@ -83,14 +78,15 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/claim/confirm", requirements={"playerId":"\d+"}, name="loki.tuo.player.claim.confirm")
+     *
+     * @param Player $player
+     * @return RedirectResponse
+     * @Route("/{id}/claim/confirm", requirements={"id":"\d+"}, name="loki.tuo.player.claim.confirm")
      * @Security("has_role('ROLE_MODERATOR')")
      */
-    public function conformClaimAction($playerId)
+    public function conformClaimAction(Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        /** @var Player $player */
-        if ($player && !$player->isOwnershipConfirmed() && $player->getOwner()) {
+        if (!$player->isOwnershipConfirmed() && $player->getOwner()) {
             $player->setOwnershipConfirmed(true);
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
@@ -99,17 +95,14 @@ class PlayerController extends Controller
     }
 
     /**
-     * @param $playerId
-     * @Route("/{playerId}/inventory", requirements={"playerId":"\d+"}, name="loki.tuo.player.inventory.show")
+     * @param Player $player
+     * @Route("/{id}/inventory", requirements={"id":"\d+"}, name="loki.tuo.player.inventory.show")
+     * @Security("is_granted('view', player)")
      * @return Response
      * @throws NotFoundHttpException
      */
-    public function getFileAction($playerId)
+    public function getFileAction(Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (is_null($player)) {
-            throw $this->createNotFoundException("Player with this ID not found");
-        }
         $content = "";
         /** @var OwnedCard $ownedCard */
         foreach ($player->getOwnedCards() as $ownedCard) {
@@ -124,19 +117,16 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/playerId/card/deck/{playerId}",
+     * @Route("/id/card/deck/{id}",
      *     name="loki.tuo.player.card.deck.add",
      *     methods={"POST"},
-     *     requirements={"playerId":"\d+"})
-     * @param $playerId
+     *     requirements={"id":"\d+"})
+     * @Security("is_granted('edit', player)")
+     * @param Player $player
      * @return JsonResponse
      */
-    public function addCardToDeckAction(Request $request, $playerId)
+    public function addCardToDeckAction(Request $request, Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
         $name = $request->get('owned_card_card');
         $level = $request->get('owned_card_level') == "null" ? null : $request->get('owned_card_level');
         $amount = $request->get('owned_card_amount');
@@ -175,17 +165,14 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"playerId":"\d+"})
+     * @Route("/{id}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"id":"\d+"})
+     * @Security("is_granted('edit', player)")
      * @param Request $request
-     * @param $playerId
+     * @param Player $player
      * @return JsonResponse
      */
-    public function addOwnedCardAction(Request $request, $playerId)
+    public function addOwnedCardAction(Request $request, Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
         $name = trim($request->get('owned_card_card'));
         $level = $request->get('owned_card_level');
         $level = (is_null($level) || $level == "null" || trim($level) == "") ? null : $level;
@@ -219,21 +206,18 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/card/reduce",
+     * @Route("/{id}/card/reduce",
      *     name="loki.tuo.player.card.remove",
      *     methods={"DELETE"},
-     *     requirements={"playerId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
+     * @Security("is_granted('edit', player)")
      * @param Request $request
-     * @param $playerId
+     * @param Player $player
      * @return JsonResponse
      */
-    public function reduceCardAction(Request $request, $playerId)
+    public function reduceCardAction(Request $request, Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
         $name = $request->get('owned_card_card');
         $level = $request->get('owned_card_level') == "null" ? null : $request->get('owned_card_level');
 
@@ -269,22 +253,18 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/cards",
+     * @Route("/{id}/cards",
      *     name="loki.tuo.player.card.add.mass",
      *     methods={"POST"},
-     *     requirements={"playerId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
+     * @Security("is_granted('edit', player)")
      * @param Request $request
-     * @param $playerId
+     * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addMassCardsForPlayer(Request $request, $playerId)
+    public function addMassCardsForPlayer(Request $request, Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
-
         $form = $this->createForm(MassOwnedCardType::class);
         $form->handleRequest($request);
 
@@ -303,64 +283,53 @@ class PlayerController extends Controller
         }
 
 
-        return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
+        return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
     }
 
     /**
-     * @Route("/{playerId}/cards/delete",
+     * @Route("/{id}/cards/delete",
      *     name="loki.tuo.player.card.delete.mass",
      *     methods={"GET"},
-     *     requirements={"playerId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
-     * @param Request $request
-     * @param $playerId
+     * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("is_granted('delete', player)")
      */
-    public function deleteMassCardsForPlayer(Request $request, $playerId)
+    public function deleteMassCardsForPlayer(Player $player)
     {
 
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
-        if ($this->isGranted('ROLE_MODERATOR') || $player->isOwnedBy($this->getUser())) {
-            $manager = $this->get('loki_tuo_result.owned_card.manager');
-            $manager->setLogger($this->get('logger'));
-            $manager->removeOldOwnedCardsForPlayer($player);
-            $this->addDefaultCardToPlayer($player);
-        }
-        return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $playerId]);
+        $manager = $this->get('loki_tuo_result.owned_card.manager');
+        $manager->setLogger($this->get('logger'));
+        $manager->removeOldOwnedCardsForPlayer($player);
+        $this->addDefaultCardToPlayer($player);
+        return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
     }
 
     /**
-     * @Route("/{playerId}/cards", name="loki.tuo.player.cards.show", requirements={"playerId":"\d+"})
+     *
+     * @param Player $player
+     * @Route("/{id}/cards", name="loki.tuo.player.cards.show", requirements={"id":"\d+"})
+     * @return Response
+     * @Security("is_granted('view', player)")
      */
-    public function showCardsForPlayerAction($playerId)
+    public function showCardsForPlayerAction(Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return $this->createNotFoundException("Player not Found");
-        }
-        if (!$this->get('loki.user.user.manager')->canUserAccess($this->getUser(), $player->getGuild())) {
-            throw new AccessDeniedHttpException();
-        }
-
-
         $allCards = $player->getOwnedCards();
-        $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
+        $allCards = Collection::make($allCards)->sortBy(function(OwnedCard $elem) {
             return $elem->getCard()->getName();
         });
-        $deck = $allCards->filter(function (OwnedCard $item) {
+        $deck = $allCards->filter(function(OwnedCard $item) {
             return $item->getAmountInDeck() > 0;
         });
-        $combined = $deck->map(function (OwnedCard $item) {
+        $combined = $deck->map(function(OwnedCard $item) {
             return $item->toDeckString();
         });
         $formOptions = ['attr' => ['class' => 'data-remote']];
         $ownedCardForm = $this->createForm(OwnedCardType::class, null, $formOptions);
 
         $massOwnedCardForm = $this->createForm(MassOwnedCardType::class, null, array(
-            'action' => $this->generateUrl('loki.tuo.player.card.add.mass', ['playerId' => $playerId]),
+            'action' => $this->generateUrl('loki.tuo.player.card.add.mass', ['id' => $player->getId()]),
             'method' => 'POST',
         ));
 
@@ -376,17 +345,13 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/{playerId}/disable", name="loki.tuo.player.disable", requirements={"playerId":"\d+"})
-     * @Security("has_role( 'ROLE_MODERATOR')")
-     * @param $playerId
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/{id}/disable", name="loki.tuo.player.disable", requirements={"id":"\d+"})
+     * @Security("is_granted('delete', player)")
+     * @param Player $player
+     * @return RedirectResponse
      */
-    public function disablePlayerAction($playerId)
+    public function disablePlayerAction(Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
         $player->setActive(false);
         $this->getDoctrine()->getManager()->persist($player);
         $this->getDoctrine()->getManager()->flush();
@@ -397,17 +362,13 @@ class PlayerController extends Controller
 
     /**
      * @param Request $request
-     * @param $playerId
+     * @param Player $player
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/{playerId}/edit", name="loki.tuo.player.edit", requirements={"playerId":"\d+"})
+     * @Route("/[player}/edit", name="loki.tuo.player.edit", requirements={"id":"\d+"})
      */
-    public function editPlayer(Request $request, $playerId)
+    public function editPlayer(Request $request, Player $player)
     {
-        $player = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->find($playerId);
-        if (!$player) {
-            return new JsonResponse(['message' => 'Player not found', 404]);
-        }
-        $action = $this->generateUrl('loki.tuo.player.edit', ['playerId' => $playerId]);
+        $action = $this->generateUrl('loki.tuo.player.edit', ['id' => $player->getId()]);
         $form = $this->getPlayerForm($player, $action);
         $form->handleRequest($request);
 
@@ -429,6 +390,8 @@ class PlayerController extends Controller
 
     /**
      * @Route("/", name="loki.tuo.player.add", methods={"POST"})
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function addPlayerAction(Request $request)
     {
@@ -442,7 +405,7 @@ class PlayerController extends Controller
 
             // Check if Player already exists
             $this->addDefaultCardToPlayer($player);
-            return $this->redirectToRoute('loki.tuo.player.cards.show', ['playerId' => $player->getId()]);
+            return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
         } else {
             var_dump($form->isSubmitted(), $form->isValid());
 //            die();

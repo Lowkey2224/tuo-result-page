@@ -193,7 +193,7 @@ class Service
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
-            $this->logger->debug("Saving Result for Player ". $player->getName());
+            $this->logger->debug("Saving Result for Player " . $player->getName());
         }
 
         $this->em->flush();

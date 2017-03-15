@@ -1,0 +1,20 @@
+// Guild War BGEs
+Inspired: Rally all 3
+
+// Some other BGEs
+Soothing Chant: Heal all 2
+
+// Conquest Zones
+Andar Quarantine: Evolve 2 Pierce Rupture
+
+// Activation Skills
+Haunting Miasma: Enhance all Enfeeble 1
+
+// Defensive Skills
+Fortified Aegis: Enhance all Armor 1
+
+// Combat-Modifier Skills
+Bolstered Phalanx: Enhance all Legion 1
+
+// Damage-Dependent Skills
+Burning Rage: Enhance all Berserk 1

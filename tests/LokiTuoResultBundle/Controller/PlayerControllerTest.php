@@ -6,7 +6,7 @@ namespace LokiTuoResultBundle\Tests\Controller;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 
-class PlayerControllerTest extends \AbstractControllerTest
+class PlayerControllerTest extends AbstractControllerTest
 {
 
     /**

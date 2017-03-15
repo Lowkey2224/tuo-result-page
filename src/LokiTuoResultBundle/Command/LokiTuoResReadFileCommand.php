@@ -30,7 +30,7 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
         $reader->setLogger($logger);
         $id = $reader->readFile($filePath, $input->getArgument('guild'));
 
-        $output->writeln("Read File with id $id");
+        $output->writeln("Read File with id $id.");
         return 0;
     }
 }

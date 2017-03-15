@@ -129,13 +129,13 @@
                 </p>
                 <div class="col-md-3 col-xs-3">
                     {% if is_granted('ROLE_MODERATOR') or player.isOwnedBy(app.user) %}
-                    <a href="{{ path("loki.tuo.player.card.delete.mass", {'playerId':player.id}) }}">
+                    <a href="{{ path("loki.tuo.player.card.delete.mass", {'id':player.id}) }}">
                         <button type="button" class="pull-right btn btn-danger btn-md">
                             <i class="glyphicon glyphicon-minus"></i>
                         </button>
                     </a>
                     {% endif %}
-                    <a href="{{ path("loki.tuo.player.inventory.show", {'playerId':player.id}) }}">
+                    <a href="{{ path("loki.tuo.player.inventory.show", {'id':player.id}) }}">
                         <button type="button" class="pull-right btn btn-primary btn-md">
                             <i class="glyphicon glyphicon-save"></i>
                         </button>
@@ -263,7 +263,7 @@
 
             function sendRemoveCardRequest(data) {
                 var method = "DELETE";
-                var url = "{{ path('loki.tuo.player.card.remove', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
+                var url = "{{ path('loki.tuo.player.card.remove', {'id': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
                 var succCB = function (response) {
                     $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                     var id = response['id'];
@@ -282,7 +282,7 @@
 
             function sendRemoveFromDeckRequest(data) {
                 var method = "POST";
-                var url = "{{ path('loki.tuo.player.card.deck.add', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
+                var url = "{{ path('loki.tuo.player.card.deck.add', {'id': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
                 var succCB = function (response) {
 //                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                     var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
@@ -300,7 +300,7 @@
 
             function sendAddToDeckRequest(data) {
                 var method = "POST";
-                var url = "{{ path('loki.tuo.player.card.deck.add', {'playerId': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
+                var url = "{{ path('loki.tuo.player.card.deck.add', {'id': player.id}) }}?XDEBUG_SESSION_START=PHPSTORM";
                 var succCB = function (response) {
 //                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                     var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
@@ -316,7 +316,7 @@
                     addCardRow(response['id'], combinedName, response['amount'], response['level']);
                 };
                 var method = "POST";
-                var url = "{{ path('loki.tuo.player.card.add', {'playerId': player.id}) }}";
+                var url = "{{ path('loki.tuo.player.card.add', {'id': player.id}) }}";
                 sendAjaxRequest(data, succCB, method, url)
             }
 

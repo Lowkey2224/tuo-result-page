@@ -63,3 +63,10 @@ services:
         arguments: ['%kernel.default_locale%']
         tags:
             - { name: kernel.event_subscriber }
+    app.player_voter:
+        class: LokiTuoResultBundle\Security\PlayerVoter
+        arguments: ['@logger']
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false

@@ -44,11 +44,12 @@ class Mission extends AbstractBaseEntity
         foreach ($this->results as $result) {
             $guilds[$result->getGuild()] = $result->getGuild();
         }
+
         return $guilds;
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @ORM\PrePersist
      */
@@ -59,7 +60,7 @@ class Mission extends AbstractBaseEntity
     }
 
     /**
-     * Set updatedAt
+     * Set updatedAt.
      *
      * @ORM\PreUpdate
      */
@@ -68,9 +69,8 @@ class Mission extends AbstractBaseEntity
         $this->updatedAt = new \DateTime();
     }
 
-
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -84,7 +84,7 @@ class Mission extends AbstractBaseEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -94,7 +94,7 @@ class Mission extends AbstractBaseEntity
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
      *
@@ -108,7 +108,7 @@ class Mission extends AbstractBaseEntity
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return string
      */
