@@ -29,13 +29,9 @@ class LokiTuoSimGenCommand extends ContainerAwareCommand
 //        }
 
         $domain = "LokiTuoResultBundle";
-        $translator = $this->getContainer()->get('translator');
-        $catalogue = $translator->getCatalogue('en');
-        $all = $catalogue->all();
-//        var_dump(array_keys($this->getContainer()->get('translator')->getCatalogue('en')->all()));die();
-        $tnns = $translator->trans("form.mission.type", [], $domain);
-
-        $output->writeln($tnns);
+        $manager = $this->getContainer()->get('loki_tuo_result.vpc_simulation.manager');
+        $manager->postSimulation();
+        $output->writeln("Yay");
 
 //        foreach ($all as $id) {
 //            $output->writeln("Reimporting File with ID $id");

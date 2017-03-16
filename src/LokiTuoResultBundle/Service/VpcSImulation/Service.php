@@ -10,9 +10,12 @@ namespace LokiTuoResultBundle\Service\VpcSImulation;
 
 use Buzz\Browser;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 class Service
 {
+    use LoggerAwareTrait;
 
     /** @var Browser */
     private $browser;
@@ -30,6 +33,7 @@ class Service
     {
         $this->browser = $browser;
         $this->url = $vpc_url;
+        $this->setLogger(new NullLogger());
     }
 
     public function postSimulation(Simulation $simulation)
