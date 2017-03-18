@@ -9,6 +9,19 @@
     <property name="phpcbf" value="${basedir}/vendor/bin/phpcbf"/>
     <property name="console" value="${basedir}/bin/console"/>
 
+    <target name="deploy" description="Deploys the Project">
+        <exec executable="composer" >
+            <arg value="install"/>
+        </exec>
+        <exec executable="${console}" >
+            <arg value="doctrine:migrations:execute"/>
+        </exec>
+        <exec executable="${console}" >
+            <arg value="cache:clear"/>
+            <arg value="--env=prod"/>
+        </exec>
+
+    </target>
     <target name="full-build" depends="prepare,static-analysis,-check-failure"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
