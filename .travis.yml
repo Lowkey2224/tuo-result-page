@@ -7,6 +7,10 @@ addons:
   mariadb: '10.0'
 services:
   - mysql
+
+env:
+  - TEST_SUITE=controller
+  - TEST_SUITE=command
 git:
   depth: 3
 #before_install
