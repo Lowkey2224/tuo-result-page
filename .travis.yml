@@ -13,13 +13,16 @@ git:
 #install:
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer install
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
 
-script: ./vendor/bin/phpunit --coverage-text
+script:
+  - phpdbg -qrr phpunit
+  - ./vendor/bin/phpunit --coverage-text
 #after_script
 
 notifications:
