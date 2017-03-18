@@ -14,7 +14,7 @@
             <arg value="install"/>
         </exec>
         <exec executable="${console}" >
-            <arg value="doctrine:migrations:execute"/>
+            <arg value="doctrine:migrations:migrate"/>
         </exec>
         <exec executable="${console}" >
             <arg value="cache:clear"/>
