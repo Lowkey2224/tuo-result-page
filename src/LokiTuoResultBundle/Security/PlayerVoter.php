@@ -29,16 +29,6 @@ class PlayerVoter extends AbstractVoter
     }
 
     /**
-     * Returns all attributes that will be supported.
-     *
-     * @return string[]
-     */
-    protected function getAttributes(): array
-    {
-        return [self::VIEW, self::EDIT];
-    }
-
-    /**
      * returns the class name of the supported class.
      *
      * @return string[]

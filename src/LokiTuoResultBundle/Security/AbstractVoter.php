@@ -9,11 +9,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractVoter extends Voter
 {
-    /**
-     * Returns all attributes that will be supported
-     * @return string[]
-     */
-    abstract protected function getAttributes(): array;
 
     /**
      * returns the class name of the supported class
@@ -38,7 +33,8 @@ abstract class AbstractVoter extends Voter
     protected function supports($attribute, $subject)
     {
 
-        if (!in_array($attribute, $this->getAttributes())) {
+        $map = $this->getAttributeMethodMap();
+        if (!isset($map[$attribute])) {
             return false;
         }
 
