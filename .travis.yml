@@ -1,7 +1,21 @@
 language: php
 php:
-  - '7.0'
-  - '7.1'
+  - 5.6
+  - 7
+  - 7.1
+
+matrix:
+  include:
+    - php: 5.6
+      env: dependencies=lowest
+    - php: 7
+      env: dependencies=lowest
+    - php: 7.1
+      env: dependencies=lowest
+    - php: 7
+      env: dependencies=highest
+    - php: 7.1
+      env: dependencies=highest
 
 addons:
   mariadb: '10.0'
@@ -23,7 +37,10 @@ git:
 before_script:
   - phpenv config-rm xdebug.ini
   - cp app/config/parameters.yml.travis app/config/parameters.yml
-  - composer install --prefer-dist
+  - composer self-update -q
+    - if [ -z "$dependencies" ]; then composer install  --prefer-dist ; fi;
+    - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
+    - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
