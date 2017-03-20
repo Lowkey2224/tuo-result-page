@@ -19,8 +19,7 @@ cache:
 
 env:
   global:
-    - TEST_SUITE=command
-    - TEST_SUITE=controller
+    - TEST_SUITE=all
 git:
   depth: 3
 before_install:
