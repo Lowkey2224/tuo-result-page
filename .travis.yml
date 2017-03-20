@@ -18,8 +18,9 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  - TEST_SUITE=command
-  - TEST_SUITE=controller
+  global:
+    - TEST_SUITE=command
+    - TEST_SUITE=controller
 git:
   depth: 3
 before_install:
