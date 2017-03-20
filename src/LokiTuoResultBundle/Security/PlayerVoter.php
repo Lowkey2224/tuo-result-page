@@ -23,8 +23,7 @@ class PlayerVoter extends AbstractVoter
     protected function canDelete(Player $player, User $user)
     {
         $correctRole = $user->hasRole('ROLE_MODERATOR')
-            || $user->hasRole('ROLE_ADMIN')
-            || $user->hasRole('ROLE_SUPER_ADMIN');
+            || $user->hasRole('ROLE_ADMIN');
 
         return $correctRole || $player->isOwnedBy($user);
     }

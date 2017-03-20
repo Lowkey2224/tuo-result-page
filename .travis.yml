@@ -12,8 +12,6 @@ matrix:
     - php: 7.1
       env: dependencies=highest
 
-addons:
-  mariadb: '10.0'
 services:
   - mysql
 
@@ -26,19 +24,20 @@ env:
   - TEST_SUITE=controller
 git:
   depth: 3
-#before_install
-#install:
-
-before_script:
+before_install:
   - phpenv config-rm xdebug.ini
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer self-update -q
+
+install:
   - if [ -z "$dependencies" ]; then composer install  --prefer-dist ; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
-  - php bin/console doctrine:database:create --env=test
-  - php bin/console doctrine:schema:create --env=test
-  - php bin/console doctrine:fixtures:load -n --env=test
+
+before_script:
+  - php bin/console doctrine:database:create
+  - php bin/console doctrine:schema:create
+  - php bin/console doctrine:fixtures:load -n
 
 script:
   - "phpdbg -qrr ./vendor/bin/phpunit  --coverage-text --testsuite $TEST_SUITE"
