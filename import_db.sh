@@ -52,7 +52,7 @@ while getopts Ppd:hDu:kvc opt; do
       keep=true
       ;;
     v)
-      ((verbosity++))
+      ((verbosity++))ll /tm
       ;;
     h)
       hilfe
