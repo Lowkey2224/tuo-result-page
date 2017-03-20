@@ -9,7 +9,7 @@ services:
   - mysql
 
 env:
-  - TESTFOLDER=controller
+  - TEST_SUITE=controller
   - TEST_SUITE=command
 git:
   depth: 3
@@ -26,7 +26,7 @@ before_script:
 
 script:
   - phpdbg -qrr phpunit
-  - ./vendor/bin/phpunit --coverage-text --testsuite $TESTFOLDER
+  - ./vendor/bin/phpunit --coverage-text --testsuite $TEST_SUITE
 #after_script
 
 notifications:
