@@ -33,9 +33,9 @@ install:
   - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
 
 before_script:
-  - php bin/console doctrine:database:create
-  - php bin/console doctrine:schema:create
-  - php bin/console doctrine:fixtures:load -n
+  - php bin/console doctrine:database:create --env=test
+  - php bin/console doctrine:schema:create --env=test
+  - php bin/console doctrine:fixtures:load -n  --env=test
 
 script:
   - "phpdbg -qrr ./vendor/bin/phpunit  --coverage-text --testsuite $TEST_SUITE"
