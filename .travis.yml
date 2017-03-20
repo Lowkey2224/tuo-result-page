@@ -8,6 +8,10 @@ addons:
 services:
   - mysql
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 env:
   - TEST_SUITE=command
   - TEST_SUITE=controller
@@ -19,7 +23,7 @@ git:
 before_script:
   - phpenv config-rm xdebug.ini
   - cp app/config/parameters.yml.travis app/config/parameters.yml
-  - composer install
+  - composer install --prefer-dist
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
