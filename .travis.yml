@@ -38,9 +38,9 @@ before_script:
   - phpenv config-rm xdebug.ini
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer self-update -q
-    - if [ -z "$dependencies" ]; then composer install  --prefer-dist ; fi;
-    - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
-    - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
+  - if [ -z "$dependencies" ]; then composer install  --prefer-dist ; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
