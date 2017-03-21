@@ -71,7 +71,7 @@ class PlayerController extends Controller
     {
         $user = $this->getUser();
         // If Player exists claim player.
-        if (! $player->isOwnershipConfirmed()) {
+        if (!$player->isOwnershipConfirmed()) {
             $player->setOwner($user);
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
@@ -89,7 +89,7 @@ class PlayerController extends Controller
      */
     public function conformClaimAction(Player $player)
     {
-        if (! $player->isOwnershipConfirmed() && $player->getOwner()) {
+        if (!$player->isOwnershipConfirmed() && $player->getOwner()) {
             $player->setOwnershipConfirmed(true);
             $this->getDoctrine()->getManager()->persist($player);
             $this->getDoctrine()->getManager()->flush();
@@ -112,14 +112,14 @@ class PlayerController extends Controller
         $content = '';
         /** @var OwnedCard $ownedCard */
         foreach ($player->getOwnedCards() as $ownedCard) {
-            $content .= $ownedCard."\n";
+            $content .= $ownedCard . "\n";
         }
         $filename = 'ownedcards.txt';
 
         return new Response($content, 200, [
             'content-type'        => 'text/text',
             'cache-control'       => 'private',
-            'content-disposition' => 'attachment; filename="'.$filename.'";',
+            'content-disposition' => 'attachment; filename="' . $filename . '";',
         ]);
     }
 
@@ -140,13 +140,13 @@ class PlayerController extends Controller
         $level  = $request->get('owned_card_level') == 'null' ? null : $request->get('owned_card_level');
         $amount = $request->get('owned_card_amount');
         $card   = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
-        if (! $card) {
+        if (!$card) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
         $oc            = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card, 'level' => $level]);
-        if (! $oc) {
-            return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player'], 420);
+        if (!$oc) {
+            return new JsonResponse(['message' => 'Card ' . $card->getName() . ' not found for Player'], 420);
         }
         $count = $ownedCardRepo->countCardsInDeckForPlayer($player);
         //If there are more than 1 Cards in the Dack we cant add more cards
