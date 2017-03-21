@@ -43,11 +43,29 @@ class UserControllerTest extends WebTestCase
         $promote = "Promote";
         $demote = "Demote";
 
-        $this->assertUserHAsRole($crawler, $user, "ROLE_USER");
+        $this->assertHasColumn($crawler, $user, "ROLE_USER");
         $crawler = $this->clicPromoteOrDemotekLink($crawler, $client, $user, $promote);
-        $this->assertUserHAsRole($crawler, $user, "ROLE_MODERATOR, ROLE_USER");
+        $this->assertHasColumn($crawler, $user, "ROLE_MODERATOR, ROLE_USER");
         $crawler = $this->clicPromoteOrDemotekLink($crawler, $client, $user, $demote);
-        $this->assertUserHAsRole($crawler, $user, "ROLE_USER");
+        $this->assertHasColumn($crawler, $user, "ROLE_USER");
+    }
+
+    public function testDeactivateActivate()
+    {
+        $client = $this->loginAs(self::USER, self::PASSWORD_CORRECT);
+        $this->assertContains('Welcome, '.self::USER, $client->getResponse()->getContent());
+        $crawler = $client->request('GET', '/user/');
+
+
+        $user = "user";
+        $deactivate = "deactivate";
+        $activate = "activate";
+
+        $this->assertHasColumn($crawler, $user, "active");
+        $crawler = $this->clicPromoteOrDemotekLink($crawler, $client, $user, $deactivate);
+        $this->assertHasColumn($crawler, $user, "inactive");
+        $crawler = $this->clicPromoteOrDemotekLink($crawler, $client, $user, $activate);
+        $this->assertHasColumn($crawler, $user, "active");
     }
 
 
@@ -73,10 +91,10 @@ class UserControllerTest extends WebTestCase
         return $client;
     }
 
-    private function assertUserHAsRole(Crawler $crawler, $user, $roles)
+    private function assertHasColumn(Crawler $crawler, $user, $roles)
     {
         $rowXpath = './/tbody/tr[td[normalize-space()="%s"]]';
-        $rolesXpath = $rowXpath.'/td[contains(normalize-space(),"%s")]';
+        $rolesXpath = $rowXpath.'/td[normalize-space()="%s"]';
         $xpath = sprintf($rolesXpath, $user, $roles);
         $text = $crawler->filterXPath($xpath)->text();
         $this->assertEquals($roles, trim($text));
