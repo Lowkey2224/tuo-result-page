@@ -19,11 +19,7 @@ class PlayerControllerTest extends AbstractControllerTest
     {
         $client = $this->loginAs();
 
-        $link = $client->getCrawler()
-            ->filter('a:contains("Players")')
-            ->eq(0)
-            ->link();
-        $crawler = $client->click($link);
+        $crawler = $this->clickLinkName($client, "Players");
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(1,
             $crawler->filterXPath('.//tr/td[normalize-space()="'.$player.'"]')->count()
