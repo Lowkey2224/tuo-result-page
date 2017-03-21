@@ -466,7 +466,7 @@ class PlayerController extends Controller
     /**
      * Search for the Player or create it if he doesnt exist.
      * @param Player $player
-     * @return Player|null|object
+     * @return Player
      */
     private function findOrCreatePlayer(Player $player)
     {
@@ -512,7 +512,7 @@ class PlayerController extends Controller
     /**
      * Create a Player Form
      * @param Player|null $player
-     * @param null $action
+     * @param string $action
      * @return \Symfony\Component\Form\Form
      */
     private function getPlayerForm(Player $player = null, $action = null)

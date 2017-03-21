@@ -177,7 +177,7 @@ class MassSimReader
     /**
      * Transform a String with the RegEx and return an Array of Cardnames
      * @param $line
-     * @param $regEx
+     * @param string $regEx
      * @param bool $inDeck
      * @return array
      */
