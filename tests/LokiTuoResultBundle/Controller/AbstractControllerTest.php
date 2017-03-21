@@ -9,6 +9,7 @@
 
 namespace LokiTuoResultBundle\Tests\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -73,6 +74,32 @@ abstract class AbstractControllerTest extends WebTestCase
         return [
             'loki' => ['loki', 'iron mutant-5', '80.8']
         ];
+    }
+
+    /**
+     * Clicks the Link with the given xpath
+     * @param Client $client
+     * @param $xpath
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function clickLinkXpath(Client $client, $xpath)
+    {
+        $link = $client->getCrawler()->filterXPath($xpath)->link();
+        return $client->click($link);
+    }
+
+    /**
+     * Clicks the Link with the given xpath
+     * @param Client $client
+     * @param string $name
+     * @param int $number the number of the link to click
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function clickLinkName(Client $client, $name, $number = 0)
+    {
+        $path = sprintf('a:contains("%s")', $name);
+        $link = $client->getCrawler()->filter($path)->eq($number)->link();
+        return $client->click($link);
     }
 
 }

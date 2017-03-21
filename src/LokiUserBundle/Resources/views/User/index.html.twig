@@ -46,7 +46,6 @@
                     {% else %}
                         <a href="{{ path('loki.user.activate', {'id': user.id}) }}">activate</a>
                     {% endif %}
-                    TODO Disable/Enable Users
                     <span class="glyphicon glyphicon-{{ user.enabled?"ok":"remove" }}"></span>
                 </td>
             </tr>
