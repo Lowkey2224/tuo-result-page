@@ -21,6 +21,7 @@ class UserController extends Controller
 {
     /**
      * @Route("/", methods={"GET"}, name="loki.user.user.index")
+     * @Security("has_role( 'ROLE_MODERATOR')")
      */
     public function indexAction()
     {
@@ -38,7 +39,7 @@ class UserController extends Controller
      *     name="loki.user.promote",
      *     requirements={"userId":"\d+"}
      *     )
-     * @Security("has_role( 'ROLE_MODERATOR')")
+     * @Security("is_granted('delete', user)")
      */
     public function promoteAction($userId)
     {
@@ -57,7 +58,7 @@ class UserController extends Controller
      *     name="loki.user.demote",
      *     requirements={"userId":"\d+"}
      *     )
-     * @Security("has_role( 'ROLE_MODERATOR')")
+     * @Security("is_granted('delete', user)")
      */
     public function demoteAction($userId)
     {
