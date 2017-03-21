@@ -18,7 +18,6 @@ use Psr\Log\NullLogger;
 /**
  * Class MassSimReader.
  *
- * @deprecated
  */
 class MassSimReader
 {
