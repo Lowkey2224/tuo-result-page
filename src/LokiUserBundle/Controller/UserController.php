@@ -78,7 +78,7 @@ class UserController extends Controller
      *     name="loki.user.activate",
      *     requirements={"userId":"\d+"}
      *     )
-     * @Security("has_role( 'ROLE_MODERATOR')")
+     * @Security("is_granted('edit', user)")
      */
     public function activateAction(User $user)
     {
@@ -95,7 +95,7 @@ class UserController extends Controller
      *     name="loki.user.deactivate",
      *     requirements={"userId":"\d+"}
      *     )
-     * @Security("has_role( 'ROLE_MODERATOR')")
+     * @Security("is_granted('edit', user)")
      */
     public function deactivateAction(User $user)
     {
