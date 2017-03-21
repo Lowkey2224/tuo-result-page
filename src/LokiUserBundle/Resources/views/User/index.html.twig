@@ -1,33 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block body %}
 
-    {#<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">#}
-    {#<div class="modal-dialog" role="document">#}
-    {#<div class="modal-content">#}
-    {#<div class="modal-header">#}
-    {#<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
-    {#aria-hidden="true">&times;</span></button>#}
-    {#<h4 class="modal-title" id="uploadModalLabel">Upload your Simulation Result here</h4>#}
-    {#</div>#}
-    {#<div class="modal-body">#}
-    {#{{ form_start(form) }}#}
-
-    {#<div class="form-group">#}
-    {#{{ form_row(form.name) }}#}
-    {#</div>#}
-    {#<div class="form-group">#}
-    {#{{ form_row(form.currentGuild) }}#}
-    {#</div>#}
-    {#</div>#}
-    {#<div class="modal-footer">#}
-    {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
-    {#{{ form_widget(form.submit, {'attr' : {'class': 'btn btn-success'}}) }}#}
-    {#{{ form_end(form) }}#}
-    {#</div>#}
-    {#</div>#}
-    {#</div>#}
-    {#</div>#}
-
     <div class="row">
         <h3 class="col-md-6 col-md-offset-3 text-center">
             All Users </h3>
@@ -44,6 +17,7 @@
             <th>Email</th>
             <th>Players</th>
             <th>Roles</th>
+            <th>Active</th>
             <th class="text-right">Links</th>
         </tr>
         </thead>
@@ -61,9 +35,17 @@
                 <td>
                     {{ user.roles | join(", ") }}
                 </td>
+                <td>
+                    {{ user.enabled ? "active":"inactive" }}
+                </td>
                 <td class="text-right">
-                    <a href="{{ path('loki.user.promote', {'userId': user.id}) }}">Promote</a>
-                    <a href="{{ path('loki.user.demote', {'userId': user.id}) }}">Demote</a>
+                    <a href="{{ path('loki.user.promote', {'id': user.id}) }}">Promote</a>
+                    <a href="{{ path('loki.user.demote', {'id': user.id}) }}">Demote</a>
+                    {% if user.enabled %}
+                        <a href="{{ path('loki.user.deactivate', {'id': user.id}) }}">deactivate</a>
+                    {% else %}
+                        <a href="{{ path('loki.user.activate', {'id': user.id}) }}">activate</a>
+                    {% endif %}
                     TODO Disable/Enable Users
                     <span class="glyphicon glyphicon-{{ user.enabled?"ok":"remove" }}"></span>
                 </td>
