@@ -50,7 +50,6 @@ class SimulationController extends Controller
             }
 
             $res = $this->get('loki_tuo_result.simulation.manager')->getSimulation($sim);
-//            echo $res;
             $filename = $sim->getScriptType() == "shell" ? "mass_sim.sh" : "mass_sim.bat";
             return new Response($res, 200, [
                 'content-type' => 'text/text',
@@ -70,7 +69,6 @@ class SimulationController extends Controller
     {
         $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
         $groupedBy = $missionRepo->findAllWithGuilds2();
-//        var_dump(array_pop($groupedBy));die();
         return $this->render(
             'LokiTuoResultBundle:Default:index.html.twig',
             [
@@ -93,9 +91,7 @@ class SimulationController extends Controller
             throw  $this->createNotFoundException("Mission not Found");
         }
 
-        $options = [
-//            'guilds' => $this->getParameter('guilds'),
-        ];
+        $options = [];
         $form = $this->createForm(MissionType::class, $mission, $options);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
