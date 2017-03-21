@@ -22,6 +22,10 @@
                 <source>form.player.guild</source>
                 <target>Guild</target>
             </trans-unit>
+            <trans-unit id="form.player.owner">
+                <source>form.player.owner</source>
+                <target>Owner</target>
+            </trans-unit>
             <trans-unit id="form.mission.name">
                 <source>form.mission.name</source>
                 <target>Missionname (with BGE)</target>

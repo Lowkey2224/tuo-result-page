@@ -59,42 +59,6 @@ class PlayerController extends Controller
         ]);
     }
 
-    /**
-     * @param Player $player
-     *
-     * @return RedirectResponse
-     * @Route("/{id}/claim", requirements={"id":"\d+"}, name="loki.tuo.player.claim")
-     * @Security("is_granted('edit', player)")
-     */
-    public function claimPlayerAction(Player $player)
-    {
-        $user = $this->getUser();
-        // If Player exists claim player.
-        if (! $player->isOwnershipConfirmed()) {
-            $player->setOwner($user);
-            $this->getDoctrine()->getManager()->persist($player);
-            $this->getDoctrine()->getManager()->flush();
-        }
-
-        return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
-    }
-
-    /**
-     * @param Player $player
-     *
-     * @return RedirectResponse
-     * @Route("/{id}/free", requirements={"id":"\d+"}, name="loki.tuo.player.free")
-     * @Security("is_granted('delete', player)")
-     */
-    public function freePlayerAction(Player $player)
-    {
-        $player->setOwner(null);
-        $player->setOwnershipConfirmed(false);
-        $this->getDoctrine()->getManager()->persist($player);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
-    }
 
     /**
      * @param Player $player
@@ -402,6 +366,9 @@ class PlayerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($player);
+            if(!$player->getOwner()) {
+                $player->setOwnershipConfirmed(false);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('loki.tuo.player.all.show');

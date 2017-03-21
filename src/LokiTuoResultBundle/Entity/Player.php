@@ -196,7 +196,7 @@ class Player extends AbstractBaseEntity
     /**
      * @param User $owner
      */
-    public function setOwner(User $owner)
+    public function setOwner(User $owner = null)
     {
         $this->owner = $owner;
     }
