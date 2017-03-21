@@ -75,7 +75,7 @@ class Player extends AbstractBaseEntity
 
     public function getFullName()
     {
-        return "[".$this->getCurrentGuild()."] ".$this->getName();
+        return "[" . $this->getCurrentGuild() . "] " . $this->getName();
     }
 
     public function getGuild()
@@ -108,7 +108,7 @@ class Player extends AbstractBaseEntity
      */
     public function getDeck()
     {
-        return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
+        return $this->getOwnedCards()->filter(function(OwnedCard $ownedCard) {
             return $ownedCard->getAmountInDeck() > 0;
         });
     }

@@ -28,7 +28,7 @@ class ImportController extends Controller
         return $this->render(
             'LokiTuoResultBundle:Import:index.html.twig',
             [
-               'resultFiles' => $results,
+                'resultFiles' => $results,
             ]
         );
     }
