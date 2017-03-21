@@ -8,6 +8,7 @@ use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class Service
 {
@@ -73,16 +74,65 @@ class Service
         $oc       = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
         if ($oc) {
             $amount += $oc->getAmount();
+            $amountInDeck += $oc->getAmountInDeck();
         } else {
             $oc = new OwnedCard();
+            $oc->setCard($card);
+            $oc->setPlayer($player);
+            $oc->setLevel($level);
         }
-        $oc->setPlayer($player);
-        $oc->setCard($card);
-        $oc->setAmount($amount);
-        $oc->setAmountInDeck($amountInDeck);
-        $oc->setLevel($level);
-        $this->em->persist($oc);
 
-        return $oc;
+        return $this->updateOwnedCard($oc, $amount, $amountInDeck);
+    }
+
+    /**
+     * Add a Card to the Player.
+     *
+     * @param Player   $player
+     * @param Card     $card
+     * @param int      $amount
+     * @param int      $amountInDeck
+     * @param int|null $level
+     *
+     * @return OwnedCard|null|object
+     */
+    public function reduceCardForPlayer(Player $player, Card $card, int $amount, int $amountInDeck, int $level = null)
+    {
+        $criteria = ['card' => $card, 'player' => $player, 'level' => $level];
+        $oc       = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
+        if (! $oc) {
+            throw new NotFoundResourceException('Owned Card was not Found');
+        }
+        $amount       = $oc->getAmount() - $amount;
+        $amountInDeck = $oc->getAmountInDeck() - $amountInDeck;
+
+        return $this->updateOwnedCard($oc, $amount, $amountInDeck);
+    }
+
+    /**
+     * Updates the OwnedCard amount.
+     *
+     * @param OwnedCard $ownedCard
+     * @param int       $amount
+     * @param int       $amountInDeck
+     *
+     * @return OwnedCard|null
+     */
+    private function updateOwnedCard(OwnedCard $ownedCard, int $amount, int $amountInDeck)
+    {
+        //You can have more cards in your deck than you own
+        $amountInDeck = $amountInDeck > $amount ? $amount : $amountInDeck;
+        $ownedCard->setAmount($amount);
+        $ownedCard->setAmountInDeck($amountInDeck);
+
+        if ($ownedCard->getAmount() == 0) {
+            $this->em->remove($ownedCard);
+
+            return $ownedCard;
+        }
+
+        $this->em->persist($ownedCard);
+
+        return $ownedCard;
     }
 }

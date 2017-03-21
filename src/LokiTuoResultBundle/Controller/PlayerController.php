@@ -47,7 +47,7 @@ class PlayerController extends Controller
      */
     public function listAllPlayersAction()
     {
-        $criteria = $this->isGranted('ROLE_ADMIN') ? [] : ['active'=> true];
+        $criteria = $this->isGranted('ROLE_ADMIN') ? [] : ['active' => true];
 
         $players = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player')->findBy($criteria);
 
@@ -191,23 +191,12 @@ class PlayerController extends Controller
         $level  = (is_null($level) || $level == 'null' || trim($level) == '') ? null : $level;
         $amount = $request->get('owned_card_amount');
         $card   = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
-//        var_dump($name, $card);
+
         if (! $card) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
-        $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-
-        $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card, 'level' => $level]);
-        if (! $oc) {
-            $oc = new OwnedCard();
-            $oc->setPlayer($player);
-            $oc->setCard($card);
-            $oc->setAmount(0);
-        }
-
-        $oc->setLevel($level);
-        $oc->setAmount($oc->getAmount() + $amount);
-        $this->getDoctrine()->getManager()->persist($oc);
+        $manager = $this->get('loki_tuo_result.player.manager');
+        $oc      = $manager->addCardToPlayer($player, $card, $amount, 0, $level);
 
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
@@ -243,33 +232,23 @@ class PlayerController extends Controller
         if (! $card) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
-        $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
-        $criteria      = [
-            'player' => $player,
-            'card'   => $card,
-            'level'  => $level,
-        ];
 
-        $oc = $ownedCardRepo->findOneBy($criteria);
+        $manager = $this->get('loki_tuo_result.player.manager');
+        $oc      = $manager->reduceCardForPlayer($player, $card, 1, 0, $level);
         if (! $oc) {
             return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player'], 420);
-        }
-        $amt = $oc->getAmount();
-        $id  = $oc->getId();
-        if ($amt == 1) {
-            $this->getDoctrine()->getManager()->remove($oc);
-        } else {
-            $oc->setAmount($amt - 1);
-            if ($oc->getAmountInDeck() > $oc->getAmount()) {
-                $oc->setAmountInDeck($oc->getAmount());
-            }
         }
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
 
         $this->getDoctrine()->getManager()->flush();
 
-        return new JsonResponse(['name' => $name, 'level' => $level, 'amount' => $amt - 1, 'id' => $id]);
+        return new JsonResponse([
+            'name'   => $name,
+            'level'  => $level,
+            'amount' => $oc->getAmount(),
+            'id'     => $oc->getId(),
+        ]);
     }
 
     /**
