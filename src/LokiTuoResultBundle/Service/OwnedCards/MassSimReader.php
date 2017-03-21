@@ -15,6 +15,11 @@ use LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
+/**
+ * Class MassSimReader
+ * @package LokiTuoResultBundle\Service\OwnedCards
+ * @deprecated
+ */
 class MassSimReader
 {
     /** @var  EntityManager */
@@ -25,6 +30,11 @@ class MassSimReader
 
     use LoggerAwareTrait;
 
+    /**
+     * MassSimReader constructor.
+     * @param EntityManager $entityManager
+     * @param Service $manager
+     */
     public function __construct(EntityManager $entityManager, OwnedCardManager $manager)
     {
         $this->em = $entityManager;
@@ -32,6 +42,11 @@ class MassSimReader
         $this->logger = new NullLogger();
     }
 
+    /**
+     * Create a Map with Players and Cards
+     * @param $filePath
+     * @return array
+     */
     public function getPlayerCardMap($filePath)
     {
         $content = $this->getContentArray($filePath);
@@ -80,6 +95,11 @@ class MassSimReader
         return $result;
     }
 
+    /**
+     * Save Player Map
+     * @param $map
+     * @return array
+     */
     public function savePlayerCardMap($map)
     {
         $result = [];
@@ -99,6 +119,12 @@ class MassSimReader
         return $result;
     }
 
+    /**
+     * Find or Create Player
+     * @param $playerName
+     * @param $guild
+     * @return Player|null|object
+     */
     private function findPlayerOrCreate($playerName, $guild)
     {
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
@@ -124,6 +150,11 @@ class MassSimReader
     }
 
 
+    /**
+     * Transfrom Owned Cards String to an Array of Cardnames
+     * @param $line
+     * @return array
+     */
     private function transformOwnedCards($line)
     {
         $regEx = '/MemberDeck\d+="(.+)"/';
@@ -131,6 +162,11 @@ class MassSimReader
         return $this->transformWithRegEx($line, $regEx, $inDeck);
     }
 
+    /**
+     * Transform Dekc Line
+     * @param $line
+     * @return array
+     */
     private function transformDeckCards($line)
     {
         $regEx = '/\.\/tuo "(.*)" "/';
@@ -138,6 +174,13 @@ class MassSimReader
         return $this->transformWithRegEx($line, $regEx, $inDeck);
     }
 
+    /**
+     * Transform a String with the RegEx and return an Array of Cardnames
+     * @param $line
+     * @param string $regEx
+     * @param bool $inDeck
+     * @return array
+     */
     private function transformWithRegEx($line, $regEx, $inDeck = false)
     {
         $owned = [];
@@ -153,7 +196,12 @@ class MassSimReader
     }
 
 
-
+    /**
+     * Return the name of the Guild for the Content
+     * @param $content
+     * @return mixed|string
+     * @throws Exception
+     */
     private function getGuildName($content)
     {
         $guild = [];

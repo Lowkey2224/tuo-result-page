@@ -102,7 +102,7 @@ class Result extends AbstractBaseEntity
     }
 
     /**
-     * @param Card[] $deck
+     * @param DeckEntry[] $deck
      */
     public function setDeck($deck)
     {

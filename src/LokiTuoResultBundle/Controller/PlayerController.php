@@ -447,6 +447,7 @@ class PlayerController extends Controller
     }
 
     /**
+     * Add Malika to Player
      * @param Player $player
      */
     private function addDefaultCardToPlayer(Player $player)
@@ -462,6 +463,11 @@ class PlayerController extends Controller
         }
     }
 
+    /**
+     * Search for the Player or create it if he doesnt exist.
+     * @param Player $player
+     * @return Player
+     */
     private function findOrCreatePlayer(Player $player)
     {
         $repo      = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
@@ -475,6 +481,15 @@ class PlayerController extends Controller
         return $player;
     }
 
+    /**
+     * Add a Card to the Player
+     * @param Player $player
+     * @param Card $card
+     * @param int $amount
+     * @param int $amountInDeck
+     * @param int|null $level
+     * @return OwnedCard|null|object
+     */
     private function addCardToPlayer(Player $player, Card $card, int $amount, int $amountInDeck, int $level = null)
     {
         $criteria = ['card' => $card, 'player' => $player, 'level' => $level];
@@ -494,6 +509,12 @@ class PlayerController extends Controller
         return $oc;
     }
 
+    /**
+     * Create a Player Form
+     * @param Player|null $player
+     * @param string $action
+     * @return \Symfony\Component\Form\Form
+     */
     private function getPlayerForm(Player $player = null, $action = null)
     {
         if ($action === null) {
