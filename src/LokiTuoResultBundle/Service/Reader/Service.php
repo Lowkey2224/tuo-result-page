@@ -18,7 +18,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * Created by PhpStorm.
  * User: jenz
  * Date: 03.08.16
- * Time: 19:38.
+ * Time: 19:38
  */
 class Service
 {
@@ -32,6 +32,11 @@ class Service
     /** @var CardManager */
     private $ownedCardManager;
 
+    /**
+     * Service constructor.
+     * @param EntityManager $entityManager
+     * @param CardManager $manager
+     */
     public function __construct(EntityManager $entityManager, CardManager $manager)
     {
         $this->em               = $entityManager;
@@ -39,6 +44,11 @@ class Service
         $this->logger           = new NullLogger();
     }
 
+    /**
+     * Read a Resultfile, and save it to DB.
+     * @param $path
+     * @return int
+     */
     public function readFile($path)
     {
         $this->logger->info("Reading file $path");
@@ -54,6 +64,11 @@ class Service
         return $file->getId();
     }
 
+    /**
+     * Import a Resultfile which is saved into the DB and create results and missions
+     * @param $fileId
+     * @return int
+     */
     public function importFileById($fileId)
     {
         $files = $this->getFileById($fileId);
@@ -86,6 +101,11 @@ class Service
         return $count;
     }
 
+    /**
+     * Reads the File content
+     * @param $path
+     * @return string
+     */
     private function getFileContents($path)
     {
         //Maybe do some validation here.
@@ -93,6 +113,7 @@ class Service
     }
 
     /**
+     * Transform filecontent into an Array
      * @param $content
      *
      * @return array ['guild' => GuildName, 'result' => Results]
@@ -135,6 +156,11 @@ class Service
         return $result;
     }
 
+    /**
+     * Transform raw Cardstrings into correct Cardnames
+     * @param array $array
+     * @return array
+     */
     private function transformToCardNames(array $array)
     {
         $result = [];
@@ -152,6 +178,13 @@ class Service
         return $result;
     }
 
+    /**
+     * Transform an Array from transformContent into Models
+     * @param $transformed
+     * @param ResultFile $file
+     * @param $guild
+     * @return Result[]
+     */
     private function transformToModels($transformed, ResultFile $file, $guild)
     {
         $results     = [];
@@ -203,6 +236,12 @@ class Service
         return $results;
     }
 
+    /**
+     * Create a Deck from the result line
+     * @param $deck
+     * @param Result $result
+     * @return DeckEntry[]
+     */
     private function createDeck($deck, Result $result)
     {
         $cardRepo   = $this->em->getRepository('LokiTuoResultBundle:Card');
@@ -236,6 +275,10 @@ class Service
         return $resultDeck;
     }
 
+    /**
+     * Remove old Deck for previous Results
+     * @param Result $result
+     */
     private function deleteOldDeck(Result $result)
     {
         foreach ($result->getDeck() as $deckItem) {
@@ -245,8 +288,8 @@ class Service
     }
 
     /**
-     * @param $fileId
-     *
+     * Get Resultfiles by ID
+     * @param integer|string $fileId Id || "next" || "all"
      * @return ResultFile[]|null
      */
     private function getFileById($fileId)
@@ -261,6 +304,11 @@ class Service
         }
     }
 
+    /**
+     * Return the Guildname for the given ResultFile
+     * @param $content
+     * @return mixed|string
+     */
     private function getGuildName($content)
     {
         $guild = [];
