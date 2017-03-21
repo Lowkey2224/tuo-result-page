@@ -40,6 +40,11 @@ services:
         arguments:
             entityManager: "@doctrine.orm.entity_manager"
 
+    loki_tuo_result.player.manager:
+        class: LokiTuoResultBundle\Service\PlayerManager\Service
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
     loki_tuo_result.simulation.manager:
         class: LokiTuoResultBundle\Service\Simulation\Service
         arguments:
