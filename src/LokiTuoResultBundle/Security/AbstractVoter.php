@@ -61,7 +61,9 @@ abstract class AbstractVoter extends Voter
 
         $user = $token->getUser();
 
-        if($user->hasRole('ROLE_SUPER_ADMIN'))
+        if($user->hasRole('ROLE_SUPER_ADMIN')) {
+            return true;
+        }
 
         if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
