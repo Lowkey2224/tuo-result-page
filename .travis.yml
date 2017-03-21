@@ -31,7 +31,7 @@ before_script:
   - php bin/console doctrine:fixtures:load -n  --env=test
 
 script:
-  - "phpdbg -qrr ./vendor/bin/phpunit  --coverage-text --testsuite $TEST_SUITE"
+  - "phpdbg -qrr ./vendor/bin/phpunit --testsuite $TEST_SUITE"
 
 #after_script
 
