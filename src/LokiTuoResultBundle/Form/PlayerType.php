@@ -8,6 +8,9 @@
 
 namespace LokiTuoResultBundle\Form;
 
+use LokiTuoResultBundle\Repository\PlayerRepository;
+use LokiUserBundle\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -30,6 +33,23 @@ class PlayerType extends AbstractType
                 'label' => "form.player.guild",
                 'translation_domain' => 'LokiTuoResultBundle',
                 'choices' => $options['guilds'],
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ))
+            ->add('owner', EntityType::class, array(
+                'class' => 'LokiUserBundle\Entity\User',
+                'required' => false,
+                'label' => "form.player.owner",
+                'translation_domain' => 'LokiTuoResultBundle',
+                'choice_label' => "username",
+
+                'multiple' => false,
+                'query_builder' => function(UserRepository $repository) {
+                    return $repository->createQueryBuilder('u')
+                        ->where('u.enabled = true')
+                        ->orderBy('u.username', 'ASC');
+                },
                 'attr' => [
                     'class' => 'form-control'
                 ]

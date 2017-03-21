@@ -83,6 +83,23 @@ class PlayerController extends Controller
      * @param Player $player
      *
      * @return RedirectResponse
+     * @Route("/{id}/free", requirements={"id":"\d+"}, name="loki.tuo.player.free")
+     * @Security("is_granted('delete', player)")
+     */
+    public function freePlayerAction(Player $player)
+    {
+        $player->setOwner(null);
+        $player->setOwnershipConfirmed(false);
+        $this->getDoctrine()->getManager()->persist($player);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirect($this->generateUrl('loki.tuo.player.all.show'));
+    }
+
+    /**
+     * @param Player $player
+     *
+     * @return RedirectResponse
      * @Route("/{id}/claim/confirm", requirements={"id":"\d+"}, name="loki.tuo.player.claim.confirm")
      * @Security("has_role('ROLE_MODERATOR')")
      */
