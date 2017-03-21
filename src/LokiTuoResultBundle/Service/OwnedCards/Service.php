@@ -46,10 +46,10 @@ class Service
             $level = $match[1];
         }
         $match = [];
-        $inDeck = ($inDeck)?$amount:0;
+        $inDeck = ($inDeck) ? $amount : 0;
         preg_match('/([a-zA-Z \- \. \' \d]+)\b/', $card, $match);
         if (count($match) >= 2) {
-            $match2 =[];
+            $match2 = [];
             preg_match('/(.*)\-\d/', $match[1], $match2);
 
             $name = count($match2) == 2 ? $match2[1] : $match[1];
@@ -116,8 +116,8 @@ class Service
     public function deckToSpreadsheetFormat(Player $player)
     {
         $ocs = new Collection($player->getOwnedCards());
-        $deck = $ocs->filter(function (OwnedCard $oc) {
-            return $oc->getAmountInDeck()>0;
+        $deck = $ocs->filter(function(OwnedCard $oc) {
+            return $oc->getAmountInDeck() > 0;
         });
         return $deck->map(", ");
     }
