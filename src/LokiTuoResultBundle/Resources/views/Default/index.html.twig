@@ -47,7 +47,7 @@
                 <td>{{ mission.0.type }}</td>
 
                 <td>
-                    {{ mission.0.updatedAt }}
+                    {{ mission.0.updatedAt | date('Y-m-d H:i') }}
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
