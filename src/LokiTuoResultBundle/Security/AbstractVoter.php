@@ -61,7 +61,7 @@ abstract class AbstractVoter extends Voter
 
         $user = $token->getUser();
 
-        if($user->hasRole('ROLE_SUPER_ADMIN')) {
+        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
             return true;
         }
 
