@@ -307,7 +307,7 @@ class Service
     /**
      * Return the Guildname for the given ResultFile
      * @param $content
-     * @return mixed|string
+     * @return string
      */
     private function getGuildName($content)
     {
@@ -317,7 +317,7 @@ class Service
             //FIXME
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
-            var_dump($guild, $content[0]);
+            $this->logger->error(" NO Guild found in line: " . $content[0]);
             throw new Exception('No Guild Found');
         }
     }

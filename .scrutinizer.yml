@@ -5,6 +5,10 @@ filter:
         - 'bin/*'
         - '*.min.js'
         - '*/vendor/*'
+        - 'web/config.php'
+        - 'bin/*'
+        - 'var/*'
+        - 'composer.lock'
 checks:
     php: true
     javascript: true

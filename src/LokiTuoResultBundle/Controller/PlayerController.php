@@ -387,7 +387,7 @@ class PlayerController extends Controller
         $player->setActive(false);
         $this->getDoctrine()->getManager()->persist($player);
         $this->getDoctrine()->getManager()->flush();
-//        var_dump($player);die();
+
         return $this->redirectToRoute('loki.tuo.player.all.show');
     }
 
@@ -440,14 +440,15 @@ class PlayerController extends Controller
 
             return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
         } else {
-            var_dump($form->isSubmitted(), $form->isValid());
-//            die();
+            $this->addFlash('error', 'Form Invalid');
+
             return $this->redirectToRoute('loki.tuo.player.all.show');
         }
     }
 
     /**
-     * Add Malika to Player
+     * Add Malika to Player.
+     *
      * @param Player $player
      */
     private function addDefaultCardToPlayer(Player $player)
@@ -465,7 +466,9 @@ class PlayerController extends Controller
 
     /**
      * Search for the Player or create it if he doesnt exist.
+     *
      * @param Player $player
+     *
      * @return Player
      */
     private function findOrCreatePlayer(Player $player)
@@ -482,12 +485,14 @@ class PlayerController extends Controller
     }
 
     /**
-     * Add a Card to the Player
-     * @param Player $player
-     * @param Card $card
-     * @param int $amount
-     * @param int $amountInDeck
+     * Add a Card to the Player.
+     *
+     * @param Player   $player
+     * @param Card     $card
+     * @param int      $amount
+     * @param int      $amountInDeck
      * @param int|null $level
+     *
      * @return OwnedCard|null|object
      */
     private function addCardToPlayer(Player $player, Card $card, int $amount, int $amountInDeck, int $level = null)
@@ -510,7 +515,8 @@ class PlayerController extends Controller
     }
 
     /**
-     * Create a Player Form
+     * Create a Player Form.
+     *
      * @param Player|null $player
      * @param string $action
      * @return \Symfony\Component\Form\Form

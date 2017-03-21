@@ -11,6 +11,7 @@ namespace LokiTuoResultBundle\Service\Persister;
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\AbstractBaseEntity;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 class DatabasePersister implements PersisterInterface
 {
@@ -21,6 +22,7 @@ class DatabasePersister implements PersisterInterface
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+        $this->logger = new NullLogger();
     }
 
     /** @inheritdoc */
@@ -33,7 +35,8 @@ class DatabasePersister implements PersisterInterface
             if ($found) {
                 $entity->setId($found->getId());
             } else {
-                var_dump($entity);
+                $msg = sprintf("No Entity found for class %s with id %d", get_class($entity), $entity->getId());
+                $this->logger->error($msg);
                 die("Nicht gefunden");
             }
 
