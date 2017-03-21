@@ -17,6 +17,9 @@ class Transformer
 {
     use LoggerAwareTrait;
 
+    /**
+     * Transformer constructor.
+     */
     public function __construct()
     {
         $this->logger = new NullLogger();
@@ -58,6 +61,13 @@ class Transformer
         return $result;
     }
 
+    /**
+     * Read the Upgrades of a Card
+     * @param Card $card
+     * @param $upgrades
+     * @param $skills
+     * @return Card
+     */
     private function readUpgrades(Card $card, $upgrades, $skills)
     {
         foreach ($upgrades as $upgrade) {
@@ -82,6 +92,11 @@ class Transformer
         return $card;
     }
 
+    /**
+     * Read an Array of Skill
+     * @param $skills
+     * @return array
+     */
     private function readSkill($skills)
     {
         $res = [];
