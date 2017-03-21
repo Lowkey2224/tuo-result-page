@@ -59,7 +59,7 @@ class Service
         $file->setGuild($this->getGuildName(explode("\n", $content)));
         $this->em->persist($file);
         $this->em->flush();
-        $this->logger->info('Persisting file with Id '.$file->getId());
+        $this->logger->info('Persisting file with Id ' . $file->getId());
 
         return $file->getId();
     }
@@ -81,12 +81,12 @@ class Service
 
         foreach ($files as $file) {
             try {
-                $this->logger->info('Using File with ID '.$file->getId().' for Import');
+                $this->logger->info('Using File with ID ' . $file->getId() . ' for Import');
                 $content     = explode("\n", $file->getContent());
                 $transformed = $this->transformContent($content);
-                $this->logger->info('Importing Result for Guild '.$transformed['guild']);
+                $this->logger->info('Importing Result for Guild ' . $transformed['guild']);
                 $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-                $this->logger->info(count($models).' were Saved');
+                $this->logger->info(count($models) . ' were Saved');
                 $count += count($models);
                 $file->setGuild($transformed['guild']);
                 $file->setStatus(ResultFile::STATUS_IMPORTED);
@@ -140,7 +140,7 @@ class Service
             $result['result'][$count]['simType'] = 'Mission';
             if (preg_match('/(\d?\d(.\d*)?):/', $line, $name) === 1) {
                 $name                                = $name[1];
-                $name                                = (int) ($name * 10);
+                $name                                = (int)($name * 10);
                 $result['result'][$count]['percent'] = $name;
             }
             if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
@@ -182,7 +182,7 @@ class Service
      * Transform an Array from transformContent into Models
      * @param $transformed
      * @param ResultFile $file
-     * @param $guild
+     * @param string $guild
      * @return Result[]
      */
     private function transformToModels($transformed, ResultFile $file, $guild)
@@ -192,18 +192,18 @@ class Service
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
         $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
         foreach ($transformed as $line) {
-            if (! isset($line['deck'])) {
-                $this->logger->warning('Skipped result for Player '.
-                    $line['playername'].' against '.$line['mission'].'. Because no Deck was found');
+            if (!isset($line['deck'])) {
+                $this->logger->warning('Skipped result for Player ' .
+                    $line['playername'] . ' against ' . $line['mission'] . '. Because no Deck was found');
                 continue;
             }
 
-            if (! ($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
+            if (!($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
                 $player = new Player();
                 $player->setName($line['playername']);
                 $this->em->persist($player);
             }
-            if (! ($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
+            if (!($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
                 $mission = new Mission();
                 $mission->setName($line['mission']);
             }
@@ -228,7 +228,7 @@ class Service
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
-            $this->logger->debug('Saving Result for Player '.$player->getName());
+            $this->logger->debug('Saving Result for Player ' . $player->getName());
         }
 
         $this->em->flush();
@@ -254,7 +254,7 @@ class Service
             $name   = $_tmp['name'];
             $card   = $cardRepo->findOneBy(['name' => $name]);
 
-            if (! $card) {
+            if (!$card) {
                 $card = new Card();
                 $card->setName($name);
                 $this->em->persist($card);

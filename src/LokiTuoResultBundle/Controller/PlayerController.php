@@ -193,13 +193,13 @@ class PlayerController extends Controller
         $amount = $request->get('owned_card_amount');
         $card   = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
 //        var_dump($name, $card);
-        if (! $card) {
+        if (!$card) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
 
         $oc = $ownedCardRepo->findOneBy(['player' => $player, 'card' => $card, 'level' => $level]);
-        if (! $oc) {
+        if (!$oc) {
             $oc = new OwnedCard();
             $oc->setPlayer($player);
             $oc->setCard($card);
@@ -241,7 +241,7 @@ class PlayerController extends Controller
         $level = $request->get('owned_card_level') == 'null' ? null : $request->get('owned_card_level');
 
         $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
-        if (! $card) {
+        if (!$card) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
         $ownedCardRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:OwnedCard');
@@ -252,8 +252,8 @@ class PlayerController extends Controller
         ];
 
         $oc = $ownedCardRepo->findOneBy($criteria);
-        if (! $oc) {
-            return new JsonResponse(['message' => 'Card '.$card->getName().' not found for Player'], 420);
+        if (!$oc) {
+            return new JsonResponse(['message' => 'Card ' . $card->getName() . ' not found for Player'], 420);
         }
         $amt = $oc->getAmount();
         $id  = $oc->getId();
@@ -346,13 +346,13 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction(Player $player)
     {
         $allCards = $player->getOwnedCards();
-        $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
+        $allCards = Collection::make($allCards)->sortBy(function(OwnedCard $elem) {
             return $elem->getCard()->getName();
         });
-        $deck = $allCards->filter(function (OwnedCard $item) {
+        $deck = $allCards->filter(function(OwnedCard $item) {
             return $item->getAmountInDeck() > 0;
         });
-        $combined = $deck->map(function (OwnedCard $item) {
+        $combined = $deck->map(function(OwnedCard $item) {
             return $item->toDeckString();
         });
         $formOptions   = ['attr' => ['class' => 'data-remote']];
@@ -453,7 +453,7 @@ class PlayerController extends Controller
      */
     private function addDefaultCardToPlayer(Player $player)
     {
-        if (! $player->getOwnedCards()->count()) {
+        if (!$player->getOwnedCards()->count()) {
             $malikaCriteria = ['name' => 'Malika'];
             $malika         = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
             $this->addCardToPlayer($player, $malika, 1, 1);
@@ -469,7 +469,7 @@ class PlayerController extends Controller
      *
      * @param Player $player
      *
-     * @return Player|null|object
+     * @return Player
      */
     private function findOrCreatePlayer(Player $player)
     {
@@ -518,8 +518,7 @@ class PlayerController extends Controller
      * Create a Player Form.
      *
      * @param Player|null $player
-     * @param null        $action
-     *
+     * @param string $action
      * @return \Symfony\Component\Form\Form
      */
     private function getPlayerForm(Player $player = null, $action = null)
