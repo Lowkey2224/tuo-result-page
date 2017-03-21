@@ -18,28 +18,26 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * Created by PhpStorm.
  * User: jenz
  * Date: 03.08.16
- * Time: 19:38
+ * Time: 19:38.
  */
 class Service
 {
-
     use LoggerAwareTrait;
 
     //TODO Change the import so it can use different persisters
     //Maybe save the Import Simulation script too
-    /** @var  EntityManager */
+    /** @var EntityManager */
     private $em;
 
-    /** @var CardManager  */
+    /** @var CardManager */
     private $ownedCardManager;
 
     public function __construct(EntityManager $entityManager, CardManager $manager)
     {
-        $this->em = $entityManager;
+        $this->em               = $entityManager;
         $this->ownedCardManager = $manager;
-        $this->logger = new NullLogger();
+        $this->logger           = new NullLogger();
     }
-
 
     public function readFile($path)
     {
@@ -51,7 +49,8 @@ class Service
         $file->setGuild($this->getGuildName(explode("\n", $content)));
         $this->em->persist($file);
         $this->em->flush();
-        $this->logger->info("Persisting file with Id " . $file->getId());
+        $this->logger->info('Persisting file with Id '.$file->getId());
+
         return $file->getId();
     }
 
@@ -60,21 +59,23 @@ class Service
         $files = $this->getFileById($fileId);
         if (empty($files)) {
             $this->logger->alert("No File with ID $fileId was found. Aborting");
+
             return 0;
         }
         $count = 0;
+
         foreach ($files as $file) {
             try {
-                $this->logger->info("Using File with ID " . $file->getId() . " for Import");
-                $content = explode("\n", $file->getContent());
+                $this->logger->info('Using File with ID '.$file->getId().' for Import');
+                $content     = explode("\n", $file->getContent());
                 $transformed = $this->transformContent($content);
-                $this->logger->info("Importing Result for Guild " . $transformed['guild']);
+                $this->logger->info('Importing Result for Guild '.$transformed['guild']);
                 $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-                $this->logger->info(count($models) . " were Saved");
+                $this->logger->info(count($models).' were Saved');
                 $count += count($models);
                 $file->setGuild($transformed['guild']);
                 $file->setStatus(ResultFile::STATUS_IMPORTED);
-                $file->setMissions(implode(", ", $transformed['missions']));
+                $file->setMissions(implode(', ', $transformed['missions']));
             } catch (Exception $ex) {
                 $file->setStatus(ResultFile::STATUS_ERROR);
             }
@@ -93,43 +94,44 @@ class Service
 
     /**
      * @param $content
+     *
      * @return array ['guild' => GuildName, 'result' => Results]
      */
     private function transformContent($content)
     {
-
-        $count = -1;
+        $count  = -1;
         $result = ['guild' => $this->getGuildName($content)];
         //THrow away first line
         array_shift($content);
 
         foreach ($content as $line) {
             if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
-                $count++;
-                $name = $name[1];
+                ++$count;
+                $name                                   = $name[1];
                 $result['result'][$count]['playername'] = $name;
             }
             if (preg_match('/against (.*)/', $line, $name) === 1) {
-                $name = $name[1];
+                $name                                = $name[1];
                 $result['result'][$count]['mission'] = $name;
-                $result['missions'][$name] = $name;
+                $result['missions'][$name]           = $name;
             }
 
-                $result['result'][$count]['simType'] = 'Mission';
+            $result['result'][$count]['simType'] = 'Mission';
             if (preg_match('/(\d?\d(.\d*)?):/', $line, $name) === 1) {
-                $name = $name[1];
-                $name = (int)($name * 10);
+                $name                                = $name[1];
+                $name                                = (int) ($name * 10);
                 $result['result'][$count]['percent'] = $name;
             }
             if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
-                $name = $name[1];
-                $cards = $this->transformToCardNames(explode(", ", $name));
+                $name                             = $name[1];
+                $cards                            = $this->transformToCardNames(explode(', ', $name));
                 $result['result'][$count]['deck'] = $cards;
             }
             if (preg_match('/(\d\d?% win)/', $line) === 1) {
                 $result['result'][$count]['simType'] = 'Raid';
             }
         }
+
         return $result;
     }
 
@@ -137,9 +139,9 @@ class Service
     {
         $result = [];
         foreach ($array as $name) {
-            $tmp = explode("#", $name);
+            $tmp = explode('#', $name);
             if (count($tmp) == 2) {
-                for ($i = 0; $i < $tmp[1]; $i++) {
+                for ($i = 0; $i < $tmp[1]; ++$i) {
                     $result[] = trim($tmp[0]);
                 }
             } else {
@@ -152,28 +154,28 @@ class Service
 
     private function transformToModels($transformed, ResultFile $file, $guild)
     {
-        $results = [];
-        $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
+        $results     = [];
+        $playerRepo  = $this->em->getRepository('LokiTuoResultBundle:Player');
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
-        $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
+        $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
         foreach ($transformed as $line) {
-            if (!isset($line['deck'])) {
-                $this->logger->warning("Skipped result for Player " .
-                    $line['playername'] . " against " . $line['mission'] . ". Because no Deck was found");
+            if (! isset($line['deck'])) {
+                $this->logger->warning('Skipped result for Player '.
+                    $line['playername'].' against '.$line['mission'].'. Because no Deck was found');
                 continue;
             }
 
-
-            if (!($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
+            if (! ($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
                 $player = new Player();
                 $player->setName($line['playername']);
                 $this->em->persist($player);
             }
-            if (!($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
+            if (! ($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
                 $mission = new Mission();
                 $mission->setName($line['mission']);
             }
             $mission->setType($line['simType']);
+            $mission->setUpdatedAtValue();
             $this->em->persist($mission);
 
             $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
@@ -193,42 +195,44 @@ class Service
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
-            $this->logger->debug("Saving Result for Player " . $player->getName());
+            $this->logger->debug('Saving Result for Player '.$player->getName());
         }
 
         $this->em->flush();
+
         return $results;
     }
 
     private function createDeck($deck, Result $result)
     {
-        $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
+        $cardRepo   = $this->em->getRepository('LokiTuoResultBundle:Card');
         $resultDeck = [];
-        $order = 0;
+        $order      = 0;
         foreach ($deck as $cardName) {
-            $_tmp = $this->ownedCardManager->transformCardString($cardName);
+            $_tmp   = $this->ownedCardManager->transformCardString($cardName);
             $amount = $_tmp['amount'];
-            $level = $_tmp['level'];
-            $name = $_tmp['name'];
-            $card = $cardRepo->findOneBy(['name' => $name]);
+            $level  = $_tmp['level'];
+            $name   = $_tmp['name'];
+            $card   = $cardRepo->findOneBy(['name' => $name]);
 
-            if (!$card) {
+            if (! $card) {
                 $card = new Card();
                 $card->setName($name);
                 $this->em->persist($card);
                 $this->em->flush();
             }
-            for ($i = 0; $i < $amount; $i++) {
+            for ($i = 0; $i < $amount; ++$i) {
                 $deckEntry = new DeckEntry();
                 $deckEntry->setPlayOrder($order);
                 $deckEntry->setLevel($level);
                 $deckEntry->setResult($result);
                 $deckEntry->setCard($card);
                 $this->em->persist($deckEntry);
-                $order++;
+                ++$order;
                 $resultDeck[] = $deckEntry;
             }
         }
+
         return $resultDeck;
     }
 
@@ -242,6 +246,7 @@ class Service
 
     /**
      * @param $fileId
+     *
      * @return ResultFile[]|null
      */
     private function getFileById($fileId)
@@ -265,7 +270,7 @@ class Service
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
             var_dump($guild, $content[0]);
-            throw new Exception("No Guild Found");
+            throw new Exception('No Guild Found');
         }
     }
 }
