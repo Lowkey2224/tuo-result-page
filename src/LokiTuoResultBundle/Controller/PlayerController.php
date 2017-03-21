@@ -396,7 +396,7 @@ class PlayerController extends Controller
      * @param Player  $player
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/[player}/edit", name="loki.tuo.player.edit", requirements={"id":"\d+"})
+     * @Route("/{id}/edit", name="loki.tuo.player.edit", requirements={"id":"\d+"})
      */
     public function editPlayer(Request $request, Player $player)
     {
