@@ -178,7 +178,7 @@ class Player extends AbstractBaseEntity
     /**
      * @param User $owner
      */
-    public function setOwner(User $owner)
+    public function setOwner(User $owner = null)
     {
         $this->owner = $owner;
     }
@@ -198,8 +198,8 @@ class Player extends AbstractBaseEntity
      */
     public function setOwnershipConfirmed(bool $ownershipConfirmed)
     {
-        if (! $this->getOwner()) {
-            throw new \Exception('You cant confirm Ownership for a Player that hasnt been claimed');
+        if ($ownershipConfirmed && ! $this->getOwner()) {
+            throw new \Exception("You cant confirm Ownership for a Player that hasnt been claimed");
         }
         $this->ownershipConfirmed = $ownershipConfirmed;
     }

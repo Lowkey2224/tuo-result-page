@@ -22,6 +22,10 @@
                 <source>Submit</source>
                 <target>Absenden</target>
             </trans-unit>
+            <trans-unit id="form.player.owner">
+                <source>form.player.owner</source>
+                <target>Besitzer</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
