@@ -9,6 +9,7 @@
 
 namespace LokiTuoResultBundle\Tests\Controller;
 
+use LokiUserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -100,6 +101,15 @@ abstract class AbstractControllerTest extends WebTestCase
         $path = sprintf('a:contains("%s")', $name);
         $link = $client->getCrawler()->filter($path)->eq($number)->link();
         return $client->click($link);
+    }
+
+    /**
+     * @param string $username
+     * @return User
+     */
+    protected function getUser($username = self::USER){
+        $repo = $this->container->get('doctrine')->getRepository('LokiUserBundle:User');
+        return $repo->findOneBy(['username' => $username]);
     }
 
 }

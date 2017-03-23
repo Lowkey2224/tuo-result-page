@@ -215,7 +215,7 @@ class Player extends AbstractBaseEntity
      */
     public function setOwnershipConfirmed(bool $ownershipConfirmed)
     {
-        if (!$this->getOwner()) {
+        if ($ownershipConfirmed && !$this->getOwner()) {
             throw new \Exception("You cant confirm Ownership for a Player that hasnt been claimed");
         }
         $this->ownershipConfirmed = $ownershipConfirmed;
