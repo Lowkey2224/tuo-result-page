@@ -22,12 +22,12 @@ class UserVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (! in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
             return false;
         }
 
         // only vote on Post objects inside this voter
-        if (! $subject instanceof User) {
+        if (!$subject instanceof User) {
             return false;
         }
 
@@ -48,7 +48,7 @@ class UserVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }

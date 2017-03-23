@@ -74,7 +74,7 @@ class Player extends AbstractBaseEntity
 
     public function getFullName()
     {
-        return '['.$this->getGuild().'] '.$this->getName();
+        return '[' . $this->getGuild() . '] ' . $this->getName();
     }
 
     /**
@@ -106,7 +106,7 @@ class Player extends AbstractBaseEntity
      */
     public function getDeck()
     {
-        return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
+        return $this->getOwnedCards()->filter(function(OwnedCard $ownedCard) {
             return $ownedCard->getAmountInDeck() > 0;
         });
     }
@@ -198,7 +198,7 @@ class Player extends AbstractBaseEntity
      */
     public function setOwnershipConfirmed(bool $ownershipConfirmed)
     {
-        if ($ownershipConfirmed && ! $this->getOwner()) {
+        if ($ownershipConfirmed && !$this->getOwner()) {
             throw new \Exception("You cant confirm Ownership for a Player that hasnt been claimed");
         }
         $this->ownershipConfirmed = $ownershipConfirmed;
