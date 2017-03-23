@@ -35,6 +35,7 @@ class Fixtures implements FixtureInterface, ContainerAwareInterface
     {
 
         $ary = [
+            __DIR__ . "/fixtures/guilds.yml",
             __DIR__ . "/fixtures/cardfile.yml",
             __DIR__ . "/fixtures/cards.yml",
             __DIR__ . "/fixtures/players.yml",

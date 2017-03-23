@@ -36,12 +36,15 @@ class EditPlayerTest extends AbstractControllerTest
     {
         $client = $this->loginAs();
         $repo = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:Player');
+        $guildRepo = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:Guild');
         $player = $repo->findOneBy(['name' => $playerName]);
+        $oldGuild = $player->getGuild();
+        $newGuild = $guildRepo->findOneBy(["name" => "CTP"]);
         //Go to Edit Page
         $crawler = $this->getEditRoute($client, $player);
         //Fill in the Form
         $form = $this->getPlayerForm($crawler);
-        $form['player[currentGuild]'] = 1;
+        $form['player[guild]'] = $newGuild->getId();
         $client->submit($form);
         //Check the Change
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -51,7 +54,7 @@ class EditPlayerTest extends AbstractControllerTest
         //Change it back
         $crawler = $this->getEditRoute($client, $player);
         $form = $this->getPlayerForm($crawler);
-        $form['player[currentGuild]'] = 2;
+        $form['player[guild]'] = $oldGuild->getId();
         $client->submit($form);
         //Check the Change
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -97,13 +100,17 @@ class EditPlayerTest extends AbstractControllerTest
 
     private function assertPlayerHasColumn(Crawler $crawler, $playerName, $column, $count = 1)
     {
-        $path = sprintf('.//tr[td[normalize-space()="%s"]]/td[normalize-space()="%s"]', $playerName, $column);
-        $this->assertEquals($count, $crawler->filterXPath($path)->count());
+        $this->assertTableHasCell($crawler, $playerName, $column, $count);
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return \Symfony\Component\DomCrawler\Form
+     */
     private function getPlayerForm(Crawler $crawler)
     {
-        return $crawler->filterXPath('.//button[@id="player_submit"]')->form();
+        return $this->getFormById($crawler, 'player_submit', 'button');
+
     }
 
     private function getEditRoute(Client $client, Player $player)

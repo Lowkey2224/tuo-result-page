@@ -34,6 +34,18 @@
                 <source>form.mission.type</source>
                 <target>Missiontype</target>
             </trans-unit>
+            <trans-unit id="form.guild.name">
+                <source>form.guild.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="form.guild.enabled">
+                <source>form.guild.enabled</source>
+                <target>Active ?</target>
+            </trans-unit>
+            <trans-unit id="form.guild.submit">
+                <source>form.guild.submit</source>
+                <target>Save</target>
+            </trans-unit>
             <trans-unit id="CNS">
                 <source>CNS</source>
                 <target>CNS</target>

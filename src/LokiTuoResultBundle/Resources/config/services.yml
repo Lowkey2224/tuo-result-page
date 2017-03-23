@@ -73,5 +73,11 @@ services:
         arguments: ['@logger']
         tags:
             - { name: security.voter }
-        # small performance boost
+        public: false
+
+    app.guild_voter:
+        class: LokiTuoResultBundle\Security\GuildVoter
+        arguments: ['@logger']
+        tags:
+            - { name: security.voter }
         public: false

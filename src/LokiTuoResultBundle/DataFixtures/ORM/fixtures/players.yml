@@ -1,4 +1,4 @@
 LokiTuoResultBundle\Entity\Player:
     player-{loki, lowkey, loken}:
         name: <current()>
-        currentGuild: CTN
+        guild: '@CTN'

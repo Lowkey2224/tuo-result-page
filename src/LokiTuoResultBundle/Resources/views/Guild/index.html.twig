@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    <div class="row">
+        <h3 class="col-md-6 col-md-offset-3 text-center">
+            All Guilds
+        </h3>
+    </div>
+    <a href="{{ path("loki.tuo.guild.new") }}">Add Guild</a>
+    <table class="table table-striped data-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Active</th>
+            <th>Date</th>
+            <th>Links</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for guild in guilds %}
+            <tr class="{{ guild.enabled==1?"success":"warning" }}">
+                <td>
+                    {{ guild.id}}
+                </td>
+                <td>
+                    {{ guild.name }}
+                </td>
+                <td>
+                    {{ guild.enabled ? "active" :"inactive"}}
+                </td>
+                <td>
+                    {{ guild.updatedAt | date("Y-m-d H:i")}}
+                </td>
+                <td>
+                    <a href="{{ path("loki.tuo.guild.edit", {'id': guild.id}) }}">
+                        <i class="pull-right glyphicon glyphicon-pencil"></i>Edit
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row" style="margin-top: 20px;">
+
+        Simulations and website done by LokiMcFly<br/>
+    </div>
+{% endblock %}

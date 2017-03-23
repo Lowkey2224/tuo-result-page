@@ -43,11 +43,11 @@ class SimulationType extends AbstractType
                 'class' => 'LokiTuoResultBundle\Entity\BattleGroundEffect',
                 'label' => "form.simulation.backgroundEffect",
                 'required' => false,
-                'choice_label' => function(BattleGroundEffect $bge) {
+                'choice_label' => function (BattleGroundEffect $bge) {
                     return $bge->getName() . " (" . $bge->getDescription() . ")";
                 },
                 'multiple' => false,
-                'query_builder' => function(BattleGroundEffectRepository $br) {
+                'query_builder' => function (BattleGroundEffectRepository $br) {
                     return $br->createQueryBuilder('p')
                         ->orderBy('p.category', 'ASC');
                 },
@@ -93,13 +93,13 @@ class SimulationType extends AbstractType
 
                 // use the User.username property as the visible option string
                 'choice_label' => 'name',
-                'choice_attr' => function(Player $val) {
-                    return ['data-guild' => $val->getCurrentGuild()];
+                'choice_attr' => function (Player $val) {
+                    return ['data-guild' => $val->getGuild()];
                 },
 
                 // used to render a select box, check boxes or radios
                 'multiple' => true,
-                'query_builder' => function(PlayerRepository $pr) {
+                'query_builder' => function (PlayerRepository $pr) {
                     $qb = $pr->createQueryBuilder('p')
                         ->where('p.currentGuild != ?1')
                         ->andWhere('p.active = ?2')
