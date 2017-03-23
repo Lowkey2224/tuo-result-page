@@ -191,7 +191,7 @@ class Service
         $playerRepo  = $this->em->getRepository('LokiTuoResultBundle:Player');
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
         $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
-        $guildRepo  = $this->em->getRepository('LokiTuoResultBundle:Guild');
+        $guildRepo = $this->em->getRepository('LokiTuoResultBundle:Guild');
         $guild = $guildRepo->findOneBy(["name" => $guild]);
         foreach ($transformed as $line) {
             if (!isset($line['deck'])) {
