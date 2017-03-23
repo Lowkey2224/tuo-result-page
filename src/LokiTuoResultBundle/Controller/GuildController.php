@@ -5,7 +5,6 @@ namespace LokiTuoResultBundle\Controller;
 use LokiTuoResultBundle\Entity\Guild;
 use LokiTuoResultBundle\Form\GuildType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,12 +35,12 @@ class GuildController extends Controller
      * @return array|RedirectResponse
      * @Route("/{id}/edit", name="loki.tuo.guild.edit", requirements={"id":"\d+"})
      * @Route("/new", name="loki.tuo.guild.new", defaults={"id":null})
-     * @Security("is_granted('edit', guild)")
      * @Template(vars={"post"})
      */
     public function editAction(Request $request, Guild $guild = null)
     {
-        $guild = $guild?:new Guild();
+        $guild = $guild ?: new Guild();
+        $this->denyAccessUnlessGranted('edit', $guild);
         $form   = $this->createForm(GuildType::class, $guild);
         $form->handleRequest($request);
 
@@ -54,7 +53,7 @@ class GuildController extends Controller
         }
 
         return [
-                'guild' => $guild,
+                'guild'  => $guild,
                 'form'   => $form->createView(),
             ];
     }
