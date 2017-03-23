@@ -4,7 +4,7 @@ namespace LokiTuoResultBundle\Controller\Guild;
 
 use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
 
-class CreateGuildTest extends AbstractControllerTest
+class EditGuildTest extends AbstractControllerTest
 {
     /**
      * Test the Positive Creation the a Guild.
