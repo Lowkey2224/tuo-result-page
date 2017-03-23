@@ -366,7 +366,7 @@ class PlayerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($player);
-            if(!$player->getOwner()) {
+            if (!$player->getOwner()) {
                 $player->setOwnershipConfirmed(false);
             }
             $this->getDoctrine()->getManager()->flush();

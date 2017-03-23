@@ -116,7 +116,7 @@ class Service
     public function deckToSpreadsheetFormat(Player $player)
     {
         $ocs = new Collection($player->getOwnedCards());
-        $deck = $ocs->filter(function(OwnedCard $oc) {
+        $deck = $ocs->filter(function (OwnedCard $oc) {
             return $oc->getAmountInDeck() > 0;
         });
         return $deck->map(", ");

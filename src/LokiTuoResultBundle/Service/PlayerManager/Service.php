@@ -49,7 +49,7 @@ class Service
         $repo      = $this->em->getRepository('LokiTuoResultBundle:Player');
         $playerOld = $repo->findOneBy(['name' => $player->getName()]);
         if ($playerOld) {
-            $playerOld->setCurrentGuild($player->getCurrentGuild());
+            $playerOld->setGuild($player->getGuild());
             $playerOld->setActive(true);
             $player = $playerOld;
         }

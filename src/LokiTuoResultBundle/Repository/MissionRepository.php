@@ -35,8 +35,9 @@ class MissionRepository extends \Doctrine\ORM\EntityRepository
     public function findAllWithGuilds2()
     {
         $qb = $this->createQueryBuilder('m')
-            ->addSelect('group_concat(r.guild)')
+            ->addSelect('group_concat(g.name)')
             ->join('m.results', 'r')
+            ->join('r.guild', 'g')
             ->orderBy('m.name', 'ASC')
             ->groupBy('m.id');
 

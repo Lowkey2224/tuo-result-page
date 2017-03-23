@@ -36,12 +36,15 @@ class EditPlayerTest extends AbstractControllerTest
     {
         $client = $this->loginAs();
         $repo = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:Player');
+        $guildRepo = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:Guild');
         $player = $repo->findOneBy(['name' => $playerName]);
+        $oldGuild = $player->getGuild();
+        $newGuild = $guildRepo->findOneBy(["name" => "CTP"]);
         //Go to Edit Page
         $crawler = $this->getEditRoute($client, $player);
         //Fill in the Form
         $form = $this->getPlayerForm($crawler);
-        $form['player[currentGuild]'] = 1;
+        $form['player[guild]'] = $newGuild->getId();
         $client->submit($form);
         //Check the Change
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -51,7 +54,7 @@ class EditPlayerTest extends AbstractControllerTest
         //Change it back
         $crawler = $this->getEditRoute($client, $player);
         $form = $this->getPlayerForm($crawler);
-        $form['player[currentGuild]'] = 2;
+        $form['player[guild]'] = $oldGuild->getId();
         $client->submit($form);
         //Check the Change
         $this->assertEquals(302, $client->getResponse()->getStatusCode());

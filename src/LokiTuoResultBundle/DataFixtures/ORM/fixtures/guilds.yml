@@ -1,3 +1,5 @@
 LokiTuoResultBundle\Entity\Guild:
     CTN:
         name: CTN
+    CTP:
+        name: CTP

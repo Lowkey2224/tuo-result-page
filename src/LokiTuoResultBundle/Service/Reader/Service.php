@@ -191,6 +191,8 @@ class Service
         $playerRepo  = $this->em->getRepository('LokiTuoResultBundle:Player');
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
         $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
+        $guildRepo  = $this->em->getRepository('LokiTuoResultBundle:Guild');
+        $guild = $guildRepo->findOneBy(["name" => $guild]);
         foreach ($transformed as $line) {
             if (!isset($line['deck'])) {
                 $this->logger->warning('Skipped result for Player ' .
@@ -220,7 +222,7 @@ class Service
             $result->setPlayer($player);
             $result->setPercent($line['percent']);
             $result->setMission($mission);
-            $player->setCurrentGuild($guild);
+            $player->setGuild($guild);
             $this->em->persist($player);
             $this->em->persist($result);
             $this->deleteOldDeck($result);

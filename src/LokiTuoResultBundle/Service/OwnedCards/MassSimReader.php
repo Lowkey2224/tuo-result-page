@@ -107,7 +107,9 @@ class MassSimReader
     public function savePlayerCardMap($map)
     {
         $result = [];
-        $guild  = $map['guild'];
+        $guildRepo = $this->em->getRepository('LokiTuoResultBundle:Guild');
+
+        $guild  = $guildRepo->findOneBy(["name" => $map['guild']]);
         foreach ($map['players'] as $playerName => $cardArray) {
             $player = $this->findPlayerOrCreate($playerName, $guild);
             $this->logger->debug('Trying to persist ' . count($cardArray) . ' cards for Player ' . $player->getName());
@@ -140,7 +142,7 @@ class MassSimReader
             $this->logger->info("Created Player $playerName because no Player was found.");
             $player = new Player();
             $player->setName($playerName);
-            $player->setCurrentGuild($guild);
+            $player->setGuild($guild);
             $this->em->persist($player);
         }
 
