@@ -16,11 +16,11 @@ env:
 git:
   depth: 3
 before_install:
+  - phpenv config-rm xdebug.ini
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer self-update -q
 
 install:
-- phpenv config-rm xdebug.ini
   - if [ -z "$dependencies" ]; then composer install  --prefer-dist ; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
