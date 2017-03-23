@@ -41,7 +41,7 @@ class GuildController extends Controller
     {
         $guild = $guild ?: new Guild();
         $this->denyAccessUnlessGranted('edit', $guild);
-        $form   = $this->createForm(GuildType::class, $guild);
+        $form = $this->createForm(GuildType::class, $guild);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
