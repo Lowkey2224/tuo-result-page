@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use LokiUserBundle\Entity\User;
 
 /**
- * Player
+ * Player.
  *
  * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\PlayerRepository")
@@ -15,8 +15,6 @@ use LokiUserBundle\Entity\User;
  */
 class Player extends AbstractBaseEntity
 {
-
-
     /**
      * @var string
      *
@@ -37,13 +35,14 @@ class Player extends AbstractBaseEntity
     private $ownedCards;
 
     /**
-     * @var String
-     * @ORM\Column(name="currentGuild", type="string", length=20)
+     * @var Guild
+     * @ORM\ManyToOne(targetEntity="LokiTuoResultBundle\Entity\Guild", inversedBy="players")
+     * @ORM\JoinColumn(referencedColumnName="id", name="guild_id")
      */
-    private $currentGuild;
+    private $guild;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean")
      */
     private $active;
@@ -62,9 +61,9 @@ class Player extends AbstractBaseEntity
 
     public function __construct()
     {
-        $this->results = new ArrayCollection();
-        $this->ownedCards = new ArrayCollection();
-        $this->active = true;
+        $this->results            = new ArrayCollection();
+        $this->ownedCards         = new ArrayCollection();
+        $this->active             = true;
         $this->ownershipConfirmed = false;
     }
 
@@ -75,16 +74,15 @@ class Player extends AbstractBaseEntity
 
     public function getFullName()
     {
-        return "[" . $this->getCurrentGuild() . "] " . $this->getName();
+        return '['.$this->getGuild().'] '.$this->getName();
     }
 
+    /**
+     * @return Guild
+     */
     public function getGuild()
     {
-        if ($this->results->isEmpty()) {
-            return "";
-        }
-
-        return $this->results->last()->getGuild();
+        return $this->guild;
     }
 
     /**
@@ -108,13 +106,13 @@ class Player extends AbstractBaseEntity
      */
     public function getDeck()
     {
-        return $this->getOwnedCards()->filter(function(OwnedCard $ownedCard) {
+        return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
             return $ownedCard->getAmountInDeck() > 0;
         });
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -128,7 +126,7 @@ class Player extends AbstractBaseEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -151,22 +149,6 @@ class Player extends AbstractBaseEntity
     public function setOwnedCards($ownedCards)
     {
         $this->ownedCards = $ownedCards;
-    }
-
-    /**
-     * @return String
-     */
-    public function getCurrentGuild()
-    {
-        return $this->currentGuild;
-    }
-
-    /**
-     * @param String $currentGuild
-     */
-    public function setCurrentGuild($currentGuild)
-    {
-        $this->currentGuild = $currentGuild;
     }
 
     /**
@@ -211,12 +193,13 @@ class Player extends AbstractBaseEntity
 
     /**
      * @param bool $ownershipConfirmed
+     *
      * @throws \Exception
      */
     public function setOwnershipConfirmed(bool $ownershipConfirmed)
     {
-        if (!$this->getOwner()) {
-            throw new \Exception("You cant confirm Ownership for a Player that hasnt been claimed");
+        if (! $this->getOwner()) {
+            throw new \Exception('You cant confirm Ownership for a Player that hasnt been claimed');
         }
         $this->ownershipConfirmed = $ownershipConfirmed;
     }
@@ -224,5 +207,13 @@ class Player extends AbstractBaseEntity
     public function isOwnedBy(User $user)
     {
         return $this->isOwnershipConfirmed() && $this->getOwner()->getId() == $user->getId();
+    }
+
+    /**
+     * @param Guild $guild
+     */
+    public function setGuild(Guild $guild)
+    {
+        $this->guild = $guild;
     }
 }

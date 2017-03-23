@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Result
+ * Result.
  *
  * @ORM\Table(name="result")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\ResultRepository")
@@ -14,10 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Result extends AbstractBaseEntity
 {
-
-
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="percent", type="integer", nullable=false)
      */
@@ -51,10 +49,11 @@ class Result extends AbstractBaseEntity
     private $sourceFile;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var Guild
+     * @ORM\ManyToOne(targetEntity="LokiTuoResultBundle\Entity\Guild", inversedBy="results")
+     * @ORM\JoinColumn(referencedColumnName="id", name="guild_id")
      */
-    private $guild = "CTP";
+    private $guild;
 
     public function __construct()
     {
@@ -142,17 +141,17 @@ class Result extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return Guild
      */
-    public function getGuild()
+    public function getGuild(): Guild
     {
         return $this->guild;
     }
 
     /**
-     * @param string $guild
+     * @param Guild $guild
      */
-    public function setGuild($guild)
+    public function setGuild(Guild $guild)
     {
         $this->guild = $guild;
     }
