@@ -26,6 +26,18 @@
                 <source>form.player.owner</source>
                 <target>Besitzer</target>
             </trans-unit>
+            <trans-unit id="form.guild.name">
+                <source>form.guild.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="form.guild.enabled">
+                <source>form.guild.enabled</source>
+                <target>Aktiv ?</target>
+            </trans-unit>
+            <trans-unit id="form.guild.submit">
+                <source>form.guild.submit</source>
+                <target>Speichern</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

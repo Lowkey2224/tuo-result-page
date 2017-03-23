@@ -9,6 +9,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractVoter extends Voter
 {
+    const VIEW = "view";
+    const EDIT = "edit";
+    const DELETE = "delete";
 
     /**
      * returns the class name of the supported class
@@ -61,14 +64,15 @@ abstract class AbstractVoter extends Voter
 
         $user = $token->getUser();
 
-        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
-            return true;
-        }
-
         if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }
+
+        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+            return true;
+        }
+
         $map = $this->getAttributeMethodMap();
         if (isset($map[$attribute])) {
             $method = $map[$attribute];

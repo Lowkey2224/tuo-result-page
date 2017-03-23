@@ -7,8 +7,6 @@ use LokiUserBundle\Entity\User;
 
 class PlayerVoter extends AbstractVoter
 {
-    const VIEW = 'view';
-    const EDIT = 'edit';
 
     protected function canView(Player $player, User $user)
     {

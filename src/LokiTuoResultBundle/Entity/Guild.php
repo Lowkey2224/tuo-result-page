@@ -32,6 +32,12 @@ class Guild extends AbstractBaseEntity
      */
     private $results;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
     public function __toString()
     {
         return $this->getName();
@@ -41,6 +47,7 @@ class Guild extends AbstractBaseEntity
     {
         $this->players = new ArrayCollection();
         $this->results = new ArrayCollection();
+        $this->enabled = true;
     }
 
     /**
@@ -90,4 +97,22 @@ class Guild extends AbstractBaseEntity
     {
         $this->results = $results;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled)
+    {
+        $this->enabled = $enabled;
+    }
+
+
 }
