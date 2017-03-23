@@ -58,7 +58,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         foreach ($this->getEntityClass() as $class) {
             $supports = !$subject instanceof $class ?: true;
         }
-        $this->logger->error(sprintf("Voted  on att %s for subject %s with ", $attribute, print_r($subject, true), $subject?"true":"false"));
+//        $this->logger->error(sprintf("Voted  on att %s for subject %s with ", $attribute, print_r($subject, true), $subject?"true":"false"));
         return $supports;
     }
 
@@ -87,7 +87,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         }
 
         $map = $this->getAttributeMethodMap();
-        $this->logger->error(sprintf(""));
+//        $this->logger->error(sprintf(""));
         if (isset($map[$attribute])) {
             $method = $map[$attribute];
             return $this->$method($subject, $user);
