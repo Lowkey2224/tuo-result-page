@@ -100,13 +100,17 @@ class EditPlayerTest extends AbstractControllerTest
 
     private function assertPlayerHasColumn(Crawler $crawler, $playerName, $column, $count = 1)
     {
-        $path = sprintf('.//tr[td[normalize-space()="%s"]]/td[normalize-space()="%s"]', $playerName, $column);
-        $this->assertEquals($count, $crawler->filterXPath($path)->count());
+        $this->assertTableHasCell($crawler, $playerName, $column, $count);
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return \Symfony\Component\DomCrawler\Form
+     */
     private function getPlayerForm(Crawler $crawler)
     {
-        return $crawler->filterXPath('.//button[@id="player_submit"]')->form();
+        return $this->getFormById($crawler, 'player_submit', 'button');
+
     }
 
     private function getEditRoute(Client $client, Player $player)

@@ -13,6 +13,7 @@ use LokiUserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DomCrawler\Crawler;
 
 
 abstract class AbstractControllerTest extends WebTestCase
@@ -110,6 +111,23 @@ abstract class AbstractControllerTest extends WebTestCase
     protected function getUser($username = self::USER){
         $repo = $this->container->get('doctrine')->getRepository('LokiUserBundle:User');
         return $repo->findOneBy(['username' => $username]);
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @param $id
+     * @param string $type
+     * @return \Symfony\Component\DomCrawler\Form
+     */
+    protected function getFormById(Crawler $crawler, $id, $type = '*')
+    {
+        return $crawler->filterXPath(sprintf('.//%s[@id="%s"]', $type, $id))->form();
+    }
+
+    protected function assertTableHasCell(Crawler $crawler, $rowName, $column, $count = 1)
+    {
+        $path = sprintf('.//tr[td[normalize-space()="%s"]]/td[normalize-space()="%s"]', $rowName, $column);
+        $this->assertEquals($count, $crawler->filterXPath($path)->count());
     }
 
 }

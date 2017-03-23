@@ -39,8 +39,9 @@ class GuildController extends Controller
      * @Security("is_granted('edit', guild)")
      * @Template(vars={"post"})
      */
-    public function editAction(Request $request, Guild $guild)
+    public function editAction(Request $request, Guild $guild = null)
     {
+        $guild = $guild?:new Guild();
         $form   = $this->createForm(GuildType::class, $guild);
         $form->handleRequest($request);
 

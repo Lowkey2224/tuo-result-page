@@ -40,7 +40,7 @@ class Guild extends AbstractBaseEntity
 
     public function __toString()
     {
-        return $this->getName();
+        return $this->getName()."";
     }
 
     public function __construct()
@@ -53,7 +53,7 @@ class Guild extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }

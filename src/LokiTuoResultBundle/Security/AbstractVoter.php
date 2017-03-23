@@ -4,14 +4,27 @@
 namespace LokiTuoResultBundle\Security;
 
 use LokiUserBundle\Entity\User;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-abstract class AbstractVoter extends Voter
+abstract class AbstractVoter extends Voter implements LoggerAwareInterface
 {
+    /** @var  LoggerInterface */
+    private $logger;
+
     const VIEW = "view";
     const EDIT = "edit";
     const DELETE = "delete";
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->setLogger($logger);
+    }
+    public function setLogger(LoggerInterface $logger){
+        $this->logger = $logger;
+    }
 
     /**
      * returns the class name of the supported class
@@ -45,7 +58,7 @@ abstract class AbstractVoter extends Voter
         foreach ($this->getEntityClass() as $class) {
             $supports = !$subject instanceof $class ?: true;
         }
-
+        $this->logger->error(sprintf("Voted  on att %s for subject %s with ", $attribute, print_r($subject, true), $subject?"true":"false"));
         return $supports;
     }
 
@@ -74,6 +87,7 @@ abstract class AbstractVoter extends Voter
         }
 
         $map = $this->getAttributeMethodMap();
+        $this->logger->error(sprintf(""));
         if (isset($map[$attribute])) {
             $method = $map[$attribute];
             return $this->$method($subject, $user);
