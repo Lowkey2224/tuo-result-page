@@ -28,7 +28,7 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        data-target="#navbar-collapse" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -39,31 +39,34 @@
 
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li {% if currentPath starts with '/simulation/' %} class="active" {% endif %}><a
                                 href="{{ path('tuo.index') }}">Simulations <span class="sr-only">(current)</span></a>
                     </li>
-                    <li {% if currentPath starts with '/player/' %} class="active" {% endif %}><a
-                                href="{{ path('loki.tuo.player.all.show') }}">Players</a></li>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <li {% if currentPath starts with '/import/' %} class="active" {% endif %}><a
-                                    href="{{ path('loki.tuo.import.index') }}">Imports</a></li>
-                        <li {% if currentPath starts with '/user/' %} class="active" {% endif %}><a
-                                    href="{{ path('loki.user.user.index') }}">Users</a></li>
-                        <li {% if currentPath starts with '/card/' %} class="active" {% endif %}><a
-                                    href="{{ path('loki.tuo.card.index') }}">Cards</a></li>
                     {% endif %}
-                    {% if is_granted('ROLE_MODERATOR') %}
-                    <li {% if currentPath starts with '/guild/' %} class="active" {% endif %}><a
-                                href="{{ path('loki.tuo.guild.index') }}">Guilds</a></li>
-                    {% endif %}
+
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <li>
-                            <button type="button" class="btn btn-primary btn-md" data-toggle="modal"
-                                    data-target="#uploadModal" style="padding-top: 10px">
-                                Upload Sim Result
-                            </button>
+                        <li><a href="{{ path('loki.tuo.result.upload') }}">Upload Result</a></li>
+                        <li {% if currentPath starts with '/player/' %} class="active" {% endif %}><a
+                                    href="{{ path('loki.tuo.player.all.show') }}">Players</a></li>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_MODERATOR') %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administration<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li {% if currentPath starts with '/import/' %} class="active" {% endif %}><a
+                                            href="{{ path('loki.tuo.import.index') }}">Imports</a></li>
+                                <li {% if currentPath starts with '/user/' %} class="active" {% endif %}><a
+                                            href="{{ path('loki.user.user.index') }}">Users</a></li>
+                                <li {% if currentPath starts with '/card/' %} class="active" {% endif %}><a
+                                            href="{{ path('loki.tuo.card.index') }}">Cards</a></li>
+                                <li {% if currentPath starts with '/guild/' %} class="active" {% endif %}><a
+                                            href="{{ path('loki.tuo.guild.index') }}">Guilds</a></li>
+
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>
@@ -88,9 +91,9 @@
                             </ul>
                         </li>
                     {% else %}
-                        <li><a href="{{ path('fos_user_security_login') }}">Login<span class="sr-only">(current)</span></a>
+                        <li><a href="{{ path('fos_user_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Login<span class="sr-only">(current)</span></a>
                         </li>
-                        <li><a href="{{ path('fos_user_registration_register') }}">Register<span class="sr-only">(current)</span></a>
+                        <li><a href="{{ path('fos_user_registration_register') }}"><span class="glyphicon glyphicon-user"></span> Register<span class="sr-only">(current)</span></a>
                         </li>
                     {% endif %}
                 </ul>
@@ -98,9 +101,7 @@
         </div><!-- /.container-fluid -->
     </nav>
     <div style="padding-top: 70px;">
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            {{ render(controller("LokiTuoResultBundle:Simulation:uploadForm")) }}
-        {% endif %}
+        <!-- We need some padding, so the Navbar wont overlap the content-->
     </div>
 
     {% for flashMessage in app.session.flashbag.get('error') %}
