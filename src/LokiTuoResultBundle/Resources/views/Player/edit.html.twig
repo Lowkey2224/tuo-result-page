@@ -7,6 +7,9 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 Edit Player {{ player.name }}
+                <a class="btn btn-xs btn-info pull-right" href="{{ path('loki.tuo.player.all.show') }}">
+                    <span class="glyphicon glyphicon-chevron-left">Back</span>
+                </a>
             </div>
             <div class="panel-body">
                 {{ form_start(form) }}
