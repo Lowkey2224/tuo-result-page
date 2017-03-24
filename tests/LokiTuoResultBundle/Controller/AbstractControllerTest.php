@@ -91,7 +91,7 @@ abstract class AbstractControllerTest extends WebTestCase
     }
 
     /**
-     * Clicks the Link with the given xpath
+     * Clicks the Link with the given Link text or Linkname
      * @param Client $client
      * @param string $name
      * @param int $number the number of the link to click
@@ -99,8 +99,8 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     public function clickLinkName(Client $client, $name, $number = 0)
     {
-        $path = sprintf('a:contains("%s")', $name);
-        $link = $client->getCrawler()->filter($path)->eq($number)->link();
+        $path = sprintf('.//a[@name="%s" or normalize-space()="%s"]', $name, $name);
+        $link = $client->getCrawler()->filterXPath($path)->eq($number)->link();
         return $client->click($link);
     }
 
