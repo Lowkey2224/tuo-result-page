@@ -46,6 +46,34 @@
                 <source>form.guild.submit</source>
                 <target>Save</target>
             </trans-unit>
+            <trans-unit id="form.card.name">
+                <source>form.card.name</source>
+                <target>Card name</target>
+            </trans-unit>
+            <trans-unit id="form.card.level">
+                <source>form.card.level</source>
+                <target>Level (leave blank if maxed)</target>
+            </trans-unit>
+            <trans-unit id="form.card.amount">
+                <source>form.card.amount</source>
+                <target>Amount</target>
+            </trans-unit>
+            <trans-unit id="form.card.submit">
+                <source>form.card.submit</source>
+                <target>Add Card</target>
+            </trans-unit>
+            <trans-unit id="form.card.mass.cards">
+                <source>form.card.mass.cards</source>
+                <target>Cards</target>
+            </trans-unit>
+            <trans-unit id="form.card.mass.placeholder">
+                <source>form.card.mass.placeholder</source>
+                <target>Enter your Cards here. 1 Card per Line</target>
+            </trans-unit>
+            <trans-unit id="form.card.mass.submit">
+                <source>form.card.mass.submit</source>
+                <target>Add Cards</target>
+            </trans-unit>
             <trans-unit id="CNS">
                 <source>CNS</source>
                 <target>CNS</target>
@@ -63,7 +91,7 @@
                 <target>Testguild</target>
             </trans-unit>
             <trans-unit id="selectGuild">
-                <source>Please Select your Guild...</source>
+                <source>selectGuild</source>
                 <target>Please Select your Guild...</target>
             </trans-unit>
             <trans-unit id="Back_to_top">

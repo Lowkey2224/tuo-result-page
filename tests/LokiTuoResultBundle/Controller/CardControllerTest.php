@@ -11,8 +11,7 @@ class CardControllerTest extends AbstractControllerTest
     public function testIndex()
     {
         $client = $this->loginAs();
-        $client->request('GET', '/card');
-        $client->followRedirect();
+        $client->request('GET', '/card/');
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 

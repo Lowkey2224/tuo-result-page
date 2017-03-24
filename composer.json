@@ -1,5 +1,5 @@
 {
-    "name": "jenz/.checkout",
+    "name": "Loki Tyrant Unleashed Optimizer Result Page",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -32,7 +32,8 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "tightenco/collect": "^5.3",
         "doctrine/doctrine-fixtures-bundle": "^2.3",
-        "doctrine/doctrine-migrations-bundle": "^1.0"
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "kriswallsmith/assetic": "^1.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 16.09.16
- * Time: 10:12
+ * Time: 10:12.
  */
 
 namespace LokiTuoResultBundle\Form;
@@ -18,13 +18,26 @@ class OwnedCardType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('card', TextType::class, ['label' => 'Cardname', 'attr' => ['class' => 'form-control']]);
-        $builder->add(
-            'level',
-            NumberType::class,
-            ['label' => 'Level', 'attr' => ['class' => 'form-control'], 'required' => false]
+        $builder->add('card', TextType::class, [
+            'label'              => 'form.card.name',
+            'translation_domain' => 'LokiTuoResultBundle',
+            'attr'               => ['class' => 'form-control'],
+        ]);
+        $builder->add('level', NumberType::class, [
+                'label'              => 'form.card.level',
+                'translation_domain' => 'LokiTuoResultBundle',
+                'attr'               => ['class' => 'form-control'],
+                'required'           => false,
+            ]
         );
-        $builder->add('amount', NumberType::class, ['label' => 'Amount', 'attr' => ['class' => 'form-control']]);
-        $builder->add('submit', SubmitType::class, ['label' => 'Add Card', 'attr' => ['class' => 'btn btn-success']]);
+        $builder->add('amount', NumberType::class, [
+            'data'               => 1,
+            'label'              => 'form.card.amount',
+            'translation_domain' => 'LokiTuoResultBundle',
+            'attr'               => ['class' => 'form-control'], ]);
+        $builder->add('submit', SubmitType::class, [
+            'label'              => 'form.card.submit',
+            'translation_domain' => 'LokiTuoResultBundle',
+            'attr'  => ['class' => 'btn btn-success'], ]);
     }
 }
