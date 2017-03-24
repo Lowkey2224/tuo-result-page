@@ -176,13 +176,12 @@ class SimulationController extends Controller
     }
 
     /**
-     * @Route("/upload", name="loki.tuo.result.upload", methods={"POST"})
+     * @Route("/upload", name="loki.tuo.result.upload")
      * @Security("has_role('ROLE_USER')")
      */
     public function uploadResultAction(Request $request)
     {
-
-        $form = $this->getUploadForm();
+        $form = $this->createForm(ResultFileType::class, null);
         $resultReader = $this->get('loki_tuo_result.reader');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -191,21 +190,14 @@ class SimulationController extends Controller
                 $id = $resultReader->readFile($data['file']->getRealPath());
                 $resultCount = $resultReader->importFileById($id);
                 $this->addFlash('success', "$resultCount Results have been imported");
+                return $this->redirectToRoute('tuo.index');
             } else {
                 $this->addFlash('error', "There was an error importing Resultfile");
             }
         }
-        return $this->redirectToRoute('tuo.index');
-    }
 
-    /**
-     * @Route("/upload/form", name="loki.tuo.result.upload.form")
-     * @Security("has_role('ROLE_USER')")
-     */
-    public function uploadFormAction()
-    {
-        $form = $this->getUploadForm();
-        return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', array(
+
+        return $this->render('@LokiTuoResult/Simulation/upload.html.twig', array(
             'form' => $form->createView(),
         ));
     }

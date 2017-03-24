@@ -16,6 +16,9 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 Edit Player {{ mission.name }}
+                <a class="btn btn-xs btn-info pull-right" href="{{ path('tuo.index') }}">
+                    <span class="glyphicon glyphicon-chevron-left">Back</span>
+                </a>
             </div>
             <div class="panel-body">
                 {{ form_start(form) }}

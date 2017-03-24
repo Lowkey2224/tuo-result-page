@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 07.10.16
- * Time: 16:49
+ * Time: 16:49.
  */
 
 namespace LokiTuoResultBundle\Form;
@@ -17,10 +17,19 @@ class MassOwnedCardType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('cards', TextareaType::class, ['label' => 'Cards', 'attr' => [
-            'class' => 'form-control',
-            'placeholder' => 'Enter your Cards here. 1 Card per Line'
-        ]]);
-        $builder->add('submit', SubmitType::class, ['label' => 'Add Card', 'attr' => ['class' => 'btn btn-success']]);
+        $builder->add('cards', TextareaType::class, [
+            'label'              => 'form.card.mass.cards',
+            'translation_domain' => 'LokiTuoResultBundle',
+            'attr'               => [
+                'class'              => 'form-control',
+                'placeholder'        => 'form.card.mass.placeholder',
+                'translation_domain' => 'LokiTuoResultBundle',
+            ],
+        ]);
+        $builder->add('submit', SubmitType::class, [
+            'label'              => 'form.card.mass.submit',
+            'translation_domain' => 'LokiTuoResultBundle',
+            'attr' => ['class' => 'btn btn-success']
+        ]);
     }
 }
