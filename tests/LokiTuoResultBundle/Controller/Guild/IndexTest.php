@@ -10,9 +10,9 @@ class IndexTest extends AbstractControllerTest
 {
 
     /**
-     * covers PlayerController::listAllPlayersAction()
+     * covers GuildController::indexAxtion()
      */
-    public function testListAllPlayersAction()
+    public function testGuildIndex()
     {
         $client = $this->loginAs();
 

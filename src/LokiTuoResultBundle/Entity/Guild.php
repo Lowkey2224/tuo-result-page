@@ -16,7 +16,7 @@ class Guild extends AbstractBaseEntity
 {
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false, unique=true)
      */
     private $name;
 
