@@ -37,8 +37,8 @@ class EditGuildTest extends AbstractControllerTest
         $this->assertTableHasCell($client->getCrawler(), 'TestGuild', 'active');
         $this->create($client);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $xpath = ".//div[contains(@class,'alert-danger')]";
-        $this->assertEquals(1, $client->getCrawler()->filterXPath($xpath)->count());
+        $xpath = sprintf('li:contains("%s")', 'This Guild already Exists!');
+        $this->assertEquals(1, $client->getCrawler()->filter($xpath)->count());
     }
 
     private function edit(Client $client)

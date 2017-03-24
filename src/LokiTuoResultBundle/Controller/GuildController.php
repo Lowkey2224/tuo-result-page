@@ -8,6 +8,7 @@ use LokiTuoResultBundle\Form\GuildType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -52,7 +53,7 @@ class GuildController extends Controller
 
                 return $this->redirectToRoute('loki.tuo.guild.index');
             } catch (UniqueConstraintViolationException $exception) {
-                $this->addFlash('error', 'This Guild already Exists!');
+                $form->get('name')->addError(new FormError('This Guild already Exists!'));
             }
         }
 
