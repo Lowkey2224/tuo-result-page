@@ -54,7 +54,10 @@
                     {% endif %}
 
                     {% if is_granted('ROLE_MODERATOR') %}
-                        <li class="dropdown">
+                        <li class="dropdown{% if currentPath starts with '/import/'
+                        or  currentPath starts with '/user/'
+                        or currentPath starts with '/card/'
+                        or currentPath starts with '/guild/' %} active{% endif %}">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administration<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li {% if currentPath starts with '/import/' %} class="active" {% endif %}><a
