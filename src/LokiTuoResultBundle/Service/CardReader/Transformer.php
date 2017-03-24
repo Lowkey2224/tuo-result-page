@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 11.08.16
- * Time: 10:19
+ * Time: 10:19.
  */
 
 namespace LokiTuoResultBundle\Service\CardReader;
@@ -17,6 +17,9 @@ class Transformer
 {
     use LoggerAwareTrait;
 
+    /**
+     * Transformer constructor.
+     */
     public function __construct()
     {
         $this->logger = new NullLogger();
@@ -24,6 +27,8 @@ class Transformer
 
     /**
      * @param $content
+     * @param mixed $result
+     *
      * @return Card[]
      */
     public function transformToModels($content, CardFile $file, $result = [])
@@ -33,7 +38,7 @@ class Transformer
                 continue;
             }
             $skills = [];
-            $card = new Card();
+            $card   = new Card();
             $card->setName(trim($object->name));
             $card->setRace($object->type);
             $card->setPicture($object->picture);
@@ -56,6 +61,13 @@ class Transformer
         return $result;
     }
 
+    /**
+     * Read the Upgrades of a Card
+     * @param Card $card
+     * @param $upgrades
+     * @param $skills
+     * @return Card
+     */
     private function readUpgrades(Card $card, $upgrades, $skills)
     {
         foreach ($upgrades as $upgrade) {
@@ -64,10 +76,10 @@ class Transformer
             }
             if (isset($upgrade->health)) {
                 $card->setDefense($upgrade->health);
-            };
+            }
             if (isset($upgrade->attack)) {
                 $card->setAttack($upgrade->attack);
-            };
+            }
             if (isset($upgrade->cost)) {
                 $card->setDelay($upgrade->cost);
             }
@@ -76,36 +88,105 @@ class Transformer
                 $card->setSkills($skills);
             }
         }
+
         return $card;
     }
 
+    /**
+     * Read an Array of Skill
+     * @param $skills
+     * @return array
+     */
     private function readSkill($skills)
     {
-
         $res = [];
         foreach ($skills as $skill) {
             $id = trim($skill['id']);
-            $all = isset($skill['all']);
-            $enhancedSkill = (isset($skill['s'])) ? $skill['s'] : "";
-            $evolvedSkill = (isset($skill['s2'])) ? $skill['s2'] : "";
-            $countdown = (isset($skill['c'])) ? $skill['c'] : "";
-            $race = $skill['y'];
-            $skillLevel = (isset($skill['x'])) ? $skill['x'] : "";
-            $amountOfCards = (isset($skill['n'])) ? $skill['n'] : "";
-            $amountOfCards = ($all) ? "all" : $amountOfCards;
+
+            $enhancedSkill = $this->getEnhancedSkill($skill);
+            $evolvedSkill  = $this->getEvolvedToSkill($skill);
+            $countdown     = $this->getCountDown($skill);
+            $race          = $skill['y'];
+            $skillLevel    = $this->getSkillLevel($skill);
+            $amountOfCards = $this->getAmountOfCards($skill);
+
             switch ($id) {
                 case 'enhance':
-                    $str = $id . " " . $amountOfCards . " " . $enhancedSkill . " " . $skillLevel;
+                    $str = $id . ' ' . $amountOfCards . ' ' . $enhancedSkill . ' ' . $skillLevel;
                     break;
                 case 'evolve':
-                    $str = $id . " " . $amountOfCards . " " . $enhancedSkill . " to " . $evolvedSkill;
+                    $str = $id . ' ' . $amountOfCards . ' ' . $enhancedSkill . ' to ' . $evolvedSkill;
                     break;
                 default:
-                    $str = $id . " " . $amountOfCards . " " . Card::getFactionName($race) . " " . $skillLevel;
-                    $str .= ($countdown) ? " every " . $countdown : "";
+                    $str = $id . ' ' . $amountOfCards . ' ' . Card::getFactionName($race) . ' ' . $skillLevel;
+                    $str .= ($countdown) ? ' every ' . $countdown : '';
             }
             $res[$id] = $str;
         }
+
         return $res;
+    }
+
+    /**
+     * Get the name of the Enhanced Skill.
+     *
+     * @param $skill
+     *
+     * @return string
+     */
+    private function getEnhancedSkill($skill)
+    {
+        return (isset($skill['s'])) ? $skill['s'] : '';
+    }
+
+    /**
+     * Get the name of the Skill it is evolved to (e.G. Venom).
+     *
+     * @param $skill
+     *
+     * @return string
+     */
+    private function getEvolvedToSkill($skill)
+    {
+        return (isset($skill['s2'])) ? $skill['s2'] : '';
+    }
+
+    /**
+     * Get the countdown/cooldown of a skill.
+     *
+     * @param $skill
+     *
+     * @return string
+     */
+    private function getCountDown($skill)
+    {
+        return (isset($skill['c'])) ? $skill['c'] : '';
+    }
+
+    /**
+     * Get The Skilllevel.
+     *
+     * @param $skill
+     *
+     * @return string
+     */
+    private function getSkillLevel($skill)
+    {
+        return (isset($skill['x'])) ? $skill['x'] : '';
+    }
+
+    /**
+     * The the amount of Cards affected by the skill.
+     *
+     * @param $skill
+     *
+     * @return string
+     */
+    private function getAmountOfCards($skill)
+    {
+        $all           = isset($skill['all']);
+        $amountOfCards = (isset($skill['n'])) ? $skill['n'] : '';
+
+        return ($all) ? 'all' : $amountOfCards;
     }
 }

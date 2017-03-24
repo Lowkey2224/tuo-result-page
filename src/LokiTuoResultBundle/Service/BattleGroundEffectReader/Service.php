@@ -25,7 +25,7 @@ class Service
 
     public function __construct(EntityManager $em, $logger = null)
     {
-        $logger = null === $logger? new NullLogger():$logger;
+        $logger = null === $logger ? new NullLogger() : $logger;
         $this->setLogger($logger);
         $this->em = $em;
     }

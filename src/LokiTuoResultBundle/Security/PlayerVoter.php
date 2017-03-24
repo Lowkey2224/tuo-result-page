@@ -7,8 +7,6 @@ use LokiUserBundle\Entity\User;
 
 class PlayerVoter extends AbstractVoter
 {
-    const VIEW = 'view';
-    const EDIT = 'edit';
 
     protected function canView(Player $player, User $user)
     {
@@ -23,20 +21,9 @@ class PlayerVoter extends AbstractVoter
     protected function canDelete(Player $player, User $user)
     {
         $correctRole = $user->hasRole('ROLE_MODERATOR')
-            || $user->hasRole('ROLE_ADMIN')
-            || $user->hasRole('ROLE_SUPER_ADMIN');
+            || $user->hasRole('ROLE_ADMIN');
 
         return $correctRole || $player->isOwnedBy($user);
-    }
-
-    /**
-     * Returns all attributes that will be supported.
-     *
-     * @return string[]
-     */
-    protected function getAttributes(): array
-    {
-        return [self::VIEW, self::EDIT];
     }
 
     /**

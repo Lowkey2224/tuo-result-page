@@ -40,18 +40,6 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        // Test AREA
-//        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-//        $f = new BattleGroundEffect();
-//        $ident = "name";
-//        $str = "get".strtoupper(substr($ident,0,1)).substr($ident,1);
-//        $f->setName("NAME");
-////        $doc = $this->getContainer()->get('doctrine');
-//
-////        $repo = $em->getRepository($f->getClassName());
-//        var_dump($f->$str());
-        //TESTAREA END
-
         $filepath = $input->getArgument('filepath');
         if ($input->getOption('pretend')) {
             $persister = $this->getContainer()->get('loki_tuo_result.persister.null');

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 17.10.16
- * Time: 15:11
+ * Time: 15:11.
  */
 
 namespace LokiTuoResultBundle\Service\Simulation;
@@ -11,76 +11,84 @@ namespace LokiTuoResultBundle\Service\Simulation;
 use LokiTuoResultBundle\Entity\BattleGroundEffect;
 use LokiTuoResultBundle\Entity\Player;
 
+/**
+ * Class to Reperesnt a MassSimulation
+ * Class Simulation.
+ */
 class Simulation
 {
-    /** @var  array */
+    /** @var array */
     private $missions;
 
-    /** @var  array */
+    /** @var array */
     private $structures;
 
-    /** @var  array */
+    /** @var array */
     private $enemyStructures;
 
-    /** @var  BattleGroundEffect */
+    /** @var BattleGroundEffect */
     private $backgroundEffect;
 
-    /** @var  integer */
+    /** @var int */
     private $iterations;
 
-    /** @var  Player[] */
+    /** @var Player[] */
     private $players;
 
-    /** @var  String */
+    /** @var string */
     private $simType;
 
-    /** @var  String */
+    /** @var string */
     private $resultFile;
 
-    /** @var  String */
+    /** @var string */
     private $guild;
 
-    /** @var  string */
+    /** @var string */
     private $scriptType;
 
-    /** @var  integer the number of Threads used for Simulation */
+    /** @var int the number of Threads used for Simulation */
     private $threadCount;
 
-    /** @var bool  */
+    /** @var bool */
     private $ordered;
 
-    /** @var bool true if enemy goes first  */
+    /** @var bool true if enemy goes first */
     private $surge;
 
+    /**
+     * Simulation constructor.
+     */
     public function __construct()
     {
-        $this->iterations = 10000;
-        $this->simType = "climb";
+        $this->iterations       = 10000;
+        $this->simType          = 'climb';
         $this->backgroundEffect = null;
-        $this->resultFile = "result.txt";
-        $this->guild = [];
-        $this->players = [];
-        $this->scriptType = "shell";
-        $this->structures = [];
-        $this->enemyStructures = [];
-        $this->threadCount = 4;
-        $this->ordered = true;
-        $this->surge = false;
+        $this->resultFile       = 'result.txt';
+        $this->guild            = [];
+        $this->players          = [];
+        $this->scriptType       = 'shell';
+        $this->structures       = [];
+        $this->enemyStructures  = [];
+        $this->threadCount      = 4;
+        $this->ordered          = true;
+        $this->surge            = false;
     }
 
-    public function getName(int $i = 0):string
+    public function getName(int $i = 0): string
     {
-        $bge = $this->getBackgroundEffect();
+        $bge      = $this->getBackgroundEffect();
         $missions = $this->getMissions();
-        $str = $missions[$i];
+        $str      = $missions[$i];
         if ($bge) {
-            $str .= " with " . $bge->getName();
+            $str .= ' with ' . $bge->getName();
         }
+
         return $str;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isOrdered()
     {
@@ -88,21 +96,29 @@ class Simulation
     }
 
     /**
-     * @param boolean $ordered
+     * @param bool $ordered
      */
     public function setOrdered($ordered)
     {
         $this->ordered = $ordered;
     }
 
+    /**
+     * Calculate the numbet Of Simulations in the Script.
+     *
+     * @return int
+     */
     public function getNumberOfSimulations()
     {
         return count($this->getPlayers()) * count($this->getMissions());
     }
 
+    /**
+     * @param $structures
+     */
     public function setStructures($structures)
     {
-        $this->structures = explode(",", $structures);
+        $this->structures = explode(',', $structures);
         $this->structures = array_map(function($element) {
             return trim($element);
         }, $this->structures);
@@ -113,36 +129,50 @@ class Simulation
      */
     public function setEnemyStructures($enemyStructures)
     {
-        $this->enemyStructures = explode(",", $enemyStructures);
+        $this->enemyStructures = explode(',', $enemyStructures);
         $this->enemyStructures = array_map(function($element) {
             return trim($element);
         }, $this->enemyStructures);
     }
 
-
+    /**
+     * @param string $missions
+     */
     public function setMissions($missions)
     {
-        $this->missions = explode(",", $missions);
+        $this->missions = explode(',', $missions);
         $this->missions = array_map(function($element) {
             return trim($element);
         }, $this->missions);
     }
 
+    /**
+     * @param $mission
+     */
     public function addMission($mission)
     {
         $this->missions[] = $mission;
     }
 
+    /**
+     * @param Player $player
+     */
     public function addPlayer(Player $player)
     {
         $this->players[] = $player;
     }
 
+    /**
+     * @param array $players
+     */
     public function setPlayer(array $players)
     {
         $this->players = $players;
     }
 
+    /**
+     * @param string $guild
+     */
     public function setGuild($guild)
     {
         $this->guild = $guild;
@@ -181,7 +211,7 @@ class Simulation
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getSimType()
     {
@@ -189,7 +219,7 @@ class Simulation
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getResultFile()
     {
@@ -197,7 +227,7 @@ class Simulation
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getGuild()
     {
@@ -229,7 +259,7 @@ class Simulation
     }
 
     /**
-     * @param String $simType
+     * @param string $simType
      */
     public function setSimType($simType)
     {
@@ -237,7 +267,7 @@ class Simulation
     }
 
     /**
-     * @param String $resultFile
+     * @param string $resultFile
      */
     public function setResultFile($resultFile)
     {

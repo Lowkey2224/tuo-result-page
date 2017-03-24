@@ -11,6 +11,11 @@ namespace LokiTuoResultBundle\Repository;
 class MissionRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    /**
+     * Search Missions according to Guilds
+     * @param $guild
+     * @return array
+     */
     public function findMissionsForGuild($guild)
     {
         $qb = $this->createQueryBuilder('m')
@@ -23,20 +28,16 @@ class MissionRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findAllWithGuilds()
-    {
-        $qb = $this->createQueryBuilder('m')
-            ->addSelect('r.guild')
-            ->join('m.results', 'r')
-            ->orderBy('m.name', 'ASC');
-        return $qb->getQuery()->getResult();
-    }
-
+    /**
+     * Find All Missions with their concatenated Guilds.
+     * @return array [ [0=>mission, 1=>guilds], [....] ]
+     */
     public function findAllWithGuilds2()
     {
         $qb = $this->createQueryBuilder('m')
-            ->addSelect('group_concat(r.guild)')
+            ->addSelect('group_concat(g.name)')
             ->join('m.results', 'r')
+            ->join('r.guild', 'g')
             ->orderBy('m.name', 'ASC')
             ->groupBy('m.id');
 

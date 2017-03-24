@@ -1,0 +1,7 @@
+LokiTuoResultBundle\Entity\Guild:
+    CTN:
+        name: CTN
+        enabled: true
+    CTP:
+        name: CTP
+        enabled: true

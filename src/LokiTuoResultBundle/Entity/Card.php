@@ -85,7 +85,7 @@ class Card extends AbstractBaseEntity
             foreach ($this->getSkills() as $skill) {
                 $str .= $skill . " ";
             }
-            $str .= " (".Card::getFactionName($this->getRace()).")";
+            $str .= " (" . Card::getFactionName($this->getRace()) . ")";
         } catch (\Exception $ex) {
             echo $ex->getMessage() . "\n";
             echo $ex->getTraceAsString();

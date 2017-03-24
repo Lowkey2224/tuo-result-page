@@ -22,6 +22,10 @@
                 <source>form.player.guild</source>
                 <target>Guild</target>
             </trans-unit>
+            <trans-unit id="form.player.owner">
+                <source>form.player.owner</source>
+                <target>Owner</target>
+            </trans-unit>
             <trans-unit id="form.mission.name">
                 <source>form.mission.name</source>
                 <target>Missionname (with BGE)</target>
@@ -29,6 +33,18 @@
             <trans-unit id="form.mission.type">
                 <source>form.mission.type</source>
                 <target>Missiontype</target>
+            </trans-unit>
+            <trans-unit id="form.guild.name">
+                <source>form.guild.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="form.guild.enabled">
+                <source>form.guild.enabled</source>
+                <target>Active ?</target>
+            </trans-unit>
+            <trans-unit id="form.guild.submit">
+                <source>form.guild.submit</source>
+                <target>Save</target>
             </trans-unit>
             <trans-unit id="CNS">
                 <source>CNS</source>

@@ -1,25 +1,38 @@
 language: php
 php:
-  - '7.0'
-  - '7.1'
+  - 7
+  - 7.1
 
-addons:
-  mariadb: '10.0'
 services:
   - mysql
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+env:
+  global:
+    - TEST_SUITE=all
 git:
   depth: 3
-#before_install
-#install:
+before_install:
+  - phpenv config-rm xdebug.ini
+  - cp app/config/parameters.yml.travis app/config/parameters.yml
+  - composer self-update -q
+
+install:
+  - if [ -z "$dependencies" ]; then composer install  --prefer-dist ; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
 
 before_script:
-  - cp app/config/parameters.yml.travis app/config/parameters.yml
-  - composer install
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
-  - php bin/console doctrine:fixtures:load -n --env=test
+  - php bin/console doctrine:fixtures:load -n  --env=test
 
-script: ./vendor/bin/phpunit --coverage-text
+script:
+  - "phpdbg -qrr ./vendor/bin/phpunit --testsuite $TEST_SUITE"
+
 #after_script
 
 notifications:

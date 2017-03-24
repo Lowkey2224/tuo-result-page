@@ -16,7 +16,7 @@
                         {{ form_row(form.name) }}
                     </div>
                     <div class="form-group">
-                        {{ form_row(form.currentGuild) }}
+                        {{ form_row(form.guild) }}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -54,40 +54,37 @@
         {% for player in players %}
             <tr>
                 <td>
-                    {{ player.0.name }}
+                    {{ player.name }}
                 </td>
                 <td>
-                    {{ player.0.currentGuild }}
+                    {{ player.guild }}
                 </td>
                 <td>
-                    {% if player.0.owner %}
-                        {{ player.0.owner.username }}
-                        {% if is_granted('ROLE_MODERATOR') and not player.0.ownershipConfirmed%}
-                            <a href="{{ path('loki.tuo.player.claim.confirm', {'id': player.0.id}) }}">
+                    {% if player.owner %}
+                        {{ player.owner.username }}
+                        {% if is_granted('ROLE_MODERATOR') and not player.ownershipConfirmed%}
+                            <a href="{{ path('loki.tuo.player.claim.confirm', {'id': player.id}) }}">
                                 <b>confirm</b>
                             </a>
                             {% endif %}
                     {% endif %}
                 </td>
                 <td>
-                    {{ player.updated }}
+                    {{ player.updatedAt | date('Y-m-d H:i') }}
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        {{ player.0.active ? "active":"deactivated" }}
+                        {{ player.active ? "active":"deactivated" }}
                     </td>
                 {% endif %}
                 <td class="text-right">
-                    <a href="{{ path('loki.tuo.player.claim', {'id': player.0.id}) }}">
-                        <b>Claim</b>
-                    </a>
-                    <a href="{{ path('loki.tuo.player.cards.show', {'id': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.cards.show', {'id': player.id}) }}">
                         <b>Cards</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.results.show', {'id': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.results.show', {'id': player.id}) }}">
                         <b>Simulations</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.edit', {'id': player.0.id}) }}">
+                    <a href="{{ path('loki.tuo.player.edit', {'id': player.id}) }}">
                         <b>Edit</b>
                     </a>
                 </td>

@@ -1,10 +1,11 @@
 <?php
 
-namespace LokiTuoResultBundle\Tests\Controller;
+namespace LokiTuoResultBundle\Tests\Controller\Player;
 
 
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
 
 class PlayerControllerTest extends AbstractControllerTest
 {
@@ -18,7 +19,7 @@ class PlayerControllerTest extends AbstractControllerTest
     {
         $client = $this->loginAs();
 
-        $crawler = $client->request('GET', '/player/');
+        $crawler = $this->clickLinkName($client, "Players");
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(1,
             $crawler->filterXPath('.//tr/td[normalize-space()="'.$player.'"]')->count()
