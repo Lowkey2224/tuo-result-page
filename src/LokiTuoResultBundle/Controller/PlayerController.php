@@ -288,7 +288,7 @@ class PlayerController extends Controller
         $manager->setLogger($this->get('logger'));
         $manager->removeOldOwnedCardsForPlayer($player);
         $manager = $this->get('loki_tuo_result.player.manager');
-        $manager->addDefaultCardToPlayer($player);
+        $manager->addDefaultCard($player);
 
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
@@ -400,7 +400,7 @@ class PlayerController extends Controller
             $player  = $manager->findOrCreatePlayer($player);
 
             // Check if Player already exists
-            $manager->addDefaultCardToPlayer($player);
+            $manager->addDefaultCard($player);
 
             return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
         } else {
