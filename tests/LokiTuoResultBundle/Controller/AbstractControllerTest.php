@@ -130,4 +130,11 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->assertEquals($count, $crawler->filterXPath($path)->count());
     }
 
+    protected function clickLinkInTable(Client $client, $row, $linkName)
+    {
+        $row = $client->getCrawler()->filterXPath(sprintf('.//tr[td[normalize-space()="%s"]]',$row));
+        $link = $row->filter(sprintf('a:contains("%s")', $linkName))->link();
+        return $client->click($link);
+    }
+
 }

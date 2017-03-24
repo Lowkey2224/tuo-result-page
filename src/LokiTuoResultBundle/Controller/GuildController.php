@@ -20,7 +20,7 @@ class GuildController extends Controller
 {
     /**
      * @Route("/", name="loki.tuo.guild.index")
-     * @Template(vars={"guilds"})
+     * @Template()
      */
     public function indexAction()
     {
@@ -36,7 +36,7 @@ class GuildController extends Controller
      * @return array|RedirectResponse
      * @Route("/{id}/edit", name="loki.tuo.guild.edit", requirements={"id":"\d+"})
      * @Route("/new", name="loki.tuo.guild.new", defaults={"id":null})
-     * @Template(vars={"post"})
+     * @Template()
      */
     public function editAction(Request $request, Guild $guild = null)
     {
