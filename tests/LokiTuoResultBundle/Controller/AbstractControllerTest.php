@@ -137,4 +137,10 @@ abstract class AbstractControllerTest extends WebTestCase
         return $client->click($link);
     }
 
+    /**
+     * @return string
+     */
+    protected function getFilePath() {
+        return  __DIR__.'/../files/';
+    }
 }
