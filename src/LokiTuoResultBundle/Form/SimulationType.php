@@ -101,7 +101,7 @@ class SimulationType extends AbstractType
                 'multiple' => true,
                 'query_builder' => function(PlayerRepository $pr) {
                     $qb = $pr->createQueryBuilder('p')
-                        ->where('p.currentGuild != ?1')
+                        ->where('p.guild != ?1')
                         ->andWhere('p.active = ?2')
                         ->setParameter(1, "")//not empty
                         ->setParameter(2, true)//not empty
