@@ -7,6 +7,9 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 Edit Guild {{ guild}}
+                <a class="btn btn-xs btn-info pull-right" href="{{ path('loki.tuo.guild.index') }}">
+                    <span class="glyphicon glyphicon-chevron-left">Back</span>
+                </a>
             </div>
             <div class="panel-body">
                 {{ form_start(form) }}

@@ -41,20 +41,19 @@
     <table class="table table-striped data-table">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Guild</th>
-            <th>Owner</th>
-            <th>Last Updated</th>
-            {% if is_granted('ROLE_ADMIN') %}
-                <th>Active</th>{% endif %}
-            <th class="text-right">Links</th>
+            <th data-priority="1">Name</th>
+            <th >Guild</th>
+            <th data-priority="3">Owner</th>
+            <th >Last Updated</th>
+            <th data-priority="2" class="text-right">Links</th>
         </tr>
         </thead>
         <tbody>
         {% for player in players %}
-            <tr>
+            <tr class="{{ player.active?"success":"warning" }}">
                 <td>
-                    {{ player.name }}
+                    <a href="{{ path('loki.tuo.player.results.show', {'id': player.id}) }}">{{ player.name }}
+                    </a>
                 </td>
                 <td>
                     {{ player.guild }}
@@ -62,30 +61,23 @@
                 <td>
                     {% if player.owner %}
                         {{ player.owner.username }}
-                        {% if is_granted('ROLE_MODERATOR') and not player.ownershipConfirmed%}
+                        {% if is_granted('ROLE_MODERATOR') and not player.ownershipConfirmed %}
                             <a href="{{ path('loki.tuo.player.claim.confirm', {'id': player.id}) }}">
                                 <b>confirm</b>
                             </a>
-                            {% endif %}
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>
                     {{ player.updatedAt | date('Y-m-d H:i') }}
                 </td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td>
-                        {{ player.active ? "active":"deactivated" }}
-                    </td>
-                {% endif %}
                 <td class="text-right">
                     <a href="{{ path('loki.tuo.player.cards.show', {'id': player.id}) }}">
                         <b>Cards</b>
                     </a>
-                    <a href="{{ path('loki.tuo.player.results.show', {'id': player.id}) }}">
-                        <b>Simulations</b>
-                    </a>
+
                     <a href="{{ path('loki.tuo.player.edit', {'id': player.id}) }}">
-                        <b>Edit</b>
+                        <i class="glyphicon glyphicon-pencil"></i>
                     </a>
                 </td>
             </tr>
