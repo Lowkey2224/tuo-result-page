@@ -8,17 +8,19 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\Mission;
+use LokiTuoResultBundle\Entity\ResultFile;
 use LokiTuoResultBundle\Form\MissionType;
 use LokiTuoResultBundle\Form\ResultFileType;
 use LokiTuoResultBundle\Form\SimulationType;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class SimulationController.
@@ -94,20 +96,15 @@ class SimulationController extends Controller
     }
 
     /**
-     * @Route("/edit/{missionId}",name="loki.tuo.mission.edit", methods={"GET","POST"})
+     * @Route("/edit/{id}",name="loki.tuo.mission.edit", methods={"GET","POST"})
      * @Security("has_role('ROLE_ADMIN')")
      *
-     * @param int $missionId
+     * @param Mission $mission
      *
      * @return Response
      */
-    public function editMissionAction(Request $request, int $missionId)
+    public function editMissionAction(Request $request, Mission $mission)
     {
-        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $mission     = $missionRepo->find($missionId);
-        if (! $mission) {
-            throw  $this->createNotFoundException('Mission not Found');
-        }
 
         $options = [];
         $form    = $this->createForm(MissionType::class, $mission, $options);
@@ -129,20 +126,15 @@ class SimulationController extends Controller
     }
 
     /**
-     * @Route("/delete/{missionId}",name="loki.tuo.mission.delete")
+     * @Route("/delete/{id}",name="loki.tuo.mission.delete")
      * @Security("has_role('ROLE_ADMIN')")
      *
-     * @param int $missionId
+     * @param Mission $mission
      *
      * @return Response
      */
-    public function deleteMissionAction(int $missionId)
+    public function deleteMissionAction(Mission $mission)
     {
-        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $mission     = $missionRepo->find($missionId);
-        if (! $mission) {
-            throw  $this->createNotFoundException('Mission not Found');
-        }
 
         $this->getDoctrine()->getManager()->remove($mission);
         $this->getDoctrine()->getManager()->flush();
@@ -151,19 +143,18 @@ class SimulationController extends Controller
     }
 
     /**
-     * @Route("/mission/{missionId}", requirements={"missionId":"\d+"}, name="tuo.showmission")
+     * @Route("/mission/{id}", requirements={"missionId":"\d+"}, name="tuo.showmission")
      *
-     * @param int $missionId Id of the mission
+     * @param Mission $mission
      *
      * @return Response
      * @Security("has_role('ROLE_USER')")
+     *
+     * @Cache(lastModified="mission.getUpdatedAt()", ETag="'Mission' ~ mission.getId() ~ mission.getUpdatedAt().getTimestamp()")
      */
-    public function showMissionAction($missionId)
+    public function showMissionAction(Mission $mission)
     {
-        $mission = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission')->find($missionId);
-        if (! $mission) {
-            throw new NotFoundHttpException();
-        }
+
         $criteria = ['mission' => $mission];
         $orderBy  = ['guild' => 'ASC', 'id' => 'ASC'];
         $results  = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy($criteria, $orderBy);
@@ -178,20 +169,15 @@ class SimulationController extends Controller
     }
 
     /**
-     * @param $fileId
-     *
-     * @throws NotFoundHttpException
+     * @param ResultFile $file
      *
      * @return Response
-     * @Route("/file/{fileId}", requirements={"fileId":"\d+"}, name="tuo.resultfile.show")
+     * @Route("/file/{id}", requirements={"fileId":"\d+"}, name="tuo.resultfile.show")
      * @Security("has_role('ROLE_USER')")
      */
-    public function getFileAction($fileId)
+    public function getFileAction(ResultFile $file)
     {
-        $file = $this->getDoctrine()->getRepository('LokiTuoResultBundle:ResultFile')->find($fileId);
-        if (is_null($file)) {
-            throw $this->createNotFoundException('File with this ID not found');
-        }
+
         $filename = 'result.txt';
 
         return new Response($file->getContent(), 200, [
@@ -245,7 +231,6 @@ class SimulationController extends Controller
 
         $m = $this->get('loki_tuo_result.vpc_simulation.manager');
         $m->post2($sim);
-        die();
         $form = $this->getUploadForm();
 
         return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', [

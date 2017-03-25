@@ -34,7 +34,7 @@
                     {% if is_granted('ROLE_MODERATOR') %}
                         <div class="pull-right">
                             <button class="btn btn-warning"
-                                    formaction="{{ path('loki.tuo.mission.delete', {'missionId': mission.id}) }}">
+                                    formaction="{{ path('loki.tuo.mission.delete', {'id': mission.id}) }}">
                                 {# TODO replace with Translation#}
                                 Delete
                             </button>

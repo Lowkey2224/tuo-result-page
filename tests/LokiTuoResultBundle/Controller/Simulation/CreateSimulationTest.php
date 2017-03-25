@@ -48,7 +48,18 @@ class CreateSimulationTest extends AbstractControllerTest
 
     private function removeTimeStampFromScriptFile($content, $replacement = "%s" )
     {
-        $regExp = '/[\d\d\/]{17}/';
+        $regExp = [
+            '/[\d\d\/]{17}/',
+            '/\Member\d+/',
+            '/\Deck\d+/',
+            '/\Inventory\d+/',
+        ];
+        $replacement = [
+            $replacement,
+            'Member',
+            'Deck',
+            'Inventory'
+        ];
 
         return preg_replace($regExp, $replacement, $content);
     }

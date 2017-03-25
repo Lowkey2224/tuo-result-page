@@ -37,7 +37,7 @@
             <tr>
 
                 <td>
-                    <a href="{{ path('tuo.showmission', {'missionId': mission.0.id}) }}">
+                    <a href="{{ path('tuo.showmission', {'id': mission.0.id}) }}">
                         {{ mission.0.name }}
                     </a>
                 </td>
@@ -51,7 +51,7 @@
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        <a href="{{ path('loki.tuo.mission.edit', {'missionId': mission.0.id}) }}">
+                        <a href="{{ path('loki.tuo.mission.edit', {'id': mission.0.id}) }}">
                             Edit
                         </a>
                     </td>
