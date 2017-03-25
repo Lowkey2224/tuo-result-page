@@ -24,7 +24,6 @@ class CreateSimulationTest extends AbstractControllerTest
         $repo = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:Player');
         /** @var Player $player */
         $player = $repo->findOneBy(['name' => $this->player]);
-        $now = new \DateTime();
         $crawler = $this->clickLinkName($client, 'Create Simulation Script');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -41,10 +40,16 @@ class CreateSimulationTest extends AbstractControllerTest
         $client->submit($form);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $content = $client->getResponse()->getContent();
+        $content = $this->removeTimeStampFromScriptFile(trim($content));
         $expectedContent = trim(file_get_contents($this->getFilePath()."mass_sim.sh"));
-        $dt = $now->format('m/d/y/h/i/s');
-        $expectedContent = trim(sprintf($expectedContent, $dt, $dt));
 
         $this->assertEquals($expectedContent, $content);
+    }
+
+    private function removeTimeStampFromScriptFile($content, $replacement = "%s" )
+    {
+        $regExp = '/[\d\d\/]{17}/';
+
+        return preg_replace($regExp, $replacement, $content);
     }
 }
