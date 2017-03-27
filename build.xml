@@ -177,7 +177,9 @@
     <target name="cs-fix" description="Codestyle fixing ">
         <exec executable="${php-cs-fixer}">
             <arg value="fix"/>
-            <arg path="${basedir}"/>
+            <arg path="${basedir}/src"/>
+            <arg path="${basedir}/tests"/>
+            <arg path="${basedir}/app/DoctrineMigrations"/>
             <arg value="--config=.php_cs"/>
         </exec>
     </target>

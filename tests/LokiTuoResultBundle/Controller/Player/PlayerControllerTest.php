@@ -54,6 +54,7 @@ class PlayerControllerTest extends AbstractControllerTest
      * covers LokiTuoResultBundle\Controller\PlayerController::showResultsForPlayerAction().
      *
      * @dataProvider playerResultProvider
+     *
      * @param mixed $playername
      * @param mixed $mission
      * @param mixed $percent
