@@ -59,6 +59,9 @@
                         </ul>
                     </li>
 
+
+                    <li {% if currentPath starts with '/player' %} class="active" {% endif %}>
+                        <a href="{{ path('loki.tuo.player.all.show') }}">Players</a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
                     {% endif %}

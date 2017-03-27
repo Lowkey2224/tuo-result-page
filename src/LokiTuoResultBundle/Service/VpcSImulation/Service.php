@@ -42,7 +42,7 @@ class Service
         $url     = 'http://'.$this->url.'/job/create';
         $headers = [];
         $player  = $simulation->getPlayers()[0];
-        $content = $this->simulationToArray($simulation, $player);
+        $content = $this->simulationToArray($simulation);
         $content = implode('&', $content);
 
         $response = $this->browser->post($url, $headers, $content);
@@ -67,10 +67,10 @@ class Service
         $content             = [];
         $content['username'] = $player->getName();
         $content['deck']     = implode(',', $player->getDeck()->toArray());
-        $content['deck']     = str_replace('\'', '\\\'', $content['deck']);
+        $content['deck']     = str_replace('\'', '', $content['deck']);
 
         $content['your_inventory'] = implode(',', $player->getOwnedCards()->toArray());
-        $content['your_inventory'] = str_replace('\'', '\\\'', $content['your_inventory']);
+        $content['your_inventory'] = str_replace('\'', '', $content['your_inventory']);
         $content['your_structs']   = implode(',', $simulation->getStructures());
         if ($simulation->isOrdered()) {
             $content['ordered'] = $simulation->isOrdered();
@@ -96,6 +96,7 @@ class Service
         $fields_string = '';
 
         foreach ($simulation as $key => $value) {
+            $value = str_replace("''", '', $value);
             $fields_string .= $key.'='.$value.'&';
         }
         rtrim($fields_string, '&');
