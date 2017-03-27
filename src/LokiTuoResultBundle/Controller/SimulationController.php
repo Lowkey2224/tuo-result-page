@@ -67,11 +67,10 @@ class SimulationController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $res      = $this->get('loki_tuo_result.vpc_simulation.manager')->post2($sim);
-            if($res['id']!= null) {
+            if ($res['id'] != null) {
                 $msg = 'Simulation with Id <a href="http://tuo.throwingbones.com/job/%d">%d</a> has been created';
-                $this->addFlash("success", sprintf($msg, $res['id'],$res['id']));
+                $this->addFlash('success', sprintf($msg, $res['id'], $res['id']));
             }
-
         }
 
         return $this->render('LokiTuoResultBundle:Simulation:index.html.twig', [
@@ -105,7 +104,6 @@ class SimulationController extends Controller
      */
     public function editMissionAction(Request $request, Mission $mission)
     {
-
         $options = [];
         $form    = $this->createForm(MissionType::class, $mission, $options);
         $form->handleRequest($request);
@@ -135,7 +133,6 @@ class SimulationController extends Controller
      */
     public function deleteMissionAction(Mission $mission)
     {
-
         $this->getDoctrine()->getManager()->remove($mission);
         $this->getDoctrine()->getManager()->flush();
 
@@ -154,7 +151,6 @@ class SimulationController extends Controller
      */
     public function showMissionAction(Mission $mission)
     {
-
         $criteria = ['mission' => $mission];
         $orderBy  = ['guild' => 'ASC', 'id' => 'ASC'];
         $results  = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy($criteria, $orderBy);
@@ -177,7 +173,6 @@ class SimulationController extends Controller
      */
     public function getFileAction(ResultFile $file)
     {
-
         $filename = 'result.txt';
 
         return new Response($file->getContent(), 200, [
