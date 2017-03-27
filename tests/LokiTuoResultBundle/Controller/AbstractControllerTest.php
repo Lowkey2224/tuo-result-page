@@ -143,4 +143,11 @@ abstract class AbstractControllerTest extends WebTestCase
     protected function getFilePath() {
         return  __DIR__.'/../files/';
     }
+
+    protected function assertFlashMessage(Crawler $crawler, $type, $message)
+    {
+        $xpath = './/div[contains(@class, "alert alert-%s") and contains(normalize-space(), "%s")]';
+        $this->assertEquals(1,$crawler->filterXPath(sprintf($xpath, $type, $message)));
+
+    }
 }
