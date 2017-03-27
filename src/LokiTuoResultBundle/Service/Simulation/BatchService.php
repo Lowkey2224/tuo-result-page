@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 21.10.16
- * Time: 15:50
+ * Time: 15:50.
  */
 
 namespace LokiTuoResultBundle\Service\Simulation;
@@ -14,7 +14,6 @@ use Symfony\Component\Templating\EngineInterface;
 
 class BatchService implements SimulationCreatorInterface
 {
-
     use LoggerAwareTrait;
 
     private $engine;
@@ -27,9 +26,8 @@ class BatchService implements SimulationCreatorInterface
 
     public function getSimulation(Simulation $simulation)
     {
-
         $result = $this->engine->render('@LokiTuoResult/Simulation/batch_script.twig', [
-            'simulation' => $simulation
+            'simulation' => $simulation,
         ]);
 
         return $result;

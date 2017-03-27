@@ -18,8 +18,7 @@ class LokiTuoSimGenCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-//        $reader = $this->getContainer()->get('loki_tuo_result.reader');
+        //        $reader = $this->getContainer()->get('loki_tuo_result.reader');
 //        $logger = new ConsoleLogger($output);
 //        $reader->setLogger($logger);
 //        $repo =$this->getContainer()->get('doctrine')->getRepository('LokiTuoResultBundle:ResultFile');
@@ -28,10 +27,10 @@ class LokiTuoSimGenCommand extends ContainerAwareCommand
 //            $all[$i] = $all[$i]->getId();
 //        }
 
-        $domain = "LokiTuoResultBundle";
+        $domain  = 'LokiTuoResultBundle';
         $manager = $this->getContainer()->get('loki_tuo_result.vpc_simulation.manager');
         $manager->postSimulation();
-        $output->writeln("Yay");
+        $output->writeln('Yay');
 
 //        foreach ($all as $id) {
 //            $output->writeln("Reimporting File with ID $id");

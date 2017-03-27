@@ -5,7 +5,7 @@ namespace LokiTuoResultBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Card
+ * Card.
  *
  * @ORM\Table(name="card")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardRepository")
@@ -13,8 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Card extends AbstractBaseEntity
 {
-
-    public $skillDelimiter = "|";
+    public $skillDelimiter = '|';
 
     /**
      * @var string
@@ -74,22 +73,22 @@ class Card extends AbstractBaseEntity
     {
         try {
             $str = $this->getName();
-            $str .= " ";
+            $str .= ' ';
             $str .= $this->getDelay();
-            $str .= "/";
+            $str .= '/';
             $str .= $this->getAttack();
-            $str .= "/";
+            $str .= '/';
             $str .= $this->getDefense();
-            $str .= " ";
+            $str .= ' ';
 
             foreach ($this->getSkills() as $skill) {
-                $str .= $skill . " ";
+                $str .= $skill.' ';
             }
-            $str .= " (" . Card::getFactionName($this->getRace()) . ")";
+            $str .= ' ('.self::getFactionName($this->getRace()).')';
         } catch (\Exception $ex) {
-            echo $ex->getMessage() . "\n";
+            echo $ex->getMessage()."\n";
             echo $ex->getTraceAsString();
-            $str = "";
+            $str = '';
         }
 
         return $str;
@@ -98,12 +97,12 @@ class Card extends AbstractBaseEntity
     public function __construct()
     {
         $this->defense = 0;
-        $this->delay = 0;
-        $this->attack = 0;
+        $this->delay   = 0;
+        $this->attack  = 0;
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -117,7 +116,7 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -127,21 +126,21 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Set attack
+     * Set attack.
      *
-     * @param integer $attack
+     * @param int $attack
      *
      * @return Card
      */
     public function setAttack($attack)
     {
-        $this->attack = (int)$attack;
+        $this->attack = (int) $attack;
 
         return $this;
     }
 
     /**
-     * Get attack
+     * Get attack.
      *
      * @return int
      */
@@ -151,21 +150,21 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Set defense
+     * Set defense.
      *
-     * @param integer $defense
+     * @param int $defense
      *
      * @return Card
      */
     public function setDefense($defense)
     {
-        $this->defense = (int)$defense;
+        $this->defense = (int) $defense;
 
         return $this;
     }
 
     /**
-     * Get defense
+     * Get defense.
      *
      * @return int
      */
@@ -175,21 +174,21 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Set delay
+     * Set delay.
      *
-     * @param integer $delay
+     * @param int $delay
      *
      * @return Card
      */
     public function setDelay($delay)
     {
-        $this->delay = (int)$delay;
+        $this->delay = (int) $delay;
 
         return $this;
     }
 
     /**
-     * Get delay
+     * Get delay.
      *
      * @return int
      */
@@ -199,7 +198,7 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Set picture
+     * Set picture.
      *
      * @param string $picture
      *
@@ -213,7 +212,7 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Get picture
+     * Get picture.
      *
      * @return string
      */
@@ -237,7 +236,6 @@ class Card extends AbstractBaseEntity
     {
         $this->cardFile = $cardFile;
     }
-
 
     /**
      * @return mixed
@@ -275,17 +273,17 @@ class Card extends AbstractBaseEntity
     {
         switch ($factionId) {
             case 1:
-                return "Imperial";
+                return 'Imperial';
             case 2:
-                return "Raider";
+                return 'Raider';
             case 3:
-                return "Bloodthirsty";
+                return 'Bloodthirsty';
             case 4:
-                return "Xeno";
+                return 'Xeno';
             case 5:
-                return "Righteous";
+                return 'Righteous';
             case 6:
-                return "Progenitor";
+                return 'Progenitor';
             default:
                 return $factionId;
         }

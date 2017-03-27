@@ -19,7 +19,6 @@ class Version20170320172752 extends AbstractMigration
         $this->addSql('UPDATE `owned_card` SET `updated_at`= \'2015-09-01 00:00:00\' WHERE `updated_at` is null ');
         $this->addSql('UPDATE `owned_card` SET `created_at`= \'2015-09-01 00:00:00\' WHERE `created_at` is null ');
         $this->addSql('UPDATE `player` SET `updated_at`=(SELECT max(updated_at) FROM `owned_card` where player_id = `player`.`id`) WHERE 1 ');
-
     }
 
     /**
@@ -28,6 +27,5 @@ class Version20170320172752 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

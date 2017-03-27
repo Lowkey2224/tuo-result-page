@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 05.12.16
- * Time: 20:44
+ * Time: 20:44.
  */
 
 namespace LokiTuoResultBundle\Service\Persister;
@@ -21,11 +21,11 @@ class DatabasePersister implements PersisterInterface
 
     public function __construct(EntityManager $em)
     {
-        $this->em = $em;
+        $this->em     = $em;
         $this->logger = new NullLogger();
     }
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     public function persistObjects(array $entities, array $identifiers = ['id'])
     {
         $count = 0;
@@ -35,15 +35,16 @@ class DatabasePersister implements PersisterInterface
             if ($found) {
                 $entity->setId($found->getId());
             } else {
-                $msg = sprintf("No Entity found for class %s with id %d", get_class($entity), $entity->getId());
+                $msg = sprintf('No Entity found for class %s with id %d', get_class($entity), $entity->getId());
                 $this->logger->error($msg);
-                die("Nicht gefunden");
+                die('Nicht gefunden');
             }
 
             $this->em->persist($entity);
-            $count++;
+            ++$count;
         }
         $this->em->flush();
+
         return $count;
     }
 
@@ -53,19 +54,22 @@ class DatabasePersister implements PersisterInterface
 
         $criteria = [];
         foreach ($identifiers as $identifier) {
-            $getter = $this->getGetterName($identifier);
+            $getter                = $this->getGetterName($identifier);
             $criteria[$identifier] = $entity->$getter();
         }
+
         return $repo->findOneBy($criteria);
     }
 
     /**
-     * constructs the name of the getter function for the Given attribute
+     * constructs the name of the getter function for the Given attribute.
+     *
      * @param string $attribute e.g. id
+     *
      * @return string e.g. getId
      */
     private function getGetterName($attribute)
     {
-        return "get" . strtoupper(substr($attribute, 0, 1)) . substr($attribute, 1);
+        return 'get'.strtoupper(substr($attribute, 0, 1)).substr($attribute, 1);
     }
 }

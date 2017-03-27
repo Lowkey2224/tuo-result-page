@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 13.09.16
- * Time: 10:22
+ * Time: 10:22.
  */
 
 namespace LokiTuoResultBundle\Form;
@@ -19,19 +19,19 @@ class ResultFileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('file', FileType::class, [
-            'label' => 'form.resultfile.resultfile',
+            'label'              => 'form.resultfile.resultfile',
             'translation_domain' => 'LokiTuoResultBundle',
-            'attr' => ['class' => '']
+            'attr'               => ['class' => ''],
         ])
             ->add('comment', TextType::class, [
-                'label' => 'form.resultfile.comment',
+                'label'              => 'form.resultfile.comment',
                 'translation_domain' => 'LokiTuoResultBundle',
-                'attr' => ['class' => 'form-control']
+                'attr'               => ['class' => 'form-control'],
             ])
             ->add('submit', SubmitType::class, [
                 'translation_domain' => 'LokiTuoResultBundle',
-                'label' => 'form.save',
-                'attr' => ['class' => 'btn btn-success']
+                'label'              => 'form.save',
+                'attr'               => ['class' => 'btn btn-success'],
             ]);
     }
 }

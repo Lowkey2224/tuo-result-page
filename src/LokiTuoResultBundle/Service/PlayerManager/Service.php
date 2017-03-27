@@ -26,7 +26,7 @@ class Service
 
     public function addDefaultCard(Player $player)
     {
-        if (!$player->getOwnedCards()->count()) {
+        if (! $player->getOwnedCards()->count()) {
             $malikaCriteria = ['name' => 'Malika'];
             $malika         = $this->em->getRepository('LokiTuoResultBundle:Card')->findOneBy($malikaCriteria);
             $this->addCardToPlayer($player, $malika, 1, 1);
@@ -100,7 +100,7 @@ class Service
     {
         $criteria = ['card' => $card, 'player' => $player, 'level' => $level];
         $oc       = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
-        if (!$oc) {
+        if (! $oc) {
             throw new NotFoundResourceException('Owned Card was not Found');
         }
         $amount       = $oc->getAmount() - $amount;

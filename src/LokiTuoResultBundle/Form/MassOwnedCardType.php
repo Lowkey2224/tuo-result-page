@@ -29,7 +29,7 @@ class MassOwnedCardType extends AbstractType
         $builder->add('submit', SubmitType::class, [
             'label'              => 'form.card.mass.submit',
             'translation_domain' => 'LokiTuoResultBundle',
-            'attr' => ['class' => 'btn btn-success']
+            'attr'               => ['class' => 'btn btn-success'],
         ]);
     }
 }

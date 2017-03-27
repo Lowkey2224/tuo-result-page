@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 15.11.16
- * Time: 16:58
+ * Time: 16:58.
  */
 
 namespace LokiUserBundle\Controller;
@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RegistrationController extends BaseController
 {
-
     public function registerAction(Request $request)
     {
         /** @var $formFactory FactoryInterface */
@@ -57,7 +56,7 @@ class RegistrationController extends BaseController
                 $userManager->updateUser($user);
 
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->generateUrl('fos_user_registration_confirmed');
+                    $url      = $this->generateUrl('fos_user_registration_confirmed');
                     $response = new RedirectResponse($url);
                 }
 
@@ -76,8 +75,8 @@ class RegistrationController extends BaseController
             // Form invalid
             $event = new FormEvent($form, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
-            if (!$userService->isRegistrationCodeValid($user->getRegistrationCode())) {
-                $this->addFlash('error', "Registration Code not Correct. Please Contact a Guild Officer");
+            if (! $userService->isRegistrationCodeValid($user->getRegistrationCode())) {
+                $this->addFlash('error', 'Registration Code not Correct. Please Contact a Guild Officer');
             }
 
             if (null !== $response = $event->getResponse()) {
@@ -85,8 +84,8 @@ class RegistrationController extends BaseController
             }
         }
 
-        return $this->render('FOSUserBundle:Registration:register.html.twig', array(
+        return $this->render('FOSUserBundle:Registration:register.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 }

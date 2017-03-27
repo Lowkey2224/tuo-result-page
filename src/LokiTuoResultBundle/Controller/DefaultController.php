@@ -6,8 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * Class DefaultController
- * @package LokiTuoResultBundle\Controller
+ * Class DefaultController.
+ *
  * @Route("/")
  */
 class DefaultController extends Controller

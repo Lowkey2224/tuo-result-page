@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 29.09.16
- * Time: 18:06
+ * Time: 18:06.
  */
 
 namespace LokiTuoResultBundle\Entity;
@@ -11,12 +11,10 @@ namespace LokiTuoResultBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class AbstractBaseEntity
- * @package LokiTuoResultBundle\Entity
+ * Class AbstractBaseEntity.
  */
 abstract class AbstractBaseEntity
 {
-
     public function getClassName()
     {
         return static::class;
@@ -46,7 +44,7 @@ abstract class AbstractBaseEntity
     protected $updatedAt;
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @ORM\PrePersist
      */
@@ -57,7 +55,7 @@ abstract class AbstractBaseEntity
     }
 
     /**
-     * Set updatedAt
+     * Set updatedAt.
      *
      * @ORM\PreUpdate
      */

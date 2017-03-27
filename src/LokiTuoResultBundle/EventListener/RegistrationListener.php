@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 15.11.16
- * Time: 16:47
+ * Time: 16:47.
  */
 
 namespace LokiTuoResultBundle\EventListener;
@@ -14,7 +14,6 @@ use LokiUserBundle\Event\RegistrationCompleteEvent;
 use LokiUserBundle\LokiUserEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class RegistrationListener implements EventSubscriberInterface
 {
@@ -30,7 +29,7 @@ class RegistrationListener implements EventSubscriberInterface
 
     public function __construct(LoggerInterface $logger, EntityManagerInterface $playerRepository)
     {
-        $this->logger = $logger;
+        $this->logger        = $logger;
         $this->entityManager = $playerRepository;
     }
 
@@ -54,9 +53,9 @@ class RegistrationListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             LokiUserEvents::REGISTRATION_COMPLETE => 'onRegistrationConfirm',
-        );
+        ];
     }
 
     public function onRegistrationConfirm(RegistrationCompleteEvent $event)
@@ -66,7 +65,7 @@ class RegistrationListener implements EventSubscriberInterface
         /** @var Player $player */
         $player = $repo->findOneBy(['name' => $user->getUsername()]);
         // If Player exists claim player.
-        if ($player && !$player->getOwner()) {
+        if ($player && ! $player->getOwner()) {
             $player->setOwner($user);
             $this->entityManager->persist($player);
             $this->entityManager->flush();

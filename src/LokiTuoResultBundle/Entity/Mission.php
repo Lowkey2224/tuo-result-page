@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mission
+ * Mission.
  *
  * @ORM\Table(name="mission")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\MissionRepository")
@@ -14,8 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Mission extends AbstractBaseEntity
 {
-
-
     /**
      * @var string
      *
@@ -29,7 +27,6 @@ class Mission extends AbstractBaseEntity
      * @ORM\Column(name="Type", type="string", length=255)
      */
     private $type;
-
 
     /**
      * @var ArrayCollection

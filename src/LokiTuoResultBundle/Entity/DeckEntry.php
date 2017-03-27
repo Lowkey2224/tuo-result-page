@@ -6,27 +6,22 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Deck
+ * Deck.
  *
  * @ORM\Table(name="deck_entry")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\DeckEntryRepository")
  * @UniqueEntity(fields={"playOrder", "card", "result"},
  *     message="There exists already this card for this result in this order")
  * @ORM\HasLifecycleCallbacks()
- *
  */
 class DeckEntry extends AbstractBaseEntity
 {
-
-
     /**
      * @var int
      *
      * @ORM\Column(name="playOrder", type="integer")
      */
     private $playOrder;
-
-
 
     /**
      * @var Result
@@ -49,7 +44,6 @@ class DeckEntry extends AbstractBaseEntity
      */
     private $level;
 
-
     /**
      * @return Card
      */
@@ -66,11 +60,10 @@ class DeckEntry extends AbstractBaseEntity
         $this->card = $card;
     }
 
-
     /**
-     * Set playOrder
+     * Set playOrder.
      *
-     * @param integer $playOrder
+     * @param int $playOrder
      *
      * @return DeckEntry
      */
@@ -82,7 +75,7 @@ class DeckEntry extends AbstractBaseEntity
     }
 
     /**
-     * Get playOrder
+     * Get playOrder.
      *
      * @return int
      */

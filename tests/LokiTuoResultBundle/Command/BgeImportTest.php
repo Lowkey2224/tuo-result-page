@@ -13,7 +13,7 @@ class BgeImportTest extends KernelTestCase
     {
         self::bootKernel();
         $application = new Application(self::$kernel);
-        $em = static::$kernel->getContainer()
+        $em          = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
         $application->add(new LokiTuoBgeImportCommand());

@@ -32,7 +32,7 @@ class GuildType extends AbstractType
         $builder->add('submit', SubmitType::class, [
             'label'              => 'form.guild.submit',
             'translation_domain' => 'LokiTuoResultBundle',
-            'attr' => ['class' => 'btn btn-success']]);
+            'attr'               => ['class' => 'btn btn-success'], ]);
     }
 
     /**

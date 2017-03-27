@@ -9,7 +9,6 @@
 namespace LokiTuoResultBundle\Service\VpcSImulation;
 
 use Buzz\Browser;
-use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -28,21 +27,21 @@ class Service
      * Service constructor.
      *
      * @param Browser $browser BuzzBrowser to send http requests
-     * @param string $vpc_url the url (without http) of the vpc running the
+     * @param string  $vpc_url the url (without http) of the vpc running the
      *                         https://github.com/benprew/tuo-queue/blob/master/README.md
      */
     public function __construct(Browser $browser, $vpc_url)
     {
         $this->browser = $browser;
-        $this->url = $vpc_url;
+        $this->url     = $vpc_url;
         $this->setLogger(new NullLogger());
     }
 
     public function postSimulation(Simulation $simulation)
     {
-        $url = 'http://' . $this->url . '/job/create';
+        $url     = 'http://'.$this->url.'/job/create';
         $headers = [];
-        $player = $simulation->getPlayers()[0];
+        $player  = $simulation->getPlayers()[0];
         $content = $this->simulationToArray($simulation, $player);
         $content = implode('&', $content);
 
@@ -53,55 +52,54 @@ class Service
 
     public function post2(Simulation $simulation)
     {
-        $url = 'http://' . $this->url . '/job/create';
-        $arr = $this->simulationToArray($simulation);
+        $url     = 'http://'.$this->url.'/job/create';
+        $arr     = $this->simulationToArray($simulation);
         $content = $this->arr2Body($arr);
-        $result = $this->sendCurl($arr, $content, $url);
-        $res = $this->processCurlResult($result);
+        $result  = $this->sendCurl($arr, $content, $url);
+        $res     = $this->processCurlResult($result);
 
         return $res;
     }
 
     private function simulationToArray(Simulation $simulation)
     {
-        $player = $simulation->getPlayers()[0];
-        $content = [];
+        $player              = $simulation->getPlayers()[0];
+        $content             = [];
         $content['username'] = $player->getName();
-        $content['deck'] = implode(',', $player->getDeck()->toArray());
-        $content['deck'] = str_replace('\'', '\\\'', $content['deck']);
+        $content['deck']     = implode(',', $player->getDeck()->toArray());
+        $content['deck']     = str_replace('\'', '\\\'', $content['deck']);
 
         $content['your_inventory'] = implode(',', $player->getOwnedCards()->toArray());
         $content['your_inventory'] = str_replace('\'', '\\\'', $content['your_inventory']);
-        $content['your_structs'] = implode(',', $simulation->getStructures());
+        $content['your_structs']   = implode(',', $simulation->getStructures());
         if ($simulation->isOrdered()) {
             $content['ordered'] = $simulation->isOrdered();
         }
         if ($simulation->isSurge()) {
             $content['mode'] = $simulation->isSurge();
         }
-        $content['enemy_deck'] = $simulation->getMissions()[0];
+        $content['enemy_deck']    = $simulation->getMissions()[0];
         $content['enemy_structs'] = implode(',', $simulation->getEnemyStructures());
-        $content['command'] = $simulation->getSimType();
+        $content['command']       = $simulation->getSimType();
 //        $content['cmd_count'] = $simulation->getIterations();
         $content['cmd_count'] =  1;
-        $content['fund'] = 0;
+        $content['fund']      = 0;
         if ($simulation->getBackgroundEffect()) {
             $content['bge'] = $simulation->getBackgroundEffect()->getName();
         }
-
 
         return $content;
     }
 
     private function arr2Body(array $simulation)
     {
-
-        $fields_string = "";
+        $fields_string = '';
 
         foreach ($simulation as $key => $value) {
-            $fields_string .= $key . '=' . $value . '&';
+            $fields_string .= $key.'='.$value.'&';
         }
         rtrim($fields_string, '&');
+
         return $fields_string;
     }
 
@@ -121,26 +119,26 @@ class Service
 
         //close connection
         curl_close($ch);
+
         return $result;
     }
 
     private function processCurlResult($result)
     {
-
         $results = explode("\n", $result);
-        $status = $this->getStatusCode($results);
-        $header = ["status" => $status];
+        $status  = $this->getStatusCode($results);
+        $header  = ['status' => $status];
         foreach ($results as $statusLine) {
-            $tmp = explode(": ", $statusLine);
+            $tmp = explode(': ', $statusLine);
             if (count($tmp) == 2) {
-                list($key, $value) = $tmp;
+                list($key, $value)        = $tmp;
                 $header[strtolower($key)] = $value;
             }
-
         }
         $ret['status'] = $header['status'];
-        $id  = isset($header['location'])?explode("/job/", $header['location']):null;
-        $ret['id'] = intval($id[1]);
+        $id            = isset($header['location']) ? explode('/job/', $header['location']) : null;
+        $ret['id']     = intval($id[1]);
+
         return $ret;
     }
 
@@ -148,12 +146,13 @@ class Service
     {
         $status = null;
         foreach ($arr as $line) {
-            if(0 === strpos($line, "HTTP/1.1")){
-                $exploded = explode(" ", $line);
+            if (0 === strpos($line, 'HTTP/1.1')) {
+                $exploded = explode(' ', $line);
 
                 $status = $exploded[1];
             }
         }
+
         return $status;
     }
 }
