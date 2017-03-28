@@ -26,7 +26,8 @@ class ShellService implements SimulationCreatorInterface
 
     public function getSimulation(Simulation $simulation)
     {
-        return $this->engine->render('@LokiTuoResult/Simulation/shell_script.sh.twig', [
+        $simulation->setResultFile("result.json");
+        return $this->engine->render('@LokiTuoResult/Simulation/shell_script_v2.sh.twig', [
             'simulation' => $simulation,
         ]);
     }
