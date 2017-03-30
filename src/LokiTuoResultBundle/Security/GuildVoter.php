@@ -7,6 +7,9 @@ use LokiUserBundle\Entity\User;
 
 class GuildVoter extends AbstractVoter
 {
+    const VIEW   = 'view.guild';
+    const EDIT   = 'edit.guild';
+
     /**
      * returns the class name of the supported class.
      *

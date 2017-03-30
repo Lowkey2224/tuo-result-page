@@ -7,6 +7,8 @@ use LokiUserBundle\Entity\User;
 
 class PlayerVoter extends AbstractVoter
 {
+    const VIEW = 'view.player';
+    const EDIT = 'edit.player';
 
     protected function canView(Player $player, User $user)
     {
@@ -15,7 +17,7 @@ class PlayerVoter extends AbstractVoter
 
     protected function canEdit(Player $player, User $user)
     {
-        return !$player->isOwnershipConfirmed() || $this->canDelete($player, $user);
+        return ! $player->isOwnershipConfirmed() || $this->canDelete($player, $user);
     }
 
     protected function canDelete(Player $player, User $user)

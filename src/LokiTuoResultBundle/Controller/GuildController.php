@@ -42,7 +42,7 @@ class GuildController extends Controller
     public function editAction(Request $request, Guild $guild = null)
     {
         $guild = $guild ?: new Guild();
-        $this->denyAccessUnlessGranted('edit', $guild);
+        $this->denyAccessUnlessGranted('edit.guild', $guild);
         $form = $this->createForm(GuildType::class, $guild);
         $form->handleRequest($request);
 

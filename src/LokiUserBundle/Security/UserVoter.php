@@ -3,14 +3,23 @@
 namespace LokiUserBundle\Security;
 
 use LokiUserBundle\Entity\User;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class UserVoter extends Voter
 {
-    const EDIT   = 'edit';
-    const VIEW   = 'view';
-    const DELETE = 'delete';
+    use LoggerAwareTrait;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->setLogger($logger);
+    }
+
+    const EDIT   = 'edit.user';
+    const VIEW   = 'view.user';
+    const DELETE = 'delete.user';
 
     /**
      * Determines if the attribute and subject are supported by this voter.
@@ -22,12 +31,12 @@ class UserVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
+        if (! in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
             return false;
         }
 
         // only vote on Post objects inside this voter
-        if (!$subject instanceof User) {
+        if (! $subject instanceof User) {
             return false;
         }
 
@@ -48,11 +57,11 @@ class UserVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }
-        if ($user->hasRole('ROLE_SUPERADMIN')) {
+        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
             return true;
         }
 

@@ -13,10 +13,6 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const VIEW   = 'view';
-    const EDIT   = 'edit';
-    const DELETE = 'delete';
-
     public function __construct(LoggerInterface $logger)
     {
         $this->setLogger($logger);
@@ -47,7 +43,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
     protected function supports($attribute, $subject)
     {
         $map = $this->getAttributeMethodMap();
-        if (!isset($map[$attribute])) {
+        if (! isset($map[$attribute])) {
             return false;
         }
 
@@ -75,12 +71,13 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
     {
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }
 
         if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+
             return true;
         }
 
