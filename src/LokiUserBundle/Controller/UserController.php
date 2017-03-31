@@ -40,9 +40,9 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/promote",
      *     name="loki.user.promote",
-     *     requirements={"userId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
-     * @Security("is_granted('delete', user)")
+     * @Security("is_granted('delete.user', user)")
      */
     public function promoteAction(User $user)
     {
@@ -58,9 +58,9 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/demote",
      *     name="loki.user.demote",
-     *     requirements={"userId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
-     * @Security("is_granted('delete', user)")
+     * @Security("is_granted('delete.user', user)")
      */
     public function demoteAction(User $user)
     {
@@ -76,9 +76,9 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/activate",
      *     name="loki.user.activate",
-     *     requirements={"userId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
-     * @Security("is_granted('edit', user)")
+     * @Security("is_granted('edit.user', user)")
      */
     public function activateAction(User $user)
     {
@@ -93,9 +93,9 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/deactivate",
      *     name="loki.user.deactivate",
-     *     requirements={"userId":"\d+"}
+     *     requirements={"id":"\d+"}
      *     )
-     * @Security("is_granted('edit', user)")
+     * @Security("is_granted('edit.user', user)")
      */
     public function deactivateAction(User $user)
     {

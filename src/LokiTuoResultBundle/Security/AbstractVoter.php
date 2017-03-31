@@ -13,10 +13,6 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const VIEW   = 'view';
-    const EDIT   = 'edit';
-    const DELETE = 'delete';
-
     public function __construct(LoggerInterface $logger)
     {
         $this->setLogger($logger);
@@ -81,6 +77,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         }
 
         if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+
             return true;
         }
 

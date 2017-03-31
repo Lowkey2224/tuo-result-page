@@ -26,7 +26,7 @@ class PlayerController extends Controller
 {
     /**
      * @Route("/{id}/results", name="loki.tuo.player.results.show", requirements={"id":"\d+"})
-     * @Security("is_granted('view', player)")
+     * @Security("is_granted('view.player', player)")
      *
      * @param Player $player
      *
@@ -80,7 +80,7 @@ class PlayerController extends Controller
     /**
      * @param Player $player
      * @Route("/{id}/inventory", requirements={"id":"\d+"}, name="loki.tuo.player.inventory.show")
-     * @Security("is_granted('view', player)")
+     * @Security("is_granted('view.player', player)")
      *
      * @throws NotFoundHttpException
      *
@@ -107,7 +107,7 @@ class PlayerController extends Controller
      *     name="loki.tuo.player.card.deck.add",
      *     methods={"POST"},
      *     requirements={"id":"\d+"})
-     * @Security("is_granted('edit', player)")
+     * @Security("is_granted('edit.player', player)")
      *
      * @param Player $player
      *
@@ -157,7 +157,7 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{id}/card", name="loki.tuo.player.card.add", methods={"POST"}, requirements={"id":"\d+"})
-     * @Security("is_granted('edit', player)")
+     * @Security("is_granted('edit.player', player)")
      *
      * @param Request $request
      * @param Player  $player
@@ -196,7 +196,7 @@ class PlayerController extends Controller
      *     methods={"DELETE"},
      *     requirements={"id":"\d+"}
      *     )
-     * @Security("is_granted('edit', player)")
+     * @Security("is_granted('edit.player', player)")
      *
      * @param Request $request
      * @param Player  $player
@@ -237,7 +237,7 @@ class PlayerController extends Controller
      *     methods={"POST"},
      *     requirements={"id":"\d+"}
      *     )
-     * @Security("is_granted('edit', player)")
+     * @Security("is_granted('edit.player', player)")
      *
      * @param Request $request
      * @param Player  $player
@@ -279,7 +279,7 @@ class PlayerController extends Controller
      * @param Player $player
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     * @Security("is_granted('delete', player)")
+     * @Security("is_granted('delete.player', player)")
      */
     public function deleteMassCardsForPlayer(Player $player)
     {
@@ -287,7 +287,7 @@ class PlayerController extends Controller
         $manager->setLogger($this->get('logger'));
         $manager->removeOldOwnedCardsForPlayer($player);
         $manager = $this->get('loki_tuo_result.player.manager');
-        $manager->addDefaultCardToPlayer($player);
+        $manager->addDefaultCard($player);
 
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
@@ -300,7 +300,7 @@ class PlayerController extends Controller
      * @Route("/{id}/cards", name="loki.tuo.player.cards.show", requirements={"id":"\d+"})
      *
      * @return Response
-     * @Security("is_granted('view', player)")
+     * @Security("is_granted('view.player', player)")
      */
     public function showCardsForPlayerAction(Player $player)
     {
@@ -335,7 +335,7 @@ class PlayerController extends Controller
 
     /**
      * @Route("/{id}/disable", name="loki.tuo.player.disable", requirements={"id":"\d+"})
-     * @Security("is_granted('delete', player)")
+     * @Security("is_granted('delete.player', player)")
      *
      * @param Player $player
      *
@@ -399,7 +399,7 @@ class PlayerController extends Controller
             $player  = $manager->findOrCreatePlayer($player);
 
             // Check if Player already exists
-            $manager->addDefaultCardToPlayer($player);
+            $manager->addDefaultCard($player);
 
             return $this->redirectToRoute('loki.tuo.player.cards.show', ['id' => $player->getId()]);
         } else {

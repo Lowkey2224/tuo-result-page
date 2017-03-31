@@ -16,6 +16,7 @@ services:
             - { name: form.type, alias: app_user_registration }
     app.user_voter:
         class: LokiUserBundle\Security\UserVoter
+        arguments: ['@logger']
         tags:
             - { name: security.voter }
         public: false

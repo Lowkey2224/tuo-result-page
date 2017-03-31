@@ -7,6 +7,9 @@ use LokiUserBundle\Entity\User;
 
 class PlayerVoter extends AbstractVoter
 {
+    const VIEW = 'view.player';
+    const EDIT = 'edit.player';
+
     protected function canView(Player $player, User $user)
     {
         return $player->isActive() || $user->hasRole('ROLE_ADMIN');

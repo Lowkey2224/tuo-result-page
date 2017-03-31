@@ -45,7 +45,7 @@ class SimulationType extends AbstractType
                 'multiple'      => false,
                 'query_builder' => function (BattleGroundEffectRepository $br) {
                     return $br->createQueryBuilder('p')
-                        ->orderBy('p.category', 'ASC');
+                        ->orderBy('p.name', 'ASC');
                 },
                 'attr' => [
                     'class' => 'form-control',
