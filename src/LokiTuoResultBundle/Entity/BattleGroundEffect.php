@@ -39,6 +39,12 @@ class BattleGroundEffect extends AbstractBaseEntity
     private $category;
 
     /**
+     * @var string The Category of the Effect e.g. "Conquest Zones"
+     * @ORM\OneToMany(targetEntity="Mission", mappedBy="bge", cascade={"remove"})
+     */
+    private $missions;
+
+    /**
      * @return mixed
      */
     public function getName()
@@ -85,4 +91,21 @@ class BattleGroundEffect extends AbstractBaseEntity
     {
         $this->category = $category;
     }
+
+    /**
+     * @return string
+     */
+    public function getMissions(): string
+    {
+        return $this->missions;
+    }
+
+    /**
+     * @param string $missions
+     */
+    public function setMissions(string $missions)
+    {
+        $this->missions = $missions;
+    }
+
 }

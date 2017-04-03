@@ -63,6 +63,13 @@ class ResultFile extends AbstractBaseEntity
      */
     private $guild;
 
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $version;
+
     /**
      * @throws Exception If there is no valid State
      *
@@ -187,4 +194,21 @@ class ResultFile extends AbstractBaseEntity
     {
         $this->missions = $missions;
     }
+
+    /**
+     * @return int
+     */
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param int $version
+     */
+    public function setVersion(int $version)
+    {
+        $this->version = $version;
+    }
+
 }
