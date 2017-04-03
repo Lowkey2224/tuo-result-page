@@ -19,7 +19,8 @@ class Version20170403065507 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE result_file ADD version INT NOT NULL');
-        $this->addSql('UPDATE result_file SET version=1');
+        $this->addSql('ALTER TABLE result_file ADD original_file_name VARCHAR(255) NOT NULL');
+        $this->addSql('UPDATE result_file SET version=1, original_file_name = "result.txt"');
     }
 
     /**

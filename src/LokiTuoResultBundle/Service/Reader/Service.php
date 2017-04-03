@@ -58,8 +58,14 @@ class Service
         $content = $this->getFileContents($path);
 
         $file = new ResultFile();
+        $name = explode("/", $path);
+        $file->setOriginalName(end($name));
+
+
         $file->setContent($content);
         $file->setGuild($this->getGuildName(explode("\n", $content)));
+        $file = $this->setVersion($file);
+
         $this->em->persist($file);
         $this->em->flush();
         $this->logger->info('Persisting file with Id '.$file->getId());
@@ -341,5 +347,20 @@ class Service
             $this->logger->error(' NO Guild found in line: '.$content[0]);
             throw new Exception('No Guild Found');
         }
+    }
+
+
+    private function setVersion(ResultFile $file)
+    {
+        $name = $file->getOriginalName();
+        if(strpos($name, ".txt")) {
+            $file->setVersion(1);
+        }elseif(strpos($name, ".json")) {
+            $content = json_decode($file->getContent());
+            $file->setVersion($content->version);
+        } else {
+            $file->setVersion(0);
+        }
+        return $file;
     }
 }

@@ -71,6 +71,12 @@ class ResultFile extends AbstractBaseEntity
     private $version;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $originalName;
+
+    /**
      * @throws Exception If there is no valid State
      *
      * @return string
@@ -209,6 +215,22 @@ class ResultFile extends AbstractBaseEntity
     public function setVersion(int $version)
     {
         $this->version = $version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalName(): string
+    {
+        return $this->originalName;
+    }
+
+    /**
+     * @param string $originalName
+     */
+    public function setOriginalName(string $originalName)
+    {
+        $this->originalName = $originalName;
     }
 
 }
