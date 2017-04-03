@@ -1,0 +1,51 @@
+
+{
+  "version": 2.0,
+  "bge": "Mech Graveyard",
+  "type": "climb",
+  "ordered": true,
+  "surge": true,
+  "missions": [     {
+    "name": "Pandemonium Mutant-10",
+    "myStructures": "SkyFortress, SkyFortress",
+    "enemyStructures": "SkyFortress, SkyFortress",
+    "results": [
+      {
+        "player": "adi1992",
+        "player_id": 42,
+        "guild": "CTN",
+        "guild_id": 3,
+        "result": "Optimized Deck: 7 units: 0: Daedalus Enraged, Rumbler Rickshaw, Slick Garroter #2, Xebor Comet #2, Therion Aethersworn, 16-Barrel Boomer"
+      },
+      {
+        "player": "allyourfriends",
+        "player_id": 43,
+        "guild": "CTN",
+        "guild_id": 3,
+        "result": "Optimized Deck: 10 units: 0: Silus the Warlord, Atomic Wardriver, Demolition Rig #4, Igniting Cargo, Arsha Transcendent, City of Pandora, Rumbler Rickshaw, Therion Aethersworn"
+      }
+    ]
+  },
+    {
+      "name": "Pandemonium Mutant-5",
+      "myStructures": "SkyFortress, SkyFortress",
+      "enemyStructures": "SkyFortress, SkyFortress",
+      "results": [
+        {
+          "player": "adi1992",
+          "player_id": 42,
+          "guild": "CTN",
+          "guild_id": 3,
+          "result": "Optimized Deck: 7 units: 100: Daedalus Enraged, Sage Ascendant, Slick Garroter #2, Xebor Comet #2, Therion Aethersworn, 16-Barrel Boomer"
+        },
+        {
+          "player": "allyourfriends",
+          "player_id": 43,
+          "guild": "CTN",
+          "guild_id": 3,
+          "result": "Optimized Deck: 10 units: 100: Silus the Warlord, Demolition Rig #4, Igniting Cargo, Arsha Transcendent, City of Pandora, Rumbler Rickshaw, Zashikinoz, Therion Aethersworn"
+        }
+      ]
+    }
+  ]
+}

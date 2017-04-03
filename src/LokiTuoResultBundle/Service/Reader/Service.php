@@ -20,7 +20,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * Date: 03.08.16
  * Time: 19:38.
  */
-class Service
+class Service extends AbstractImporter
 {
     use LoggerAwareTrait;
 
@@ -134,61 +134,22 @@ class Service
      */
     private function transformContent($content)
     {
-        $count  = -1;
-        $result = ['guild' => $this->getGuildName($content)];
+        $count  = 0;
+        $result = ['guild' => $this->getGuildName($content), 'missions' => []];
         //THrow away first line
         array_shift($content);
 
         foreach ($content as $line) {
-            if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
-                ++$count;
-                $name                                   = $name[1];
-                $result['result'][$count]['playername'] = $name;
-            }
-            if (preg_match('/against (.*)/', $line, $name) === 1) {
-                $name                                = $name[1];
-                $result['result'][$count]['mission'] = $name;
-                $result['missions'][$name]           = $name;
+            $tmp = $this->parseResultLine($line);
+            if(array_key_exists('mission', $tmp)) {
+                $name = $tmp['mission'];
+                $result['missions'][$name] = $name;
+                $result['result'][$count] = $tmp;
+            }else {
+                $result['result'][$count] = array_merge($result['result'][$count], $tmp);
+                $count++;
             }
 
-            $result['result'][$count]['simType'] = 'Mission';
-            if (preg_match('/(\d?\d(.\d*)?):/', $line, $name) === 1) {
-                $name                                = $name[1];
-                $name                                = (int) ($name * 10);
-                $result['result'][$count]['percent'] = $name;
-            }
-            if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
-                $name                             = $name[1];
-                $cards                            = $this->transformToCardNames(explode(', ', $name));
-                $result['result'][$count]['deck'] = $cards;
-            }
-            if (preg_match('/(\d\d?% win)/', $line) === 1) {
-                $result['result'][$count]['simType'] = 'Raid';
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Transform raw Cardstrings into correct Cardnames.
-     *
-     * @param array $array
-     *
-     * @return array
-     */
-    private function transformToCardNames(array $array)
-    {
-        $result = [];
-        foreach ($array as $name) {
-            $tmp = explode('#', $name);
-            if (count($tmp) == 2) {
-                for ($i = 0; $i < $tmp[1]; ++$i) {
-                    $result[] = trim($tmp[0]);
-                }
-            } else {
-                $result[] = trim($name);
-            }
         }
 
         return $result;

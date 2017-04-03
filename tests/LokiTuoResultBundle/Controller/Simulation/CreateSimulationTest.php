@@ -38,7 +38,7 @@ class CreateSimulationTest extends AbstractControllerTest
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $content         = $client->getResponse()->getContent();
         $content         = $this->removeTimeStampFromScriptFile(trim($content));
-        $expectedContent = trim(file_get_contents($this->getFilePath().'mass_sim.sh'));
+        $expectedContent = trim(file_get_contents($this->getFilePath().'mass_sim_v2.sh'));
 
         $this->assertEquals($expectedContent, $content);
     }
@@ -47,15 +47,21 @@ class CreateSimulationTest extends AbstractControllerTest
     {
         $regExp = [
             '/[\d\d\/]{17}/',
-            '/\Member\d+/',
-            '/\Deck\d+/',
-            '/\Inventory\d+/',
+            '/Member\d+/',
+            '/Deck\d+/',
+            '/Inventory\d+/',
+            '/Member\d+Guild/',
+            '/player_id\\\": \d+,/',
+            '/MemberGuildId="\d+"/',
         ];
         $replacement = [
             $replacement,
             'Member',
             'Deck',
             'Inventory',
+            'MemberGuild',
+            'player_id\": null,',
+            'MemberGuildId="null"',
         ];
 
         return preg_replace($regExp, $replacement, $content);
