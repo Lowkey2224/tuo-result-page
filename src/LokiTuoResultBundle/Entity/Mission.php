@@ -164,7 +164,7 @@ class Mission extends AbstractBaseEntity
     /**
      * @return BattleGroundEffect
      */
-    public function getBge(): ?BattleGroundEffect
+    public function getBge()
     {
         return $this->bge;
     }
