@@ -8,6 +8,7 @@
 
 namespace LokiTuoResultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +40,7 @@ class BattleGroundEffect extends AbstractBaseEntity
     private $category;
 
     /**
-     * @var string The Category of the Effect e.g. "Conquest Zones"
+     * @var Mission[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="Mission", mappedBy="bge", cascade={"remove"})
      */
     private $missions;
@@ -93,19 +94,21 @@ class BattleGroundEffect extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return ArrayCollection|Mission[]
      */
-    public function getMissions(): string
+    public function getMissions()
     {
         return $this->missions;
     }
 
     /**
-     * @param string $missions
+     * @param ArrayCollection|Mission[] $missions
      */
-    public function setMissions(string $missions)
+    public function setMissions($missions)
     {
         $this->missions = $missions;
     }
+
+
 
 }

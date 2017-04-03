@@ -100,7 +100,7 @@ class Mission extends AbstractBaseEntity
      *
      * @return string
      */
-    public function getName() : ?string
+    public function getName()
     {
         return $this->name;
     }
@@ -124,7 +124,7 @@ class Mission extends AbstractBaseEntity
      *
      * @return string
      */
-    public function getType() : ?string
+    public function getType()
     {
         return $this->type;
     }
@@ -148,7 +148,7 @@ class Mission extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getStructures(): ?string
+    public function getStructures()
     {
         return $this->structures;
     }
