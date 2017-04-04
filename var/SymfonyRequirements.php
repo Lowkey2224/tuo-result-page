@@ -49,11 +49,11 @@ class Requirement
      */
     public function __construct($fulfilled, $testMessage, $helpHtml, $helpText = null, $optional = false)
     {
-        $this->fulfilled   = (bool) $fulfilled;
+        $this->fulfilled = (bool) $fulfilled;
         $this->testMessage = (string) $testMessage;
-        $this->helpHtml    = (string) $helpHtml;
-        $this->helpText    = null === $helpText ? strip_tags($this->helpHtml) : (string) $helpText;
-        $this->optional    = (bool) $optional;
+        $this->helpHtml = (string) $helpHtml;
+        $this->helpText = null === $helpText ? strip_tags($this->helpHtml) : (string) $helpText;
+        $this->optional = (bool) $optional;
     }
 
     /**
@@ -171,7 +171,7 @@ class RequirementCollection implements IteratorAggregate
     /**
      * @var Requirement[]
      */
-    private $requirements = [];
+    private $requirements = array();
 
     /**
      * Gets the current RequirementCollection as an Iterator.
@@ -282,9 +282,9 @@ class RequirementCollection implements IteratorAggregate
      */
     public function getRequirements()
     {
-        $array = [];
+        $array = array();
         foreach ($this->requirements as $req) {
-            if (! $req->isOptional()) {
+            if (!$req->isOptional()) {
                 $array[] = $req;
             }
         }
@@ -299,9 +299,9 @@ class RequirementCollection implements IteratorAggregate
      */
     public function getFailedRequirements()
     {
-        $array = [];
+        $array = array();
         foreach ($this->requirements as $req) {
-            if (! $req->isFulfilled() && ! $req->isOptional()) {
+            if (!$req->isFulfilled() && !$req->isOptional()) {
                 $array[] = $req;
             }
         }
@@ -316,7 +316,7 @@ class RequirementCollection implements IteratorAggregate
      */
     public function getRecommendations()
     {
-        $array = [];
+        $array = array();
         foreach ($this->requirements as $req) {
             if ($req->isOptional()) {
                 $array[] = $req;
@@ -333,9 +333,9 @@ class RequirementCollection implements IteratorAggregate
      */
     public function getFailedRecommendations()
     {
-        $array = [];
+        $array = array();
         foreach ($this->requirements as $req) {
-            if (! $req->isFulfilled() && $req->isOptional()) {
+            if (!$req->isFulfilled() && $req->isOptional()) {
                 $array[] = $req;
             }
         }
@@ -351,7 +351,7 @@ class RequirementCollection implements IteratorAggregate
     public function hasPhpIniConfigIssue()
     {
         foreach ($this->requirements as $req) {
-            if (! $req->isFulfilled() && $req instanceof PhpIniRequirement) {
+            if (!$req->isFulfilled() && $req instanceof PhpIniRequirement) {
                 return true;
             }
         }
@@ -380,7 +380,7 @@ class RequirementCollection implements IteratorAggregate
 class SymfonyRequirements extends RequirementCollection
 {
     const LEGACY_REQUIRED_PHP_VERSION = '5.3.3';
-    const REQUIRED_PHP_VERSION        = '5.5.9';
+    const REQUIRED_PHP_VERSION = '5.5.9';
 
     /**
      * Constructor that initializes the requirements.
@@ -390,7 +390,7 @@ class SymfonyRequirements extends RequirementCollection
         /* mandatory requirements follow */
 
         $installedPhpVersion = phpversion();
-        $requiredPhpVersion  = $this->getPhpRequiredVersion();
+        $requiredPhpVersion = $this->getPhpRequiredVersion();
 
         $this->addRecommendation(
             $requiredPhpVersion,
@@ -448,7 +448,7 @@ class SymfonyRequirements extends RequirementCollection
         }
 
         if (false !== $requiredPhpVersion && version_compare($installedPhpVersion, $requiredPhpVersion, '>=')) {
-            $timezones = [];
+            $timezones = array();
             foreach (DateTimeZone::listAbbreviations() as $abbreviations) {
                 foreach ($abbreviations as $abbreviation) {
                     $timezones[$abbreviation['timezone_id']] = true;
@@ -651,7 +651,7 @@ class SymfonyRequirements extends RequirementCollection
             'Install and enable the <strong>filter</strong> extension.'
         );
 
-        if (! defined('PHP_WINDOWS_VERSION_BUILD')) {
+        if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
             $this->addRecommendation(
                 function_exists('posix_isatty'),
                 'posix_isatty() should be available',
@@ -728,7 +728,8 @@ class SymfonyRequirements extends RequirementCollection
             ||
             (extension_loaded('xcache') && ini_get('xcache.cacher'))
             ||
-            (extension_loaded('wincache') && ini_get('wincache.ocenabled'));
+            (extension_loaded('wincache') && ini_get('wincache.ocenabled'))
+        ;
 
         $this->addRecommendation(
             $accelerator,
@@ -799,7 +800,7 @@ class SymfonyRequirements extends RequirementCollection
      */
     protected function getPhpRequiredVersion()
     {
-        if (! file_exists($path = __DIR__.'/../composer.lock')) {
+        if (!file_exists($path = __DIR__.'/../composer.lock')) {
             return false;
         }
 
