@@ -78,7 +78,6 @@ class JsonImporter extends AbstractImporter
         $surge       = $content->surge;
 
         foreach ($content->missions as $mission) {
-
             $uuid = Mission::createUuid($mission->name, $bge, $mission->myStructures);
 
             /** @var Mission $missionEntity */
@@ -138,11 +137,17 @@ class JsonImporter extends AbstractImporter
         $players  = new Collection($playerRepo->findByIds($ids['player']));
 
 
-        $players  = $players->keyBy(function(Player $p){return $p->getId();});
+        $players  = $players->keyBy(function (Player $p) {
+            return $p->getId();
+        });
         $guilds   = new Collection($guildRepo->findByIds($ids['guild']));
-        $guilds   = $guilds->keyBy(function(Guild $p){return $p->getId();});
+        $guilds   = $guilds->keyBy(function (Guild $p) {
+            return $p->getId();
+        });
         $missions = new Collection($missionRepo->finyByUuids($ids['mission']));
-        $missions = $missions->keyBy(function(Mission $p){return $p->getUuid();});
+        $missions = $missions->keyBy(function (Mission $p) {
+            return $p->getUuid();
+        });
         return [$missions, $guilds, $players, $bge];
     }
 

@@ -3,7 +3,6 @@
 
 namespace LokiTuoResultBundle\Service\Reader;
 
-
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Result;
 
@@ -51,10 +50,9 @@ abstract class AbstractImporter
     {
         $result = [];
         foreach ($array as $name) {
-            if(preg_match('/([\w\h]+)/', $name, $res)===1){
+            if (preg_match('/([\w\h]+)/', $name, $res)===1) {
                 $result[] = trim($res[0]);
             }
-
         }
         return $result;
     }

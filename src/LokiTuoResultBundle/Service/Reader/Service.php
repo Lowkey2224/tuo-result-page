@@ -91,9 +91,9 @@ class Service extends AbstractImporter
         $jsonImporter->setLogger($this->logger);
 
         foreach ($files as $file) {
-            if($file->getVersion() == 1){
+            if ($file->getVersion() == 1) {
                 $this->importFile($file, $count);
-            }elseif($file->getVersion() == 2) {
+            } elseif ($file->getVersion() == 2) {
                 $jsonImporter->importFile($file, $count);
             }
         }
@@ -151,15 +151,14 @@ class Service extends AbstractImporter
 
         foreach ($content as $line) {
             $tmp = $this->parseResultLine($line);
-            if(array_key_exists('mission', $tmp)) {
+            if (array_key_exists('mission', $tmp)) {
                 $name = $tmp['mission'];
                 $result['missions'][$name] = $name;
                 $result['result'][$count] = $tmp;
-            }else {
+            } else {
                 $result['result'][$count] = array_merge($result['result'][$count], $tmp);
                 $count++;
             }
-
         }
 
         return $result;
@@ -310,9 +309,9 @@ class Service extends AbstractImporter
     private function setVersion(ResultFile $file)
     {
         $name = $file->getOriginalName();
-        if(strpos($name, ".txt")) {
+        if (strpos($name, ".txt")) {
             $file->setVersion(1);
-        }elseif(strpos($name, ".json")) {
+        } elseif (strpos($name, ".json")) {
             $content = json_decode($file->getContent());
             $file->setVersion($content->version);
         } else {

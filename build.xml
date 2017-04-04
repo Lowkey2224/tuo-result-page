@@ -168,7 +168,7 @@
     </target>
     <target name="checkstyle-fix" description="Codestyle fixing ">
         <exec executable="${phpcbf}" taskname="checkstyle-fix">
-            <arg value="--standard=./.php_cs"/>
+            <arg value="--standard=PSR2"/>
             <arg value="--extensions=php"/>
             <arg value="--ignore=autoload.php"/>
             <arg path="${basedir}/src"/>

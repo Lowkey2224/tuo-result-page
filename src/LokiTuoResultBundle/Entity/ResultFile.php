@@ -232,5 +232,4 @@ class ResultFile extends AbstractBaseEntity
     {
         $this->originalName = $originalName;
     }
-
 }

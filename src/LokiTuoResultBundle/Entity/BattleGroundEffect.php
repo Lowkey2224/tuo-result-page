@@ -108,7 +108,4 @@ class BattleGroundEffect extends AbstractBaseEntity
     {
         $this->missions = $missions;
     }
-
-
-
 }

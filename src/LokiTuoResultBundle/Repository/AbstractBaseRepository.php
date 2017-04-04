@@ -3,7 +3,6 @@
 
 namespace LokiTuoResultBundle\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
 
 abstract class AbstractBaseRepository extends EntityRepository
