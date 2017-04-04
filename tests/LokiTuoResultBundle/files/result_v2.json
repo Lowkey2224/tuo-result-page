@@ -1,33 +1,12 @@
-
 {
   "version": 2,
   "bge": "Inspired",
   "type": "climb",
   "ordered": true,
   "surge": true,
-  "missions": [     {
-    "name": "Test Mission Version2-23",
-    "myStructures": "SkyFortress, SkyFortress",
-    "enemyStructures": "SkyFortress, SkyFortress",
-    "results": [
-      {
-        "player": "loken",
-        "player_id": 42,
-        "guild": "CTN",
-        "guild_id": 3,
-        "result": "Optimized Deck: 7 units: 40.87: Daedalus Enraged, Rumbler Rickshaw, Slick Garroter #2, Xebor Comet #2, Therion Aethersworn, 16-Barrel Boomer"
-      },
-      {
-        "player": "loki",
-        "player_id": 43,
-        "guild": "CTN",
-        "guild_id": 3,
-        "result": "Optimized Deck: 10 units: 30.3: Silus the Warlord, Atomic Wardriver, Demolition Rig #4, Igniting Cargo, Arsha Transcendent, City of Pandora, Rumbler Rickshaw, Therion Aethersworn"
-      }
-    ]
-  },
+  "missions": [
     {
-      "name": "Test Mission Version2-42",
+      "name": "Test Mission Version2-23",
       "myStructures": "SkyFortress, SkyFortress",
       "enemyStructures": "SkyFortress, SkyFortress",
       "results": [
@@ -36,14 +15,35 @@
           "player_id": 42,
           "guild": "CTN",
           "guild_id": 3,
-          "result": "Optimized Deck: 7 units: 100: Daedalus Enraged, Sage Ascendant, Slick Garroter #2, Xebor Comet #2, Therion Aethersworn, 16-Barrel Boomer"
+          "result": "Optimized Deck: 7 units: 40.87: Malika, Rumbler Rickshaw, Stonewall Garrison, Xebor Comet #2"
         },
         {
           "player": "loki",
           "player_id": 43,
           "guild": "CTN",
           "guild_id": 3,
-          "result": "Optimized Deck: 10 units: 90: Silus the Warlord, Demolition Rig #4, Igniting Cargo, Arsha Transcendent, City of Pandora, Rumbler Rickshaw, Zashikinoz, Therion Aethersworn"
+          "result": "Optimized Deck: 10 units: 30.3: Malika, Rumbler Rickshaw, Stonewall Garrison, Xebor Comet #2"
+        }
+      ]
+    },
+    {
+      "name": "Test Mission Version2-42",
+      "myStructures": "SkyFortress, SkyFortress",
+      "enemyStructures": "SkyFortress, SkyFortress",
+      "results": [
+        {
+          "player": "loken",
+          "player_id": 42,
+          "guild": "CTP",
+          "guild_id": 3,
+          "result": "Optimized Deck: 7 units: 100: Malika, Rumbler Rickshaw, Stonewall Garrison, Xebor Comet #2"
+        },
+        {
+          "player": "loki",
+          "player_id": 43,
+          "guild": "CTN",
+          "guild_id": 3,
+          "result": "Optimized Deck: 10 units: 90: Malika, Rumbler Rickshaw, Stonewall Garrison, Xebor Comet #2"
         }
       ]
     }

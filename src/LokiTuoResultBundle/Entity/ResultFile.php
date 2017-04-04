@@ -52,7 +52,7 @@ class ResultFile extends AbstractBaseEntity
     private $missions;
 
     /**
-     * @var Result[]
+     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $comment;
@@ -170,7 +170,7 @@ class ResultFile extends AbstractBaseEntity
     }
 
     /**
-     * @return Result[]
+     * @return string
      */
     public function getComment()
     {
@@ -178,7 +178,7 @@ class ResultFile extends AbstractBaseEntity
     }
 
     /**
-     * @param Result[] $comment
+     * @param string $comment
      */
     public function setComment($comment)
     {

@@ -4,8 +4,14 @@
 namespace LokiTuoResultBundle\Service\Reader;
 
 
+use Doctrine\ORM\EntityManager;
+use LokiTuoResultBundle\Entity\Result;
+
 abstract class AbstractImporter
 {
+    /** @var EntityManager  */
+    protected $em;
+
     protected function parseResultLine($line)
     {
         if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
@@ -51,5 +57,20 @@ abstract class AbstractImporter
 
         }
         return $result;
+    }
+
+
+
+    /**
+     * Remove old Deck for previous Results.
+     *
+     * @param Result $result
+     */
+    protected function deleteOldDeck(Result $result)
+    {
+        foreach ($result->getDeck() as $deckItem) {
+            $this->em->remove($deckItem);
+        }
+        $this->em->persist($result);
     }
 }

@@ -11,7 +11,7 @@ use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
 use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -26,8 +26,6 @@ class Service extends AbstractImporter
 
     //TODO Change the import so it can use different persisters
     //Maybe save the Import Simulation script too
-    /** @var EntityManager */
-    private $em;
 
     /** @var CardManager */
     private $ownedCardManager;
@@ -38,11 +36,11 @@ class Service extends AbstractImporter
      * @param EntityManager $entityManager
      * @param CardManager   $manager
      */
-    public function __construct(EntityManager $entityManager, CardManager $manager)
+    public function __construct(EntityManager $entityManager, CardManager $manager, LoggerInterface $logger)
     {
         $this->em               = $entityManager;
         $this->ownedCardManager = $manager;
-        $this->logger           = new NullLogger();
+        $this->logger           = $logger;
     }
 
     /**
@@ -89,27 +87,39 @@ class Service extends AbstractImporter
             return 0;
         }
         $count = 0;
+        $jsonImporter = new JsonImporter($this->em, $this->ownedCardManager);
+        $jsonImporter->setLogger($this->logger);
 
         foreach ($files as $file) {
-            try {
-                $this->logger->info('Using File with ID '.$file->getId().' for Import');
-                $content     = explode("\n", $file->getContent());
-                $transformed = $this->transformContent($content);
-                $this->logger->info('Importing Result for Guild '.$transformed['guild']);
-                $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-                $this->logger->info(count($models).' were Saved');
-                $count += count($models);
-                $file->setGuild($transformed['guild']);
-                $file->setStatus(ResultFile::STATUS_IMPORTED);
-                $file->setMissions(implode(', ', $transformed['missions']));
-            } catch (Exception $ex) {
-                $file->setStatus(ResultFile::STATUS_ERROR);
+            if($file->getVersion() == 1){
+                $this->importFile($file, $count);
+            }elseif($file->getVersion() == 2) {
+                $jsonImporter->importFile($file, $count);
             }
-            $this->em->persist($file);
         }
         $this->em->flush();
 
         return $count;
+    }
+
+    private function importFile(ResultFile $file, &$count)
+    {
+        try {
+            $this->logger->info('Using File with ID '.$file->getId().' for Import');
+            $content     = explode("\n", $file->getContent());
+            $transformed = $this->transformContent($content);
+            $this->logger->info('Importing Result for Guild '.$transformed['guild']);
+            $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
+            $this->logger->info(count($models).' were Saved');
+            $count += count($models);
+            $file->setGuild($transformed['guild']);
+            $file->setStatus(ResultFile::STATUS_IMPORTED);
+            $file->setMissions(implode(', ', $transformed['missions']));
+            $this->em->persist($file);
+        } catch (Exception $ex) {
+            $file->setStatus(ResultFile::STATUS_ERROR);
+        }
+        return $file;
     }
 
     /**
@@ -189,7 +199,6 @@ class Service extends AbstractImporter
                 $mission->setName($line['mission']);
             }
             $mission->setType($line['simType']);
-            $mission->setUpdatedAtValue();
             $this->em->persist($mission);
 
             $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
@@ -256,19 +265,6 @@ class Service extends AbstractImporter
         }
 
         return $resultDeck;
-    }
-
-    /**
-     * Remove old Deck for previous Results.
-     *
-     * @param Result $result
-     */
-    private function deleteOldDeck(Result $result)
-    {
-        foreach ($result->getDeck() as $deckItem) {
-            $this->em->remove($deckItem);
-        }
-        $this->em->flush();
     }
 
     /**

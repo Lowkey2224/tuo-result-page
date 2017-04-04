@@ -54,7 +54,7 @@ class Mission extends AbstractBaseEntity
      */
     private $results;
 
-    public function toUuid() : string
+    public function toUuid(): string
     {
         return self::createUuid($this->getName(), $this->getBge(), $this->getStructures());
     }
@@ -193,9 +193,10 @@ class Mission extends AbstractBaseEntity
         $this->uuid = $uuid;
     }
 
-    public static function createUuid($name, $bge, $structures) : string
+    public static function createUuid(string $name, BattleGroundEffect $bge = null, string $structures = null): string
     {
-        $uuid = "mission|%s|bge|%s|structures|%s";
-        return sprintf($uuid, $name, $bge?$bge->id:"null", $structures);
+        $uuid = 'mission|%s|bge|%s|structures|%s';
+
+        return sprintf($uuid, $name, $bge ? $bge->id : 'null', $structures);
     }
 }
