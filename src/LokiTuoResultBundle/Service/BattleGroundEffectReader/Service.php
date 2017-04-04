@@ -40,8 +40,8 @@ class Service
      */
     public function readFile($filepath)
     {
-        if (! file_exists($filepath)) {
-            throw new FileNotFoundException('File with path '.$filepath.' could not be found');
+        if (!file_exists($filepath)) {
+            throw new FileNotFoundException('File with path ' . $filepath . ' could not be found');
         }
 //        $persister = $this->getPersister();
         $content     = file_get_contents($filepath);

@@ -70,6 +70,6 @@ class DatabasePersister implements PersisterInterface
      */
     private function getGetterName($attribute)
     {
-        return 'get'.strtoupper(substr($attribute, 0, 1)).substr($attribute, 1);
+        return 'get' . strtoupper(substr($attribute, 0, 1)) . substr($attribute, 1);
     }
 }

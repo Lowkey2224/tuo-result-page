@@ -27,7 +27,7 @@ trait PersisterAwareTrait
      */
     public function getPersister()
     {
-        if (! $this->persister) {
+        if (!$this->persister) {
             throw new NoPersisterExpection();
         }
 

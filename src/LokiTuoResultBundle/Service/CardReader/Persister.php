@@ -65,14 +65,14 @@ class Persister
     private function persistModels($cards)
     {
         $count = 0;
-        if (! $this->persist) {
+        if (!$this->persist) {
             return $cards;
         }
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         foreach ($cards as $key => $card) {
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
             ++$count;
-            $this->logger->error("Persisting card number $card with name".$card->getName());
+            $this->logger->error("Persisting card number $card with name" . $card->getName());
             if ($dbEntity) {
                 $card->setId($dbEntity->getId());
                 $dbEntity->setPicture($card->getPicture());

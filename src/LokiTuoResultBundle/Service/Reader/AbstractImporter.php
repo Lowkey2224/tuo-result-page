@@ -14,18 +14,18 @@ abstract class AbstractImporter
     protected function parseResultLine($line)
     {
         if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
-            $name                                   = $name[1];
+            $name = $name[1];
             $result['playername'] = $name;
         }
         if (preg_match('/against (.*)/', $line, $name) === 1) {
-            $name                                = $name[1];
+            $name = $name[1];
             $result['mission'] = $name;
         }
 
         $result['simType'] = 'Mission';
         if (preg_match('/(\d?\d(.\d*)?):/', $line, $name) === 1) {
             $name                                = $name[1];
-            $name                                = (int) ($name * 10);
+            $name                                = (int)($name * 10);
             $result['percent'] = $name;
         }
         if (preg_match('/\d?\d.?\d?\d?: (.*)/', $line, $name) === 1) {
@@ -50,7 +50,7 @@ abstract class AbstractImporter
     {
         $result = [];
         foreach ($array as $name) {
-            if (preg_match('/([\w\h]+)/', $name, $res)===1) {
+            if (preg_match('/([\w\h]+)/', $name, $res) === 1) {
                 $result[] = trim($res[0]);
             }
         }

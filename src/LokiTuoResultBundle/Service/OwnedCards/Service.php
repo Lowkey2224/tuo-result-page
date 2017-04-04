@@ -80,8 +80,8 @@ class Service
         foreach ($cardArray as $cardEntry) {
             //            $this->removeOldOwnedCardsForPlayer($player);
             $card = $cardRepo->findOneBy(['name' => $cardEntry['name']]);
-            if (! $card) {
-                $this->logger->notice('No Card found for name '.$cardEntry['name']);
+            if (!$card) {
+                $this->logger->notice('No Card found for name ' . $cardEntry['name']);
                 continue;
             }
             $oc = new OwnedCard();
@@ -119,7 +119,7 @@ class Service
     public function deckToSpreadsheetFormat(Player $player)
     {
         $ocs  = new Collection($player->getOwnedCards());
-        $deck = $ocs->filter(function (OwnedCard $oc) {
+        $deck = $ocs->filter(function(OwnedCard $oc) {
             return $oc->getAmountInDeck() > 0;
         });
 

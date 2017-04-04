@@ -46,7 +46,7 @@ class SimulationController extends Controller
             return new Response($res, 200, [
                 'content-type'        => 'text/text',
                 'cache-control'       => 'private',
-                'content-disposition' => 'attachment; filename="'.$filename.'";',
+                'content-disposition' => 'attachment; filename="' . $filename . '";',
             ]);
         }
 
@@ -66,7 +66,7 @@ class SimulationController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $res      = $this->get('loki_tuo_result.vpc_simulation.manager')->post2($sim);
+            $res = $this->get('loki_tuo_result.vpc_simulation.manager')->post2($sim);
             if ($res['id'] != null) {
                 $msg = 'Simulation with Id <a href="http://tuo.throwingbones.com/job/%d">%d</a> has been created';
                 $this->addFlash('success', sprintf($msg, $res['id'], $res['id']));
@@ -178,7 +178,7 @@ class SimulationController extends Controller
         return new Response($file->getContent(), 200, [
             'content-type'        => 'text/text',
             'cache-control'       => 'private',
-            'content-disposition' => 'attachment; filename="'.$filename.'";',
+            'content-disposition' => 'attachment; filename="' . $filename . '";',
         ]);
     }
 

@@ -66,7 +66,7 @@ class Service extends AbstractImporter
 
         $this->em->persist($file);
         $this->em->flush();
-        $this->logger->info('Persisting file with Id '.$file->getId());
+        $this->logger->info('Persisting file with Id ' . $file->getId());
 
         return $file->getId();
     }
@@ -105,12 +105,12 @@ class Service extends AbstractImporter
     private function importFile(ResultFile $file, &$count)
     {
         try {
-            $this->logger->info('Using File with ID '.$file->getId().' for Import');
+            $this->logger->info('Using File with ID ' . $file->getId() . ' for Import');
             $content     = explode("\n", $file->getContent());
             $transformed = $this->transformContent($content);
-            $this->logger->info('Importing Result for Guild '.$transformed['guild']);
+            $this->logger->info('Importing Result for Guild ' . $transformed['guild']);
             $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-            $this->logger->info(count($models).' were Saved');
+            $this->logger->info(count($models) . ' were Saved');
             $count += count($models);
             $file->setGuild($transformed['guild']);
             $file->setStatus(ResultFile::STATUS_IMPORTED);
@@ -182,18 +182,18 @@ class Service extends AbstractImporter
         $guildRepo   = $this->em->getRepository('LokiTuoResultBundle:Guild');
         $guild       = $guildRepo->findOneBy(['name' => $guild]);
         foreach ($transformed as $line) {
-            if (! isset($line['deck'])) {
-                $this->logger->warning('Skipped result for Player '.
-                    $line['playername'].' against '.$line['mission'].'. Because no Deck was found');
+            if (!isset($line['deck'])) {
+                $this->logger->warning('Skipped result for Player ' .
+                    $line['playername'] . ' against ' . $line['mission'] . '. Because no Deck was found');
                 continue;
             }
 
-            if (! ($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
+            if (!($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
                 $player = new Player();
                 $player->setName($line['playername']);
                 $this->em->persist($player);
             }
-            if (! ($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
+            if (!($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
                 $mission = new Mission();
                 $mission->setName($line['mission']);
             }
@@ -217,7 +217,7 @@ class Service extends AbstractImporter
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;
-            $this->logger->debug('Saving Result for Player '.$player->getName());
+            $this->logger->debug('Saving Result for Player ' . $player->getName());
         }
 
         $this->em->flush();
@@ -245,7 +245,7 @@ class Service extends AbstractImporter
             $name   = $_tmp['name'];
             $card   = $cardRepo->findOneBy(['name' => $name]);
 
-            if (! $card) {
+            if (!$card) {
                 $card = new Card();
                 $card->setName($name);
                 $this->em->persist($card);
@@ -300,7 +300,7 @@ class Service extends AbstractImporter
             //FIXME
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
-            $this->logger->error(' NO Guild found in line: '.$content[0]);
+            $this->logger->error(' NO Guild found in line: ' . $content[0]);
             throw new Exception('No Guild Found');
         }
     }

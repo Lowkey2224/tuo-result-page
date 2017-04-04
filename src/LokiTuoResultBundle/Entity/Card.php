@@ -82,11 +82,11 @@ class Card extends AbstractBaseEntity
             $str .= ' ';
 
             foreach ($this->getSkills() as $skill) {
-                $str .= $skill.' ';
+                $str .= $skill . ' ';
             }
-            $str .= ' ('.self::getFactionName($this->getRace()).')';
+            $str .= ' (' . self::getFactionName($this->getRace()) . ')';
         } catch (\Exception $ex) {
-            echo $ex->getMessage()."\n";
+            echo $ex->getMessage() . "\n";
             echo $ex->getTraceAsString();
             $str = '';
         }
@@ -134,7 +134,7 @@ class Card extends AbstractBaseEntity
      */
     public function setAttack($attack)
     {
-        $this->attack = (int) $attack;
+        $this->attack = (int)$attack;
 
         return $this;
     }
@@ -158,7 +158,7 @@ class Card extends AbstractBaseEntity
      */
     public function setDefense($defense)
     {
-        $this->defense = (int) $defense;
+        $this->defense = (int)$defense;
 
         return $this;
     }
@@ -182,7 +182,7 @@ class Card extends AbstractBaseEntity
      */
     public function setDelay($delay)
     {
-        $this->delay = (int) $delay;
+        $this->delay = (int)$delay;
 
         return $this;
     }

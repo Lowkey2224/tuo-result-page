@@ -56,10 +56,10 @@ class OwnedCard extends AbstractBaseEntity
     {
         $str = $this->card->getName();
         if ($this->level) {
-            $str .= '-'.$this->level;
+            $str .= '-' . $this->level;
         }
         if ($this->amount > 1) {
-            $str .= ' ('.$this->amount.')';
+            $str .= ' (' . $this->amount . ')';
         }
 
         return $str;
@@ -72,10 +72,10 @@ class OwnedCard extends AbstractBaseEntity
     {
         $str = $this->card->getName();
         if ($this->level) {
-            $str .= '-'.$this->level;
+            $str .= '-' . $this->level;
         }
         if ($this->amountInDeck > 1) {
-            $str .= ' ('.$this->amountInDeck.')';
+            $str .= ' (' . $this->amountInDeck . ')';
         }
 
         return $str;

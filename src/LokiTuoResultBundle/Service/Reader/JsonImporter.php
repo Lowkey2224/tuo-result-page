@@ -41,10 +41,10 @@ class JsonImporter extends AbstractImporter
 
 
         try {
-            $this->logger->info('Using File with ID '.$file->getId().' for Import');
+            $this->logger->info('Using File with ID ' . $file->getId() . ' for Import');
             list($missions, $guilds, $players, $bge) = $this->preFetchModels($file);
-            $models     = $this->transformToModels($file, $missions, $players, $guilds, $bge);
-            $this->logger->info(count($models).' were Saved');
+            $models = $this->transformToModels($file, $missions, $players, $guilds, $bge);
+            $this->logger->info(count($models) . ' were Saved');
             $count += count($models);
             $this->em->persist($file);
             $file->setStatus(ResultFile::STATUS_IMPORTED);
@@ -69,7 +69,7 @@ class JsonImporter extends AbstractImporter
         $content     = json_decode($resultFile->getContent());
 
         $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
-        $results      = new Collection();
+        $results = new Collection();
 
         $simType     = $content->type;
         //TODO ADD MissionType
@@ -131,21 +131,21 @@ class JsonImporter extends AbstractImporter
             $ids['mission'][] = $uuid;
             foreach ($mission->results as $result) {
                 $ids['player'][$result->player_id] = $result->player_id;
-                $ids['guild'][$result->guild_id]  = $result->guild_id;
+                $ids['guild'][$result->guild_id] = $result->guild_id;
             }
         }
         $players  = new Collection($playerRepo->findByIds($ids['player']));
 
 
-        $players  = $players->keyBy(function (Player $p) {
+        $players  = $players->keyBy(function(Player $p) {
             return $p->getId();
         });
         $guilds   = new Collection($guildRepo->findByIds($ids['guild']));
-        $guilds   = $guilds->keyBy(function (Guild $p) {
+        $guilds   = $guilds->keyBy(function(Guild $p) {
             return $p->getId();
         });
         $missions = new Collection($missionRepo->finyByUuids($ids['mission']));
-        $missions = $missions->keyBy(function (Mission $p) {
+        $missions = $missions->keyBy(function(Mission $p) {
             return $p->getUuid();
         });
         return [$missions, $guilds, $players, $bge];
@@ -173,8 +173,8 @@ class JsonImporter extends AbstractImporter
             $name   = $_tmp['name'];
             $card   = $cardRepo->findOneBy(['name' => $name]);
 
-            if (! $card) {
-                throw new Exception("No Card found with name:". $name);
+            if (!$card) {
+                throw new Exception("No Card found with name:" . $name);
             }
             for ($i = 0; $i < $amount; ++$i) {
                 $deckEntry = new DeckEntry();
