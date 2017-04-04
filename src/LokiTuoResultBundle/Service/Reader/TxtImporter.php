@@ -13,7 +13,9 @@ use LokiTuoResultBundle\Entity\ResultFile;
 class TxtImporter extends AbstractImporter
 {
 
-
+    /**
+     * @inheritdoc
+     */
     public function importFile(ResultFile $file, &$count)
     {
         try {

@@ -25,7 +25,7 @@ class Service
     /** @var CardManager */
     private $ownedCardManager;
 
-    /** @var EntityManager  */
+    /** @var EntityManager */
     private $em;
 
     /**
@@ -50,23 +50,8 @@ class Service
      */
     public function readFile($path)
     {
-        $this->logger->info("Reading file $path");
-        $content = $this->getFileContents($path);
-
-        $file = new ResultFile();
-        $name = explode("/", $path);
-        $file->setOriginalName(end($name));
-
-
-        $file->setContent($content);
-        $file->setGuild($this->getGuildName(explode("\n", $content)));
-        $file = $this->setVersion($file);
-
-        $this->em->persist($file);
-        $this->em->flush();
-        $this->logger->info('Persisting file with Id '.$file->getId());
-
-        return $file->getId();
+        $reader = new ResultFileImporter($this->em, $this->logger);
+        return $reader->readFile($path);
     }
 
     /**
@@ -84,33 +69,25 @@ class Service
 
             return 0;
         }
-        $count = 0;
+        $count        = 0;
         $jsonImporter = new JsonImporter($this->em, $this->ownedCardManager, $this->logger);
-        $txtImporter = new TxtImporter($this->em, $this->ownedCardManager, $this->logger);
+        $txtImporter  = new TxtImporter($this->em, $this->ownedCardManager, $this->logger);
 
         foreach ($files as $file) {
-            if ($file->getVersion() == 1) {
-                $txtImporter->importFile($file, $count);
-            } elseif ($file->getVersion() == 2) {
-                $jsonImporter->importFile($file, $count);
+            switch ($file->getVersion()) {
+                case 1:
+                    $txtImporter->importFile($file, $count);
+                    break;
+                case 2:
+                    $jsonImporter->importFile($file, $count);
+                    break;
+                default:
+                    throw new Exception('Unknown Resultfile Version');
             }
+            $this->em->flush();
         }
-        $this->em->flush();
 
         return $count;
-    }
-
-    /**
-     * Reads the File content.
-     *
-     * @param $path
-     *
-     * @return string
-     */
-    private function getFileContents($path)
-    {
-        //Maybe do some validation here.
-        return file_get_contents($path);
     }
 
     /**
@@ -130,40 +107,5 @@ class Service
         } else {
             return [$repo->find($fileId)];
         }
-    }
-
-    /**
-     * Return the Guildname for the given ResultFile.
-     *
-     * @param $content
-     *
-     * @return string
-     */
-    private function getGuildName($content)
-    {
-        $guild = [];
-        if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
-            //Special case where CNS had the Name CTF seems legacy now
-            //FIXME
-            return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
-        } else {
-            $this->logger->error(' NO Guild found in line: '.$content[0]);
-            throw new Exception('No Guild Found');
-        }
-    }
-
-
-    private function setVersion(ResultFile $file)
-    {
-        $name = $file->getOriginalName();
-        if (strpos($name, ".txt")) {
-            $file->setVersion(1);
-        } elseif (strpos($name, ".json")) {
-            $content = json_decode($file->getContent());
-            $file->setVersion($content->version);
-        } else {
-            $file->setVersion(0);
-        }
-        return $file;
     }
 }

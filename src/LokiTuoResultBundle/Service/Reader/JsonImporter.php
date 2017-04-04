@@ -14,14 +14,7 @@ class JsonImporter extends AbstractImporter
 {
 
     /**
-     * Import a Resultfile which is saved into the DB and create results and missions.
-     *
-     * @param ResultFile $file
-     * @param int        $count
-     *
-     * @throws Exception
-     *
-     * @return ResultFile
+     * @inheritdoc
      */
     public function importFile(ResultFile $file, &$count)
     {

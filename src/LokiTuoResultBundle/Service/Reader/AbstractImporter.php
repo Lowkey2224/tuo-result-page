@@ -36,8 +36,19 @@ abstract class AbstractImporter
     }
 
 
+    /**
+     * Import a Resultfile so Missions & Results can be saved
+     * @param ResultFile $file
+     * @param integer $count
+     * @return ResultFile
+     */
     abstract public function importFile(ResultFile $file, &$count);
 
+    /**
+     * Parse a Resultline
+     * @param $line
+     * @return mixed
+     */
     protected function parseResultLine($line)
     {
         if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
