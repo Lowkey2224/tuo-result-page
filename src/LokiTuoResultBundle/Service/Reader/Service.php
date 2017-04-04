@@ -3,11 +3,6 @@
 namespace LokiTuoResultBundle\Service\Reader;
 
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\DeckEntry;
-use LokiTuoResultBundle\Entity\Mission;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
 use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Psr\Log\LoggerAwareTrait;
@@ -20,7 +15,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * Date: 03.08.16
  * Time: 19:38.
  */
-class Service extends AbstractImporter
+class Service
 {
     use LoggerAwareTrait;
 
@@ -29,6 +24,9 @@ class Service extends AbstractImporter
 
     /** @var CardManager */
     private $ownedCardManager;
+
+    /** @var EntityManager  */
+    private $em;
 
     /**
      * Service constructor.
@@ -87,12 +85,12 @@ class Service extends AbstractImporter
             return 0;
         }
         $count = 0;
-        $jsonImporter = new JsonImporter($this->em, $this->ownedCardManager);
-        $jsonImporter->setLogger($this->logger);
+        $jsonImporter = new JsonImporter($this->em, $this->ownedCardManager, $this->logger);
+        $txtImporter = new TxtImporter($this->em, $this->ownedCardManager, $this->logger);
 
         foreach ($files as $file) {
             if ($file->getVersion() == 1) {
-                $this->importFile($file, $count);
+                $txtImporter->importFile($file, $count);
             } elseif ($file->getVersion() == 2) {
                 $jsonImporter->importFile($file, $count);
             }
@@ -100,26 +98,6 @@ class Service extends AbstractImporter
         $this->em->flush();
 
         return $count;
-    }
-
-    private function importFile(ResultFile $file, &$count)
-    {
-        try {
-            $this->logger->info('Using File with ID '.$file->getId().' for Import');
-            $content     = explode("\n", $file->getContent());
-            $transformed = $this->transformContent($content);
-            $this->logger->info('Importing Result for Guild '.$transformed['guild']);
-            $models = $this->transformToModels($transformed['result'], $file, $transformed['guild']);
-            $this->logger->info(count($models).' were Saved');
-            $count += count($models);
-            $file->setGuild($transformed['guild']);
-            $file->setStatus(ResultFile::STATUS_IMPORTED);
-            $file->setMissions(implode(', ', $transformed['missions']));
-            $this->em->persist($file);
-        } catch (Exception $ex) {
-            $file->setStatus(ResultFile::STATUS_ERROR);
-        }
-        return $file;
     }
 
     /**
@@ -133,137 +111,6 @@ class Service extends AbstractImporter
     {
         //Maybe do some validation here.
         return file_get_contents($path);
-    }
-
-    /**
-     * Transform filecontent into an Array.
-     *
-     * @param $content
-     *
-     * @return array ['guild' => GuildName, 'result' => Results]
-     */
-    private function transformContent($content)
-    {
-        $count  = 0;
-        $result = ['guild' => $this->getGuildName($content), 'missions' => []];
-        //THrow away first line
-        array_shift($content);
-
-        foreach ($content as $line) {
-            $tmp = $this->parseResultLine($line);
-            if (array_key_exists('mission', $tmp)) {
-                $name = $tmp['mission'];
-                $result['missions'][$name] = $name;
-                $result['result'][$count] = $tmp;
-            } else {
-                $result['result'][$count] = array_merge($result['result'][$count], $tmp);
-                $count++;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Transform an Array from transformContent into Models.
-     *
-     * @param $transformed
-     * @param ResultFile $file
-     * @param string     $guild
-     *
-     * @return Result[]
-     */
-    private function transformToModels($transformed, ResultFile $file, $guild)
-    {
-        $results     = [];
-        $playerRepo  = $this->em->getRepository('LokiTuoResultBundle:Player');
-        $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
-        $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
-        $guildRepo   = $this->em->getRepository('LokiTuoResultBundle:Guild');
-        $guild       = $guildRepo->findOneBy(['name' => $guild]);
-        foreach ($transformed as $line) {
-            if (! isset($line['deck'])) {
-                $this->logger->warning('Skipped result for Player '.
-                    $line['playername'].' against '.$line['mission'].'. Because no Deck was found');
-                continue;
-            }
-
-            if (! ($player = $playerRepo->findOneBy(['name' => $line['playername']]))) {
-                $player = new Player();
-                $player->setName($line['playername']);
-                $this->em->persist($player);
-            }
-            if (! ($mission = $missionRepo->findOneBy(['name' => $line['mission']]))) {
-                $mission = new Mission();
-                $mission->setName($line['mission']);
-            }
-            $mission->setType($line['simType']);
-            $this->em->persist($mission);
-
-            $result = $resultRepo->findOneBy(['player' => $player, 'mission' => $mission]);
-            if (is_null($result)) {
-                $result = new Result();
-            }
-            $result->setGuild($guild);
-            $result->setSourceFile($file);
-            $result->setPlayer($player);
-            $result->setPercent($line['percent']);
-            $result->setMission($mission);
-            $player->setGuild($guild);
-            $this->em->persist($player);
-            $this->em->persist($result);
-            $this->deleteOldDeck($result);
-            $deck = $this->createDeck($line['deck'], $result);
-            $result->setDeck($deck);
-            $this->em->persist($result);
-            $results[] = $result;
-            $this->logger->debug('Saving Result for Player '.$player->getName());
-        }
-
-        $this->em->flush();
-
-        return $results;
-    }
-
-    /**
-     * Create a Deck from the result line.
-     *
-     * @param $deck
-     * @param Result $result
-     *
-     * @return DeckEntry[]
-     */
-    private function createDeck($deck, Result $result)
-    {
-        $cardRepo   = $this->em->getRepository('LokiTuoResultBundle:Card');
-        $resultDeck = [];
-        $order      = 0;
-        foreach ($deck as $cardName) {
-            $_tmp   = $this->ownedCardManager->transformCardString($cardName);
-            $amount = $_tmp['amount'];
-            $level  = $_tmp['level'];
-            $name   = $_tmp['name'];
-            $card   = $cardRepo->findOneBy(['name' => $name]);
-
-            if (! $card) {
-                $card = new Card();
-                $card->setName($name);
-                $this->em->persist($card);
-                $this->em->flush();
-            }
-            for ($i = 0; $i < $amount; ++$i) {
-                $deckEntry = new DeckEntry();
-                $deckEntry->setPlayOrder($order);
-                $deckEntry->setLevel($level);
-                $deckEntry->setResult($result);
-                $deckEntry->setCard($card);
-                $this->em->persist($deckEntry);
-                ++$order;
-                $resultDeck[] = $deckEntry;
-            }
-        }
-
-        return $resultDeck;
     }
 
     /**
