@@ -1,6 +1,6 @@
 LokiTuoResultBundle\Entity\DeckEntry:
   loki_{Malika, StonewallGarrison, Inheritor}:
     playOrder (unique): <numberBetween(1, 3)>
-    result: "@result-loki"
+    result: "@result_loki"
     level: null
     card: '@<current()>'
