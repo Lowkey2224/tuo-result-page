@@ -36,15 +36,15 @@ class Service
                 $cardFile = new CardFile();
                 $cardFile->setContent($content);
                 $cardFile->setOriginalFileName($fileName);
-                if (! $cfRepo->findOneBy(['checksum' => $cardFile->getChecksum()])) {
+                if (!$cfRepo->findOneBy(['checksum' => $cardFile->getChecksum()])) {
                     $this->em->persist($cardFile);
-                    $this->logger->debug('Read File: '.$fileName);
+                    $this->logger->debug('Read File: ' . $fileName);
                     ++$count;
                 } else {
-                    $this->logger->info('File '.$fileName.' exists already in Database');
+                    $this->logger->info('File ' . $fileName . ' exists already in Database');
                 }
             } else {
-                $this->logger->warning('File does not exist: '.$fileName);
+                $this->logger->warning('File does not exist: ' . $fileName);
             }
         }
         $this->em->flush();

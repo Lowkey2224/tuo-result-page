@@ -53,7 +53,7 @@ class Transformer
             if (isset($object->upgrade)) {
                 $card = $this->readUpgrades($card, $object->upgrade, $skills);
             } else {
-                $this->logger->debug('Card without Upgrade found: '.$card->getName());
+                $this->logger->debug('Card without Upgrade found: ' . $card->getName());
             }
             $result[$card->getName()] = $card;
         }
@@ -116,14 +116,14 @@ class Transformer
 
             switch ($id) {
                 case 'enhance':
-                    $str = $id.' '.$amountOfCards.' '.$enhancedSkill.' '.$skillLevel;
+                    $str = $id . ' ' . $amountOfCards . ' ' . $enhancedSkill . ' ' . $skillLevel;
                     break;
                 case 'evolve':
-                    $str = $id.' '.$amountOfCards.' '.$enhancedSkill.' to '.$evolvedSkill;
+                    $str = $id . ' ' . $amountOfCards . ' ' . $enhancedSkill . ' to ' . $evolvedSkill;
                     break;
                 default:
-                    $str = $id.' '.$amountOfCards.' '.Card::getFactionName($race).' '.$skillLevel;
-                    $str .= ($countdown) ? ' every '.$countdown : '';
+                    $str = $id . ' ' . $amountOfCards . ' ' . Card::getFactionName($race) . ' ' . $skillLevel;
+                    $str .= ($countdown) ? ' every ' . $countdown : '';
             }
             $res[$id] = $str;
         }

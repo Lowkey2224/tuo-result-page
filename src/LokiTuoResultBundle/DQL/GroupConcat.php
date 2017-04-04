@@ -18,9 +18,9 @@ class GroupConcat extends FunctionNode
 
     public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
-        return 'GROUP_CONCAT('.
-            ($this->isDistinct ? 'DISTINCT ' : '').
-            $this->expression->dispatch($sqlWalker).
+        return 'GROUP_CONCAT(' .
+            ($this->isDistinct ? 'DISTINCT ' : '') .
+            $this->expression->dispatch($sqlWalker) .
             ')';
     }
 

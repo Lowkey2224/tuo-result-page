@@ -81,7 +81,7 @@ class Simulation
         $missions = $this->getMissions();
         $str      = $missions[$i];
         if ($bge) {
-            $str .= ' with '.$bge->getName();
+            $str .= ' with ' . $bge->getName();
         }
 
         return $str;
@@ -119,7 +119,7 @@ class Simulation
     public function setStructures($structures)
     {
         $this->structures = explode(',', $structures);
-        $this->structures = array_map(function ($element) {
+        $this->structures = array_map(function($element) {
             return trim($element);
         }, $this->structures);
     }
@@ -130,7 +130,7 @@ class Simulation
     public function setEnemyStructures($enemyStructures)
     {
         $this->enemyStructures = explode(',', $enemyStructures);
-        $this->enemyStructures = array_map(function ($element) {
+        $this->enemyStructures = array_map(function($element) {
             return trim($element);
         }, $this->enemyStructures);
     }
@@ -141,7 +141,7 @@ class Simulation
     public function setMissions($missions)
     {
         $this->missions = explode(',', $missions);
-        $this->missions = array_map(function ($element) {
+        $this->missions = array_map(function($element) {
             return trim($element);
         }, $this->missions);
     }

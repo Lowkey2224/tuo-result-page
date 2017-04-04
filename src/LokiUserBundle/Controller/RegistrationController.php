@@ -75,7 +75,7 @@ class RegistrationController extends BaseController
             // Form invalid
             $event = new FormEvent($form, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
-            if (! $userService->isRegistrationCodeValid($user->getRegistrationCode())) {
+            if (!$userService->isRegistrationCodeValid($user->getRegistrationCode())) {
                 $this->addFlash('error', 'Registration Code not Correct. Please Contact a Guild Officer');
             }
 

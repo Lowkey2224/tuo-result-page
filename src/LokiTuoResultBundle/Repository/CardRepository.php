@@ -14,8 +14,8 @@ class CardRepository extends AbstractBaseRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.name LIKE  :letter ')
-            ->orderBy('c.'.$orderBy, $orderDirection)
-            ->setParameter('letter', $letter.'%')
+            ->orderBy('c.' . $orderBy, $orderDirection)
+            ->setParameter('letter', $letter . '%')
             ->getQuery()
             ->getResult();
     }

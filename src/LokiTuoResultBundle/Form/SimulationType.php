@@ -39,11 +39,11 @@ class SimulationType extends AbstractType
                 'class'        => 'LokiTuoResultBundle\Entity\BattleGroundEffect',
                 'label'        => 'form.simulation.backgroundEffect',
                 'required'     => false,
-                'choice_label' => function (BattleGroundEffect $bge) {
-                    return $bge->getName().' ('.$bge->getDescription().')';
+                'choice_label' => function(BattleGroundEffect $bge) {
+                    return $bge->getName() . ' (' . $bge->getDescription() . ')';
                 },
                 'multiple'      => false,
-                'query_builder' => function (BattleGroundEffectRepository $br) {
+                'query_builder' => function(BattleGroundEffectRepository $br) {
                     return $br->createQueryBuilder('p')
                         ->orderBy('p.name', 'ASC');
                 },
@@ -80,7 +80,7 @@ class SimulationType extends AbstractType
             ->add('guild', EntityType::class, [
                 'label'         => 'form.simulation.guild',
                 'class'         => 'LokiTuoResultBundle\Entity\Guild',
-                'query_builder' => function (GuildRepository $gr) {
+                'query_builder' => function(GuildRepository $gr) {
                     $qb = $gr->createQueryBuilder('g')
                         ->where('g.enabled = 1')
                         ->orderBy('g.name', 'ASC');
@@ -98,13 +98,13 @@ class SimulationType extends AbstractType
 
                 // use the User.username property as the visible option string
                 'choice_label' => 'name',
-                'choice_attr'  => function (Player $val) {
+                'choice_attr'  => function(Player $val) {
                     return ['data-guild' => $val->getGuild()];
                 },
 
                 // used to render a select box, check boxes or radios
                 'multiple'      => true,
-                'query_builder' => function (PlayerRepository $pr) {
+                'query_builder' => function(PlayerRepository $pr) {
                     $qb = $pr->createQueryBuilder('p')
                         ->where('p.active = ?1')
                         ->setParameter(1, true)//not empty

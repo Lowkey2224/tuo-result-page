@@ -50,7 +50,7 @@ class Transformer
                 $bge->setDescription($description);
                 $bges[] = $bge;
             } else {
-                $this->logger->warning("Line $lineNumber could not be recognized\n".$line);
+                $this->logger->warning("Line $lineNumber could not be recognized\n" . $line);
             }
         }
 

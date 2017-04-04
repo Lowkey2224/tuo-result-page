@@ -39,7 +39,7 @@ class Service
 
     public function postSimulation(Simulation $simulation)
     {
-        $url     = 'http://'.$this->url.'/job/create';
+        $url     = 'http://' . $this->url . '/job/create';
         $headers = [];
         $player  = $simulation->getPlayers()[0];
         $content = $this->simulationToArray($simulation);
@@ -52,7 +52,7 @@ class Service
 
     public function post2(Simulation $simulation)
     {
-        $url     = 'http://'.$this->url.'/job/create';
+        $url     = 'http://' . $this->url . '/job/create';
         $arr     = $this->simulationToArray($simulation);
         $content = $this->arr2Body($arr);
         $result  = $this->sendCurl($arr, $content, $url);
@@ -82,7 +82,7 @@ class Service
         $content['enemy_structs'] = implode(',', $simulation->getEnemyStructures());
         $content['command']       = $simulation->getSimType();
 //        $content['cmd_count'] = $simulation->getIterations();
-        $content['cmd_count'] =  1;
+        $content['cmd_count'] = 1;
         $content['fund']      = 0;
         if ($simulation->getBackgroundEffect()) {
             $content['bge'] = $simulation->getBackgroundEffect()->getName();
@@ -97,7 +97,7 @@ class Service
 
         foreach ($simulation as $key => $value) {
             $value = str_replace("''", '', $value);
-            $fields_string .= $key.'='.$value.'&';
+            $fields_string .= $key . '=' . $value . '&';
         }
         rtrim($fields_string, '&');
 

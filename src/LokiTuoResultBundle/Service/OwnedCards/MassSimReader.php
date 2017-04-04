@@ -66,7 +66,7 @@ class MassSimReader
             preg_match('/echo "member name (.+)@/', $line, $match);
             if (count($match) == 2) {
                 $currentPlayerName = $match[1];
-                if (! isset($map[$currentPlayerName])) {
+                if (!isset($map[$currentPlayerName])) {
                     $map[$currentPlayerName] = [];
                 }
             }
@@ -81,13 +81,13 @@ class MassSimReader
                 $playerId = $match[1];
 
                 foreach ($map[$currentPlayerName] as $card) {
-                    $key = $card['name'].$card['level'];
+                    $key = $card['name'] . $card['level'];
                     if (array_key_exists($key, $ownedCards[$playerId])) {
                         $ownedCards[$playerId][$key]['inDeck'] = $card['inDeck'];
                     }
                 }
                 foreach ($ownedCards[$playerId] as $card) {
-                    $key                                         = $card['name'].$card['level'];
+                    $key                                         = $card['name'] . $card['level'];
                     $result['players'][$currentPlayerName][$key] = $card;
                 }
             }
@@ -108,17 +108,17 @@ class MassSimReader
         $result    = [];
         $guildRepo = $this->em->getRepository('LokiTuoResultBundle:Guild');
 
-        $guild  = $guildRepo->findOneBy(['name' => $map['guild']]);
+        $guild = $guildRepo->findOneBy(['name' => $map['guild']]);
         foreach ($map['players'] as $playerName => $cardArray) {
             $player = $this->findPlayerOrCreate($playerName, $guild);
-            $this->logger->debug('Trying to persist '.count($cardArray).' cards for Player '.$player->getName());
+            $this->logger->debug('Trying to persist ' . count($cardArray) . ' cards for Player ' . $player->getName());
             $result[$player->getName()] = $this->ownedCardManager->transformArrayToModels($player, $cardArray);
             $this->ownedCardManager->removeOldOwnedCardsForPlayer($player);
             foreach ($result[$player->getName()] as $card) {
                 $this->em->persist($card);
             }
             $this->em->flush();
-            $this->logger->debug('persisted '.count($result[$playerName]).' cards for Player '.$playerName);
+            $this->logger->debug('persisted ' . count($result[$playerName]) . ' cards for Player ' . $playerName);
         }
         $this->em->flush();
 
@@ -137,7 +137,7 @@ class MassSimReader
     {
         $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
         $player     = $playerRepo->findOneBy(['name' => $playerName]);
-        if (! $player) {
+        if (!$player) {
             $this->logger->info("Created Player $playerName because no Player was found.");
             $player = new Player();
             $player->setName($playerName);
@@ -206,7 +206,7 @@ class MassSimReader
         $cards = explode(',', $matches[1]);
         foreach ($cards as $card) {
             $entry       = $this->ownedCardManager->transformCardString(trim($card), $inDeck);
-            $key         = $entry['name'].$entry['level'];
+            $key         = $entry['name'] . $entry['level'];
             $owned[$key] = $entry;
         }
 
@@ -230,7 +230,7 @@ class MassSimReader
             //FIXME seems legacy now
             return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
         } else {
-            $this->logger->error('No Correct Guild found in '.$content[0]);
+            $this->logger->error('No Correct Guild found in ' . $content[0]);
             throw new Exception('No Guild Found');
         }
     }

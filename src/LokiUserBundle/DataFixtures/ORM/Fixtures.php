@@ -20,7 +20,7 @@ class Fixtures implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $ary[]   = __DIR__.'/fixtures/users.yml';
+        $ary[]   = __DIR__ . '/fixtures/users.yml';
         $objects = \Nelmio\Alice\Fixtures::load($ary, $manager);
 
         return $objects;

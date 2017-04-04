@@ -43,7 +43,7 @@ class PlayerType extends AbstractType
                 'translation_domain' => 'LokiTuoResultBundle',
                 'choice_label'       => 'username',
                 'multiple'           => false,
-                'query_builder'      => function (UserRepository $repository) {
+                'query_builder'      => function(UserRepository $repository) {
                     return $repository->createQueryBuilder('u')
                         ->where('u.enabled = true')
                         ->orderBy('u.username', 'ASC');

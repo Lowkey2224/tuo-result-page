@@ -51,6 +51,6 @@ EOT
         $reader->setPersister($persister);
         $count = $reader->readFile($filepath);
 
-        $output->writeln('There were <info>'.$count.'</info> Entries to be persisted.');
+        $output->writeln('There were <info>' . $count . '</info> Entries to be persisted.');
     }
 }
