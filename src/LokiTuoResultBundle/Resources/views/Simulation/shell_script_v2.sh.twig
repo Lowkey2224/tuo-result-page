@@ -20,7 +20,7 @@ echo Number of sims pending : {{ simulation.numberOfSimulations }}
 
 
 echo "{"  > ./${resultFile}
-echo "\"version\": 2.0,"   >> ./${resultFile}
+echo "\"version\": 2,"   >> ./${resultFile}
 echo "   \"bge\": {% if simulation.backgroundEffect %}\"{{ simulation.backgroundEffect.name | raw}}\"{% else %}null{% endif %},">> ./${resultFile}
 echo "   \"type\": \"{{ simulation.simType }}\","  >> ./${resultFile}
 echo "   \"ordered\": {{ simulation.ordered?"true":"false" }},"  >> ./${resultFile}

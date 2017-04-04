@@ -16,7 +16,7 @@ echo Number of sims pending : 1
 
 
 echo "{"  > ./${resultFile}
-echo "\"version\": 2.0,"   >> ./${resultFile}
+echo "\"version\": 2,"   >> ./${resultFile}
 echo "   \"bge\": null,">> ./${resultFile}
 echo "   \"type\": \"climb\","  >> ./${resultFile}
 echo "   \"ordered\": true,"  >> ./${resultFile}
