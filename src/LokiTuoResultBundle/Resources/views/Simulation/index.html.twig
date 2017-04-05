@@ -69,15 +69,22 @@
             var disableOptions = function (guild) {
                 var selectPlayers = $('#simulation_players');
                 var allOptions = selectPlayers.find('option');
-                console.log(allOptions);
+                var options = null;
                 allOptions.hide();
                 allOptions.attr('disabled','disabled');
-                var options = selectPlayers.find('option[data-guild="'+guild+'"]');
-                console.log(options);
+
+                if(guild === ""){
+                    options = allOptions;
+                }else {
+                    options = selectPlayers.find('option[data-guild="' + guild + '"]');
+                }
+
                 options.show();
                 options.removeAttr('disabled');
                 options.disabled = true;
                 console.log(options);
+
+
             };
 
             disableOptions(guildSelect.find("option:selected").text());

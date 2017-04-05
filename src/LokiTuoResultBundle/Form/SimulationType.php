@@ -80,6 +80,7 @@ class SimulationType extends AbstractType
             ->add('guild', EntityType::class, [
                 'label'         => 'form.simulation.guild',
                 'class'         => 'LokiTuoResultBundle\Entity\Guild',
+                'required'         => false,
                 'query_builder' => function(GuildRepository $gr) {
                     $qb = $gr->createQueryBuilder('g')
                         ->where('g.enabled = 1')
