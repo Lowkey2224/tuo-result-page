@@ -1,5 +1,5 @@
 {
-    "name": "loki-tuo-result-page",
+    "name": "loki/tuo-result-page",
     "description": "A website Managing Simulations with tuo",
     "license": "proprietary",
     "type": "project",
