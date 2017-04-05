@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\AbstractBaseEntity;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class DatabasePersister implements PersisterInterface
 {
@@ -37,7 +38,7 @@ class DatabasePersister implements PersisterInterface
             } else {
                 $msg = sprintf('No Entity found for class %s with id %d', get_class($entity), $entity->getId());
                 $this->logger->error($msg);
-                die('Nicht gefunden');
+                throw new Exception($msg);
             }
 
             $this->em->persist($entity);
