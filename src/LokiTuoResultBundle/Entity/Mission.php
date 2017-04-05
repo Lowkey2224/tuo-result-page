@@ -197,6 +197,6 @@ class Mission extends AbstractBaseEntity
     {
         $uuid = 'mission|%s|bge|%s|structures|%s';
 
-        return sprintf($uuid, $name, $bge ? $bge->id : 'null', $structures);
+        return sprintf($uuid, $name, $bge ? $bge->getId(): 'null', $structures);
     }
 }

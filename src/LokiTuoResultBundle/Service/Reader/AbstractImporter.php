@@ -52,6 +52,7 @@ abstract class AbstractImporter
      */
     protected function parseResultLine($line)
     {
+        $result = [];
         if (preg_match('/member name (.*?)@/', $line, $name) === 1) {
             $name = $name[1];
             $result['playername'] = $name;
@@ -144,7 +145,7 @@ abstract class AbstractImporter
      *
      * @return array
      */
-    protected function createDeck($deck, Result $result, $cards)
+    protected function createDeck($deck, Result $result, Collection $cards)
     {
         $resultDeck = [];
         $order      = 0;
@@ -153,7 +154,6 @@ abstract class AbstractImporter
             $amount = $_tmp['amount'];
             $level  = $_tmp['level'];
             $name   = $_tmp['name'];
-//            $this->logger->error(sprintf("Comp %s after %s", $cardName, $name));
             $card   = $cards->get($name);
 
             if (! $card) {
