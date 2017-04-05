@@ -49,9 +49,9 @@
                             </li>
                             <li {% if currentPath == '/simulation/create' %} class="active" {% endif %}>
                                 <a href="{{ path('loki.tuo.sim.create') }}">Generate Mass Sim Script</a>
-                            <li {% if currentPath == '/simulation/create/vpc' %} class="active" {% endif %}>
-                                <a href="{{ path('loki.tuo.sim.create.vpc') }}">Execute VPC Simulation</a>
-                            </li>
+                            {#<li {% if currentPath == '/simulation/create/vpc' %} class="active" {% endif %}>#}
+                                {#<a href="{{ path('loki.tuo.sim.create.vpc') }}">Execute VPC Simulation</a>#}
+                            {#</li>#}
                             <li {% if currentPath == '/simulation/upload' %} class="active" {% endif %}>
                                 <a href="{{ path('loki.tuo.result.upload') }}">Upload Result</a>
                             </li>
