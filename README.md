@@ -4,6 +4,7 @@ Tyrant unleashed optimizer Result Page
 [![Dependency Status](https://www.versioneye.com/user/projects/58c3e32262d6020040aec79e/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58c3e32262d6020040aec79e)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Lowkey2224/tuo-result-page)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/89a3a6d0-27b9-4d9b-b801-5e854af0b1f7/mini.png)](https://insight.sensiolabs.com/projects/89a3a6d0-27b9-4d9b-b801-5e854af0b1f7)
 
 This is a Symfony Project, designed in use with the [Tyrant unleashed Optimizer](https://sourceforge.net/p/tyrant-unleashed-optimizer/).
 
