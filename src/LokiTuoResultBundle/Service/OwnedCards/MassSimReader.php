@@ -117,7 +117,6 @@ class MassSimReader
             foreach ($result[$player->getName()] as $card) {
                 $this->em->persist($card);
             }
-            $this->em->flush();
             $this->logger->debug('persisted ' . count($result[$playerName]) . ' cards for Player ' . $playerName);
         }
         $this->em->flush();
@@ -226,9 +225,7 @@ class MassSimReader
     {
         $guild = [];
         if (preg_match('/([a-zA-z]+) Results/', $content[0], $guild) === 1) {
-            //Special Case where the Guild CNS had the PRefix CTF
-            //FIXME seems legacy now
-            return ($guild[1] == 'CTF') ? 'CNS' : $guild[1];
+            return  $guild[1];
         } else {
             $this->logger->error('No Correct Guild found in ' . $content[0]);
             throw new Exception('No Guild Found');

@@ -12,19 +12,6 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
-        in_memory:
-            memory:
-                users:
-                    cns:
-                        password: $2y$12$Pk7Hcx21hzd6VzF5gOE3LeV2yekW6EwoGCyCjcJDD8SZBZalpBq/O
-                        roles: ['ROLE_USER', 'ROLE_CNS']
-                    ctp:
-                        password: $2y$12$ZV1SF3PtdLPAtHB4NrLLeulx3T5CY2hfsl.OJVuREjt8R9YC2vocm
-                        roles: ['ROLE_USER', 'ROLE_CTP']
-                    officer:
-                        password: $2y$12$ZokaklparLJq9IsDs5qjwOHQRnUfEWMW9XqHIPSUNDNJ96/NQZxgS
-                        roles: ['ROLE_ADMIN', 'ROLE_CTP', 'ROLE_CNS']
-
     firewalls:
         main:
             pattern: ^/

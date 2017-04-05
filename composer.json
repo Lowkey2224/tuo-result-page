@@ -1,5 +1,6 @@
 {
-    "name": "Loki Tyrant Unleashed Optimizer Result Page",
+    "name": "loki-tuo-result-page",
+    "description": "A website Managing Simulations with tuo",
     "license": "proprietary",
     "type": "project",
     "autoload": {

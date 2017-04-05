@@ -84,8 +84,8 @@ class Service
                 default:
                     throw new Exception('Unknown Resultfile Version');
             }
-            $this->em->flush();
         }
+        $this->em->flush();
 
         return $count;
     }

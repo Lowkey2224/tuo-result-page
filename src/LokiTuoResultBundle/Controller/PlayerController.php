@@ -244,7 +244,7 @@ class PlayerController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addMassCardsForPlayer(Request $request, Player $player)
+    public function addMassCardsForPlayerAction(Request $request, Player $player)
     {
         $form = $this->createForm(MassOwnedCardType::class);
         $form->handleRequest($request);
@@ -281,7 +281,7 @@ class PlayerController extends Controller
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      * @Security("is_granted('delete.player', player)")
      */
-    public function deleteMassCardsForPlayer(Player $player)
+    public function deleteMassCardsForPlayerAction(Player $player)
     {
         $manager = $this->get('loki_tuo_result.owned_card.manager');
         $manager->setLogger($this->get('logger'));
@@ -357,7 +357,7 @@ class PlayerController extends Controller
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/{id}/edit", name="loki.tuo.player.edit", requirements={"id":"\d+"})
      */
-    public function editPlayer(Request $request, Player $player)
+    public function editPlayerAction(Request $request, Player $player)
     {
         $action = $this->generateUrl('loki.tuo.player.edit', ['id' => $player->getId()]);
         $form   = $this->getPlayerForm($player, $action);
