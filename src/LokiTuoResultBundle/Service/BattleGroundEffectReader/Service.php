@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 05.12.16
- * Time: 20:22
+ * Time: 20:22.
  */
 
 namespace LokiTuoResultBundle\Service\BattleGroundEffectReader;
@@ -20,7 +20,7 @@ class Service
     use LoggerAwareTrait;
     use PersisterAwareTrait;
 
-    /** @var EntityManager  */
+    /** @var EntityManager */
     private $em;
 
     public function __construct(EntityManager $em, $logger = null)
@@ -32,21 +32,23 @@ class Service
 
     /**
      * @param $filepath
-     * @return int
+     *
      * @throws FileNotFoundException if the given File is not available
-     * @throws NoPersisterExpection if there is no PersisterInterface set
+     * @throws NoPersisterExpection  if there is no PersisterInterface set
+     *
+     * @return int
      */
     public function readFile($filepath)
     {
         if (!file_exists($filepath)) {
-            throw new FileNotFoundException("File with path " . $filepath . " could not be found");
+            throw new FileNotFoundException('File with path ' . $filepath . ' could not be found');
         }
 //        $persister = $this->getPersister();
-        $content = file_get_contents($filepath);
-        $content = explode("\n", $content);
+        $content     = file_get_contents($filepath);
+        $content     = explode("\n", $content);
         $transformer = new Transformer($this->logger);
-        $models = $transformer->transformToModels($content);
-        $repo = $this->em->getRepository('LokiTuoResultBundle:BattleGroundEffect');
+        $models      = $transformer->transformToModels($content);
+        $repo        = $this->em->getRepository('LokiTuoResultBundle:BattleGroundEffect');
         foreach ($models as $battleGroundEffect) {
             $old = $repo->findOneBy(['name' => $battleGroundEffect->getName()]);
             if ($old) {

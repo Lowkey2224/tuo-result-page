@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LokiUserBundle\Event;
 
 use LokiUserBundle\Entity\User;
@@ -27,7 +26,7 @@ class RegistrationCompleteEvent extends Event
      */
     public function __construct(User $user, Request $request = null)
     {
-        $this->user = $user;
+        $this->user    = $user;
         $this->request = $request;
     }
 

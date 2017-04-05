@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 21.10.16
- * Time: 15:50
+ * Time: 15:50.
  */
 
 namespace LokiTuoResultBundle\Service\Simulation;
@@ -26,8 +26,9 @@ class ShellService implements SimulationCreatorInterface
 
     public function getSimulation(Simulation $simulation)
     {
-        return $this->engine->render('@LokiTuoResult/Simulation/shell_script.sh.twig', [
-            'simulation' => $simulation
+        $simulation->setResultFile("result.json");
+        return $this->engine->render('@LokiTuoResult/Simulation/shell_script_v2.sh.twig', [
+            'simulation' => $simulation,
         ]);
     }
 }

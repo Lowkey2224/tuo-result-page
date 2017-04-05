@@ -1,4 +1,8 @@
 LokiTuoResultBundle\Entity\Player:
-    player-{loki, lowkey, loken}:
+    player_{loki, lowkey}:
         name: <current()>
         guild: '@CTN'
+
+    player_loken:
+        name: 'loken'
+        guild: '@CTP'

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 15.11.16
- * Time: 17:28
+ * Time: 17:28.
  */
 
 namespace LokiUserBundle\Form;

@@ -3,16 +3,18 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 05.12.16
- * Time: 20:12
+ * Time: 20:12.
  */
 
 namespace LokiTuoResultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * BatteGroundEffect
- * This is a Property which can be used in Simulations
+ * This is a Property which can be used in Simulations.
+ *
  * @ORM\Table(name="battle_ground_effect")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\BattleGroundEffectRepository")
  * @ORM\HasLifecycleCallbacks()
@@ -36,6 +38,12 @@ class BattleGroundEffect extends AbstractBaseEntity
      * @ORM\Column(type="string")
      */
     private $category;
+
+    /**
+     * @var Mission[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="Mission", mappedBy="bge", cascade={"remove"})
+     */
+    private $missions;
 
     /**
      * @return mixed
@@ -83,5 +91,21 @@ class BattleGroundEffect extends AbstractBaseEntity
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return ArrayCollection|Mission[]
+     */
+    public function getMissions()
+    {
+        return $this->missions;
+    }
+
+    /**
+     * @param ArrayCollection|Mission[] $missions
+     */
+    public function setMissions($missions)
+    {
+        $this->missions = $missions;
     }
 }

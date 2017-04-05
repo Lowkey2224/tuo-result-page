@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 25.01.17
- * Time: 22:44
+ * Time: 22:44.
  */
 
 namespace LokiTuoResultBundle\DQL;
 
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\Lexer;
 
 class GroupConcat extends FunctionNode
 {
@@ -26,7 +26,6 @@ class GroupConcat extends FunctionNode
 
     public function parse(\Doctrine\ORM\Query\Parser $parser)
     {
-
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
 

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * OwnedCard
+ * OwnedCard.
  *
  * @ORM\Table(name="owned_card")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\OwnedCardRepository")
@@ -18,8 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class OwnedCard extends AbstractBaseEntity
 {
-
-
     /**
      * @var int
      *
@@ -34,13 +32,11 @@ class OwnedCard extends AbstractBaseEntity
      */
     private $amount = 1;
 
-
     /**
      * @var int
      * @ORM\Column(type="integer")
      */
     private $amountInDeck = 0;
-
 
     /**
      * @var Player
@@ -58,14 +54,14 @@ class OwnedCard extends AbstractBaseEntity
 
     public function __toString()
     {
-
         $str = $this->card->getName();
         if ($this->level) {
-            $str .= "-" . $this->level;
+            $str .= '-' . $this->level;
         }
         if ($this->amount > 1) {
-            $str .= " (" . $this->amount . ")";
+            $str .= ' (' . $this->amount . ')';
         }
+
         return $str;
     }
 
@@ -76,18 +72,19 @@ class OwnedCard extends AbstractBaseEntity
     {
         $str = $this->card->getName();
         if ($this->level) {
-            $str .= "-" . $this->level;
+            $str .= '-' . $this->level;
         }
         if ($this->amountInDeck > 1) {
-            $str .= " (" . $this->amountInDeck . ")";
+            $str .= ' (' . $this->amountInDeck . ')';
         }
+
         return $str;
     }
 
     /**
-     * Set level
+     * Set level.
      *
-     * @param integer $level
+     * @param int $level
      *
      * @return OwnedCard
      */
@@ -99,7 +96,7 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * Get level
+     * Get level.
      *
      * @return int
      */
@@ -109,9 +106,9 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * Set amount
+     * Set amount.
      *
-     * @param integer $amount
+     * @param int $amount
      *
      * @return OwnedCard
      */
@@ -123,7 +120,7 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * Get amount
+     * Get amount.
      *
      * @return int
      */

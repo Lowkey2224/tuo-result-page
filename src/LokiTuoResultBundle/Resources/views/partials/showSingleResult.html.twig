@@ -13,8 +13,8 @@
         Player: <a
                 href="{{ path("loki.tuo.player.results.show", {'id': result.player.id}) }}"><b>[{{ result.guild }}] {{ result.player.name }}</b>
         </a>with {{ result.percent/10 | number_format(2) }}% for mission
-        <a href="{{ path("tuo.showmission", {'missionId': result.mission.id, 'guild' : result.guild}) }}"><b>{{ result.mission.name }}</b></a>
-        <a href="{{ path("tuo.resultfile.show", {'fileId': result.sourceFile.id}) }}">
+        <a href="{{ path("tuo.showmission", {'id': result.mission.id, 'guild' : result.guild}) }}"><b>{{ result.mission.name }}</b></a>
+        <a href="{{ path("tuo.resultfile.show", {'id': result.sourceFile.id}) }}">
             <i class="pull-right glyphicon glyphicon-floppy-save"></i>
         </a>
         <a href="{{ path("loki.tuo.player.cards.show", {'id': result.player.id}) }}">

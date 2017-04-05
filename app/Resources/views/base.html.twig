@@ -41,17 +41,31 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li {% if currentPath starts with '/simulation/' %} class="active" {% endif %}><a
-                                href="{{ path('tuo.index') }}">Simulations <span class="sr-only">(current)</span></a>
+                    <li class="dropdown{% if currentPath starts with '/simulation/' %} active{% endif %}">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Simulation<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li {% if currentPath == '/simulation/' %}class="active"{% endif %}>
+                                <a href="{{ path('tuo.index') }}">Simulations</a>
+                            </li>
+                            <li {% if currentPath == '/simulation/create' %} class="active" {% endif %}>
+                                <a href="{{ path('loki.tuo.sim.create') }}">Generate Mass Sim Script</a>
+                            {#<li {% if currentPath == '/simulation/create/vpc' %} class="active" {% endif %}>#}
+                                {#<a href="{{ path('loki.tuo.sim.create.vpc') }}">Execute VPC Simulation</a>#}
+                            {#</li>#}
+                            <li {% if currentPath == '/simulation/upload' %} class="active" {% endif %}>
+                                <a href="{{ path('loki.tuo.result.upload') }}">Upload Result</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li {% if currentPath starts with '/player' %} class="active" {% endif %}>
+                        <a href="{{ path('loki.tuo.player.all.show') }}">Players</a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
                     {% endif %}
 
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <li><a href="{{ path('loki.tuo.result.upload') }}">Upload Result</a></li>
-                        <li {% if currentPath starts with '/player/' %} class="active" {% endif %}><a
-                                    href="{{ path('loki.tuo.player.all.show') }}">Players</a></li>
-                    {% endif %}
 
                     {% if is_granted('ROLE_MODERATOR') %}
                         <li class="dropdown{% if currentPath starts with '/import/'

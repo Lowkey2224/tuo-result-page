@@ -3,63 +3,79 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 17.10.16
- * Time: 15:37
+ * Time: 15:37.
  */
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\Mission;
+use LokiTuoResultBundle\Entity\ResultFile;
 use LokiTuoResultBundle\Form\MissionType;
 use LokiTuoResultBundle\Form\ResultFileType;
 use LokiTuoResultBundle\Form\SimulationType;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * Class SimulationController
- * @package LokiTuoResultBundle\Controller
+ * Class SimulationController.
+ *
  * @Route("/simulation")
  */
 class SimulationController extends Controller
 {
-
     /**
      * @Route("/create", name="loki.tuo.sim.create")
      * @Security("has_role('ROLE_USER')")
      */
     public function createSimulationAction(Request $request)
     {
+        $sim  = new Simulation();
+        $form = $this->createForm(SimulationType::class, $sim);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $res      = $this->get('loki_tuo_result.simulation.manager')->getSimulation($sim);
+            $filename = $sim->getScriptType() == 'shell' ? 'mass_sim.sh' : 'mass_sim.bat';
 
-        $sim = new Simulation();
-        $options = [
-            'guilds' => $this->getParameter('guilds'),
-        ];
-        $form = $this->createForm(SimulationType::class, $sim, $options);
-        if ($request->getMethod() == "POST") {
-            $form->handleRequest($request);
-            if (!$form->isValid()) {
-                return $this->render('LokiTuoResultBundle:Simulation:index.html.twig', array(
-                    'form' => $form->createView(),
-                ));
-            }
-
-            $res = $this->get('loki_tuo_result.simulation.manager')->getSimulation($sim);
-            $filename = $sim->getScriptType() == "shell" ? "mass_sim.sh" : "mass_sim.bat";
             return new Response($res, 200, [
-                'content-type' => 'text/text',
-                'cache-control' => 'private',
-                'content-disposition' => 'attachment; filename="' . $filename . '";',
+                'content-type'        => 'text/text',
+                'cache-control'       => 'private',
+                'content-disposition' => 'attachment; filename="'.$filename.'";',
             ]);
         }
-        return $this->render('LokiTuoResultBundle:Simulation:index.html.twig', array(
+
+        return $this->render('LokiTuoResultBundle:Simulation:index.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
+    }
+
+    /**
+     * @Route("/create/vpc", name="loki.tuo.sim.create.vpc")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function createVpcAction(Request $request)
+    {
+        $sim  = new Simulation();
+        $form = $this->createForm(SimulationType::class, $sim);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $res = $this->get('loki_tuo_result.vpc_simulation.manager')->post2($sim);
+            if ($res['id'] != null) {
+                $msg = 'Simulation with Id <a href="http://tuo.throwingbones.com/job/%d">%d</a> has been created';
+                $this->addFlash('success', sprintf($msg, $res['id'], $res['id']));
+            }
+        }
+
+        return $this->render('LokiTuoResultBundle:Simulation:index.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -68,83 +84,77 @@ class SimulationController extends Controller
     public function indexAction()
     {
         $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $groupedBy = $missionRepo->findAllWithGuilds2();
+        $groupedBy   = $missionRepo->findAllWithGuilds2();
+
         return $this->render(
             'LokiTuoResultBundle:Default:index.html.twig',
             [
-                'missions' => $groupedBy
+                'missions' => $groupedBy,
             ]
         );
     }
 
     /**
-     * @Route("/edit/{missionId}",name="loki.tuo.mission.edit", methods={"GET","POST"})
+     * @Route("/edit/{id}",name="loki.tuo.mission.edit", methods={"GET","POST"})
      * @Security("has_role('ROLE_ADMIN')")
-     * @param int $missionId
+     *
+     * @param Mission $mission
+     *
      * @return Response
      */
-    public function editMissionAction(Request $request, int $missionId)
+    public function editMissionAction(Request $request, Mission $mission)
     {
-        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $mission = $missionRepo->find($missionId);
-        if (!$mission) {
-            throw  $this->createNotFoundException("Mission not Found");
-        }
-
         $options = [];
-        $form = $this->createForm(MissionType::class, $mission, $options);
+        $form    = $this->createForm(MissionType::class, $mission, $options);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($mission);
             $this->getDoctrine()->getManager()->flush();
+
             return $this->redirectToRoute('tuo.index');
         }
-
 
         return $this->render(
             'LokiTuoResultBundle:Simulation:editMission.html.twig',
             [
                 'mission' => $mission,
-                'form' => $form->createView(),
+                'form'    => $form->createView(),
             ]
         );
     }
 
-
     /**
-     * @Route("/delete/{missionId}",name="loki.tuo.mission.delete")
+     * @Route("/delete/{id}",name="loki.tuo.mission.delete")
      * @Security("has_role('ROLE_ADMIN')")
-     * @param int $missionId
+     *
+     * @param Mission $mission
+     *
      * @return Response
      */
-    public function deleteMissionAction(int $missionId)
+    public function deleteMissionAction(Mission $mission)
     {
-        $missionRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission');
-        $mission = $missionRepo->find($missionId);
-        if (!$mission) {
-            throw  $this->createNotFoundException("Mission not Found");
-        }
-
         $this->getDoctrine()->getManager()->remove($mission);
         $this->getDoctrine()->getManager()->flush();
+
         return $this->redirectToRoute('tuo.index');
     }
 
     /**
-     * @Route("/mission/{missionId}", requirements={"missionId":"\d+"}, name="tuo.showmission")
-     * @param int $missionId Id of the mission
+     * @Route("/mission/{id}", requirements={"missionId":"\d+"}, name="tuo.showmission")
+     *
+     * @param Mission $mission
+     *
      * @return Response
      * @Security("has_role('ROLE_USER')")
+     *
+     * @Cache(lastModified="mission.getUpdatedAt()", ETag="'Mission' ~ mission.getId() ~ mission.getUpdatedAt().getTimestamp()")
      */
-    public function showMissionAction($missionId)
+    public function showMissionAction(Mission $mission)
     {
-        $mission = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Mission')->find($missionId);
-        if (!$mission) {
-            throw new NotFoundHttpException();
-        }
-        $criteria = ['mission' => $mission];
-        $orderBy = ['guild' => 'ASC', 'id' => 'ASC'];
-        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy($criteria, $orderBy);
+        $orderBy = ['result.guild' => 'ASC', 'result.id' => 'ASC'];
+        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')
+            ->findResultsWithPlayerAndDecks($mission, $orderBy);
+
         return $this->render(
             'LokiTuoResultBundle:Default:showMission.html.twig',
             [
@@ -155,23 +165,20 @@ class SimulationController extends Controller
     }
 
     /**
-     * @param $fileId
+     * @param ResultFile $file
+     *
      * @return Response
-     * @Route("/file/{fileId}", requirements={"fileId":"\d+"}, name="tuo.resultfile.show")
-     * @throws NotFoundHttpException
+     * @Route("/file/{id}", requirements={"fileId":"\d+"}, name="tuo.resultfile.show")
      * @Security("has_role('ROLE_USER')")
      */
-    public function getFileAction($fileId)
+    public function getFileAction(ResultFile $file)
     {
-        $file = $this->getDoctrine()->getRepository('LokiTuoResultBundle:ResultFile')->find($fileId);
-        if (is_null($file)) {
-            throw $this->createNotFoundException("File with this ID not found");
-        }
-        $filename = "result.txt";
+        $filename = 'result.txt';
+
         return new Response($file->getContent(), 200, [
-            'content-type' => 'text/text',
-            'cache-control' => 'private',
-            'content-disposition' => 'attachment; filename="' . $filename . '";',
+            'content-type'        => 'text/text',
+            'cache-control'       => 'private',
+            'content-disposition' => 'attachment; filename="'.$filename.'";',
         ]);
     }
 
@@ -181,25 +188,26 @@ class SimulationController extends Controller
      */
     public function uploadResultAction(Request $request)
     {
-        $form = $this->createForm(ResultFileType::class, null);
+        $form         = $this->createForm(ResultFileType::class, null);
         $resultReader = $this->get('loki_tuo_result.reader');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data['file'] instanceof UploadedFile) {
-                $id = $resultReader->readFile($data['file']->getRealPath());
+                $t           = $data['file']->getClientOriginalName();
+                $id          = $resultReader->readFile($data['file']->getRealPath(), $t);
                 $resultCount = $resultReader->importFileById($id);
                 $this->addFlash('success', "$resultCount Results have been imported");
+
                 return $this->redirectToRoute('tuo.index');
             } else {
-                $this->addFlash('error', "There was an error importing Resultfile");
+                $this->addFlash('error', 'There was an error importing Resultfile');
             }
         }
 
-
-        return $this->render('@LokiTuoResult/Simulation/upload.html.twig', array(
+        return $this->render('@LokiTuoResult/Simulation/upload.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -208,23 +216,22 @@ class SimulationController extends Controller
      */
     public function testAction()
     {
-        $pr = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
+        $pr     = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
         $player = $pr->find(36);
-        $sim = new Simulation();
+        $sim    = new Simulation();
         $sim->setPlayer([$player]);
-        $sim->setGuild("CTN");
-        $sim->setMissions("Steel Mutant-10");
+        $sim->setGuild('CTN');
+        $sim->setMissions('Steel Mutant-10');
         $sim->setIterations(1);
-        $sim->setSimType("climb");
-
+        $sim->setSimType('climb');
 
         $m = $this->get('loki_tuo_result.vpc_simulation.manager');
-        $m->postSimulation($sim);
-
+        $m->post2($sim);
         $form = $this->getUploadForm();
-        return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', array(
+
+        return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**

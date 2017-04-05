@@ -15,8 +15,7 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
         $this
             ->setName('loki:tuo:result:import')
             ->setDescription('Imports the Result with the given Id')
-            ->addArgument('fileId', InputArgument::OPTIONAL, 'Argument description', "next")
-        ;
+            ->addArgument('fileId', InputArgument::OPTIONAL, 'Argument description', 'next');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,7 +26,8 @@ class LokiTuoImportFileCommand extends ContainerAwareCommand
         $reader->setLogger($logger);
         $count = $reader->importFileById($fileId);
 
-        $output->writeln('Persisted a total of ' . $count . " Results.");
+        $output->writeln('Persisted a total of ' . $count . ' Results.');
+
         return 0;
     }
 }

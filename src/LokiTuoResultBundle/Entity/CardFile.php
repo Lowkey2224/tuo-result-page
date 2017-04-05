@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CardFile
+ * CardFile.
  *
  * @ORM\Table(name="card_file")
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardFileRepository")
@@ -14,10 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CardFile extends AbstractBaseEntity
 {
-    const STATUS_NOT_IMPORTED = 0;
-    const STATUS_IMPORTED = 1;
+    const STATUS_NOT_IMPORTED        = 0;
+    const STATUS_IMPORTED            = 1;
     const STATUS_IMPORTED_WITH_ERROR = 2;
-
 
     /**
      * @var string
@@ -39,7 +38,7 @@ class CardFile extends AbstractBaseEntity
     private $originalFileName;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=false)
      */
     private $status;
@@ -53,12 +52,11 @@ class CardFile extends AbstractBaseEntity
     public function __construct()
     {
         $this->status = 0;
-        $this->cards = new ArrayCollection();
+        $this->cards  = new ArrayCollection();
     }
 
-
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -73,7 +71,7 @@ class CardFile extends AbstractBaseEntity
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -97,7 +95,6 @@ class CardFile extends AbstractBaseEntity
     {
         $this->cards = $cards;
     }
-
 
     /**
      * @return int

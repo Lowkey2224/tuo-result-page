@@ -62,10 +62,12 @@ class Transformer
     }
 
     /**
-     * Read the Upgrades of a Card
+     * Read the Upgrades of a Card.
+     *
      * @param Card $card
      * @param $upgrades
      * @param $skills
+     *
      * @return Card
      */
     private function readUpgrades(Card $card, $upgrades, $skills)
@@ -93,8 +95,10 @@ class Transformer
     }
 
     /**
-     * Read an Array of Skill
+     * Read an Array of Skill.
+     *
      * @param $skills
+     *
      * @return array
      */
     private function readSkill($skills)

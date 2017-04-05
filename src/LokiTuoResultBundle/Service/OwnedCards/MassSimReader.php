@@ -17,7 +17,6 @@ use Psr\Log\NullLogger;
 
 /**
  * Class MassSimReader.
- *
  */
 class MassSimReader
 {
@@ -106,10 +105,10 @@ class MassSimReader
      */
     public function savePlayerCardMap($map)
     {
-        $result = [];
+        $result    = [];
         $guildRepo = $this->em->getRepository('LokiTuoResultBundle:Guild');
 
-        $guild  = $guildRepo->findOneBy(["name" => $map['guild']]);
+        $guild = $guildRepo->findOneBy(['name' => $map['guild']]);
         foreach ($map['players'] as $playerName => $cardArray) {
             $player = $this->findPlayerOrCreate($playerName, $guild);
             $this->logger->debug('Trying to persist ' . count($cardArray) . ' cards for Player ' . $player->getName());
@@ -195,7 +194,7 @@ class MassSimReader
      *
      * @param $line
      * @param string $regEx
-     * @param bool $inDeck
+     * @param bool   $inDeck
      *
      * @return array
      */

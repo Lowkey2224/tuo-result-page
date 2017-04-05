@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 18.11.16
- * Time: 11:58
+ * Time: 11:58.
  */
 
 namespace LokiTuoResultBundle\Controller;
@@ -12,8 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * Class ImportController
- * @package LokiTuoResultBundle\Controller
+ * Class ImportController.
+ *
  * @Route("/Import")
  */
 class ImportController extends Controller
@@ -24,7 +24,8 @@ class ImportController extends Controller
     public function indexAction()
     {
         $resultFileRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:ResultFile');
-        $results = $resultFileRepo->findBy([], ['id'=>'ASC']);
+        $results        = $resultFileRepo->findBy([], ['id'=>'ASC']);
+
         return $this->render(
             'LokiTuoResultBundle:Import:index.html.twig',
             [

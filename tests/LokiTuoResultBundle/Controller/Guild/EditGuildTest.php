@@ -5,7 +5,6 @@ namespace LokiTuoResultBundle\Controller\Guild;
 use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-
 class EditGuildTest extends AbstractControllerTest
 {
     /**
@@ -30,7 +29,8 @@ class EditGuildTest extends AbstractControllerTest
         $client->submit($form);
     }
 
-    private function createDouble(Client $client) {
+    private function createDouble(Client $client)
+    {
         $this->create($client);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->followRedirect();
@@ -46,7 +46,7 @@ class EditGuildTest extends AbstractControllerTest
         $client->request('GET', '/guild/');
         //FIXME Why redirect here?
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->clickLinkInTable($client, "TestGuild", "Edit");
+        $this->clickLinkInTable($client, 'TestGuild', 'Edit');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $form                   = $this->getFormById($client->getCrawler(), 'guild_submit');
         $form['guild[name]']    = 'TestGuildInactive';
@@ -55,6 +55,5 @@ class EditGuildTest extends AbstractControllerTest
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->followRedirect();
         $this->assertTableHasCell($client->getCrawler(), 'TestGuildInactive', 'inactive');
-
     }
 }

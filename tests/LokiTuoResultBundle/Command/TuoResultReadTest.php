@@ -59,8 +59,8 @@ class TuoResultReadTest extends KernelTestCase
         $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $missionName   = 'TestMission-80';
-        $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
-        $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
+        $missionRepo   = $this->em->getRepository('LokiTuoResultBundle:Mission');
+        $resultRepo    = $this->em->getRepository('LokiTuoResultBundle:Result');
         $mission       = $missionRepo->findOneBy(['name' => $missionName]);
         $this->assertNull($mission, 'Already found a mission with name '.$missionName);
 

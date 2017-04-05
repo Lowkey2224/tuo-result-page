@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 07.10.16
- * Time: 14:28
+ * Time: 14:28.
  */
 
 namespace LokiTuoResultBundle\Service\OwnedCards;
@@ -17,24 +17,23 @@ use Psr\Log\NullLogger;
 
 class Service
 {
-
-    /** @var  EntityManager */
+    /** @var EntityManager */
     private $em;
 
     use LoggerAwareTrait;
 
     public function __construct(EntityManager $entityManager)
     {
-        $this->em = $entityManager;
+        $this->em     = $entityManager;
         $this->logger = new NullLogger();
     }
 
     public function transformCardString($card, $inDeck = false)
     {
         $amount = 1;
-        $level = null;
-        $match = [];
-        $name = '';
+        $level  = null;
+        $match  = [];
+        $name   = '';
         preg_match('/.+\((\d+)\)/', $card, $match);
         if (count($match) == 2) {
             $amount = $match[1];
@@ -45,7 +44,7 @@ class Service
         if (count($match) == 2) {
             $level = $match[1];
         }
-        $match = [];
+        $match  = [];
         $inDeck = ($inDeck) ? $amount : 0;
         preg_match('/([a-zA-Z \- \. \' \d]+)\b/', $card, $match);
         if (count($match) >= 2) {
@@ -54,6 +53,7 @@ class Service
 
             $name = count($match2) == 2 ? $match2[1] : $match[1];
         }
+
         return ['amount' => $amount, 'level' => $level, 'name' => $name, 'inDeck' => $inDeck];
     }
 
@@ -68,20 +68,20 @@ class Service
     }
 
     /**
-     * @param Player $player The Player which the Cards belong to.
+     * @param Player $player the Player which the Cards belong to
      * @param $cardArray array in the form [0 => ['name'=> 'CARD_NAME', 'amount'=>'1', 'level'=>null, 'inDeck'=false]]
+     *
      * @return OwnedCard[]
      */
     public function transformArrayToModels(Player $player, $cardArray)
     {
-
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
-        $result = [];
+        $result   = [];
         foreach ($cardArray as $cardEntry) {
-//            $this->removeOldOwnedCardsForPlayer($player);
+            //            $this->removeOldOwnedCardsForPlayer($player);
             $card = $cardRepo->findOneBy(['name' => $cardEntry['name']]);
             if (!$card) {
-                $this->logger->notice("No Card found for name " . $cardEntry['name']);
+                $this->logger->notice('No Card found for name ' . $cardEntry['name']);
                 continue;
             }
             $oc = new OwnedCard();
@@ -98,33 +98,38 @@ class Service
     }
 
     /**
-     * Deletes all Owned Cards for a given Player
+     * Deletes all Owned Cards for a given Player.
+     *
      * @param Player $player
+     *
      * @return int The number of deleted Cards
      */
     public function removeOldOwnedCardsForPlayer(Player $player)
     {
         $ownderCardRepo = $this->em->getRepository('LokiTuoResultBundle:OwnedCard');
-        $oldCards = $ownderCardRepo->findBy(['player' => $player]);
+        $oldCards       = $ownderCardRepo->findBy(['player' => $player]);
         foreach ($oldCards as $ownedCard) {
             $this->em->remove($ownedCard);
         }
         $this->em->flush();
+
         return count($oldCards);
     }
 
     public function deckToSpreadsheetFormat(Player $player)
     {
-        $ocs = new Collection($player->getOwnedCards());
-        $deck = $ocs->filter(function(OwnedCard $oc) {
+        $ocs  = new Collection($player->getOwnedCards());
+        $deck = $ocs->filter(function (OwnedCard $oc) {
             return $oc->getAmountInDeck() > 0;
         });
-        return $deck->map(", ");
+
+        return $deck->map(', ');
     }
 
     public function ownedCardToSpreadsheetFormat(Player $player)
     {
         $ocs = new Collection($player->getOwnedCards());
+
         return $ocs->map("\n");
     }
 }

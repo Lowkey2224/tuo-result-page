@@ -33,14 +33,14 @@ class Guild extends AbstractBaseEntity
     private $results;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean")
      */
     private $enabled;
 
     public function __toString()
     {
-        return $this->getName() . "";
+        return $this->getName() . '';
     }
 
     public function __construct()
@@ -113,6 +113,4 @@ class Guild extends AbstractBaseEntity
     {
         $this->enabled = $enabled;
     }
-
-
 }

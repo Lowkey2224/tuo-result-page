@@ -8,8 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class CardController
- * @package LokiTuoResultBundle\Controller
+ * Class CardController.
+ *
  * @Route("/card")
  */
 class CardController extends Controller
@@ -19,36 +19,37 @@ class CardController extends Controller
      */
     public function indexAction()
     {
-        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card');
-        $char = "A";
+        $repo    = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card');
+        $char    = 'A';
         $letters = [];
-        $cards = [];
-        $count = 0;
-        for ($i = 0; $i < 26; $i++) {
+        $cards   = [];
+        $count   = 0;
+        for ($i = 0; $i < 26; ++$i) {
             $cards[$char] = $repo->findByStartingLetter($char);
             $count += count($cards[$char]);
             $letters[] = $char;
-            $char++;
+            ++$char;
         }
 
-
-        return $this->render('LokiTuoResultBundle:Card:index.html.twig', array(
+        return $this->render('LokiTuoResultBundle:Card:index.html.twig', [
             'cardsArray' => $cards,
-            'letters' => $letters,
-            'count' => $count
-        ));
+            'letters'    => $letters,
+            'count'      => $count,
+        ]);
     }
 
     /**
      * @Route("/all", name="loki.tuo.cards.all")
+     *
      * @return JsonResponse
      */
     public function getAllCards()
     {
         $cards = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findAll();
-        $names = array_map(function(Card $card) {
+        $names = array_map(function (Card $card) {
             return $card->getName();
         }, $cards);
+
         return new JsonResponse($names);
     }
 }

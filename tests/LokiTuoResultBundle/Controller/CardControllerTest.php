@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CardControllerTest extends AbstractControllerTest
 {
-    private $cards = ["Malika","Stonewall Garrison","Inheritor of Hope","Menacing Interrogator","Rumbler Rickshaw","Sinuous Dam","Xebor Comet","Xeno Reanimator"];
+    private $cards = ['Malika', 'Stonewall Garrison', 'Inheritor of Hope', 'Menacing Interrogator', 'Rumbler Rickshaw', 'Sinuous Dam', 'Xebor Comet', 'Xeno Reanimator'];
 
     public function testIndex()
     {

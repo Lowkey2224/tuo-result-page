@@ -7,6 +7,7 @@
     <property name="phpmd" value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
     <property name="phpcbf" value="${basedir}/vendor/bin/phpcbf"/>
+    <property name="php-cs-fixer" value="${basedir}/vendor/bin/php-cs-fixer"/>
     <property name="console" value="${basedir}/bin/console"/>
 
     <target name="deploy" description="Deploys the Project">
@@ -171,6 +172,15 @@
             <arg value="--extensions=php"/>
             <arg value="--ignore=autoload.php"/>
             <arg path="${basedir}/src"/>
+        </exec>
+    </target>
+    <target name="cs-fix" description="Codestyle fixing ">
+        <exec executable="${php-cs-fixer}">
+            <arg value="fix"/>
+            <arg path="${basedir}/src"/>
+            <arg path="${basedir}/tests"/>
+            <arg path="${basedir}/app/DoctrineMigrations"/>
+            <arg value="--config=.php_cs"/>
         </exec>
     </target>
 

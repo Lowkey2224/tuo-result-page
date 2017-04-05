@@ -18,9 +18,8 @@ class LokiTuoBgeImportCommand extends ContainerAwareCommand
             ->setAliases(['l:t:b:i'])
             ->setDescription('Reads the bges.txt from the tuo and imports all BattleGround Effects')
             ->addArgument('filepath', InputArgument::REQUIRED, 'The path to the bges.txt file.')
-            ->addOption('pretend', 'p', InputOption::VALUE_NONE, 'Pretend will not save the data into the Database')
-        ;
-        $this->setHelp(<<<EOT
+            ->addOption('pretend', 'p', InputOption::VALUE_NONE, 'Pretend will not save the data into the Database');
+        $this->setHelp(<<<'EOT'
 The <info>%command.name%</info> command reads a Textfile which is included in the tyrant-unleashed-optimizer
 The Textfile is usually called <info>bges.txt</info> and contains information about BattleGroundEffects (BGEs in short).
 The extracted information is then Saved into the Database.
@@ -39,7 +38,6 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $filepath = $input->getArgument('filepath');
         if ($input->getOption('pretend')) {
             $persister = $this->getContainer()->get('loki_tuo_result.persister.null');

@@ -28,8 +28,7 @@ class OwnedCardType extends AbstractType
                 'translation_domain' => 'LokiTuoResultBundle',
                 'attr'               => ['class' => 'form-control'],
                 'required'           => false,
-            ]
-        );
+            ]);
         $builder->add('amount', NumberType::class, [
             'data'               => 1,
             'label'              => 'form.card.amount',
@@ -38,6 +37,6 @@ class OwnedCardType extends AbstractType
         $builder->add('submit', SubmitType::class, [
             'label'              => 'form.card.submit',
             'translation_domain' => 'LokiTuoResultBundle',
-            'attr'  => ['class' => 'btn btn-success'], ]);
+            'attr'               => ['class' => 'btn btn-success'], ]);
     }
 }

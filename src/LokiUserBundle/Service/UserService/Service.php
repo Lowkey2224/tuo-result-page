@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: jenz
  * Date: 09.09.16
- * Time: 12:51
+ * Time: 12:51.
  */
 
 namespace LokiUserBundle\Service\UserService;
@@ -14,7 +14,6 @@ use Psr\Log\NullLogger;
 
 class Service
 {
-
     use LoggerAwareTrait;
     /**
      * @var array
@@ -27,14 +26,14 @@ class Service
 
     public function __construct(array $guilds, array $registrationCodes)
     {
-        $this->guilds = $guilds;
+        $this->guilds            = $guilds;
         $this->registrationCodes = $registrationCodes;
-        $this->logger = new NullLogger();
+        $this->logger            = new NullLogger();
     }
 
     public function getGuildsForUser(User $user)
     {
-        $roles = $user->getRoles();
+        $roles  = $user->getRoles();
         $guilds = [];
         foreach ($roles as $role) {
             foreach ($this->guilds as $guild) {
@@ -49,10 +48,10 @@ class Service
 
     public function canUserAccess(User $user, $guildNeeded)
     {
-
         if ($this->isAdmin($user)) {
             return true;
         }
+
         return true;
         //Now everyone can access
 //        return in_array($guildNeeded, $this->getGuildsForUser($user));
@@ -63,6 +62,7 @@ class Service
         if (empty($this->registrationCodes)) {
             return true;
         }
+
         return in_array($code, $this->registrationCodes);
     }
 
@@ -75,6 +75,7 @@ class Service
                 return true;
             }
         }
+
         return false;
     }
 }
