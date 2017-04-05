@@ -305,13 +305,13 @@ class PlayerController extends Controller
     public function showCardsForPlayerAction(Player $player)
     {
         $allCards = $player->getOwnedCards();
-        $allCards = Collection::make($allCards)->sortBy(function(OwnedCard $elem) {
+        $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
             return $elem->getCard()->getName();
         });
-        $deck = $allCards->filter(function(OwnedCard $item) {
+        $deck = $allCards->filter(function (OwnedCard $item) {
             return $item->getAmountInDeck() > 0;
         });
-        $combined = $deck->map(function(OwnedCard $item) {
+        $combined = $deck->map(function (OwnedCard $item) {
             return $item->toDeckString();
         });
         $formOptions   = ['attr' => ['class' => 'data-remote']];

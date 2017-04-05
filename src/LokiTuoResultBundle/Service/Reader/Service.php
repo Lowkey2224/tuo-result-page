@@ -48,10 +48,10 @@ class Service
      *
      * @return int
      */
-    public function readFile($path)
+    public function readFile($path, $realname = null)
     {
         $reader = new ResultFileImporter($this->em, $this->logger);
-        return $reader->readFile($path);
+        return $reader->readFile($path, $realname);
     }
 
     /**

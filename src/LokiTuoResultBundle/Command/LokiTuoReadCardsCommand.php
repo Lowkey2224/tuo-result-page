@@ -29,10 +29,10 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $reader->setLogger($logger);
         $files     = scandir($path);
         $pattern   = '/^cards_section_\d\d?.xml/m';
-        $cardFiles = array_filter($files, function($item) use ($pattern) {
+        $cardFiles = array_filter($files, function ($item) use ($pattern) {
             return preg_match($pattern, $item) === 1;
         });
-        $cardFiles = array_map(function($item) use ($path) {
+        $cardFiles = array_map(function ($item) use ($path) {
             return $path . '/' . $item;
         }, $cardFiles);
         $count = $reader->saveCardFiles($cardFiles);

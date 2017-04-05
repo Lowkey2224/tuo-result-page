@@ -106,7 +106,7 @@ class Player extends AbstractBaseEntity
      */
     public function getDeck()
     {
-        return $this->getOwnedCards()->filter(function(OwnedCard $ownedCard) {
+        return $this->getOwnedCards()->filter(function (OwnedCard $ownedCard) {
             return $ownedCard->getAmountInDeck() > 0;
         });
     }

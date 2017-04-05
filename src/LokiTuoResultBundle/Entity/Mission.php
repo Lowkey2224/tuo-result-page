@@ -172,7 +172,7 @@ class Mission extends AbstractBaseEntity
     /**
      * @param BattleGroundEffect $bge
      */
-    public function setBge(BattleGroundEffect $bge)
+    public function setBge(BattleGroundEffect $bge = null)
     {
         $this->bge = $bge;
     }

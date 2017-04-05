@@ -72,7 +72,7 @@ class ResultFile extends AbstractBaseEntity
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="original_file_name", type="string", nullable=false)
      */
     private $originalName;
 

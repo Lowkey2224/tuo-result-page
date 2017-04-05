@@ -34,14 +34,18 @@ class ResultFileImporter
      *
      * @return int
      */
-    public function readFile($path)
+    public function readFile($path, $realname = null)
     {
         $this->logger->info("Reading file $path");
         $content = $this->getFileContents($path);
 
         $file = new ResultFile();
-        $name = explode('/', $path);
-        $file->setOriginalName(end($name));
+        if (!$realname) {
+            $name = explode('/', $path);
+            $realname = end($name);
+        }
+
+        $file->setOriginalName($realname);
 
         $file->setContent($content);
         $file = $this->setVersion($file);
@@ -84,7 +88,7 @@ class ResultFileImporter
             case 2:
                 return $this->getGuildNameV2($file);
             default:
-                throw new Exception('Unknown File Versoin');
+                throw new Exception('Unknown File Version: '.$file->getVersion());
         }
     }
 
@@ -117,7 +121,7 @@ class ResultFileImporter
         $guilds      = [];
         foreach ($content->missions as $mission) {
             foreach ($mission->results as $result) {
-                $guilds[] = $result->guild;
+                $guilds[$result->guild] = $result->guild;
             }
         }
 
@@ -132,6 +136,7 @@ class ResultFileImporter
     private function setVersion(ResultFile $file)
     {
         $name = $file->getOriginalName();
+        $this->logger->error($name. " checking version");
         if (strpos($name, '.txt')) {
             $file->setVersion(1);
         } elseif (strpos($name, '.json')) {

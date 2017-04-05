@@ -4,13 +4,14 @@ namespace LokiTuoResultBundle\Service\Reader;
 
 use Doctrine\ORM\EntityManager;
 use Exception;
+use Illuminate\Support\Collection;
+use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\DeckEntry;
 use LokiTuoResultBundle\Entity\Result;
 use LokiTuoResultBundle\Entity\ResultFile;
 use Psr\Log\LoggerAwareTrait;
 use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Psr\Log\LoggerInterface;
-
 
 abstract class AbstractImporter
 {
@@ -85,12 +86,34 @@ abstract class AbstractImporter
      *
      * @return array
      */
-    private function transformToCardNames(array $array)
+    private function transformToCardNamesBak(array $array)
     {
         $result = [];
         foreach ($array as $name) {
             if (preg_match('/([\w\h]+)/', $name, $res) === 1) {
                 $result[] = trim($res[0]);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Transform raw Cardstrings into correct Cardnames
+     * @param array $array
+     * @return array
+     */
+    private function transformToCardNames(array $array)
+    {
+        $result = [];
+        foreach ($array as $name) {
+            $tmp = explode('#', $name);
+            if (count($tmp) == 2) {
+                for ($i = 0; $i < $tmp[1]; ++$i) {
+                    $result[] = trim($tmp[0]);
+                }
+            } else {
+                $result[] = trim($name);
             }
         }
 
@@ -115,14 +138,14 @@ abstract class AbstractImporter
      *
      * @param $deck
      * @param Result $result
+     * @param Collection|Card[] $cards
      *
      * @throws Exception
      *
      * @return array
      */
-    protected function createDeck($deck, Result $result)
+    protected function createDeck($deck, Result $result, $cards)
     {
-        $cardRepo   = $this->em->getRepository('LokiTuoResultBundle:Card');
         $resultDeck = [];
         $order      = 0;
         foreach ($deck as $cardName) {
@@ -130,10 +153,11 @@ abstract class AbstractImporter
             $amount = $_tmp['amount'];
             $level  = $_tmp['level'];
             $name   = $_tmp['name'];
-            $card   = $cardRepo->findOneBy(['name' => $name]);
+//            $this->logger->error(sprintf("Comp %s after %s", $cardName, $name));
+            $card   = $cards->get($name);
 
             if (! $card) {
-                throw new Exception('No Card found with name:'.$name);
+                throw new Exception('No Card found with name:'.$name. " For Card ". $cardName. " and Player ". $result->getPlayer()->getName());
             }
             for ($i = 0; $i < $amount; ++$i) {
                 $deckEntry = new DeckEntry();
@@ -148,5 +172,19 @@ abstract class AbstractImporter
         }
 
         return $resultDeck;
+    }
+
+
+    /**
+     * Returns a Collection with all Cards, where their Key is their name
+     * @return Collection
+     */
+    protected function getAllCards()
+    {
+        $cards = $this->em->getRepository('LokiTuoResultBundle:Card')->findAll();
+        $cards = new Collection($cards);
+        return  $cards->keyBy(function (Card $card) {
+            return $card->getName();
+        });
     }
 }

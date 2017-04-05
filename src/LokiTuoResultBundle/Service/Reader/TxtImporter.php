@@ -3,7 +3,6 @@
 
 namespace LokiTuoResultBundle\Service\Reader;
 
-
 use Exception;
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
@@ -23,7 +22,7 @@ class TxtImporter extends AbstractImporter
             $content     = explode("\n", $file->getContent());
             $transformed = $this->transformContent($content);
             $this->logger->info('Importing Result for Guild '.$file->getGuild());
-            $models = $this->transformToModels($transformed['result'], $file,$file->getGuild());
+            $models = $this->transformToModels($transformed['result'], $file, $file->getGuild());
             $this->logger->info(count($models).' were Saved');
             $count += count($models);
             $file->setStatus(ResultFile::STATUS_IMPORTED);
@@ -83,6 +82,7 @@ class TxtImporter extends AbstractImporter
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
         $resultRepo  = $this->em->getRepository('LokiTuoResultBundle:Result');
         $guildRepo   = $this->em->getRepository('LokiTuoResultBundle:Guild');
+        $cards = $this->getAllCards();
         $guild       = $guildRepo->findOneBy(['name' => $guild]);
         foreach ($transformed as $line) {
             if (! isset($line['deck'])) {
@@ -116,7 +116,7 @@ class TxtImporter extends AbstractImporter
             $this->em->persist($player);
             $this->em->persist($result);
             $this->deleteOldDeck($result);
-            $deck = $this->createDeck($line['deck'], $result);
+            $deck = $this->createDeck($line['deck'], $result, $cards);
             $result->setDeck($deck);
             $this->em->persist($result);
             $results[] = $result;

@@ -2,6 +2,8 @@
 
 namespace LokiTuoResultBundle\Repository;
 
+use LokiTuoResultBundle\Entity\Mission;
+
 /**
  * ResultRepository.
  *
@@ -10,4 +12,19 @@ namespace LokiTuoResultBundle\Repository;
  */
 class ResultRepository extends AbstractBaseRepository
 {
+    public function findResultsWithPlayerAndDecks(Mission $mission, $orderBy = ['id' => 'ASC'])
+    {
+        $qb = $this->createQueryBuilder('result')
+            ->select('result', 'player', 'deck', 'card', 'guild')
+        ->where('result.mission = :mission')
+        ->setParameter('mission', $mission)
+        ->join('result.player', 'player')
+        ->join('player.guild', 'guild')
+        ->join('result.deck', 'deck')
+        ->join('deck.card', 'card');
+        foreach ($orderBy as $col => $dir) {
+            $qb->orderBy($col, $dir);
+        }
+        return $qb->getQuery()->getResult();
+    }
 }

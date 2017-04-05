@@ -46,7 +46,7 @@ class SimulationController extends Controller
             return new Response($res, 200, [
                 'content-type'        => 'text/text',
                 'cache-control'       => 'private',
-                'content-disposition' => 'attachment; filename="' . $filename . '";',
+                'content-disposition' => 'attachment; filename="'.$filename.'";',
             ]);
         }
 
@@ -151,9 +151,9 @@ class SimulationController extends Controller
      */
     public function showMissionAction(Mission $mission)
     {
-        $criteria = ['mission' => $mission];
-        $orderBy  = ['guild' => 'ASC', 'id' => 'ASC'];
-        $results  = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')->findBy($criteria, $orderBy);
+        $orderBy = ['result.guild' => 'ASC', 'result.id' => 'ASC'];
+        $results = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Result')
+            ->findResultsWithPlayerAndDecks($mission, $orderBy);
 
         return $this->render(
             'LokiTuoResultBundle:Default:showMission.html.twig',
@@ -178,7 +178,7 @@ class SimulationController extends Controller
         return new Response($file->getContent(), 200, [
             'content-type'        => 'text/text',
             'cache-control'       => 'private',
-            'content-disposition' => 'attachment; filename="' . $filename . '";',
+            'content-disposition' => 'attachment; filename="'.$filename.'";',
         ]);
     }
 
@@ -194,7 +194,8 @@ class SimulationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data['file'] instanceof UploadedFile) {
-                $id          = $resultReader->readFile($data['file']->getRealPath());
+                $t           = $data['file']->getClientOriginalName();
+                $id          = $resultReader->readFile($data['file']->getRealPath(), $t);
                 $resultCount = $resultReader->importFileById($id);
                 $this->addFlash('success', "$resultCount Results have been imported");
 

@@ -4,6 +4,8 @@ namespace LokiTuoResultBundle\Service\Reader;
 
 use Exception;
 use Illuminate\Support\Collection;
+use LokiTuoResultBundle\Entity\BattleGroundEffect;
+use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\Guild;
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\Player;
@@ -21,7 +23,8 @@ class JsonImporter extends AbstractImporter
         try {
             $this->logger->info('Using File with ID ' . $file->getId() . ' for Import');
             list($missions, $guilds, $players, $bge) = $this->preFetchModels($file);
-            $models = $this->transformToModels($file, $missions, $players, $guilds, $bge);
+            $cards = $this->getAllCards();
+            $models = $this->transformToModels($file, $missions, $players, $guilds, $cards, $bge);
             $this->logger->info(count($models) . ' were Saved');
             $count += count($models);
             $this->em->persist($file);
@@ -39,11 +42,12 @@ class JsonImporter extends AbstractImporter
      * @param Collection|Mission[] $missions
      * @param Collection|Player[]  $players
      * @param Collection|Guild[]   $guilds
+     * @param Collection|Card[]    $cards
      * @param mixed                $bge
      *
      * @return Collection
      */
-    private function transformToModels(ResultFile $resultFile, $missions, $players, $guilds, $bge)
+    private function transformToModels(ResultFile $resultFile, $missions, $players, $guilds, $cards, BattleGroundEffect $bge = null)
     {
         $content     = json_decode($resultFile->getContent());
 
@@ -67,6 +71,10 @@ class JsonImporter extends AbstractImporter
             $missionEntity->setBge($bge);
             $this->em->persist($missionEntity);
             foreach ($mission->results as $result) {
+                if (!$result->result) {
+                    $this->logger->info(sprintf("Player %s has no result for mission with UUID %s", $result->player, $uuid));
+                    continue;
+                }
                 $parsed = $this->parseResultLine($result->result);
 
                 $player = $players->get($result->player_id);
@@ -78,14 +86,14 @@ class JsonImporter extends AbstractImporter
 
                 $resultEntity->setGuild($guilds->get($result->guild_id));
                 $resultEntity->setMission($missionEntity);
+                $resultEntity->setPlayer($player);
                 //TODO Create real Deck
                 $this->deleteOldDeck($resultEntity);
-                $deck = $this->createDeck($parsed['deck'], $resultEntity);
+                $deck = $this->createDeck($parsed['deck'], $resultEntity, $cards);
                 $resultEntity->setDeck($deck);
 //                $resultEntity->setDeck($parsed['deck']);
                 $resultEntity->setPercent($parsed['percent']);
                 $resultEntity->setSourceFile($resultFile);
-                $resultEntity->setPlayer($player);
                 $results->push($resultEntity);
             }
         }
@@ -117,20 +125,18 @@ class JsonImporter extends AbstractImporter
         }
         $players  = new Collection($playerRepo->findByIds($ids['player']));
 
-        $players  = $players->keyBy(function(Player $p) {
+        $players  = $players->keyBy(function (Player $p) {
             return $p->getId();
         });
         $guilds   = new Collection($guildRepo->findByIds($ids['guild']));
-        $guilds   = $guilds->keyBy(function(Guild $p) {
+        $guilds   = $guilds->keyBy(function (Guild $p) {
             return $p->getId();
         });
         $missions = new Collection($missionRepo->finyByUuids($ids['mission']));
-        $missions = $missions->keyBy(function(Mission $p) {
+        $missions = $missions->keyBy(function (Mission $p) {
             return $p->getUuid();
         });
 
         return [$missions, $guilds, $players, $bge];
     }
-
-
 }
