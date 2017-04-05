@@ -43,7 +43,7 @@ class CardController extends Controller
      *
      * @return JsonResponse
      */
-    public function getAllCards()
+    public function getAllCardsAction()
     {
         $cards = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findAll();
         $names = array_map(function (Card $card) {
