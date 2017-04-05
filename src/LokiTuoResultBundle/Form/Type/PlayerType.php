@@ -6,7 +6,7 @@
  * Time: 17:28.
  */
 
-namespace LokiTuoResultBundle\Form;
+namespace LokiTuoResultBundle\Form\Type;;
 
 use LokiUserBundle\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -10,9 +10,9 @@ namespace LokiTuoResultBundle\Controller;
 
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\ResultFile;
-use LokiTuoResultBundle\Form\MissionType;
-use LokiTuoResultBundle\Form\ResultFileType;
-use LokiTuoResultBundle\Form\SimulationType;
+use LokiTuoResultBundle\Form\Type\MissionType;
+use LokiTuoResultBundle\Form\Type\ResultFileType;
+use LokiTuoResultBundle\Form\Type\SimulationType;
 use LokiTuoResultBundle\Service\Simulation\Simulation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

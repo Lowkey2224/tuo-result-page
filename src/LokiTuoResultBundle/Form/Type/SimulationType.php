@@ -6,7 +6,7 @@
  * Time: 15:41.
  */
 
-namespace LokiTuoResultBundle\Form;
+namespace LokiTuoResultBundle\Form\Type;;
 
 use LokiTuoResultBundle\Entity\BattleGroundEffect;
 use LokiTuoResultBundle\Entity\Player;

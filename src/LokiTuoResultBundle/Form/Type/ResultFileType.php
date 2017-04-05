@@ -6,7 +6,7 @@
  * Time: 10:22.
  */
 
-namespace LokiTuoResultBundle\Form;
+namespace LokiTuoResultBundle\Form\Type;;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

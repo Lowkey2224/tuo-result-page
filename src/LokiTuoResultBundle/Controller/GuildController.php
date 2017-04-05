@@ -4,7 +4,7 @@ namespace LokiTuoResultBundle\Controller;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use LokiTuoResultBundle\Entity\Guild;
-use LokiTuoResultBundle\Form\GuildType;
+use LokiTuoResultBundle\Form\Type\GuildType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
