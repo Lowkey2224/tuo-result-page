@@ -5,8 +5,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Loki\\Bunlde\\TuoResultBunlde": "src/LokiTuoResultBundle"
-            "Loki\\Bunlde\\UserBundle": "src/LokiUserBundle"
+            "": "src/"
         },
         "classmap": [
             "app/AppKernel.php",
