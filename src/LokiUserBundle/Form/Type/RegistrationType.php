@@ -6,7 +6,7 @@
  * Time: 17:28.
  */
 
-namespace LokiUserBundle\Form;
+namespace LokiUserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
