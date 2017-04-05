@@ -67,7 +67,7 @@ class SimulationController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $res = $this->get('loki_tuo_result.vpc_simulation.manager')->post2($sim);
-            if ($res['id'] != null) {
+            if ($res['id']) {
                 $msg = 'Simulation with Id <a href="http://tuo.throwingbones.com/job/%d">%d</a> has been created';
                 $this->addFlash('success', sprintf($msg, $res['id'], $res['id']));
             }
