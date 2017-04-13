@@ -78,7 +78,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         $user = $token->getUser();
 
         if (!$user instanceof User) {
-            $this->logger->debug("USer is not logged in");
+            $this->logger->debug("User is not logged in");
             // the user must be logged in; if not, deny access
             return false;
         }
@@ -92,7 +92,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         if (isset($map[$attribute])) {
             $method = $map[$attribute];
             $result = $this->$method($subject, $user);
-            $this->logger->debug("Result for vote on %s is %s", $subject, $result?"true": "false");
+            $this->logger->debug(sprintf("Result for vote on %s is %s", $subject, $result?"true": "false"));
             return $result;
         }
 
