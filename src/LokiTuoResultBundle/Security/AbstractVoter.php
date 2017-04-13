@@ -4,18 +4,24 @@ namespace LokiTuoResultBundle\Security;
 
 use LokiUserBundle\Entity\User;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractVoter extends Voter implements LoggerAwareInterface
 {
-    use LoggerAwareTrait;
+    /** @var  LoggerInterface */
+    protected $logger;
 
     public function __construct(LoggerInterface $logger)
     {
         $this->setLogger($logger);
+    }
+
+    /** @inheritdoc */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -72,19 +78,22 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         $user = $token->getUser();
 
         if (!$user instanceof User) {
+            $this->logger->debug("USer is not logged in");
             // the user must be logged in; if not, deny access
             return false;
         }
 
         if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+            $this->logger->debug("Super admin has THE POWER!");
             return true;
         }
 
         $map = $this->getAttributeMethodMap();
         if (isset($map[$attribute])) {
             $method = $map[$attribute];
-
-            return $this->$method($subject, $user);
+            $result = $this->$method($subject, $user);
+            $this->logger->debug("Result for vote on %s is %s", $subject, $result?"true": "false");
+            return $result;
         }
 
         throw new \LogicException(sprintf('Attribute %s not defined on Voter %s', $attribute, get_class($this)));

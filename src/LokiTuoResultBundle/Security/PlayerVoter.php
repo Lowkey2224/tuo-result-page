@@ -9,6 +9,7 @@ class PlayerVoter extends AbstractVoter
 {
     const VIEW = 'view.player';
     const EDIT = 'edit.player';
+    const DELETE = 'delete.player';
 
     protected function canView(Player $player, User $user)
     {
@@ -24,7 +25,6 @@ class PlayerVoter extends AbstractVoter
     {
         $correctRole = $user->hasRole('ROLE_MODERATOR')
             || $user->hasRole('ROLE_ADMIN');
-
         return $correctRole || $player->isOwnedBy($user);
     }
 
@@ -48,6 +48,7 @@ class PlayerVoter extends AbstractVoter
         return [
             self::VIEW => 'canView',
             self::EDIT => 'canEdit',
+            self::DELETE => 'canDelete',
         ];
     }
 }
