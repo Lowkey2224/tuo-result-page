@@ -81,7 +81,7 @@ fos_user:
         sender_name: "%mailer_user%"
     registration:
         form:
-            type: LokiUserBundle\Form\RegistrationType
+            type: LokiUserBundle\Form\Type\RegistrationType
 
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/DoctrineMigrations"
