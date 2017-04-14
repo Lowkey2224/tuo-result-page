@@ -3,11 +3,11 @@
 namespace LokiTuoResultBundle\Service\Reader;
 
 use Doctrine\ORM\EntityManager;
+use Exception;
 use LokiTuoResultBundle\Entity\ResultFile;
 use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Created by PhpStorm.
@@ -74,16 +74,22 @@ class Service
         $txtImporter  = new TxtImporter($this->em, $this->ownedCardManager, $this->logger);
 
         foreach ($files as $file) {
-            switch ($file->getVersion()) {
-                case 1:
-                    $txtImporter->importFile($file, $count);
-                    break;
-                case 2:
-                    $jsonImporter->importFile($file, $count);
-                    break;
-                default:
-                    throw new Exception('Unknown Resultfile Version');
+            try {
+                switch ($file->getVersion()) {
+                    case 1:
+                        $txtImporter->importFile($file, $count);
+                        break;
+                    case 2:
+                        $jsonImporter->importFile($file, $count);
+                        break;
+                    default:
+                        throw new Exception('Unknown Resultfile Version');
+                }
+            } catch (Exception $ex) {
+                $file->setStatus(ResultFile::STATUS_ERROR);
+                $this->em->persist($file);
             }
+
         }
         $this->em->flush();
 

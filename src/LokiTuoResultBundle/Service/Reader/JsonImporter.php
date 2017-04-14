@@ -2,7 +2,6 @@
 
 namespace LokiTuoResultBundle\Service\Reader;
 
-use Exception;
 use Illuminate\Support\Collection;
 use LokiTuoResultBundle\Entity\BattleGroundEffect;
 use LokiTuoResultBundle\Entity\Card;
@@ -20,45 +19,49 @@ class JsonImporter extends AbstractImporter
      */
     public function importFile(ResultFile $file, &$count)
     {
-        try {
-            $this->logger->info('Using File with ID ' . $file->getId() . ' for Import');
-            list($missions, $guilds, $players, $bge) = $this->preFetchModels($file);
-            $cards = $this->getAllCards();
-            $models = $this->transformToModels($file, $missions, $players, $guilds, $cards, $bge);
-            $this->logger->info(count($models) . ' were Saved');
-            $count += count($models);
-            $this->em->persist($file);
-            $file->setStatus(ResultFile::STATUS_IMPORTED);
-        } catch (Exception $ex) {
-            $file->setStatus(ResultFile::STATUS_ERROR);
-            throw  $ex;
-        }
+
+        $this->logger->info('Using File with ID ' . $file->getId() . ' for Import');
+        list($missions, $guilds, $players, $bge) = $this->preFetchModels($file);
+        $cards = $this->getAllCards();
+        $models = $this->transformToModels($file, $missions, $players, $guilds, $cards, $bge);
+        $this->logger->info(count($models) . ' were Saved');
+        $count += count($models);
+        $this->em->persist($file);
+        $file->setStatus(ResultFile::STATUS_IMPORTED);
+
+        $file->setStatus(ResultFile::STATUS_ERROR);
 
         return $file;
     }
 
     /**
-     * @param ResultFile           $resultFile
+     * @param ResultFile $resultFile
      * @param Collection|Mission[] $missions
-     * @param Collection|Player[]  $players
-     * @param Collection|Guild[]   $guilds
-     * @param Collection|Card[]    $cards
-     * @param mixed                $bge
+     * @param Collection|Player[] $players
+     * @param Collection|Guild[] $guilds
+     * @param Collection|Card[] $cards
+     * @param mixed $bge
      *
      * @return Collection
      */
-    private function transformToModels(ResultFile $resultFile, $missions, $players, $guilds, $cards, BattleGroundEffect $bge = null)
-    {
-        $content     = json_decode($resultFile->getContent());
+    private function transformToModels(
+        ResultFile $resultFile,
+        $missions,
+        $players,
+        $guilds,
+        $cards,
+        BattleGroundEffect $bge = null
+    ) {
+        $content = json_decode($resultFile->getContent());
 
-        $resultRepo   = $this->em->getRepository('LokiTuoResultBundle:Result');
+        $resultRepo = $this->em->getRepository('LokiTuoResultBundle:Result');
         $results = new Collection();
 
-        $simType     = $content->type;
+        $simType = $content->type;
         //TODO ADD MissionType
         $missionType = 'Mission';
-        $ordered     = $content->ordered;
-        $surge       = $content->surge;
+        $ordered = $content->ordered;
+        $surge = $content->surge;
 
         foreach ($content->missions as $mission) {
             $uuid = Mission::createUuid($mission->name, $bge, $mission->myStructures);
@@ -72,7 +75,8 @@ class JsonImporter extends AbstractImporter
             $this->em->persist($missionEntity);
             foreach ($mission->results as $result) {
                 if (!$result->result) {
-                    $this->logger->info(sprintf("Player %s has no result for mission with UUID %s", $result->player, $uuid));
+                    $this->logger->info(sprintf("Player %s has no result for mission with UUID %s", $result->player,
+                        $uuid));
                     continue;
                 }
                 $parsed = $this->parseResultLine($result->result);
@@ -80,7 +84,7 @@ class JsonImporter extends AbstractImporter
                 $player = $players->get($result->player_id);
 
                 $resultEntity = $resultRepo->findOneBy(['player' => $player, 'mission' => $missionEntity]);
-                if (! $resultEntity) {
+                if (!$resultEntity) {
                     $resultEntity = new Result();
                 }
 
@@ -108,28 +112,28 @@ class JsonImporter extends AbstractImporter
      */
     private function preFetchModels(ResultFile $resultFile)
     {
-        $content     = json_decode($resultFile->getContent());
+        $content = json_decode($resultFile->getContent());
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');
-        $playerRepo  = $this->em->getRepository('LokiTuoResultBundle:Player');
-        $guildRepo   = $this->em->getRepository('LokiTuoResultBundle:Guild');
-        $ids         = ['mission' => [], 'player' => [], 'guild' => []];
-        $bge         = $this->em->getRepository('LokiTuoResultBundle:BattleGroundEffect')
+        $playerRepo = $this->em->getRepository('LokiTuoResultBundle:Player');
+        $guildRepo = $this->em->getRepository('LokiTuoResultBundle:Guild');
+        $ids = ['mission' => [], 'player' => [], 'guild' => []];
+        $bge = $this->em->getRepository('LokiTuoResultBundle:BattleGroundEffect')
             ->findOneBy(['name' => $content->bge]);
         foreach ($content->missions as $mission) {
-            $uuid             = Mission::createUuid($mission->name, $bge, $mission->myStructures);
+            $uuid = Mission::createUuid($mission->name, $bge, $mission->myStructures);
             $ids['mission'][] = $uuid;
             foreach ($mission->results as $result) {
                 $ids['player'][$result->player_id] = $result->player_id;
-                $ids['guild'][$result->guild_id]  = $result->guild_id;
+                $ids['guild'][$result->guild_id] = $result->guild_id;
             }
         }
-        $players  = new Collection($playerRepo->findByIds($ids['player']));
+        $players = new Collection($playerRepo->findByIds($ids['player']));
 
-        $players  = $players->keyBy(function (Player $p) {
+        $players = $players->keyBy(function (Player $p) {
             return $p->getId();
         });
-        $guilds   = new Collection($guildRepo->findByIds($ids['guild']));
-        $guilds   = $guilds->keyBy(function (Guild $p) {
+        $guilds = new Collection($guildRepo->findByIds($ids['guild']));
+        $guilds = $guilds->keyBy(function (Guild $p) {
             return $p->getId();
         });
         $missions = new Collection($missionRepo->finyByUuids($ids['mission']));
