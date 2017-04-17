@@ -24,7 +24,7 @@ class ImportController extends Controller
     public function indexAction()
     {
         $resultFileRepo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:ResultFile');
-        $results        = $resultFileRepo->findBy([], ['id'=>'ASC']);
+        $results        = $resultFileRepo->findBy([], ['id'=>'DESC']);
 
         return $this->render(
             'LokiTuoResultBundle:Import:index.html.twig',
