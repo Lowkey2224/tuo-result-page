@@ -93,7 +93,9 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
                                aria-expanded="false">Welcome, {{ app.user }}<span class="caret"></span></a>
+
                             <ul class="dropdown-menu">
+                                <li><a href="{{ path('fos_user_change_password') }}">Change password</a> </li>
                                 {% if app.user.players is not empty%}
                                     <li role="separator" class="divider"></li>
                                     {% for player in app.user.players %}
