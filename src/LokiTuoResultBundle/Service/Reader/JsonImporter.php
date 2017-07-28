@@ -75,7 +75,7 @@ class JsonImporter extends AbstractImporter
             $this->em->persist($missionEntity);
             foreach ($mission->results as $result) {
                 if (!$result->result) {
-                    $this->logger->info(sprintf("Player %s has no result for mission with UUID %s", $result->player,
+                    $this->logger->warning(sprintf("Player %s has no result for mission with UUID %s", $result->player,
                         $uuid));
                     continue;
                 }
