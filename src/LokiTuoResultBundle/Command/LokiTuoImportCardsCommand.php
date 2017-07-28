@@ -3,9 +3,7 @@
 namespace LokiTuoResultBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,9 +13,7 @@ class LokiTuoImportCardsCommand extends ContainerAwareCommand
     {
         $this
             ->setName('loki:tuo:cards:import')
-            ->setDescription('Imports Card Files from the Database, and creates Card Models from it')
-            ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description');
+            ->setDescription('Imports Card Files from the Database, and creates Card Models from it');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
