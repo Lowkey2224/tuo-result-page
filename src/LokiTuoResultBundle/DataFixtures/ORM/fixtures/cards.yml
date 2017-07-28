@@ -8,7 +8,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [strike  1, heal Raider 1, counter 1]
         race: 2
         cardFile: '@CardFile1'
-        tyrantId: 1
+        tuoId: 1
     StonewallGarrison:
         name: Stonewall Garrison
         attack: 0
@@ -18,7 +18,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [evolve 2 weaken to sunder, heal all 5, weaken all 4]
         race: 1
         cardFile: '@CardFile1'
-        tyrantId: 2
+        tuoId: 2
     Inheritor:
         name: Inheritor of Hope
         attack: 6
@@ -28,7 +28,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [mend  7, rally  Righteous 6, flurry every 3]
         race: 5
         cardFile: '@CardFile1'
-        tyrantId: 3
+        tuoId: 3
     MenInt:
         name: Menacing Interrogator
         attack: 8
@@ -38,7 +38,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [avenge 8, pierce 8, berserk 5]
         race: 2
         cardFile: '@CardFile1'
-        tyrantId: 4
+        tuoId: 4
     Rick:
         name: Rumbler Rickshaw
         attack: 14
@@ -48,7 +48,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [enrage 3  8, berserk 8, flurry every 3]
         race: 2
         cardFile: '@CardFile1'
-        tyrantId: 4
+        tuoId: 4
     Dam:
         name: Sinuous Dam
         attack: 0
@@ -58,7 +58,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [wall, enfeeble all  6, jam 2   every 3]
         race: 4
         cardFile: '@CardFile1'
-        tyrantId: 5
+        tuoId: 5
     Comet:
         name: Xebor Comet
         attack: 10
@@ -68,7 +68,7 @@ LokiTuoResultBundle\Entity\Card:
         skills: [evade   5, enfeeble 16, strike all  4]
         race: 4
         cardFile: '@CardFile1'
-        tyrantId: 6
+        tuoId: 6
     Reanimator:
         name: Xeno Reanimator
         attack: 7
@@ -78,4 +78,4 @@ LokiTuoResultBundle\Entity\Card:
         skills: [evade 7, avenge 17, weaken all 7]
         race: 4
         cardFile: '@CardFile1'
-        tyrantId: 7
+        tuoId: 7
