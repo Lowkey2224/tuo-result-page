@@ -72,7 +72,7 @@ class Persister
         foreach ($cards as $key => $card) {
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
             ++$count;
-            $this->logger->error("Persisting card number $card with name" . $card->getName());
+            $this->logger->debug("Persisting card number $card with name" . $card->getName());
             if ($dbEntity) {
                 $card->setId($dbEntity->getId());
                 $dbEntity->setPicture($card->getPicture());
@@ -83,7 +83,6 @@ class Persister
                 $dbEntity->setSkills($card->getSkills());
                 $dbEntity->setRace($card->getRace());
                 $this->em->persist($dbEntity);
-//                $this->logger->debug("Duplicate Card found: " . $card->getName() . " With id " . $dbEntity->getId());
             } else {
                 $this->em->persist($card);
             }

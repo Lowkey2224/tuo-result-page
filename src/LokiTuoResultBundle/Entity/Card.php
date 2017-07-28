@@ -69,6 +69,12 @@ class Card extends AbstractBaseEntity
      */
     private $race;
 
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    private $tuoId;
+
     public function __toString()
     {
         try {
@@ -88,7 +94,8 @@ class Card extends AbstractBaseEntity
         } catch (\Exception $ex) {
             echo $ex->getMessage() . "\n";
             echo $ex->getTraceAsString();
-            $str = '';
+            var_dump($this->getSkills());
+            die();
         }
 
         return $str;
@@ -99,6 +106,7 @@ class Card extends AbstractBaseEntity
         $this->defense = 0;
         $this->delay   = 0;
         $this->attack  = 0;
+        $this->skills = [];
     }
 
     /**
@@ -288,4 +296,22 @@ class Card extends AbstractBaseEntity
                 return $factionId;
         }
     }
+
+    /**
+     * @return int
+     */
+    public function getTuoId()
+    {
+        return $this->tuoId;
+    }
+
+    /**
+     * @param int $tuoId
+     */
+    public function setTuoId($tuoId)
+    {
+        $this->tuoId = (int)$tuoId;
+    }
+
+
 }
