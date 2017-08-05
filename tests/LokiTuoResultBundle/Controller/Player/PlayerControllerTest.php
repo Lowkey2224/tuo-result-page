@@ -114,11 +114,11 @@ class PlayerControllerTest extends AbstractControllerTest
             'owned_card_amount' => $amount,
             'owned_card_level'  => $level,
         ];
-        $url = '/ownedcard/card/create'.$player->getId();
+        $url = '/ownedcard/card/create/'.$player->getId();
         $client->request('POST', $url, $body);
 
         $response = $client->getResponse();
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals($cardToAdd, $responseData['name']);
         $this->assertEquals($level, $responseData['level']);
