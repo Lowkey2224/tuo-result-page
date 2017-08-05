@@ -10,6 +10,7 @@ namespace LokiTuoResultBundle\Service\CardReader;
 
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
+use LokiTuoResultBundle\Entity\CardLevel;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
@@ -40,16 +41,17 @@ class Transformer
             $skills = [];
             $card   = new Card();
             $card->setName(trim($object->name));
-            $card->setRace($object->type);
-            $card->setPicture($object->picture);
-            $card->setAttack(($object->attack) ? $object->attack : 0);
-            $card->setDefense(($object->health) ? $object->health : 0);
-            $card->setDelay(($object->cost) ? $object->cost : 0);
+            $card->setRace((int)$object->type);
             $card->setCardFile($file);
-            $card->setTuoId($object->id);
+            $level1 = new CardLevel();
+            $level1->setPicture($object->picture)
+                ->setAttack(($object->attack) ? (int)$object->attack : 0)
+                ->setDefense(($object->health) ? (int)$object->health : 0)
+                ->setDelay(($object->cost) ? (int)$object->cost : 0)
+                ->setTuoId((int)$object->id);
             if (isset($object->skill)) {
                 $skills = array_merge($skills, $this->readSkill($object->skill));
-                $card->setSkills($skills);
+                $level1->setSkills($skills);
             }
             if (isset($object->upgrade)) {
                 $card = $this->readUpgrades($card, $object->upgrade, $skills);
@@ -69,30 +71,33 @@ class Transformer
      * @param $upgrades
      * @param $skills
      *
-     * @return Card
+     * @return CardLevel
      */
-    private function readUpgrades(Card $card, $upgrades, $skills)
+    private function readUpgrades($upgrades, $skills)
     {
+        $levels = [];
         foreach ($upgrades as $upgrade) {
+            $level = new CardLevel();
             if (isset($upgrade->picture)) {
-                $card->setPicture($upgrade->picture);
+                $level->setPicture($upgrade->picture);
             }
             if (isset($upgrade->health)) {
-                $card->setDefense($upgrade->health);
+                $level->setDefense($upgrade->health);
             }
             if (isset($upgrade->attack)) {
-                $card->setAttack($upgrade->attack);
+                $level->setAttack($upgrade->attack);
             }
             if (isset($upgrade->cost)) {
-                $card->setDelay($upgrade->cost);
+                $level->setDelay($upgrade->cost);
             }
             if (isset($upgrade->skill)) {
                 $skills = array_merge($skills, $this->readSkill($upgrade->skill));
-                $card->setSkills($skills);
+                $level->setSkills($skills);
             }
+            $levels[] = $level;
         }
 
-        return $card;
+        return $levels;
     }
 
     /**

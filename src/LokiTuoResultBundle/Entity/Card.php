@@ -23,40 +23,6 @@ class Card extends AbstractBaseEntity
     private $name;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="Attack", type="integer")
-     */
-    private $attack;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Defense", type="integer")
-     */
-    private $defense;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Delay", type="integer")
-     */
-    private $delay;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Picture", type="string", length=255, nullable=true)
-     */
-    private $picture;
-
-    /**
-     * @var
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $skills;
-
-    /**
      * @var CardFile
      * @ORM\ManyToOne(targetEntity="CardFile", inversedBy="cards")
      * @ORM\JoinColumn(referencedColumnName="id", name="cardfile_id")
@@ -68,12 +34,6 @@ class Card extends AbstractBaseEntity
      * @ORM\Column(type="integer")
      */
     private $race;
-
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
-    private $tuoId;
 
     public function __toString()
     {

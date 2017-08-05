@@ -10,6 +10,7 @@ namespace LokiTuoResultBundle\Service\OwnedCards;
 
 use Doctrine\ORM\EntityManager;
 use Illuminate\Support\Collection;
+use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
@@ -131,5 +132,58 @@ class Service
         $ocs = new Collection($player->getOwnedCards());
 
         return $ocs->map("\n");
+    }
+
+    public function persistOwnedCardsByTuoId(array $ids, Player $player)
+    {
+        $ocs = $this->getOwnedCardsByTuoIds($ids, $player);
+
+
+        return $ocs;
+    }
+
+    /**
+     * @param integer[] $ids
+     * @param Player $player
+     * @return OwnedCard[] array
+     */
+    private function getOwnedCardsByTuoIds(array $ids, Player $player) {
+        $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
+        $cards = $cardRepo->findAll();
+        $cards = new Collection($cards);
+        $cards = $cards->keyBy(function(Card $s){return $s->getTuoId();});
+        $ownedCards = [];
+        foreach ($ids as $id => $amount) {
+            $oc = $this->getOwnedCard($id, $amount, $player, $cards);
+            if($oc) {
+                $ownedCards[$id] = $oc;
+            }
+        }
+        return $ownedCards;
+    }
+
+    /**
+     * @param $id int
+     * @param $amount int
+     * @param Player $player
+     * @param $cards Card[]|Collection
+     * @return OwnedCard|null
+     */
+    private function getOwnedCard($id, $amount, Player $player, $cards)
+    {
+        $oc = new OwnedCard();
+        $oc->setPlayer($player);
+        $oc->setAmount($amount);
+        for($i = 0; $i<6;$i++) {
+            $card = $cards->get($id - $i, null);
+            if($card) {
+                $oc->setCard($card);
+                $oc->setLevel(6-$i);
+                return $oc;
+            }
+        }
+
+
+        return null;
     }
 }
