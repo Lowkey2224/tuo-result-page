@@ -36,7 +36,7 @@ class PlayerControllerTest extends AbstractControllerTest
         $player = $repo->findOneBy(['name' => $playerName]);
         $client = $this->loginAs();
 
-        $crawler = $client->request('GET', '/player/'.$player->getId().'/cards');
+        $crawler = $client->request('GET', '/ownedcard/'.$player->getId().'/cards');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $deck   = $player->getDeck();
         $xpaths = [];
@@ -89,7 +89,7 @@ class PlayerControllerTest extends AbstractControllerTest
         $repo   = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:Player');
         /** @var Player $player */
         $player  = $repo->findOneBy(['name' => $playername]);
-        $crawler = $client->request('GET', '/player/'.$player->getId().'/cards');
+        $crawler = $client->request('GET', '/ownedcard/'.$player->getId().'/cards');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $deck   = $player->getDeck();
         $xpaths = [];
@@ -105,7 +105,7 @@ class PlayerControllerTest extends AbstractControllerTest
             $this->assertEquals($xpath['amount'], $crawler->filterXPath($xpath['path'])->count(), 'With Card: '.$cardName);
         }
 
-        // Add Card
+        // Add new Card
         $cardToAdd = 'Rumbler Rickshaw';
         $amount    = 1;
         $level     = null;
@@ -114,7 +114,7 @@ class PlayerControllerTest extends AbstractControllerTest
             'owned_card_amount' => $amount,
             'owned_card_level'  => $level,
         ];
-        $url = '/player/'.$player->getId().'/card';
+        $url = '/ownedcard/card/create'.$player->getId();
         $client->request('POST', $url, $body);
 
         $response = $client->getResponse();
@@ -125,7 +125,7 @@ class PlayerControllerTest extends AbstractControllerTest
         $this->assertEquals($amount, $responseData['amount']);
 
         //Check if Card is shown
-        $crawler             = $client->request('GET', '/player/'.$player->getId().'/cards');
+        $crawler             = $client->request('GET', '/ownedcard/'.$player->getId().'/cards');
         $xpaths[$cardToAdd]  = [
             'path'   => './/td[normalize-space()="'.$cardToAdd.'"]',
             'amount' => 1,
@@ -136,7 +136,7 @@ class PlayerControllerTest extends AbstractControllerTest
         }
 
         //Remove Card
-        $url = '/player/'.$player->getId().'/card/reduce';
+        $url = '/ownedcard/'.$player->getId().'/card/reduce';
         $client->request('DELETE', $url, $body);
 
         $response = $client->getResponse();
@@ -147,7 +147,7 @@ class PlayerControllerTest extends AbstractControllerTest
         $this->assertEquals($level, $responseData['level']);
         $this->assertEquals(0, $responseData['amount']);
 
-        $crawler             = $client->request('GET', '/player/'.$player->getId().'/cards');
+        $crawler             = $client->request('GET', '/ownedcard/'.$player->getId().'/cards');
         $xpaths[$cardToAdd]  = [
             'path'   => './/td[normalize-space()="'.$cardToAdd.'"]',
             'amount' => 0,
