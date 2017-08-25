@@ -8,6 +8,7 @@
 
 namespace LokiTuoResultBundle\Service\CardReader;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
 use LokiTuoResultBundle\Entity\CardLevel;
@@ -39,7 +40,7 @@ class Transformer
                 continue;
             }
             $skills = [];
-            $card   = new Card();
+            $card = new Card();
             $card->setName(trim($object->name));
             $card->setRace((int)$object->type);
             $card->setCardFile($file);
@@ -48,16 +49,21 @@ class Transformer
                 ->setAttack(($object->attack) ? (int)$object->attack : 0)
                 ->setDefense(($object->health) ? (int)$object->health : 0)
                 ->setDelay(($object->cost) ? (int)$object->cost : 0)
-                ->setTuoId((int)$object->id);
+                ->setTuoId((int)$object->id)
+                ->setLevel(1);
             if (isset($object->skill)) {
                 $skills = array_merge($skills, $this->readSkill($object->skill));
                 $level1->setSkills($skills);
             }
             if (isset($object->upgrade)) {
-                $card = $this->readUpgrades($card, $object->upgrade, $skills);
+                $levels = $this->readUpgrades($card, $object->upgrade, $skills);
             } else {
+                $levels = new ArrayCollection();
                 $this->logger->debug('Card without Upgrade found: ' . $card->getName());
             }
+
+            $levels->add($level1);
+            $card->setLevels($levels);
             $result[$card->getName()] = $card;
         }
 
@@ -71,30 +77,33 @@ class Transformer
      * @param $upgrades
      * @param $skills
      *
-     * @return CardLevel
+     * @return CardLevel[]|ArrayCollection
      */
-    private function readUpgrades($upgrades, $skills)
+    private function readUpgrades(Card $card, $upgrades, $skills)
     {
-        $levels = [];
+        $levels = new ArrayCollection();
         foreach ($upgrades as $upgrade) {
             $level = new CardLevel();
+            $level->setCard($card);
+            $level->setTuoId((int)$upgrade->card_id);
+            $level->setLevel((int)$upgrade->level);
             if (isset($upgrade->picture)) {
-                $level->setPicture($upgrade->picture);
+                $level->setPicture((string)$upgrade->picture);
             }
             if (isset($upgrade->health)) {
-                $level->setDefense($upgrade->health);
+                $level->setDefense((int)$upgrade->health);
             }
             if (isset($upgrade->attack)) {
-                $level->setAttack($upgrade->attack);
+                $level->setAttack((int)$upgrade->attack);
             }
             if (isset($upgrade->cost)) {
-                $level->setDelay($upgrade->cost);
+                $level->setDelay((int)$upgrade->cost);
             }
             if (isset($upgrade->skill)) {
                 $skills = array_merge($skills, $this->readSkill($upgrade->skill));
                 $level->setSkills($skills);
             }
-            $levels[] = $level;
+            $levels->add($level);
         }
 
         return $levels;
@@ -114,10 +123,10 @@ class Transformer
             $id = trim($skill['id']);
 
             $enhancedSkill = $this->getEnhancedSkill($skill);
-            $evolvedSkill  = $this->getEvolvedToSkill($skill);
-            $countdown     = $this->getCountDown($skill);
-            $race          = $skill['y'];
-            $skillLevel    = $this->getSkillLevel($skill);
+            $evolvedSkill = $this->getEvolvedToSkill($skill);
+            $countdown = $this->getCountDown($skill);
+            $race = $skill['y'];
+            $skillLevel = $this->getSkillLevel($skill);
             $amountOfCards = $this->getAmountOfCards($skill);
 
             switch ($id) {
@@ -194,7 +203,7 @@ class Transformer
      */
     private function getAmountOfCards($skill)
     {
-        $all           = isset($skill['all']);
+        $all = isset($skill['all']);
         $amountOfCards = (isset($skill['n'])) ? $skill['n'] : '';
 
         return ($all) ? 'all' : $amountOfCards;

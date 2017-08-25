@@ -12,24 +12,33 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CardLevel extends AbstractBaseEntity
 {
+    const SKILL_DELIMITER = '|';
+
+    /**
+     * @var Card
+     * @ORM\ManyToOne(targetEntity="Card", inversedBy="levels")
+     * @ORM\JoinColumn(referencedColumnName="id", name="card_id")
+     */
+    private $card;
+
     /**
      * @var int
      *
-     * @ORM\Column(name="Attack", type="integer")
+     * @ORM\Column(name="Attack", type="integer", nullable=true)
      */
     private $attack;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="Defense", type="integer")
+     * @ORM\Column(name="Defense", type="integer", nullable=true)
      */
     private $defense;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="Delay", type="integer")
+     * @ORM\Column(name="Delay", type="integer", nullable=true)
      */
     private $delay;
 
@@ -48,9 +57,39 @@ class CardLevel extends AbstractBaseEntity
 
     /**
      * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $level;
+
+    /**
+     * @var int
      * @ORM\Column(type="integer")
      */
     private $tuoId;
+
+    public function __toString()
+    {
+        $str = $this->getCard()->getName();
+        $str .= ' ';
+        $str .= $this->getDelay();
+        $str .= '/';
+        $str .= $this->getAttack();
+        $str .= '/';
+        $str .= $this->getDefense();
+        $str .= ' ';
+
+        foreach ($this->getSkills() as $skill) {
+            $str .= $skill . ' ';
+        }
+        $str .= ' (' . $this->getCard()->getRaceName() . ')';
+
+        return $str;
+    }
+
+    public function __construct()
+    {
+        $this->skills = [];
+    }
 
     /**
      * @return int
@@ -159,5 +198,43 @@ class CardLevel extends AbstractBaseEntity
         $this->tuoId = $tuoId;
         return $this;
     }
+
+    /**
+     * @return Card
+     */
+    public function getCard(): Card
+    {
+        return $this->card;
+    }
+
+    /**
+     * @param Card $card
+     * @return CardLevel
+     */
+    public function setCard(Card $card)
+    {
+        $this->card = $card;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     * @return CardLevel
+     */
+    public function setLevel(int $level)
+    {
+        $this->level = $level;
+        return $this;
+    }
+
+
 
 }
