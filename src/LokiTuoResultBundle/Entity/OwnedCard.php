@@ -46,15 +46,15 @@ class OwnedCard extends AbstractBaseEntity
     private $player;
 
     /**
-     * @var Card
-     * @ORM\ManyToOne(targetEntity="Card")
-     * @ORM\JoinColumn(referencedColumnName="id", name="card_id")
+     * @var CardLevel
+     * @ORM\ManyToOne(targetEntity="LokiTuoResultBundle\Entity\CardLevel")
+     * @ORM\JoinColumn(referencedColumnName="id", name="card_level_id")
      */
     private $card;
 
     public function __toString()
     {
-        $str = $this->card->getName();
+        $str = $this->card->getCard()->getName();
         if ($this->level) {
             $str .= '-' . $this->level;
         }
@@ -70,7 +70,7 @@ class OwnedCard extends AbstractBaseEntity
      */
     public function toDeckString()
     {
-        $str = $this->card->getName();
+        $str = $this->card->getCard()->getName();
         if ($this->level) {
             $str .= '-' . $this->level;
         }
@@ -146,7 +146,7 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * @return Card
+     * @return CardLevel
      */
     public function getCard()
     {
@@ -154,7 +154,7 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * @param Card $card
+     * @param CardLevel $card
      */
     public function setCard($card)
     {

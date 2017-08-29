@@ -50,7 +50,8 @@ class Transformer
                 ->setDefense(($object->health) ? (int)$object->health : 0)
                 ->setDelay(($object->cost) ? (int)$object->cost : 0)
                 ->setTuoId((int)$object->id)
-                ->setLevel(1);
+                ->setLevel(1)
+            ->setCard($card);
             if (isset($object->skill)) {
                 $skills = array_merge($skills, $this->readSkill($object->skill));
                 $level1->setSkills($skills);

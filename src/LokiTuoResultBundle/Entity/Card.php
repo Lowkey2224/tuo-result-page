@@ -136,6 +136,7 @@ class Card extends AbstractBaseEntity
     }
 
     /**
+     * Returns an ArrayCollection with Keys = tuId
      * @return ArrayCollection|CardLevel[]
      */
     public function getLevels()
