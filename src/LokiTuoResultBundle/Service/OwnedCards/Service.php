@@ -41,10 +41,15 @@ class Service
             $amount = $match[1];
         }
         $match = [];
-
-        preg_match('/.+-(\d)/', $card, $match);
+        $nameAddition = "";
+        preg_match('/.+-(\d+)/', $card, $match);
         if (count($match) == 2) {
-            $level = $match[1];
+            if ($match[1] <= 6) {
+                $level = $match[1];
+            } else {
+
+                $nameAddition = "-" . $match[1];
+            }
         }
         $match  = [];
         $inDeck = ($inDeck) ? $amount : 0;
@@ -54,9 +59,10 @@ class Service
             preg_match('/(.*)\-\d/', $match[1], $match2);
 
             $name = count($match2) == 2 ? $match2[1] : $match[1];
+            $name .= $nameAddition;
         }
 
-        return ['amount' => $amount, 'level' => $level, 'name' => $name, 'inDeck' => $inDeck];
+        return ['amount' => (int)$amount, 'level' => (int)$level, 'name' => $name, 'inDeck' => $inDeck];
     }
 
     public function persistOwnedCards(array $ownedCards)
