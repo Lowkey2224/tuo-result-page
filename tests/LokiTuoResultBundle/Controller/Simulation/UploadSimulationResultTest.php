@@ -11,7 +11,7 @@ class UploadSimulationResultTest extends AbstractControllerTest
     private $successMsg  = '1 Results have been imported';
     private $percent     = '80.8%';
     private $player      = '[CTN] PHPUnitGuy';
-    private $cards       = 'Malika, Stonewall Garrison, Menacing Interrogator, Sinuous Dam(2), Xeno Reanimator';
+    private $cards       = 'Malika, Stonewall Garrison, Menacing Interrogator, Sinuous Dam, Xeno Reanimator, Sinuous Dam';
 
     public function testUpload()
     {
@@ -33,7 +33,7 @@ class UploadSimulationResultTest extends AbstractControllerTest
 
         $path = './/div[@class="panel-body"][contains(.,"%s")]';
         foreach (explode(', ', $this->cards) as $card) {
-            $this->assertEquals(1, $crawler->filterXPath(sprintf($path, $card)));
+            $this->assertEquals(1, $crawler->filterXPath(sprintf($path, trim($card)))->count(), "Looking for Card $card but it was not found");
         }
     }
 }
