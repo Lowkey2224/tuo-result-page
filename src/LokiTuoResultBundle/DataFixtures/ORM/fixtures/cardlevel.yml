@@ -1,0 +1,73 @@
+LokiTuoResultBundle\Entity\CardLevel:
+       Malikalvl1:
+        card: '@Malika'
+        attack: 0
+        defense: 15
+        delay: 0
+        picture: raiderlady.jpg
+        skills: [strike  1, heal Raider 1, counter 1]
+        tuoId: 1
+        level: 1
+       StonewallGarrisonlvl1:
+        card: '@StonewallGarrison'
+        attack: 0
+        defense: 32
+        delay: 2
+        picture: raiderlady.jpg
+        skills: [evolve 2 weaken to sunder, heal all 5, weaken all 4]
+        tuoId: 2
+        level: 1
+       Inheritorlvl1:
+        card: '@Inheritor'
+        attack: 6
+        defense: 30
+        delay: 1
+        picture: rightoldhoney_lv3
+        skills: [mend  7, rally  Righteous 6, flurry every 3]
+        tuoId: 3
+        level: 1
+       MenIntlvl1:
+        card: '@MenInt'
+        attack: 8
+        defense: 34
+        delay: 1
+        picture: whereistheambassador_lv1
+        skills: [avenge 8, pierce 8, berserk 5]
+        tuoId: 4
+        level: 1
+       Ricklvl1:
+        card: '@Rick'
+        attack: 14
+        defense: 44
+        delay: 2
+        picture: rumblekart_lv3
+        skills: [enrage 3  8, berserk 8, flurry every 3]
+        tuoId: 4
+        level: 1
+       Damlvl1:
+        card: '@Dam'
+        attack: 0
+        defense: 40
+        delay: 2
+        picture: xenosinewwall_lv3
+        skills: [wall, enfeeble all  6, jam 2   every 3]
+        tuoId: 5
+        level: 1
+       Cometlvl1:
+        card: '@Comet'
+        attack: 10
+        defense: 44
+        delay: 1
+        picture: xenocharges_lv3
+        skills: [evade   5, enfeeble 16, strike all  4]
+        tuoId: 6
+        level: 1
+       Reanimatorlvl1:
+        card: '@Reanimator'
+        attack: 7
+        defense: 47
+        delay: 2
+        picture: deathmongerer_lv1
+        skills: [evade 7, avenge 17, weaken all 7]
+        tuoId: 7
+        level: 1
