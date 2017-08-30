@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -30,12 +31,18 @@ class DefaultController extends Controller
         $ocManager = $this->get('loki_tuo_result.owned_card.manager');
 
         $playerRepo = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player");
-        $player = $playerRepo->findOneByName("LokiMcFly");
-        $ids = $connector->getDecks();
-        $ocs = $ocManager->persistOwnedCardsByTuoId($ids, $player);
-        $summe = array_sum($ids);
-        $diff = array_diff(array_keys($ids), array_keys($ocs));
-
-        return $this->json(['sumOfCards' => $summe, 'diff' => $diff, 'fetched' => $ids]);
+        /** @var Player $player */
+        $player = $playerRepo->findOneBy(['name' => "LokiMcFly"]);
+        if(!$player->hasKongCredentials()){
+            return $this->json(["error" => "NO Credentials found"]);
+        }
+        $ocManager->removeOldOwnedCardsForPlayer($player);
+        $idAmountMap = $connector->getInventoryAndDeck($player);
+        $ocs = $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
+        $res = [];
+        foreach ($ocs as $oc) {
+            $res[$oc->getCard()->getTuoId()] = $oc->__toString();
+        }
+        return $this->json($res);
     }
 }

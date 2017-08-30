@@ -19,4 +19,12 @@ class CardRepository extends AbstractBaseRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllWithLevels()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->addSelect('l')
+            ->join('c.levels', 'l');
+        return $qb->getQuery()->getResult();
+    }
 }

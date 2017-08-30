@@ -11,6 +11,7 @@ namespace LokiTuoResultBundle\Service\OwnedCards;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Support\Collection;
 use LokiTuoResultBundle\Entity\Card;
+use LokiTuoResultBundle\Entity\CardLevel;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
@@ -81,14 +82,25 @@ class Service
         foreach ($cardArray as $cardEntry) {
             //            $this->removeOldOwnedCardsForPlayer($player);
             $card = $cardRepo->findOneBy(['name' => $cardEntry['name']]);
-            if (!$card) {
+            if (!$card instanceof Card) {
                 $this->logger->notice('No Card found for name ' . $cardEntry['name']);
                 continue;
             }
             $oc = new OwnedCard();
-            $oc->setCard($card);
+            $selectedLevel = null;
+            foreach ($card->getLevels() as $level ){
+                if($level->getLevel() === $cardEntry['level']){
+                    $selectedLevel = $level;
+                    break;
+                }
+            }
+            if(! $selectedLevel instanceof  CardLevel){
+                $this->logger->notice(sprintf('No corresponding Level %d found for Card %d', $cardEntry['level'], $cardEntry['name']));
+                continue;
+            }
+
+            $oc->setCard($selectedLevel);
             $oc->setAmount($cardEntry['amount']);
-            $oc->setLevel($cardEntry['level']);
             $oc->setPlayer($player);
             $oc->setAmountInDeck($cardEntry['inDeck']);
             $this->logger->error("Persisting Card $oc");
@@ -137,8 +149,10 @@ class Service
     public function persistOwnedCardsByTuoId(array $ids, Player $player)
     {
         $ocs = $this->getOwnedCardsByTuoIds($ids, $player);
-
-
+        foreach ($ocs as $ownedCard) {
+            $this->em->persist($ownedCard);
+        }
+        $this->em->flush();
         return $ocs;
     }
 
@@ -147,43 +161,35 @@ class Service
      * @param Player $player
      * @return OwnedCard[] array
      */
-    private function getOwnedCardsByTuoIds(array $ids, Player $player) {
+    private function getOwnedCardsByTuoIds(array $tuIds, Player $player) {
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
-        $cards = $cardRepo->findAll();
+        $cards = $cardRepo->findAllWithLevels();
         $cards = new Collection($cards);
-        $cards = $cards->keyBy(function(Card $s){return $s->getTuoId();});
+        $levels = $cards->map(function (Card $c) {
+            return $c->getLevels();
+        });
+        $levelsFlat = new Collection();
+        foreach ($levels as $levelsForOneCard) {
+            /** @var CardLevel $level */
+            foreach ($levelsForOneCard as $level) {
+                $levelsFlat[$level->getTuoId()] = $level;
+            }
+        }
+        $levels = $levelsFlat;
         $ownedCards = [];
-        foreach ($ids as $id => $amount) {
-            $oc = $this->getOwnedCard($id, $amount, $player, $cards);
-            if($oc) {
-                $ownedCards[$id] = $oc;
+        foreach ($tuIds as $tuId => $amounts) {
+            $amount = $amounts['owned'];
+            $amountInDeck = isset($amounts['used']) ? $amounts['used'] : 0;
+            $oc = new OwnedCard();
+
+            $oc->setCard($levels->get($tuId));
+            $oc->setAmount($amount);
+            $oc->setPlayer($player);
+            $oc->setAmountInDeck($amountInDeck);
+            if ($oc->getCard()) {
+                $ownedCards[$tuId] = $oc;
             }
         }
         return $ownedCards;
-    }
-
-    /**
-     * @param $id int
-     * @param $amount int
-     * @param Player $player
-     * @param $cards Card[]|Collection
-     * @return OwnedCard|null
-     */
-    private function getOwnedCard($id, $amount, Player $player, $cards)
-    {
-        $oc = new OwnedCard();
-        $oc->setPlayer($player);
-        $oc->setAmount($amount);
-        for($i = 0; $i<6;$i++) {
-            $card = $cards->get($id - $i, null);
-            if($card) {
-                $oc->setCard($card);
-                $oc->setLevel(6-$i);
-                return $oc;
-            }
-        }
-
-
-        return null;
     }
 }

@@ -4,6 +4,7 @@
 namespace LokiTuoResultBundle\Service\TyrantApiConnector;
 
 
+use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerInterface;
 
 class Service
@@ -20,31 +21,20 @@ class Service
         $this->connector = new Connector($logger);
     }
 
-    public function getDecks()
+    public function getInventoryAndDeck(Player $player)
     {
 
-//        $userId = 3565325;
-//        $userPassword = "d9810b1022d7984267a0d77c9ede08bc";
-//        $userName = "kentasaurus";
-//        $targerUserId = 4401099;
-//        $kongId = 15485404;
-//        $actions = [
-//            'getProfileData',
-//            'init',
-//        ];
-        //LokiMcFly
-        $userPassword = "b2541a76c4739991be8462ded7816c5b";
-        $userId = 10140147;
-        $synCode = "03f475cb8d8840be77787acc354d42ddaa51da44295941c27eacb38bb894e4ea";
-        $userName = "LokiMcFly";
-        $kongId = 5837616;
-        $kongToken = "ed2599b605e3556b4d8f7471078b7c0e3d41c0b435296f3d4b00dc7ec9515218";
 
+        if (!$player->hasKongCredentials()) {
+            return [];
+        }
+        $userPassword = $player->getKongPassword();
+        $userId = $player->getTuUserId();
+        $synCode = $player->getSynCode();
+        $userName = $player->getKongUserName();
+        $kongId = $player->getKongId();
+        $kongToken = $player->getKongToken();
 
-
-//
-//        $members = $this->connector->getMembers($userId, $userName, $userPassword, $userId, $kongId, $synCode, $kongToken);
-//        $members = $members->faction->members;
         list($cards, $decks) = $this->connector->getInventory($userId, $userName, $userPassword, $userId, $kongId,
             $synCode, $kongToken);
         $cardIds = [];
@@ -57,52 +47,29 @@ class Service
                 $this->logger->info(sprintf("My Deck has the Following Card"));
                 $countOwned++;
 
-                $cardIds[$id] = isset($cardIds[$id]) ? $cardIds[$id] + $value->num_owned : (int)$value->num_owned;
+                $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_owned : (int)$value->num_owned;
             }
             if ($value->num_used > 0) {
                 $this->logger->info(sprintf("My Deck has the Following Card"));
                 $countDeck++;
-                $cardIds[$id] = isset($cardIds[$id]) ? $cardIds[$id] + $value->num_used : (int)$value->num_used;
+                $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_used : (int)$value->num_used;
             }
             if ($value->num_owned == 0) {
                 $this->logger->info(sprintf("Previosly Owned"));
             }
         }
-        $deckCards = [];
         foreach ($decks as $deck) {
-            $cardIds[$deck->dominion_id] = 1;
-            $cardIds[$deck->commander_id] = 1;
-            foreach ($deck->cards as $id => $amount) {
-                $val = isset($deckCards[$id]) ? $deckCards[$id] : 0;
-                $newVal = $amount;
-                $deckCards[$id] = max($val, $newVal);
+            if (count($deck->cards) > 0) {
+
+                $cardIds[$deck->dominion_id]["used"] = 1;
+                $cardIds[$deck->commander_id]["used"] = 1;
+                foreach ($deck->cards as $id => $amount) {
+                    $cardIds[$id]["used"] = isset($cardIds[$id]["used"]) ? $cardIds[$id]["used"] + $amount : (int)$amount;
+                }
+                break;
             }
         }
-        foreach ($deckCards as $id => $amount) {
-            $val = isset($cardIds[$id]) ? $cardIds[$id] : 0;
-            $cardIds[$id] = $val + $amount;
 
-        }
-
-//        foreach ($members as $id => $value) {
-//            $name = $value->name . '';
-//
-//            $main[] = ['name'];
-//            $main[] = [$name];
-//
-//
-//            $server_output = $this->connector->getCards($id);
-//
-//            $content = json_decode($server_output);
-//
-//            foreach (["deck", "defense_deck"] as $deckType) {
-//                if ($content->player_info->$deckType) {
-//                    $main[] = $this->connector->getDeck($content->player_info, $deckType);
-//                }
-//            }
-//
-//            flush();
-//        }
         return $cardIds;
     }
 }

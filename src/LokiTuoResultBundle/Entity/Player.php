@@ -59,12 +59,63 @@ class Player extends AbstractBaseEntity
      */
     private $ownershipConfirmed;
 
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $kongPassword = "b2541a76c4739991be8462ded7816c5b";
+
+    /**
+     * @var string
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tuUserId = 10140147;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $synCode = "03f475cb8d8840be77787acc354d42ddaa51da44295941c27eacb38bb894e4ea";
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $kongUserName = "LokiMcFly";
+
+    /**
+     * @var string
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $kongId = 5837616;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $kongToken = "ed2599b605e3556b4d8f7471078b7c0e3d41c0b435296f3d4b00dc7ec9515218";
+
     public function __construct()
     {
         $this->results            = new ArrayCollection();
         $this->ownedCards         = new ArrayCollection();
         $this->active             = true;
         $this->ownershipConfirmed = false;
+    }
+
+    /**
+     * Checks if the User has Credentials usable with the Tyrant Unleashed API
+     * @return bool
+     */
+    public function hasKongCredentials()
+    {
+        return $this->kongToken
+        && $this->kongId
+        && $this->kongPassword
+        && $this->tuUserId
+        && $this->synCode
+        && $this->kongUserName;
     }
 
     public function __toString()
@@ -215,5 +266,113 @@ class Player extends AbstractBaseEntity
     public function setGuild(Guild $guild)
     {
         $this->guild = $guild;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKongPassword(): string
+    {
+        return $this->kongPassword;
+    }
+
+    /**
+     * @param string $kongPassword
+     * @return Player
+     */
+    public function setKongPassword(string $kongPassword)
+    {
+        $this->kongPassword = $kongPassword;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTuUserId(): int
+    {
+        return $this->tuUserId;
+    }
+
+    /**
+     * @param int $tuUserId
+     * @return Player
+     */
+    public function setTuUserId(int $tuUserId)
+    {
+        $this->tuUserId = $tuUserId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSynCode(): string
+    {
+        return $this->synCode;
+    }
+
+    /**
+     * @param string $synCode
+     * @return Player
+     */
+    public function setSynCode(string $synCode)
+    {
+        $this->synCode = $synCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKongUserName(): string
+    {
+        return $this->kongUserName;
+    }
+
+    /**
+     * @param string $kongUserName
+     * @return Player
+     */
+    public function setKongUserName(string $kongUserName)
+    {
+        $this->kongUserName = $kongUserName;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKongId(): int
+    {
+        return $this->kongId;
+    }
+
+    /**
+     * @param int $kongId
+     * @return Player
+     */
+    public function setKongId(int $kongId)
+    {
+        $this->kongId = $kongId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKongToken(): string
+    {
+        return $this->kongToken;
+    }
+
+    /**
+     * @param string $kongToken
+     * @return Player
+     */
+    public function setKongToken(string $kongToken)
+    {
+        $this->kongToken = $kongToken;
+        return $this;
     }
 }

@@ -86,6 +86,11 @@ class CardLevel extends AbstractBaseEntity
         return $str;
     }
 
+    public function getName()
+    {
+        return $this->card->getName();
+    }
+
     public function __construct()
     {
         $this->skills = [];
@@ -94,7 +99,7 @@ class CardLevel extends AbstractBaseEntity
     /**
      * @return int
      */
-    public function getAttack(): int
+    public function getAttack()
     {
         return $this->attack;
     }
@@ -103,7 +108,7 @@ class CardLevel extends AbstractBaseEntity
      * @param int $attack
      * @return CardLevel
      */
-    public function setAttack(int $attack)
+    public function setAttack($attack)
     {
         $this->attack = $attack;
         return $this;
@@ -112,7 +117,7 @@ class CardLevel extends AbstractBaseEntity
     /**
      * @return int
      */
-    public function getDefense(): int
+    public function getDefense()
     {
         return $this->defense;
     }
@@ -121,7 +126,7 @@ class CardLevel extends AbstractBaseEntity
      * @param int $defense
      * @return CardLevel
      */
-    public function setDefense(int $defense)
+    public function setDefense($defense)
     {
         $this->defense = $defense;
         return $this;
@@ -130,7 +135,7 @@ class CardLevel extends AbstractBaseEntity
     /**
      * @return int
      */
-    public function getDelay(): int
+    public function getDelay()
     {
         return $this->delay;
     }
@@ -139,7 +144,7 @@ class CardLevel extends AbstractBaseEntity
      * @param int $delay
      * @return CardLevel
      */
-    public function setDelay(int $delay)
+    public function setDelay($delay)
     {
         $this->delay = $delay;
         return $this;
@@ -148,7 +153,7 @@ class CardLevel extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getPicture(): string
+    public function getPicture()
     {
         return $this->picture;
     }
@@ -157,7 +162,7 @@ class CardLevel extends AbstractBaseEntity
      * @param string $picture
      * @return CardLevel
      */
-    public function setPicture(string $picture)
+    public function setPicture($picture)
     {
         $this->picture = $picture;
         return $this;
@@ -184,7 +189,7 @@ class CardLevel extends AbstractBaseEntity
     /**
      * @return int
      */
-    public function getTuoId(): int
+    public function getTuoId()
     {
         return $this->tuoId;
     }
@@ -234,7 +239,6 @@ class CardLevel extends AbstractBaseEntity
         $this->level = $level;
         return $this;
     }
-
 
 
 }

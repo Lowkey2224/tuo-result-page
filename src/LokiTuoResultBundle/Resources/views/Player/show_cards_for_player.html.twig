@@ -106,7 +106,7 @@
 
                                     <input type="hidden" name="name" id="name" value="{{ card.card.name }}">
                                     <input type="hidden" name="level" id="level"
-                                           value="{{ card.level?card.level:'null' }}">
+                                           value="{{ card.card.level?card.card.level:'null' }}">
                                     <input type="hidden" name="id" id="id" value="{{ card.id }}">
                                     <button type="submit" class="btn btn-danger btn-xs submitbutton" name="remove-card">
                                         <i class="glyphicon glyphicon-minus"></i>
@@ -168,7 +168,7 @@
 
                                     <input type="hidden" name="name" id="name" value="{{ card.card.name }}">
                                     <input type="hidden" name="level" id="level"
-                                           value="{{ card.level?card.level:'null' }}">
+                                           value="{{ card.card.level?card.card.level:'null' }}">
                                     <input type="hidden" name="id" id="id" value="{{ card.id }}">
                                     <button type="submit" class="btn btn-success btn-xs submitbutton"
                                             name="add-to-deck">
