@@ -97,7 +97,7 @@ class Persister
     {
         $levels = new ArrayCollection();
         foreach ($newCard->getLevels() as $level) {
-            $old = $oldCard->getLevel($level->getTuoId());
+            $old = $oldCard->getLevelByTuId($level->getTuoId());
             if($old instanceof CardLevel) {
                 $old->setDelay($level->getDelay());
                 $old->setPicture($level->getPicture());

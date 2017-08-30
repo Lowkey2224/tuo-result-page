@@ -4,6 +4,7 @@ namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use function PHPSTORM_META\map;
 
 /**
  * Card.
@@ -37,7 +38,7 @@ class Card extends AbstractBaseEntity
 
     /**
      * @var CardLevel[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="CardLevel", mappedBy="card", cascade={"remove", "persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CardLevel", mappedBy="card", cascade={"remove", "persist"}, orphanRemoval=true, fetch="EAGER")
      */
     private $levels;
 
@@ -148,9 +149,30 @@ class Card extends AbstractBaseEntity
      * @param int $tuoId
      * @return CardLevel|null
      */
-    public function getLevel(int $tuoId)
+    public function getLevelByTuId(int $tuoId)
     {
         return $this->levels->get($tuoId);
+    }
+
+    /**
+     * Returns the CardLEvel with the desired Level or null if no level exists.
+     * @param int $level
+     * @return CardLevel|mixed|null
+     */
+    public function getLevel(int $level = null)
+    {
+        $useMax = is_null($level);
+        $return = null;
+        foreach ($this->getLevels() as $elem) {
+            if ($useMax) {
+                $level = max($level, $elem->getLevel());
+            }
+            if ($elem->getLevel() === $level) {
+                $return = $elem;
+            }
+        }
+
+        return $return;
     }
 
     /**
@@ -160,7 +182,7 @@ class Card extends AbstractBaseEntity
     public function setLevels($levels)
     {
         $this->levels = new ArrayCollection();
-        foreach ($levels as $level){
+        foreach ($levels as $level) {
             $this->levels->set($level->getTuoId(), $level);
         }
         return $this;

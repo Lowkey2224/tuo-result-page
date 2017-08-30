@@ -62,7 +62,7 @@ class OwnedCardController extends Controller
 
         return new JsonResponse([
             'name' => $oc->getCard()->getName(),
-            'level' => $oc->getLevel(),
+            'level' => $oc->getCard()->getLevel(),
             'amount' => $oc->getAmountInDeck(),
             'id' => $oc->getId(),
         ]);
@@ -89,7 +89,7 @@ class OwnedCardController extends Controller
 
         return new JsonResponse([
             'name' => $oc->getCard()->getName(),
-            'level' => $oc->getLevel(),
+            'level' => $oc->getCard()->getLevel(),
             'amount' => $oc->getAmountInDeck(),
             'id' => $oc->getId(),
         ]);
@@ -114,7 +114,7 @@ class OwnedCardController extends Controller
 
         return new JsonResponse([
             'name' => $oc->getCard()->getName(),
-            'level' => $oc->getLevel(),
+            'level' => $oc->getCard()->getLevel(),
             'amount' => $oc->getAmount(),
             'id' => $oc->getId(),
         ]);
@@ -151,7 +151,7 @@ class OwnedCardController extends Controller
 
         return new JsonResponse([
             'name' => $oc->getCard()->getName(),
-            'level' => $oc->getLevel(),
+            'level' => $oc->getCard()->getLevel(),
             'amount' => $oc->getAmount(),
             'id' => $oc->getId(),
         ]);
@@ -241,7 +241,7 @@ class OwnedCardController extends Controller
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
         $manager = $this->get('loki_tuo_result.player.manager');
-        $oc = $manager->addCardToPlayer($player, $card, $amount, 0, $level);
+        $oc = $manager->addCardToPlayer($player, $card->getLevel($level), $amount, 0);
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
         $this->getDoctrine()->getManager()->flush();
