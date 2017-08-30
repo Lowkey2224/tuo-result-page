@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Service\CardReader;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
 use LokiTuoResultBundle\Entity\CardLevel;
@@ -21,50 +22,8 @@ class TransformerTest extends TestCase
 		<health>58</health>
 		<cost>3</cost>
 		<rarity>5</rarity>
-		<skill id=\"evade\" x=\"6\"/>
-		<skill id=\"enfeeble\" x=\"5\" all=\"1\"/>
-		<skill id=\"strike\" x=\"5\" all=\"1\"/>
 		<type>6</type>
 		<set>2000</set>
-		<upgrade>
-			<card_id>34308</card_id>
-			<level>2</level>
-			<health>61</health>
-			<skill id=\"evade\" x=\"6\"/>
-			<skill id=\"enfeeble\" x=\"6\" all=\"1\"/>
-			<skill id=\"strike\" x=\"6\" all=\"1\"/>
-		</upgrade>
-		<upgrade>
-			<card_id>34309</card_id>
-			<level>3</level>
-			<health>64</health>
-			<attack>12</attack>
-		</upgrade>
-		<upgrade>
-			<card_id>34310</card_id>
-			<level>4</level>
-			<health>66</health>
-			<skill id=\"evade\" x=\"7\"/>
-			<skill id=\"enfeeble\" x=\"7\" all=\"1\"/>
-			<skill id=\"strike\" x=\"6\" all=\"1\"/>
-		</upgrade>
-		<upgrade>
-			<card_id>34311</card_id>
-			<level>5</level>
-			<health>69</health>
-			<skill id=\"evade\" x=\"7\"/>
-			<skill id=\"enfeeble\" x=\"7\" all=\"1\"/>
-			<skill id=\"strike\" x=\"7\" all=\"1\"/>
-		</upgrade>
-		<upgrade>
-			<card_id>34312</card_id>
-			<level>6</level>
-			<health>72</health>
-			<attack>13</attack>
-			<skill id=\"evade\" x=\"8\"/>
-			<skill id=\"enfeeble\" x=\"7\" all=\"1\"/>
-			<skill id=\"strike\" x=\"7\" all=\"1\"/>
-		</upgrade>
 	</unit></root>";
 
 
@@ -79,13 +38,14 @@ class TransformerTest extends TestCase
         $expected->setRace(6);
         $expected->setCardFile($file);
 
+        $levels = new ArrayCollection();
         $l = new CardLevel();
         $l->setTuoId(34307)
             ->setAttack(11)
             ->setDefense(58)
             ->setPicture("falcor_lv1")
             ->setDelay(3);
-        $levels[1] = $l;
+        $levels->add($l);
         $this->assertEquals([$name => $expected], $cards);
     }
 }

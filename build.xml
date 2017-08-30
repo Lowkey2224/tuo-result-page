@@ -231,13 +231,13 @@
     <target name="rebuild-database" unless="rebuild-database.done" description="Drops the Database Schema, builds it, and loads fixtures">
         <echo message=""/>
         <exec executable="php" taskname="schema:drop">
-            <arg line="${console} doctrine:schema:drop --force"/>
+            <arg line="${console} doctrine:schema:drop --force -e=test"/>
         </exec>
         <exec executable="php" taskname="cache:create">
-            <arg line="${console} doctrine:schema:create"/>
+            <arg line="${console} doctrine:schema:create -e=test"/>
         </exec>
         <exec executable="php" taskname="fixtures:load">
-            <arg line="${console} doctrine:fixtures:load -n"/>
+            <arg line="${console} doctrine:fixtures:load -n -e=test"/>
         </exec>
         <property name="rebuild-database.done" value="true"/>
     </target>

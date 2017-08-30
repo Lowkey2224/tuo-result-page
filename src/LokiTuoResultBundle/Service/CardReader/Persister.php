@@ -36,9 +36,10 @@ class Persister
         $this->logger = new NullLogger();
     }
 
-    public function importCards()
+    public function importCards($force)
     {
-        $criteria    = ['status' => CardFile::STATUS_NOT_IMPORTED];
+
+        $criteria    = $force===true?[]:['status' => CardFile::STATUS_NOT_IMPORTED];
         $files       = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findBy($criteria);
         $transformer = new Transformer();
         $transformer->setLogger($this->logger);

@@ -91,11 +91,9 @@ class JsonImporter extends AbstractImporter
                 $resultEntity->setGuild($guilds->get($result->guild_id));
                 $resultEntity->setMission($missionEntity);
                 $resultEntity->setPlayer($player);
-                //TODO Create real Deck
                 $this->deleteOldDeck($resultEntity);
                 $deck = $this->createDeck($parsed['deck'], $resultEntity, $cards);
                 $resultEntity->setDeck($deck);
-//                $resultEntity->setDeck($parsed['deck']);
                 $resultEntity->setPercent($parsed['percent']);
                 $resultEntity->setSourceFile($resultFile);
                 $results->push($resultEntity);

@@ -5,7 +5,7 @@ namespace LokiTuoResultBundle\Controller\Simulation;
 use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class UploadSimulationResult extends AbstractControllerTest
+class UploadSimulationResultTest extends AbstractControllerTest
 {
     private $missionName = 'TestMission-81';
     private $successMsg  = '1 Results have been imported';

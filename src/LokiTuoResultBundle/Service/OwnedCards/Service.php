@@ -62,7 +62,7 @@ class Service
             $name .= $nameAddition;
         }
 
-        return ['amount' => (int)$amount, 'level' => (int)$level, 'name' => $name, 'inDeck' => $inDeck];
+        return ['amount' => (int)$amount, 'level' => $level?(int)$level:null, 'name' => $name, 'inDeck' => $inDeck];
     }
 
     public function persistOwnedCards(array $ownedCards)
