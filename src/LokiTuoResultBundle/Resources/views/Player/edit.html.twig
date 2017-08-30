@@ -38,5 +38,40 @@
                 {{ form_end(form) }}
             </div>
         </div>
+        {% if canEdit %}
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Edit Kongregate/Tyrant Credentials for {{ player.name }}
+                    <a class="btn btn-xs btn-info pull-right" href="{{ path('loki.tuo.player.all.show') }}">
+                        <span class="glyphicon glyphicon-chevron-left">Back</span>
+                    </a>
+                </div>
+                <div class="panel-body">
+                    {{ form_start(credentialsForm) }}
+                    <div class="form-group">
+                        {{ form_row(credentialsForm.kongUserName) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(credentialsForm.kongPassword) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(credentialsForm.kongId) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(credentialsForm.synCode) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(credentialsForm.kongToken) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(credentialsForm.tuUserId) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(credentialsForm.submit) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

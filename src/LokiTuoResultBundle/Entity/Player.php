@@ -271,7 +271,7 @@ class Player extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getKongPassword(): string
+    public function getKongPassword()
     {
         return $this->kongPassword;
     }
@@ -289,7 +289,7 @@ class Player extends AbstractBaseEntity
     /**
      * @return int
      */
-    public function getTuUserId(): int
+    public function getTuUserId()
     {
         return $this->tuUserId;
     }
@@ -307,7 +307,7 @@ class Player extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getSynCode(): string
+    public function getSynCode()
     {
         return $this->synCode;
     }
@@ -325,7 +325,7 @@ class Player extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getKongUserName(): string
+    public function getKongUserName()
     {
         return $this->kongUserName;
     }
@@ -343,7 +343,7 @@ class Player extends AbstractBaseEntity
     /**
      * @return int
      */
-    public function getKongId(): int
+    public function getKongId()
     {
         return $this->kongId;
     }
@@ -361,7 +361,7 @@ class Player extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getKongToken(): string
+    public function getKongToken()
     {
         return $this->kongToken;
     }
