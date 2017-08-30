@@ -45,7 +45,7 @@ class Transformer
             $card->setRace((int)$object->type);
             $card->setCardFile($file);
             $level1 = new CardLevel();
-            $level1->setPicture($object->picture)
+            $level1->setPicture((string)$object->picture)
                 ->setAttack(($object->attack) ? (int)$object->attack : 0)
                 ->setDefense(($object->health) ? (int)$object->health : 0)
                 ->setDelay(($object->cost) ? (int)$object->cost : 0)

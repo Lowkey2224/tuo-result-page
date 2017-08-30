@@ -42,7 +42,7 @@ class PlayerControllerTest extends AbstractControllerTest
         $xpaths = [];
         /** @var OwnedCard $ownedCard */
         foreach ($deck as $ownedCard) {
-            $xpaths[] ='.//td[normalize-space()="'.$ownedCard->getCard()->getName().'"]';
+            $xpaths[] ='.//td[normalize-space()="'.$ownedCard->__toString().'"]';
         }
 
         foreach ($xpaths as $xpath) {
@@ -66,7 +66,7 @@ class PlayerControllerTest extends AbstractControllerTest
         /** @var Player $player */
         $player  = $repo->findOneBy(['name' => $playername]);
         $crawler = $client->request('GET', '/player/'.$player->getId().'/results');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), $client->getResponse()->getContent());
 
         $xpaths = [
             './/a/b[normalize-space()="'.$mission.'"]',
@@ -95,8 +95,8 @@ class PlayerControllerTest extends AbstractControllerTest
         $xpaths = [];
         /** @var OwnedCard $ownedCard */
         foreach ($deck as $ownedCard) {
-            $xpaths[$ownedCard->getCard()->getName()] = [
-                'path'   => './/td[normalize-space()="'.$ownedCard->getCard()->getName().'"]',
+            $xpaths[$ownedCard->__toString()] = [
+                'path'   => './/td[normalize-space()="'.$ownedCard->__toString().'"]',
                 'amount' => 2,
             ];
         }
@@ -108,7 +108,7 @@ class PlayerControllerTest extends AbstractControllerTest
         // Add new Card
         $cardToAdd = 'Rumbler Rickshaw';
         $amount    = 1;
-        $level     = null;
+        $level     = 6;
         $body      = [
             'owned_card_card'   => $cardToAdd,
             'owned_card_amount' => $amount,
@@ -126,8 +126,9 @@ class PlayerControllerTest extends AbstractControllerTest
 
         //Check if Card is shown
         $crawler             = $client->request('GET', '/ownedcard/'.$player->getId().'/cards');
-        $xpaths[$cardToAdd]  = [
-            'path'   => './/td[normalize-space()="'.$cardToAdd.'"]',
+        $cardNameToShow = $cardToAdd.'-'.$level;
+        $xpaths[$cardNameToShow]  = [
+            'path'   => './/td[normalize-space()="'.$cardNameToShow.'"]',
             'amount' => 1,
         ];
 
@@ -136,11 +137,18 @@ class PlayerControllerTest extends AbstractControllerTest
         }
 
         //Remove Card
-        $url = '/ownedcard/'.$player->getId().'/card/reduce';
+        $usedCard = null;
+        $this->container->get('doctrine')->getManager()->refresh($player);
+        /** @var OwnedCard $oc */
+        foreach ($player->getOwnedCards() as $oc) {
+            if($oc->getCard()->getName() === $cardToAdd){
+                $usedCard = $oc;
+            }
+        }
+        $url = '/ownedcard/'.$usedCard->getId().'/card/reduce';
         $client->request('DELETE', $url, $body);
 
         $response = $client->getResponse();
-//        var_dump($response->getContent());die();
         $this->assertSame(200, $response->getStatusCode());
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals($cardToAdd, $responseData['name']);
@@ -148,8 +156,8 @@ class PlayerControllerTest extends AbstractControllerTest
         $this->assertEquals(0, $responseData['amount']);
 
         $crawler             = $client->request('GET', '/ownedcard/'.$player->getId().'/cards');
-        $xpaths[$cardToAdd]  = [
-            'path'   => './/td[normalize-space()="'.$cardToAdd.'"]',
+        $xpaths[$cardNameToShow]  = [
+            'path'   => './/td[normalize-space()="'.$cardNameToShow.'"]',
             'amount' => 0,
         ];
 

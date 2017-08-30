@@ -41,11 +41,14 @@ class TransformerTest extends TestCase
         $levels = new ArrayCollection();
         $l = new CardLevel();
         $l->setTuoId(34307)
+            ->setCard($expected)
             ->setAttack(11)
             ->setDefense(58)
+            ->setLevel(1)
             ->setPicture("falcor_lv1")
             ->setDelay(3);
         $levels->add($l);
+        $expected->setLevels($levels);
         $this->assertEquals([$name => $expected], $cards);
     }
 }

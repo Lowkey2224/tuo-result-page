@@ -136,6 +136,7 @@ class OwnedCardController extends Controller
         $player = $oc->getPlayer();
         if ($oc->getAmount() == 1) {
             $this->getDoctrine()->getManager()->remove($oc);
+            $oc->setAmount(0);
         } else {
             $oc->setAmount($oc->getAmount() - 1);
             if ($oc->getAmount() < $oc->getAmountInDeck()) {
