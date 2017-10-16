@@ -28,12 +28,12 @@ class Service
         if (!$player->hasKongCredentials()) {
             return [];
         }
-        $userPassword = $player->getKongPassword();
-        $userId = $player->getTuUserId();
-        $synCode = $player->getSynCode();
-        $userName = $player->getKongUserName();
-        $kongId = $player->getKongId();
-        $kongToken = $player->getKongToken();
+        $userPassword = $player->getKongCredentials()->getKongPassword();
+        $userId = $player->getKongCredentials()->getTuUserId();
+        $synCode = $player->getKongCredentials()->getSynCode();
+        $userName = $player->getKongCredentials()->getKongUserName();
+        $kongId = $player->getKongCredentials()->getKongId();
+        $kongToken = $player->getKongCredentials()->getKongToken();
 
         list($cards, $decks) = $this->connector->getInventory($userId, $userName, $userPassword, $userId, $kongId,
             $synCode, $kongToken);

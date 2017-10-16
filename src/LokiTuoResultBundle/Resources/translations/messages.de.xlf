@@ -26,6 +26,22 @@
                 <source>Save</source>
                 <target>Speichern</target>
             </trans-unit>
+            <trans-unit id="update.inventory">
+                <source>update.inventory</source>
+                <target>Karten Aktualisieren</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.title">
+                <source>ownedcard.player.title %name%</source>
+                <target>Inventar für Spieler %name%</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.timeout">
+                <source>ownedcard.player.update.timeout</source>
+                <target>Wegen hoher Serverlast dauert das Aktualisieren etwas länger. Komm in ein paar Minuten wieder und lade die Seite neu.</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.no_credentials">
+                <source>ownedcard.player.update.no_credentials</source>
+                <target>Der Benutzer hat keine Tyrant Unleashed Zugangsdaten hinterlegt. Bitte füge sie zu erst hinzu.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

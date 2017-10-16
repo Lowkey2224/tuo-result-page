@@ -70,6 +70,22 @@
                 <source>form.simulation.generate</source>
                 <target>Generate Script</target>
             </trans-unit>
+            <trans-unit id="update.inventory">
+                <source>update.inventory</source>
+                <target>Update Cards</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.title">
+                <source>ownedcard.player.title %name%</source>
+                <target>Owned Cards for Player %name%</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.timeout">
+                <source>ownedcard.player.update.timeout</source>
+                <target>Due to high load updating your inventory takes some time. come back in a few minutes and refresh the page.</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.no_credentials">
+                <source>ownedcard.player.update.no_credentials</source>
+                <target>This user has no Credentials for Tyrant Unleashed. Please add them first.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

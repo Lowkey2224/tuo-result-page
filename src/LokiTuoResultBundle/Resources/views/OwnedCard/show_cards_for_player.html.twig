@@ -78,12 +78,24 @@
             </a>
         </div>
     </div>
+
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-6 col-md-offset-3 text-center">
-            <h2 style="margin-top: 0;">Owned Cards for Player {{ player.name }}</h2>
+            <h2 style="margin-top: 0;">{% trans with {'%name%': player.name} %}ownedcard.player.title
+                %name%{% endtrans %}</h2>
+        </div>
+        <div class="col-md-3 text-right">
+            {#{% if player.hasKongCredentials %}#}
+            <a id="update-link" href="#" data-player-id="{{ player.id }}">
+                <button role="button" type="button" id="update-btn" class="ladda-button" data-style="contract"
+                        data-color="blue" data-size="xs">
+                    <span class="ladda-label">{% trans %}update.inventory{% endtrans %}<i class=""></i></span>
+                </button>
+            </a>
+            {#{% endif %}#}
         </div>
     </div>
-
+    <div id="updateFlash"></div>
     <div class="panel panel-info">
         <div class="panel-heading">
 
@@ -92,7 +104,7 @@
         </div>
         <div class="panel-body">
             <table id="deck" class="table table-striped">
-                <tbody id="deck">
+                <tbody>
                 {% for card in deck %}
                     <tr class="row" id="deck{{ card.id }}">
                         <td class="col-xs-9 card-name">
@@ -197,6 +209,47 @@
                 });
             });
 
+            $('#update-link').click(function () {
+                var laddaButton = Ladda.create(document.querySelector('#update-btn'));
+                laddaButton.start();
+                {% set dummyStr = 99999 %}
+                var dummyStr = "{{ dummyStr }}";
+                var address = "{{ path("loki.tuo.ownedcard.card.update", {'id': dummyStr}) }}";
+                var playerId = $(this).data('player-id');
+                address = address.replace(dummyStr, playerId);
+                $.ajax({
+                    url: address,
+                    error: function (response, textStatus, errorThrown) {
+                        var flash = null;
+                        var empty = '<div class="alert alert-dismissible alert-%errorType%" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>%errorMsg%</div>';
+                        if (textStatus === "error" && errorThrown === "Gateway Time-out") {
+                            flash = empty.replace('%errorType%', 'warning').replace('%errorMsg%', '{% trans %}ownedcard.player.update.timeout{% endtrans %}');
+                        } else if (textStatus === "error" && errorThrown === "Conflict") {
+                            flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', '{% trans %}ownedcard.player.update.no_credentials{% endtrans %}');
+                        }
+                        console.log(flash);
+                        if(flash) {
+                            $('#updateFlash').append(flash);
+                        }else {
+                            console.log("NO Flash set");
+                        }
+                        laddaButton.stop();
+                        console.log("Fail Response", response);
+                        console.log("Status", textStatus, " error", errorThrown);
+
+                    },
+                    success: function () {
+                        laddaButton.stop();
+                        console.log("success");
+                        var flash = '<div class="alert alert-dismissible alert-success" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Updating Cards Successful</div>';
+                        $('#updateFlash').append(flash);
+                        location.reload();
+                    }
+                });
+
+            });
+
 
             $('.submit-button').click(function () {
                 var buttonPressed = $(this).attr('name');
@@ -205,7 +258,7 @@
                 var url;
                 var succCb;
                 {% set tId = 1123445567899 %}
-                var replaceValue = {{ tId }};
+                var replaceValue = "{{ tId }}";
                 switch (buttonPressed) {
                     case "add-to-deck":
                         url = "{{ path('loki.tuo.ownedcard.deck.add', {'id':tId}) }}";
@@ -268,7 +321,6 @@
             };
 
             var removeFromDeckCb = function (response) {
-//                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                 var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
                 if (response['amount'] === 0) {
                     removeCardRow('deck' + response['id']);
@@ -279,7 +331,6 @@
             };
 
             var addToDeckCb = function (response) {
-//                    $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
                 var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
                 addCardToDeck(response['id'], combinedName, response['amount'], response['level']);
             };
@@ -342,7 +393,6 @@
                         '</form>' +
                         '</td></tr>';
                     console.log("Insert before ", id);
-//                $(text).insertBefore(id);
                     $('#ownedCards').find('tbody').append(text);
                     return text;
                 }
@@ -372,7 +422,6 @@
                         '</form>' +
                         '</td></tr>';
                     console.log("Insert before ", id);
-//                $(text).insertBefore(id);
                     $('#deck').find('tbody').append(text);
                     return text;
                 }
@@ -383,7 +432,6 @@
                 console.log("Changing", id);
                 var td = $("#" + id + " .card-name");
                 td.text(combinedName);
-//                $("#" + id + " #amount").attr('value', amount);
             }
 
             function removeCardRow(id) {
@@ -393,15 +441,13 @@
 
             function getCombinedCardName(name, level, amount) {
                 var combinedName = name;
-                combinedName += (level != null && level != 'null') ? "-" + level : "";
+                combinedName += (level !== null && level !== 'null') ? "-" + level : "";
                 combinedName += amount > 1 ? " (" + amount + ")" : "";
                 return combinedName;
             }
 
             function getFlashMessage(successful, name, level, amount) {
                 var cssClass = (successful) ? 'alert-success' : 'alert-danger';
-//                var text = (overrideText) ? overrideText : "Zeiten nicht gespeichert";
-//                console.log("Text", text, "Override", overrideText);
                 if (successful) {
                     text = "<strong>Success: </strong>" + name + " with level " + level + " added " + amount + " times";
                 }

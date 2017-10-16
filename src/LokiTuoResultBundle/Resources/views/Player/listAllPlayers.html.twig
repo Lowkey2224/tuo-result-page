@@ -67,6 +67,9 @@
                             </a>
                         {% endif %}
                     {% endif %}
+                    {% if player.hasKongCredentials %}
+                        <i class="glyphicon glyphicon-cloud-upload"></i>
+                    {% endif %}
                 </td>
                 <td>
                     {{ player.updatedAt | date('Y-m-d H:i') }}
