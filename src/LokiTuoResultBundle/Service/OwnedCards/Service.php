@@ -26,7 +26,7 @@ class Service
 
     public function __construct(EntityManager $entityManager)
     {
-        $this->em     = $entityManager;
+        $this->em = $entityManager;
         $this->logger = new NullLogger();
     }
 
@@ -38,9 +38,9 @@ class Service
     public function transformCardString($card, $inDeck = false)
     {
         $amount = 1;
-        $level  = null;
-        $match  = [];
-        $name   = '';
+        $level = null;
+        $match = [];
+        $name = '';
         preg_match('/.+\((\d+)\)/', $card, $match);
         if (count($match) == 2) {
             $amount = $match[1];
@@ -56,7 +56,7 @@ class Service
                 $nameAddition = "-" . $match[1];
             }
         }
-        $match  = [];
+        $match = [];
         $inDeck = ($inDeck) ? $amount : 0;
         preg_match('/([a-zA-Z \- \. \' \d]+)\b/', $card, $match);
         if (count($match) >= 2) {
@@ -67,7 +67,7 @@ class Service
             $name .= $nameAddition;
         }
 
-        return ['amount' => (int)$amount, 'level' => $level?(int)$level:null, 'name' => $name, 'inDeck' => $inDeck];
+        return ['amount' => (int)$amount, 'level' => $level ? (int)$level : null, 'name' => $name, 'inDeck' => $inDeck];
     }
 
     public function persistOwnedCards(array $ownedCards)
@@ -89,7 +89,7 @@ class Service
     public function transformArrayToModels(Player $player, $cardArray)
     {
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
-        $result   = [];
+        $result = [];
         foreach ($cardArray as $cardEntry) {
             //            $this->removeOldOwnedCardsForPlayer($player);
             $card = $cardRepo->findOneBy(['name' => $cardEntry['name']]);
@@ -99,14 +99,15 @@ class Service
             }
             $oc = new OwnedCard();
             $selectedLevel = null;
-            foreach ($card->getLevels() as $level ){
-                if($level->getLevel() === $cardEntry['level']){
+            foreach ($card->getLevels() as $level) {
+                if ($level->getLevel() === $cardEntry['level']) {
                     $selectedLevel = $level;
                     break;
                 }
             }
-            if(! $selectedLevel instanceof  CardLevel){
-                $this->logger->notice(sprintf('No corresponding Level %d found for Card %d', $cardEntry['level'], $cardEntry['name']));
+            if (!$selectedLevel instanceof CardLevel) {
+                $this->logger->notice(sprintf('No corresponding Level %d found for Card %d', $cardEntry['level'],
+                    $cardEntry['name']));
                 continue;
             }
 
@@ -131,7 +132,7 @@ class Service
     public function removeOldOwnedCardsForPlayer(Player $player)
     {
         $ownderCardRepo = $this->em->getRepository('LokiTuoResultBundle:OwnedCard');
-        $oldCards       = $ownderCardRepo->findBy(['player' => $player]);
+        $oldCards = $ownderCardRepo->findBy(['player' => $player]);
         foreach ($oldCards as $ownedCard) {
             $this->em->remove($ownedCard);
         }
@@ -142,7 +143,7 @@ class Service
 
     public function deckToSpreadsheetFormat(Player $player)
     {
-        $ocs  = new Collection($player->getOwnedCards());
+        $ocs = new Collection($player->getOwnedCards());
         $deck = $ocs->filter(function (OwnedCard $oc) {
             return $oc->getAmountInDeck() > 0;
         });
@@ -172,7 +173,8 @@ class Service
      * @param Player $player
      * @return OwnedCard[] array
      */
-    private function getOwnedCardsByTuoIds(array $tuIds, Player $player) {
+    private function getOwnedCardsByTuoIds(array $tuIds, Player $player)
+    {
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         $cards = $cardRepo->findAllWithLevels();
         $cards = new Collection($cards);

@@ -128,7 +128,7 @@ class PlayerController extends Controller
     public function editPlayerAction(Request $request, Player $player)
     {
         $action = $this->generateUrl('loki.tuo.player.edit', ['id' => $player->getId()]);
-        if(!$player->hasKongCredentials()) {
+        if (!$player->hasKongCredentials()) {
             $player->setKongCredentials(new KongregateCredentials());
         }
 

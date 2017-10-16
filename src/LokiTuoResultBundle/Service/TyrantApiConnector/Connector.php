@@ -76,7 +76,7 @@ class Connector
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $bodyStr);  //Post Fields
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $bodyStr);
 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $headers = [];

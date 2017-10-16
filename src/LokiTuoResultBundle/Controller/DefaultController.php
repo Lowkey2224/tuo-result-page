@@ -33,7 +33,7 @@ class DefaultController extends Controller
         $playerRepo = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player");
         /** @var Player $player */
         $player = $playerRepo->findOneBy(['name' => "LokiMcFly"]);
-        if(!$player->hasKongCredentials()){
+        if (!$player->hasKongCredentials()) {
             return $this->json(["error" => "NO Credentials found"]);
         }
         $ocManager->removeOldOwnedCardsForPlayer($player);
