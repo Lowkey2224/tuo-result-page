@@ -11,9 +11,8 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  global:
-    - TEST_SUITE=Integration
-    - TEST_SUITE=Unit
+  - TEST_SUITE=Integration
+  - TEST_SUITE=Unit
 git:
   depth: 3
 before_install:
