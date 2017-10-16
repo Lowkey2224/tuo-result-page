@@ -30,6 +30,11 @@ class Service
         $this->logger = new NullLogger();
     }
 
+    /**
+     * @param $card
+     * @param bool $inDeck
+     * @return array
+     */
     public function transformCardString($card, $inDeck = false)
     {
         $amount = 1;
@@ -163,7 +168,7 @@ class Service
     }
 
     /**
-     * @param integer[] $ids
+     * @param integer[] $tuIds
      * @param Player $player
      * @return OwnedCard[] array
      */

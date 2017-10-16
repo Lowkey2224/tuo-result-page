@@ -48,7 +48,7 @@ class Connector
      * Makes an API Call to the tyrantonline API
      * @param string $method The method you want to call
      * @param string[] $options options TODO need to be validated
-     * @return string|null The Resultstring or null
+     * @return object|null The Resultstring or null
      */
     private function apiCall($method, array $options)
     {
@@ -70,7 +70,7 @@ class Connector
             $bodyStr[] = $key . "=" . $value;
         }
         $bodyStr = implode("&", $bodyStr);
-        if ($curl = curl_init()) {
+        if (curl_init()) {
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

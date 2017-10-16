@@ -32,22 +32,22 @@ class Persister
      */
     public function __construct(EntityManager $em)
     {
-        $this->em     = $em;
+        $this->em = $em;
         $this->logger = new NullLogger();
     }
 
     public function importCards($force)
     {
 
-        $criteria    = $force===true?[]:['status' => CardFile::STATUS_NOT_IMPORTED];
-        $files       = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findBy($criteria);
+        $criteria = $force === true ? [] : ['status' => CardFile::STATUS_NOT_IMPORTED];
+        $files = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findBy($criteria);
         $transformer = new Transformer();
         $transformer->setLogger($this->logger);
         $cardCount = 0;
         foreach ($files as $file) {
             $this->logger->info(sprintf("Reading file %s ...", $file->getOriginalFileName()));
             $content = simplexml_load_string($file->getContent());
-            $cards   = $transformer->transformToModels($content, $file);
+            $cards = $transformer->transformToModels($content, $file);
             $this->logger->info(sprintf("Finished reading file %s ...", $file->getOriginalFileName()));
             $cardCount += $this->persistModels($cards);
             $this->em->flush();
@@ -73,6 +73,7 @@ class Persister
         }
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         foreach ($cards as $key => $card) {
+            /** @var Card $dbEntity */
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
             ++$count;
             $this->logger->debug("Persisting card number $card with name " . $card->getName());
@@ -99,14 +100,14 @@ class Persister
         $levels = new ArrayCollection();
         foreach ($newCard->getLevels() as $level) {
             $old = $oldCard->getLevelByTuId($level->getTuoId());
-            if($old instanceof CardLevel) {
+            if ($old instanceof CardLevel) {
                 $old->setDelay($level->getDelay());
                 $old->setPicture($level->getPicture());
                 $old->setDefense($level->getDefense());
                 $old->setAttack($level->getAttack());
                 $old->setSkills($level->getSkills());
                 $old->setLevel($level->getLevel());
-            }else {
+            } else {
                 $old = $level;
                 $old->setCard($oldCard);
             }

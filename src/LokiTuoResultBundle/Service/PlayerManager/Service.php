@@ -69,7 +69,7 @@ class Service
      * @param int      $amount
      * @param int      $amountInDeck
      *
-     * @return OwnedCard|null|object
+     * @return OwnedCard|null
      */
     public function addCardToPlayer(Player $player, CardLevel $card, int $amount, int $amountInDeck)
     {
@@ -98,7 +98,7 @@ class Service
      * @param int      $amountInDeck
      * @param int|null $level
      *
-     * @return OwnedCard|null|object
+     * @return OwnedCard|null
      */
     public function reduceCardForPlayer(Player $player, Card $card, int $amount, int $amountInDeck, int $level = null)
     {

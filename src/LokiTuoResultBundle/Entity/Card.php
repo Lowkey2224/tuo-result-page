@@ -156,7 +156,7 @@ class Card extends AbstractBaseEntity
     /**
      * Returns the CardLEvel with the desired Level or null if no level exists.
      * @param int $level
-     * @return CardLevel|mixed|null
+     * @return CardLevel|null
      */
     public function getLevel(int $level = null)
     {
