@@ -54,54 +54,25 @@ class Player extends AbstractBaseEntity
     private $owner;
 
     /**
+     * @var KongregateCredentials
+     * @ORM\OneToOne(targetEntity="LokiTuoResultBundle\Entity\KongregateCredentials", cascade={"persist"})
+     * @ORM\JoinColumn(name="kong_credentials_id", referencedColumnName="id")
+     */
+    private $kongCredentials;
+
+    /**
      * @var bool
      * @ORM\Column(type="boolean")
      */
     private $ownershipConfirmed;
 
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $kongPassword = "b2541a76c4739991be8462ded7816c5b";
-
-    /**
-     * @var string
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $tuUserId = 10140147;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $synCode = "03f475cb8d8840be77787acc354d42ddaa51da44295941c27eacb38bb894e4ea";
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $kongUserName = "LokiMcFly";
-
-    /**
-     * @var string
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $kongId = 5837616;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $kongToken = "ed2599b605e3556b4d8f7471078b7c0e3d41c0b435296f3d4b00dc7ec9515218";
-
     public function __construct()
     {
-        $this->results            = new ArrayCollection();
-        $this->ownedCards         = new ArrayCollection();
-        $this->active             = true;
+        $this->results = new ArrayCollection();
+        $this->ownedCards = new ArrayCollection();
+        $this->active = true;
         $this->ownershipConfirmed = false;
+        $this->kongCredentials = new KongregateCredentials();
     }
 
     /**
@@ -110,12 +81,7 @@ class Player extends AbstractBaseEntity
      */
     public function hasKongCredentials()
     {
-        return $this->kongToken
-        && $this->kongId
-        && $this->kongPassword
-        && $this->tuUserId
-        && $this->synCode
-        && $this->kongUserName;
+        return $this->kongCredentials && $this->kongCredentials->isValid();
     }
 
     public function __toString()
@@ -269,110 +235,20 @@ class Player extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return KongregateCredentials
      */
-    public function getKongPassword()
+    public function getKongCredentials(): KongregateCredentials
     {
-        return $this->kongPassword;
+        return $this->kongCredentials;
     }
 
     /**
-     * @param string $kongPassword
+     * @param KongregateCredentials $kongCredentials
      * @return Player
      */
-    public function setKongPassword(string $kongPassword)
+    public function setKongCredentials(KongregateCredentials $kongCredentials)
     {
-        $this->kongPassword = $kongPassword;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTuUserId()
-    {
-        return $this->tuUserId;
-    }
-
-    /**
-     * @param int $tuUserId
-     * @return Player
-     */
-    public function setTuUserId(int $tuUserId)
-    {
-        $this->tuUserId = $tuUserId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSynCode()
-    {
-        return $this->synCode;
-    }
-
-    /**
-     * @param string $synCode
-     * @return Player
-     */
-    public function setSynCode(string $synCode)
-    {
-        $this->synCode = $synCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKongUserName()
-    {
-        return $this->kongUserName;
-    }
-
-    /**
-     * @param string $kongUserName
-     * @return Player
-     */
-    public function setKongUserName(string $kongUserName)
-    {
-        $this->kongUserName = $kongUserName;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getKongId()
-    {
-        return $this->kongId;
-    }
-
-    /**
-     * @param int $kongId
-     * @return Player
-     */
-    public function setKongId(int $kongId)
-    {
-        $this->kongId = $kongId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKongToken()
-    {
-        return $this->kongToken;
-    }
-
-    /**
-     * @param string $kongToken
-     * @return Player
-     */
-    public function setKongToken(string $kongToken)
-    {
-        $this->kongToken = $kongToken;
+        $this->kongCredentials = $kongCredentials;
         return $this;
     }
 }
