@@ -4,7 +4,6 @@ namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use function PHPSTORM_META\map;
 
 /**
  * Card.
@@ -49,7 +48,7 @@ class Card extends AbstractBaseEntity
 
     public function __construct()
     {
-        $this->skills = new ArrayCollection();
+        $this->levels = new ArrayCollection();
     }
 
     /**

@@ -12,7 +12,8 @@ cache:
 
 env:
   global:
-    - TEST_SUITE=all
+    - TEST_SUITE=Integration
+    - TEST_SUITE=Unit
 git:
   depth: 3
 before_install:
