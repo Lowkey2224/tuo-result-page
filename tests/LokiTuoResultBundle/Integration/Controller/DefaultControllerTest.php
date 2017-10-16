@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Tests\Controller;
+namespace LokiTuoResultBundle\Integration\Tests\Controller;
 
 class DefaultControllerTest extends AbstractControllerTest
 {

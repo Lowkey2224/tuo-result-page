@@ -7,7 +7,7 @@
  * Time: 16:38.
  */
 
-namespace LokiTuoResultBundle\Tests\Controller;
+namespace LokiTuoResultBundle\Integration\Tests\Controller;
 
 use LokiUserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -148,7 +148,12 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     protected function getFilePath()
     {
-        return  __DIR__.'/../files/';
+        return self::filePath();
+    }
+
+    public static function filePath()
+    {
+        return __DIR__ . '/../../files/';
     }
 
     protected function assertFlashMessage(Crawler $crawler, $type, $message)

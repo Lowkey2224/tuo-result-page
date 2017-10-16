@@ -1,10 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Tests\Controller\Player;
+namespace LokiTuoResultBundle\Integration\Tests\Controller\Player;
 
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
+use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 
 class PlayerControllerTest extends AbstractControllerTest
 {

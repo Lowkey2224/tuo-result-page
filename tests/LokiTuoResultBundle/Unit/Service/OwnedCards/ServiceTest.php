@@ -1,10 +1,11 @@
 <?php
 
 
-namespace LokiTuoResultBundle\Service\OwnedCards;
+namespace LokiTuoResultBundle\Unit\Service\OwnedCards;
 
 
 use Doctrine\ORM\EntityManager;
+use LokiTuoResultBundle\Service\OwnedCards\Service;
 use PHPUnit\Framework\TestCase;
 
 class ServiceTest extends TestCase

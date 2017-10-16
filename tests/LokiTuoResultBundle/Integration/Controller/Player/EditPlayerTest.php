@@ -1,9 +1,9 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller\Player;
+namespace LokiTuoResultBundle\Integration\Controller\Player;
 
 use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
+use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
 

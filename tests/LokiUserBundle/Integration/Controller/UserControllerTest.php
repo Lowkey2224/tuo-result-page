@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiUserBundle\Tests\Controller;
+namespace LokiUserBundle\Tests\Integration\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

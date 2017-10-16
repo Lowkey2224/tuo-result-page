@@ -1,11 +1,12 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\CardReader;
+namespace LokiTuoResultBundle\Unit\Service\CardReader;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
 use LokiTuoResultBundle\Entity\CardLevel;
+use LokiTuoResultBundle\Service\CardReader\Transformer;
 use PHPUnit\Framework\TestCase;
 
 class TransformerTest extends TestCase

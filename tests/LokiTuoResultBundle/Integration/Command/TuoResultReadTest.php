@@ -1,9 +1,12 @@
 <?php
 
-namespace LokiTuoResultBundle\Command;
+namespace LokiTuoResultBundle\Integration\Tests\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use LokiTuoResultBundle\Command\LokiTuoImportFileCommand;
+use LokiTuoResultBundle\Command\LokiTuoResReadFileCommand;
 use LokiTuoResultBundle\Entity\Mission;
+use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
@@ -30,7 +33,7 @@ class TuoResultReadTest extends KernelTestCase
     private function executeRead()
     {
         $this->application->add(new LokiTuoResReadFileCommand());
-        $filePath = __DIR__.'/../files/resultTest.txt';
+        $filePath = AbstractControllerTest::filePath().'/resultTest.txt';
         /** @var ContainerAwareCommand $command */
         $command = $this->application->find('loki:tuo:result:read');
         $command->setContainer(self::$kernel->getContainer());

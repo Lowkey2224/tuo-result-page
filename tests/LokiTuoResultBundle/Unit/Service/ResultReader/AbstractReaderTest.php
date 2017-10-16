@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\ResultReader;
+namespace LokiTuoResultBundle\Unit\Service\ResultReader;
 
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;

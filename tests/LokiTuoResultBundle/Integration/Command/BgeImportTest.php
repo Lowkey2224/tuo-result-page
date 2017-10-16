@@ -1,7 +1,9 @@
 <?php
 
-namespace LokiTuoResultBundle\Command;
+namespace LokiTuoResultBundle\Integration\Tests\Command;
 
+use LokiTuoResultBundle\Command\LokiTuoBgeImportCommand;
+use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
@@ -13,22 +15,22 @@ class BgeImportTest extends KernelTestCase
     {
         self::bootKernel();
         $application = new Application(self::$kernel);
-        $em          = static::$kernel->getContainer()
+        $em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
         $application->add(new LokiTuoBgeImportCommand());
-        $filePath      = __DIR__.'/../files/bges.txt';
+        $filePath = AbstractControllerTest::filePath() . '/bges.txt';
         /** @var ContainerAwareCommand $command */
-        $command       = $application->find('loki:tuo:bge:import');
+        $command = $application->find('loki:tuo:bge:import');
         $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'command'  => $command->getName(),
+            'command' => $command->getName(),
             'filepath' => $filePath,
         ]);
 
         // the output of the command in the console
-        $output   = $commandTester->getDisplay();
+        $output = $commandTester->getDisplay();
         $expected = 'There were 7 Entries to be persisted.';
         $this->assertContains($expected, $output);
         // Test they are really in the DB

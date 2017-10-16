@@ -1,8 +1,8 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller\Guild;
+namespace LokiTuoResultBundle\Integration\Controller\Guild;
 
-use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
+use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class EditGuildTest extends AbstractControllerTest

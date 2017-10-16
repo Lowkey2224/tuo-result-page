@@ -1,9 +1,9 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller\Simulation;
+namespace LokiTuoResultBundle\Integration\Controller\Simulation;
 
 use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Tests\Controller\AbstractControllerTest;
+use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 
 class CreateSimulationTest extends AbstractControllerTest
 {

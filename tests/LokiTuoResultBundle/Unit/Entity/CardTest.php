@@ -1,7 +1,9 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace LokiTuoResultBundle\Unit\Entity;
 
+use LokiTuoResultBundle\Entity\Card;
+use LokiTuoResultBundle\Entity\CardLevel;
 use PHPUnit\Framework\TestCase;
 
 class CardTest extends TestCase
