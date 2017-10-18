@@ -13,11 +13,11 @@
           href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css') }}">
-    <link rel="stylesheet" type="text/css"
-          href="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/ladda.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/ladda.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/css/style.css') }}">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
@@ -88,6 +88,15 @@
                             </ul>
                         </li>
                     {% endif %}
+                    <li class="dropdown{% if currentPath starts with '/help/' %} active{% endif %}">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans %}nav.help{% endtrans %}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li {% if currentPath starts with '/help/tuCredentials' %} class="active" {% endif %}><a
+                                        href="{{ path('loki.tuo.help.tucred') }}">{% trans %}nav.help.tuCredentials{% endtrans %}</a></li>
+
+                        </ul>
+
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}

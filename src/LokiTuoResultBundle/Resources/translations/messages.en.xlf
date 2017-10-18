@@ -2,6 +2,14 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="nav.help">
+                <source>nav.help</source>
+                <target>Help</target>
+            </trans-unit>
+            <trans-unit id="nav.help.tuCredentials">
+                <source>nav.help.tuCredentials</source>
+                <target>Inventory Import</target>
+            </trans-unit>
             <trans-unit id="Back_to_top">
                 <source>Back to top</source>
                 <target>Back to top</target>
