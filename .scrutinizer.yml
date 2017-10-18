@@ -9,6 +9,7 @@ filter:
         - 'bin/*'
         - 'var/*'
         - 'composer.lock'
+        - 'src/*/DataFixtures'
 checks:
     php: true
     javascript: true
