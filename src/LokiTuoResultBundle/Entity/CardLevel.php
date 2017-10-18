@@ -177,7 +177,7 @@ class CardLevel extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $skills
+     * @param String[] $skills
      * @return CardLevel
      */
     public function setSkills($skills)

@@ -91,7 +91,6 @@ class Service
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         $result = [];
         foreach ($cardArray as $cardEntry) {
-            //            $this->removeOldOwnedCardsForPlayer($player);
             $card = $cardRepo->findOneBy(['name' => $cardEntry['name']]);
             if (!$card instanceof Card) {
                 $this->logger->notice('No Card found for name ' . $cardEntry['name']);
