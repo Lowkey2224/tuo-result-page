@@ -3,9 +3,9 @@
 namespace LokiTuoResultBundle\Integration\Controller\Player;
 
 use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
+use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
 class EditPlayerTest extends AbstractControllerTest
 {

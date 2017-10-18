@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Integration\Tests\Controller;
+namespace Tests\LokiTuoResultBundle\Integration\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 

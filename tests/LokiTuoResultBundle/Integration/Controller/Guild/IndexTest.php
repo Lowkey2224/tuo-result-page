@@ -2,7 +2,7 @@
 
 namespace LokiTuoResultBundle\Integration\Controller\Guild;
 
-use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
+use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
 class IndexTest extends AbstractControllerTest
 {

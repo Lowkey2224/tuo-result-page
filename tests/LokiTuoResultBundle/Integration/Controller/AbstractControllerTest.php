@@ -7,7 +7,7 @@
  * Time: 16:38.
  */
 
-namespace LokiTuoResultBundle\Integration\Tests\Controller;
+namespace Tests\LokiTuoResultBundle\Integration\Controller;
 
 use LokiUserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Client;

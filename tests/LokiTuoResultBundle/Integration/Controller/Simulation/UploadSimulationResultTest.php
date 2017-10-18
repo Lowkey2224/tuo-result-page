@@ -2,8 +2,8 @@
 
 namespace LokiTuoResultBundle\Integration\Controller\Simulation;
 
-use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
 class UploadSimulationResultTest extends AbstractControllerTest
 {

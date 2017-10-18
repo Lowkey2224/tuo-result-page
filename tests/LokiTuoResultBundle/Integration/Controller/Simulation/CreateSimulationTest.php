@@ -3,7 +3,7 @@
 namespace LokiTuoResultBundle\Integration\Controller\Simulation;
 
 use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
+use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
 class CreateSimulationTest extends AbstractControllerTest
 {
