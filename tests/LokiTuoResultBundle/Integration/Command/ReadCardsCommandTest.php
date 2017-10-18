@@ -1,11 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Integration\Tests\Command;
+namespace Tests\LokiTuoResultBundle\Integration\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use LokiTuoResultBundle\Command\LokiTuoImportCardsCommand;
 use LokiTuoResultBundle\Command\LokiTuoReadCardsCommand;
-use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
@@ -40,7 +39,7 @@ class ReadCardsCommandTest extends KernelTestCase
         $countBefore   = count($bges);
         $commandTester->execute([
             'command'  => $command->getName(),
-            'dataPath' => AbstractControllerTest::filePath(),
+            'dataPath' => Util::filePath(),
         ]);
 
         // the output of the command in the console

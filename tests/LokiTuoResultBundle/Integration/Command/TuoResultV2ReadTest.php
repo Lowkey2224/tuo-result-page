@@ -1,13 +1,12 @@
 <?php
 
 
-namespace LokiTuoResultBundle\Integration\Tests\Command;
+namespace Tests\LokiTuoResultBundle\Integration\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use LokiTuoResultBundle\Command\LokiTuoImportFileCommand;
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\ResultFile;
-use LokiTuoResultBundle\Integration\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
@@ -33,7 +32,7 @@ class TuoResultV2ReadTest extends KernelTestCase
 
     private function createResultFile($file = '/result_v2.json')
     {
-        $filePath = AbstractControllerTest::filePath() . $file;
+        $filePath = Util::filePath() . $file;
         $content = file_get_contents($filePath);
         $json = json_decode($content);
         $ctn = $this->em->getRepository('LokiTuoResultBundle:Guild')->findOneBy(['name' => 'CTN']);

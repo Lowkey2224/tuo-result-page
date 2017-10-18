@@ -1,11 +1,11 @@
 <?php
 
-namespace LokiTuoResultBundle\Integration\Tests\Command;
+namespace Tests\LokiTuoResultBundle\Integration\Command;
 
 
 abstract class Util
 {
-    public static function getFilePath()
+    public static function filePath()
     {
         return __DIR__ . '/../../files/';
     }
