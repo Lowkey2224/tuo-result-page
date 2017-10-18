@@ -19,7 +19,7 @@ class HelpController extends Controller
      */
     public function tuCredentialsHelpAction()
     {
-        $moderators = ["Loki", "BenIntent"];
+        $moderators = ["Loki", "BenIntent", "Tostaky","Here'sJohnny!","phildouble1u1"];
         return [
             'moderators' => $moderators,
         ];
