@@ -70,15 +70,15 @@ class Connector
             $bodyStr[] = $key . "=" . $value;
         }
         $bodyStr = implode("&", $bodyStr);
-        if (\curl_init()) {
-            $ch = \curl_init();
+        if ($ch = curl_init()) {
+//            curl_init();
 
-            \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            \curl_setopt($ch, CURLOPT_URL, $url);
-            \curl_setopt($ch, CURLOPT_POST, 1);
-            \curl_setopt($ch, CURLOPT_POSTFIELDS, $bodyStr);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $bodyStr);
 
-            \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $headers = [];
             $headers[] = 'X-Apple-Tz: 0';
             $headers[] = 'X-Apple-Store-Front: 143444,12';
@@ -90,9 +90,9 @@ class Connector
             $headers[] = 'User-Agent: tyrantmobile/1.26 CFNetwork/672.0.8 Darwin/14.0.0';
             $headers[] = 'X-MicrosoftAjax: Delta=true';
             $headers[] = 'X-Requested-With:XMLHttpRequest';
-            \curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $server_output = curl_exec($ch);
-            \curl_close($ch);
+            curl_close($ch);
 
             return json_decode($server_output);
         }
