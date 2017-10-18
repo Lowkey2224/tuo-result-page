@@ -57,7 +57,9 @@ class PlayerType extends AbstractType
                 ],
             ]);
         if ($options['withCredentials']) {
-            $builder->add('kongCredentials', KongregateCredentialsType::class);
+            $builder->add('kongCredentials', KongregateCredentialsType::class, [
+                'required' => false,
+            ]);
         }
         $builder->add('submit', SubmitType::class, [
             'label' => 'save',
