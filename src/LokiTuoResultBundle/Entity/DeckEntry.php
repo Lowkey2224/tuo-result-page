@@ -31,21 +31,14 @@ class DeckEntry extends AbstractBaseEntity
     private $result;
 
     /**
-     * @var Card
-     * @ORM\ManyToOne(targetEntity="Card")
-     * @ORM\JoinColumn(referencedColumnName="id", name="card_id")
+     * @var CardLevel
+     * @ORM\ManyToOne(targetEntity="CardLevel")
+     * @ORM\JoinColumn(referencedColumnName="id", name="card_level_id")
      */
     private $card;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $level;
-
-    /**
-     * @return Card
+     * @return CardLevel
      */
     public function getCard()
     {
@@ -53,7 +46,7 @@ class DeckEntry extends AbstractBaseEntity
     }
 
     /**
-     * @param Card $card
+     * @param CardLevel $card
      */
     public function setCard($card)
     {
@@ -98,21 +91,5 @@ class DeckEntry extends AbstractBaseEntity
     public function setResult($result)
     {
         $this->result = $result;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    /**
-     * @param int $level
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
     }
 }

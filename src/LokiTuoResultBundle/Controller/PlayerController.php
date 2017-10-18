@@ -2,9 +2,11 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use LokiTuoResultBundle\Entity\KongregateCredentials;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Form\Type\PlayerType;
+use LokiTuoResultBundle\Security\PlayerVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,7 +34,7 @@ class PlayerController extends Controller
     public function showResultsForPlayerAction(Player $player)
     {
         return $this->render('LokiTuoResultBundle:Player:showResultsForPlayer.html.twig', [
-            'player'  => $player,
+            'player' => $player,
             'results' => $player->getResults(),
         ]);
     }
@@ -52,7 +54,7 @@ class PlayerController extends Controller
 
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
-            'form'    => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -93,8 +95,8 @@ class PlayerController extends Controller
         $filename = 'ownedcards.txt';
 
         return new Response($content, 200, [
-            'content-type'        => 'text/text',
-            'cache-control'       => 'private',
+            'content-type' => 'text/text',
+            'cache-control' => 'private',
             'content-disposition' => 'attachment; filename="' . $filename . '";',
         ]);
     }
@@ -118,7 +120,7 @@ class PlayerController extends Controller
 
     /**
      * @param Request $request
-     * @param Player  $player
+     * @param Player $player
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/{id}/edit", name="loki.tuo.player.edit", requirements={"id":"\d+"})
@@ -126,10 +128,15 @@ class PlayerController extends Controller
     public function editPlayerAction(Request $request, Player $player)
     {
         $action = $this->generateUrl('loki.tuo.player.edit', ['id' => $player->getId()]);
-        $form   = $this->getPlayerForm($player, $action);
-        $form->handleRequest($request);
+        if (!$player->hasKongCredentials()) {
+            $player->setKongCredentials(new KongregateCredentials());
+        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $playerForm = $this->getPlayerForm($player, $action, $this->isGranted(PlayerVoter::DELETE, $player));
+        $playerForm->handleRequest($request);
+        $canEdit = $this->isGranted(PlayerVoter::EDIT, $player);
+
+        if ($playerForm->isSubmitted() && $playerForm->isValid()) {
             $this->getDoctrine()->getManager()->persist($player);
             if (!$player->getOwner()) {
                 $player->setOwnershipConfirmed(false);
@@ -143,7 +150,8 @@ class PlayerController extends Controller
             '@LokiTuoResult/Player/edit.html.twig',
             [
                 'player' => $player,
-                'form'   => $form->createView(),
+                'form' => $playerForm->createView(),
+                'canEdit' => $canEdit,
             ]
         );
     }
@@ -158,11 +166,11 @@ class PlayerController extends Controller
     public function addPlayerAction(Request $request)
     {
         $player = new Player();
-        $form   = $this->getPlayerForm($player);
+        $form = $this->getPlayerForm($player);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->get('loki_tuo_result.player.manager');
-            $player  = $manager->findOrCreatePlayer($player);
+            $player = $manager->findOrCreatePlayer($player);
 
             // Check if Player already exists
             $manager->addDefaultCard($player);
@@ -179,11 +187,11 @@ class PlayerController extends Controller
      * Create a Player Form.
      *
      * @param Player|null $player
-     * @param string      $action
+     * @param string $action
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function getPlayerForm(Player $player = null, $action = null)
+    private function getPlayerForm(Player $player = null, $action = null, $withCredentials = false)
     {
         if ($action === null) {
             $action = $this->generateUrl('loki.tuo.player.add');
@@ -193,6 +201,7 @@ class PlayerController extends Controller
             'action' => $action,
             'method' => 'POST',
             'guilds' => $this->getParameter('guilds'),
+            'withCredentials' => $withCredentials,
         ]);
     }
 }

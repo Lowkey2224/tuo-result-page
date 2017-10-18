@@ -11,8 +11,8 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  global:
-    - TEST_SUITE=all
+  - TEST_SUITE=Integration
+  - TEST_SUITE=Unit
 git:
   depth: 3
 before_install:
@@ -26,9 +26,9 @@ install:
   - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
 
 before_script:
-  - php bin/console doctrine:database:create --env=test
-  - php bin/console doctrine:schema:create --env=test
-  - php bin/console doctrine:fixtures:load -n  --env=test
+  - if [ "$TEST_SUITE" = "Integration" ]; then php bin/console doctrine:database:create --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Integration" ]; then php bin/console doctrine:schema:create --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Integration" ]; then php bin/console doctrine:fixtures:load -n  --env=test ; fi;
 
 script:
   - "phpdbg -qrr ./vendor/bin/phpunit --testsuite $TEST_SUITE"

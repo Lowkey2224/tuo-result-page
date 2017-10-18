@@ -64,6 +64,10 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    loki_tuo_result.tyrant_connector:
+        class: LokiTuoResultBundle\Service\TyrantApiConnector\Service
+        arguments: ['@logger']
+
     app.exception_listener:
         class: LokiTuoResultBundle\EventListener\LocaleListener
         arguments: ['%kernel.default_locale%']

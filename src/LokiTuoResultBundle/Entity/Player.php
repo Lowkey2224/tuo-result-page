@@ -54,6 +54,13 @@ class Player extends AbstractBaseEntity
     private $owner;
 
     /**
+     * @var KongregateCredentials
+     * @ORM\OneToOne(targetEntity="LokiTuoResultBundle\Entity\KongregateCredentials", cascade={"persist"})
+     * @ORM\JoinColumn(name="kong_credentials_id", referencedColumnName="id")
+     */
+    private $kongCredentials;
+
+    /**
      * @var bool
      * @ORM\Column(type="boolean")
      */
@@ -61,10 +68,20 @@ class Player extends AbstractBaseEntity
 
     public function __construct()
     {
-        $this->results            = new ArrayCollection();
-        $this->ownedCards         = new ArrayCollection();
-        $this->active             = true;
+        $this->results = new ArrayCollection();
+        $this->ownedCards = new ArrayCollection();
+        $this->active = true;
         $this->ownershipConfirmed = false;
+        $this->kongCredentials = new KongregateCredentials();
+    }
+
+    /**
+     * Checks if the User has Credentials usable with the Tyrant Unleashed API
+     * @return bool
+     */
+    public function hasKongCredentials()
+    {
+        return $this->kongCredentials && $this->kongCredentials->isValid();
     }
 
     public function __toString()
@@ -215,5 +232,23 @@ class Player extends AbstractBaseEntity
     public function setGuild(Guild $guild)
     {
         $this->guild = $guild;
+    }
+
+    /**
+     * @return KongregateCredentials
+     */
+    public function getKongCredentials(): KongregateCredentials
+    {
+        return $this->kongCredentials;
+    }
+
+    /**
+     * @param KongregateCredentials $kongCredentials
+     * @return Player
+     */
+    public function setKongCredentials(KongregateCredentials $kongCredentials)
+    {
+        $this->kongCredentials = $kongCredentials;
+        return $this;
     }
 }

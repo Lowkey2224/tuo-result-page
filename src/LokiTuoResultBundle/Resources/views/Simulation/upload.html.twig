@@ -14,11 +14,12 @@
 
     <div class="container">
         <div class="panel panel-info">
+            {{ form_start(form) }}
+
             <div class="panel-heading">
                 Upload your Simulation Result here
             </div>
             <div class="panel-body">
-                {{ form_start(form) }}
 
                 <div class="form-group">
                     {{ form_row(form.file) }}
@@ -30,8 +31,8 @@
             </div>
             <div class="panel-footer">
                 {{ form_widget(form.submit) }}
-                {{ form_end(form) }}
             </div>
+            {{ form_end(form) }}
         </div>
     </div>
 

@@ -110,6 +110,30 @@
                 <source>form.close</source>
                 <target>Close</target>
             </trans-unit>
+            <trans-unit id="form.player.kongpassword">
+                <source>form.player.kongpassword</source>
+                <target>Password</target>
+            </trans-unit>
+            <trans-unit id="form.player.kongusername">
+                <source>form.player.kongusername</source>
+                <target>Kongregate Username</target>
+            </trans-unit>
+            <trans-unit id="form.player.kongId">
+                <source>form.player.kongId</source>
+                <target>Kong Id</target>
+            </trans-unit>
+            <trans-unit id="form.player.synCode">
+                <source>form.player.synCode</source>
+                <target>Syn-Code</target>
+            </trans-unit>
+            <trans-unit id="form.player.kongToken">
+                <source>form.player.kongToken</source>
+                <target>Kong Token</target>
+            </trans-unit>
+            <trans-unit id="form.player.tuUserId">
+                <source>form.player.tuUserId</source>
+                <target>User Id</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

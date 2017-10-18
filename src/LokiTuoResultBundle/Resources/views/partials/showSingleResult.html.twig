@@ -26,8 +26,8 @@
     <div class="panel-body">
         {% for deckEntry in result.deck %}
             {{ deckEntry.card }}
-            {% if deckEntry.level %}
-                Level {{ deckEntry.level }}
+            {% if deckEntry.card.level %}
+                Level {{ deckEntry.card.level }}
             {% endif %}
             <br/>
         {% endfor %}

@@ -8,9 +8,11 @@
 
 namespace LokiTuoResultBundle\Service\CardReader;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Card;
 use LokiTuoResultBundle\Entity\CardFile;
+use LokiTuoResultBundle\Entity\CardLevel;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
@@ -30,29 +32,30 @@ class Persister
      */
     public function __construct(EntityManager $em)
     {
-        $this->em     = $em;
+        $this->em = $em;
         $this->logger = new NullLogger();
     }
 
-    public function importCards()
+    public function importCards($force)
     {
-        $criteria    = ['status' => CardFile::STATUS_NOT_IMPORTED];
-        $files       = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findBy($criteria);
+
+        $criteria = $force === true ? [] : ['status' => CardFile::STATUS_NOT_IMPORTED];
+        $files = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findBy($criteria);
         $transformer = new Transformer();
         $transformer->setLogger($this->logger);
-        $cards     = [];
         $cardCount = 0;
         foreach ($files as $file) {
+            $this->logger->info(sprintf("Reading file %s ...", $file->getOriginalFileName()));
             $content = simplexml_load_string($file->getContent());
-            $cards   = $transformer->transformToModels($content, $file, $cards);
-        }
-        $cardCount += $this->persistModels($cards);
-        $this->em->flush();
-        foreach ($files as $file) {
+            $cards = $transformer->transformToModels($content, $file);
+            $this->logger->info(sprintf("Finished reading file %s ...", $file->getOriginalFileName()));
+            $cardCount += $this->persistModels($cards);
+            $this->em->flush();
             $file->setStatus(CardFile::STATUS_IMPORTED);
             $this->em->persist($file);
+            $this->em->flush();
+
         }
-        $this->em->flush();
 
         return $cardCount;
     }
@@ -70,25 +73,46 @@ class Persister
         }
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         foreach ($cards as $key => $card) {
+            /** @var Card $dbEntity */
             $dbEntity = $cardRepo->findOneBy(['name' => $card->getName()]);
             ++$count;
-            $this->logger->error("Persisting card number $card with name" . $card->getName());
-            if ($dbEntity) {
-                $card->setId($dbEntity->getId());
-                $dbEntity->setPicture($card->getPicture());
-                $dbEntity->setDelay($card->getDelay());
-                $dbEntity->setDefense($card->getDefense());
-                $dbEntity->setCardFile($card->getCardFile());
-                $dbEntity->setAttack($card->getAttack());
-                $dbEntity->setSkills($card->getSkills());
-                $dbEntity->setRace($card->getRace());
-                $this->em->persist($dbEntity);
-//                $this->logger->debug("Duplicate Card found: " . $card->getName() . " With id " . $dbEntity->getId());
-            } else {
-                $this->em->persist($card);
-            }
+            $this->logger->debug("Persisting card number $card with name " . $card->getName());
+            $dbEntity = $this->updateCard($card, $dbEntity);
+            $this->em->persist($dbEntity);
         }
-
         return $count;
+    }
+
+    private function updateCard(Card $newCard, Card $oldCard = null)
+    {
+        if ($oldCard instanceof Card) {
+            $oldCard->setName($newCard->getName());
+            $oldCard->setCardFile($newCard->getCardFile());
+            $oldCard->setRace($newCard->getRace());
+            $oldCard->setLevels($this->updateLevels($newCard, $oldCard));
+            return $oldCard;
+        }
+        return $newCard;
+    }
+
+    private function updateLevels(Card $newCard, Card $oldCard)
+    {
+        $levels = new ArrayCollection();
+        foreach ($newCard->getLevels() as $level) {
+            $old = $oldCard->getLevelByTuId($level->getTuoId());
+            if ($old instanceof CardLevel) {
+                $old->setDelay($level->getDelay());
+                $old->setPicture($level->getPicture());
+                $old->setDefense($level->getDefense());
+                $old->setAttack($level->getAttack());
+                $old->setSkills($level->getSkills());
+                $old->setLevel($level->getLevel());
+            } else {
+                $old = $level;
+                $old->setCard($oldCard);
+            }
+            $levels->set($old->getTuoId(), $old);
+        }
+        return $levels;
     }
 }
