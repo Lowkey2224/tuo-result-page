@@ -18,6 +18,7 @@ class Service
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
+
         $this->connector = new Connector($logger);
     }
 
@@ -28,6 +29,7 @@ class Service
         if (!$player->hasKongCredentials()) {
             return [];
         }
+        $this->logger->info("Fetching Data for Player " . $player->getName());
         $userPassword = $player->getKongCredentials()->getKongPassword();
         $userId = $player->getKongCredentials()->getTuUserId();
         $synCode = $player->getKongCredentials()->getSynCode();
@@ -37,10 +39,18 @@ class Service
 
         list($cards, $decks) = $this->connector->getInventory($userId, $userName, $userPassword, $userId, $kongId,
             $synCode, $kongToken);
-        $cardIds = [];
+        $cardIds = $this->handleCards($cards);
+
+
+        return $this->handleDecks($decks, $cardIds);
+    }
+
+    private function handleCards(array $cards)
+    {
         $countOwned = 0;
         $countDeck = 0;
         $countKnown = 0;
+        $cardIds = [];
         foreach ($cards as $id => $value) {
             $countKnown++;
             if ($value->num_owned > 0) {
@@ -58,6 +68,11 @@ class Service
                 $this->logger->info(sprintf("Previosly Owned"));
             }
         }
+        return $cardIds;
+    }
+
+    private function handleDecks(array $decks, array $cardIds)
+    {
         foreach ($decks as $deck) {
             if (count($deck->cards) > 0) {
 
@@ -69,7 +84,6 @@ class Service
                 break;
             }
         }
-
         return $cardIds;
     }
 }

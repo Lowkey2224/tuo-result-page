@@ -320,6 +320,7 @@ class OwnedCardController extends Controller
         }
         $ocManager->removeOldOwnedCardsForPlayer($player);
         $idAmountMap = $connector->getInventoryAndDeck($player);
+        $this->get('logger')->info(sprintf("Created ID MAp for %d different cards", count($idAmountMap)));
         $ocs = $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
 
         $this->addFlash('success', sprintf("Added %d Cards", count($ocs)));

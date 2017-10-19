@@ -111,6 +111,9 @@ class Connector
             'kong_token' => $kongToken,
         ];
         $result = $this->apiCall(self::GET_INVENTORY, $options);
+        if(isset($result_bubyack_data)) {
+            $this->logger->info("Buyback exists");
+        }
 
         return [
             $result->user_cards,
