@@ -42,11 +42,15 @@ class Service
         $cardIds = $this->handleCards($cards);
 
 
-        return $this->handleDecks($decks, $cardIds);
+        return $this->handleDecks($cardIds, $decks);
     }
 
-    private function handleCards(array $cards)
+    private function handleCards(array $cards = null)
     {
+        if(!$cards) {
+            $cards = [];
+        }
+        $this->logger->info(sprintf("Found %d Cards", count($cards)));
         $countOwned = 0;
         $countDeck = 0;
         $countKnown = 0;
@@ -68,11 +72,16 @@ class Service
                 $this->logger->info(sprintf("Previosly Owned"));
             }
         }
+        $this->logger->info(sprintf("Found in total %d different Cards", count($cardIds)));
         return $cardIds;
     }
 
-    private function handleDecks(array $decks, array $cardIds)
+    private function handleDecks(array $cardIds, array $decks = null)
     {
+        if(!$decks) {
+            $decks = [];
+        }
+        $this->logger->info(sprintf("Found %d Decks", count($decks)));
         foreach ($decks as $deck) {
             if (count($deck->cards) > 0) {
 

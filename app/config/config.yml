@@ -89,3 +89,13 @@ doctrine_migrations:
     namespace: Application\Migrations
     table_name: migration_versions
     name: Application Migrations
+
+monolog:
+    channels: ['tu_api']
+    handlers:
+        fin:
+            # special log handler and channel for logging FIN exceptions and all score-requests
+            level:    debug
+            type:     stream
+            path:     '%kernel.logs_dir%/tu_api.log'
+            channels: ["tu_api"]

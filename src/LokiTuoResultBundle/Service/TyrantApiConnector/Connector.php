@@ -53,6 +53,7 @@ class Connector
     private function apiCall($method, array $options)
     {
         $url = sprintf('https://mobile.tyrantonline.com/api.php?message=%s&user_id=%d', $method, $options['user_id']);
+        $this->logger->debug(sprintf("Using URL %s", $url));
 
         $body = [
             'password' => $options['password'] . "=Unity4_6_6",
@@ -92,6 +93,9 @@ class Connector
             $headers[] = 'X-Requested-With:XMLHttpRequest';
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $this->logger->info(sprintf("Received Statuscode: %s", $httpcode));
+            $this->logger->debug(sprintf("Fetched Body \n%s", $server_output));
             curl_close($ch);
 
             return json_decode($server_output);
