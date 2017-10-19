@@ -120,8 +120,8 @@ class Connector
         }
 
         return [
-            $result->user_cards,
-            $result->user_decks,
+            isset($result->user_cards)?$result->user_cards:[],
+            isset($result->user_decks)?$result->user_decks:[],
         ];
     }
 

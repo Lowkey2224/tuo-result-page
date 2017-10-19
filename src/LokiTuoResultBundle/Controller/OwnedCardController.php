@@ -318,12 +318,18 @@ class OwnedCardController extends Controller
         if (!$player->hasKongCredentials()) {
             return $this->json(["error" => "ERR::NO_CREDENTIALS"], 409);
         }
-        $ocManager->removeOldOwnedCardsForPlayer($player);
         $idAmountMap = $connector->getInventoryAndDeck($player);
-        $this->get('logger')->info(sprintf("Created ID MAp for %d different cards", count($idAmountMap)));
-        $ocs = $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
+        if(empty($idAmountMap)) {
+            $this->get("logger")->debug("No Cards will be changed via import");
+            $ocs = [];
+            $this->addFlash('error', sprintf("Whoops looks like something went wrong. No Cards could be fetched for you", count($ocs)));
+        } else {
+            $this->get("logger")->debug("Cards fetched. Import Begins now.");
+            $ocManager->removeOldOwnedCardsForPlayer($player);
+            $ocs = $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
+            $this->addFlash('success', sprintf("Added %d Cards", count($ocs)));
+        }
 
-        $this->addFlash('success', sprintf("Added %d Cards", count($ocs)));
         $res = [];
 
         foreach ($ocs as $oc) {

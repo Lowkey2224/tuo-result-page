@@ -40,16 +40,14 @@ class Service
         list($cards, $decks) = $this->connector->getInventory($userId, $userName, $userPassword, $userId, $kongId,
             $synCode, $kongToken);
         $cardIds = $this->handleCards($cards);
+        $cardIds = $this->handleDecks($cardIds, $decks);
 
-
-        return $this->handleDecks($cardIds, $decks);
+        $this->logger->info(sprintf("Found in total %d different Cards", count($cardIds)));
+        return $cardIds;
     }
 
     private function handleCards(array $cards = null)
     {
-        if(!$cards) {
-            $cards = [];
-        }
         $this->logger->info(sprintf("Found %d Cards", count($cards)));
         $countOwned = 0;
         $countDeck = 0;
@@ -72,15 +70,12 @@ class Service
                 $this->logger->info(sprintf("Previosly Owned"));
             }
         }
-        $this->logger->info(sprintf("Found in total %d different Cards", count($cardIds)));
+
         return $cardIds;
     }
 
     private function handleDecks(array $cardIds, array $decks = null)
     {
-        if(!$decks) {
-            $decks = [];
-        }
         $this->logger->info(sprintf("Found %d Decks", count($decks)));
         foreach ($decks as $deck) {
             if (count($deck->cards) > 0) {
