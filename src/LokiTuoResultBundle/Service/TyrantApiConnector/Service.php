@@ -46,7 +46,7 @@ class Service
         return $cardIds;
     }
 
-    private function handleCards(array $cards = null)
+    private function handleCards($cards = null)
     {
         $this->logger->info(sprintf("Found %d Cards", count($cards)));
         $countOwned = 0;
@@ -74,7 +74,7 @@ class Service
         return $cardIds;
     }
 
-    private function handleDecks(array $cardIds, array $decks = null)
+    private function handleDecks(array $cardIds, $decks = null)
     {
         $this->logger->info(sprintf("Found %d Decks", count($decks)));
         foreach ($decks as $deck) {
