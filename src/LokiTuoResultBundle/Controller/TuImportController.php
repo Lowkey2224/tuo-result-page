@@ -134,7 +134,7 @@ class TuImportController extends Controller
     private function freeQueue(QueueItem $queue)
     {
         $em = $this->getDoctrine()->getManager();
-        $queue->setStatusWaiting();
+        $queue->setStatusWaiting()->setUpdatedBy($this->getUser());
         $em->persist($queue);
         $em->flush();
     }
