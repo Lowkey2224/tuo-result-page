@@ -69,8 +69,6 @@ class RegistrationListener implements EventSubscriberInterface
             $player->setOwner($user);
             $this->entityManager->persist($player);
             $this->entityManager->flush();
-//            var_dump("Changed", $player);die();
         }
-//        var_dump("not", $player);die();
     }
 }
