@@ -1,14 +1,14 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}CTP/CNS Simming Results{% endblock %}
+{% block title %}{{ 'player.edit.title %name%'|trans({'%name%' : player.name}) }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="panel panel-info">
             <div class="panel-heading">
-                Edit Player {{ player.name }}
+                {{ 'player.edit.title %name%'|trans({'%name%' : player.name}) }}
                 <a class="btn btn-xs btn-info pull-right" href="{{ path('loki.tuo.player.all.show') }}">
-                    <span class="glyphicon glyphicon-chevron-left">Back</span>
+                    <span class="glyphicon glyphicon-chevron-left">{{ 'back'|trans }}</span>
                 </a>
             </div>
             <div class="panel-body">
@@ -49,7 +49,7 @@
                         <div class="pull-right">
                             <button class="btn btn-warning"
                                     formaction="{{ path('loki.tuo.player.disable', {'id':player.id}) }}">
-                                Delete
+                                Delete{{ 'delete'|trans }}
                             </button>
                         </div>
 

@@ -9,6 +9,7 @@
 namespace LokiTuoResultBundle\Controller;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Illuminate\Support\Collection;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
@@ -151,12 +152,7 @@ class OwnedCardController extends Controller
 
         $this->getDoctrine()->getManager()->flush();
 
-        return new JsonResponse([
-            'name' => $oc->getCard()->getName(),
-            'level' => $oc->getCard()->getLevel(),
-            'amount' => $oc->getAmount(),
-            'id' => $oc->getId(),
-        ]);
+        return new JsonResponse($oc->toArray());
     }
 
     /**
@@ -251,12 +247,7 @@ class OwnedCardController extends Controller
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
         $this->getDoctrine()->getManager()->flush();
-        return new JsonResponse([
-            'name' => $name,
-            'level' => $level,
-            'amount' => $oc->getAmount(),
-            'id' => $oc->getId(),
-        ]);
+        return new JsonResponse($oc->toArray());
     }
 
     /**
@@ -333,15 +324,40 @@ class OwnedCardController extends Controller
         $res = [];
 
         foreach ($ocs as $oc) {
-            $res[$oc->getCard()->getTuoId()] = [
-                'name' => $oc->getCard()->getName(),
-                'level' => $oc->getCard()->getLevel(),
-                'amount' => $oc->getAmount(),
-                'id' => $oc->getId(),
-            ];
+            $res[$oc->getCard()->getTuoId()] = $oc->toArray();
         }
         return $this->json($res);
     }
 
+    /**
+     * @Route("/cards/update",
+     *     name="loki.tuo.ownedcard.card.update.all"
+     *     )
+     * @Security("has_role('ROLE_MODERATOR')")
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function updateAllInventories()
+    {
+        $connector = $this->get('loki_tuo_result.tyrant_connector');
+        $ocManager = $this->get('loki_tuo_result.owned_card.manager');
+
+        $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAll();
+        $players = new ArrayCollection($players);
+        $players = $players->filter(function(Player $p){return $p->hasKongCredentials();});
+        $successPlayers = [];
+        /** @var Player $player */
+        foreach ($players as $player){
+            $idAmountMap = $connector->getInventoryAndDeck($player);
+            if(!empty($idAmountMap)) {
+                $this->get("logger")->debug("Cards fetched. Import Begins now.");
+                $ocManager->removeOldOwnedCardsForPlayer($player);
+                $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
+                $successPlayers[] = $player->getName();
+            }
+        }
+        $this->addFlash("Success", sprintf("Players: %s were updated", implode(", ", $successPlayers)));
+        return $this->json(["result" => true]);
+    }
 
 }

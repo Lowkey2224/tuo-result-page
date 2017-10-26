@@ -1,51 +1,30 @@
 {% extends '::base.html.twig' %}
 {% block body %}
 
-    <div class="modal fade" id="addPlayerModal" tabindex="-1" role="dialog" aria-labelledby="addPlayerModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="addPlayerModalLabel">Upload your Simulation Result here</h4>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(form) }}
-
-                    <div class="form-group">
-                        {{ form_row(form.name) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_row(form.guild) }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    {{ form_widget(form.submit, {'attr' : {'class': 'btn btn-success'}}) }}
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="row">
         <h3 class="col-md-6 col-md-offset-3 text-center">
-            All Current and Past Players, who were simmed
+            {{ 'player.index.title'|trans }}
         </h3>
     </div>
+    <div id="updateFlash"></div>
 
     <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addPlayerModal">
-        Add Player
+        {{ 'player.index.add.player'|trans }}
     </button>
+    {% if showUpdateButton %}
+    <button id="update-link" role="button" type="button" class="ladda-button" data-style="contract" data-color="blue" data-size="xs">
+        {{ 'update.inventories'|trans }}
+    </button>
+    {% endif %}
 
     <table class="table table-striped data-table">
         <thead>
         <tr>
-            <th data-priority="1">Name</th>
-            <th >Guild</th>
-            <th data-priority="3">Owner</th>
-            <th >Last Updated</th>
-            <th data-priority="2" class="text-right">Links</th>
+            <th data-priority="1">{{ 'table.header.name'|trans }}</th>
+            <th >{{ 'table.header.guild'|trans }}</th>
+            <th data-priority="3">{{ 'table.header.owner'|trans }}</th>
+            <th >{{ 'table.header.date'|trans }}</th>
+            <th data-priority="2" class="text-right">{{ 'links'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -90,6 +69,48 @@
 
     <div class="row" style="margin-top: 20px;">
 
-        Simulations and website done by LokiMcFly<br/>
+        {{ 'footer.text'|trans }}<br/>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function () {
+        $('#update-link').click(function () {
+            var laddaButton = Ladda.create(document.querySelector('#update-link'));
+            laddaButton.start();
+
+
+            var address = "{{ path("loki.tuo.ownedcard.card.update.all") }}";
+            $.ajax({
+                url: address,
+                error: function (response, textStatus, errorThrown) {
+                    var flash = null;
+                    var empty = '<div class="alert alert-dismissible alert-%errorType%" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>%errorMsg%</div>';
+                    if (textStatus === "error" && errorThrown === "Gateway Time-out") {
+                        flash = empty.replace('%errorType%', 'warning').replace('%errorMsg%', '{% trans %}ownedcard.player.update.timeout{% endtrans %}');
+                    } else if (textStatus === "error" && errorThrown === "Conflict") {
+                        flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', '{% trans %}ownedcard.player.update.no_credentials{% endtrans %}');
+                    }
+                    console.log(flash);
+                    if(flash) {
+                        $('#updateFlash').append(flash);
+                    }else {
+                        console.log("NO Flash set");
+                    }
+                    laddaButton.stop();
+                    console.log("Fail Response", response);
+                    console.log("Status", textStatus, " error", errorThrown);
+
+                },
+                success: function () {
+                    laddaButton.stop();
+                    console.log("success");
+                    location.reload();
+                }
+            });
+
+        });
+    });
+</script>
 {% endblock %}

@@ -55,6 +55,7 @@ class PlayerController extends Controller
         return $this->render('LokiTuoResultBundle:Player:listAllPlayers.html.twig', [
             'players' => $players,
             'form' => $form->createView(),
+            'showUpdateButton' => $this->isGranted('ROLE_MODERATOR')
         ]);
     }
 

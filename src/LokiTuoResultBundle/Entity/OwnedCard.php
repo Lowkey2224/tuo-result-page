@@ -56,6 +56,16 @@ class OwnedCard extends AbstractBaseEntity
         return $str;
     }
 
+    public function toArray()
+    {
+        return [
+            'name' => $this->getCard()->getName(),
+            'level' => $this->getCard()->getLevel(),
+            'amount' => $this->getAmount(),
+            'id' => $this->getId(),
+        ];
+    }
+
     /**
      * @return string
      */

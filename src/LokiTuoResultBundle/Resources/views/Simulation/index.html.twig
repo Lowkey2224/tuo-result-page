@@ -1,12 +1,12 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}CTP/CNS Simming Results{% endblock %}
+{% block title %}{{ 'simulation.index.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="panel panel-info">
             <div class="panel-heading">
-                Create Simulation Script
+                {{ 'simulation.index.title'|trans }}
             </div>
             <div class="panel-body">
                 {{ form_start(form) }}

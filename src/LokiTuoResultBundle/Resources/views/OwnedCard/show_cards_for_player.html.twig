@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Owned Cards for Player {{ player.name }}{% endblock %}
+{% block title %}{{ 'ownedcard.show.title %name%'|trans({'%name%' : player.name}) }}{% endblock %}
 
 {% block body %}
 
@@ -74,32 +74,31 @@
     <div class="row">
         <div class="col-md-12 text-center">
             <a href="{{ path('loki.tuo.player.all.show') }}">
-                <h3>Player Overview</h3>
+                <h3>{{ 'player.list'|trans }}</h3>
             </a>
         </div>
     </div>
 
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-6 col-md-offset-3 text-center">
-            <h2 style="margin-top: 0;">{% trans with {'%name%': player.name} %}ownedcard.player.title
-                %name%{% endtrans %}</h2>
+            <h2 style="margin-top: 0;">{{ 'ownedcard.show.title %name%'|trans({'%name%' : player.name}) }}</h2>
+
         </div>
         <div class="col-md-3 text-right">
-            {#{% if player.hasKongCredentials %}#}
+            {% if player.hasKongCredentials %}
             <a id="update-link" href="#" data-player-id="{{ player.id }}">
                 <button role="button" type="button" id="update-btn" class="ladda-button" data-style="contract"
                         data-color="blue" data-size="xs">
-                    <span class="ladda-label">{% trans %}update.inventory{% endtrans %}<i class=""></i></span>
+                    <span class="ladda-label">{{ 'update.inventory'|trans }}<i class=""></i></span>
                 </button>
             </a>
-            {#{% endif %}#}
+            {% endif %}
         </div>
     </div>
     <div id="updateFlash"></div>
     <div class="panel panel-info">
         <div class="panel-heading">
-
-            Deck for Player: <b>{{ player.name }}</b><br/>
+            {{ 'ownedcard.show.body.deck %name%'|trans({'%name%' : player.name}) }}<br/>
             {{ deckName | join(', ') }}
         </div>
         <div class="panel-body">
@@ -129,7 +128,7 @@
         <div class="panel-heading">
             <div class="row">
                 <p class="col-md-9 col-xs-9">
-                    Owned Cards for Player: <b>{{ player.name }}</b>
+                    {{ 'ownedcard.show.body.inventory %name%'|trans({'%name%' : player.name}) }}
                 </p>
                 <div class="col-md-3 col-xs-3">
                     {% if is_granted('ROLE_MODERATOR') or player.isOwnedBy(app.user) %}
@@ -172,7 +171,7 @@
 
                                 <button class="btn btn-success btn-xs submit-button" name="add-to-deck"
                                         data-id="{{ card.id }}">
-                                    Add to Deck
+                                    {{ 'ownedcard.show.body.inventory.add.deck'|trans }}
                                 </button>
                                 <button class="btn btn-danger btn-xs submit-button" name="remove-card"
                                         data-id="{{ card.id }}">
@@ -193,7 +192,7 @@
     </div>
 
     <div class="row" style="margin-top: 20px;">
-        <div class="pull-left"><a href="{{ path("tuo.index") }}">back to overview</a></div>
+        <div class="pull-left"><a href="{{ path("tuo.index") }}">{{ 'index.back'|trans }}</a></div>
     </div>
 {% endblock %}
 
@@ -230,12 +229,8 @@
                         console.log(flash);
                         if(flash) {
                             $('#updateFlash').append(flash);
-                        }else {
-                            console.log("NO Flash set");
                         }
                         laddaButton.stop();
-                        console.log("Fail Response", response);
-                        console.log("Status", textStatus, " error", errorThrown);
 
                     },
                     success: function () {
@@ -446,7 +441,8 @@
             function getFlashMessage(successful, name, level, amount) {
                 var cssClass = (successful) ? 'alert-success' : 'alert-danger';
                 if (successful) {
-                    text = "<strong>Success: </strong>" + name + " with level " + level + " added " + amount + " times";
+                    var msg = "{{ 'ownedcard.show.body.inventory.add.success'|trans }}".replace("_NAME_", name).replace('_LEVEL_', level).replace('_AMOUNT_', amount);
+                    text = "<strong>{{ 'success'|trans }}: </strong>" + msg;
                 }
 
                 return '<div class="alert alert-dismissible ' + cssClass + '" role="alert">' +

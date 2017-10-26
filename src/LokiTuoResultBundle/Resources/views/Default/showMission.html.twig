@@ -4,7 +4,7 @@
     <div class="row" style="margin-top: 20px;">
 
         <div class="col-md-offset-3 col-md-6 text-center">
-            <h2 style="margin-top: 0;">Results for {{ mission.name }}</h2>
+            <h2 style="margin-top: 0;">{% trans with {'%name%': mission.name } %}mission.show.title %name%{% endtrans %}</h2>
         </div>
     </div>
     {% for result in results %}
@@ -12,6 +12,6 @@
 
     {% endfor %}
     <div class="row" style="margin-top: 20px;">
-        <div class="pull-left"><a href="{{ path("tuo.index") }}">back to overview</a></div>
+        <div class="pull-left"><a href="{{ path("tuo.index") }}">{{ 'index.back'|trans }}</a></div>
     </div>
 {% endblock %}

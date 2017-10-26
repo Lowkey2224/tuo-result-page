@@ -163,6 +163,8 @@ class Service
         foreach ($ocs as $ownedCard) {
             $this->em->persist($ownedCard);
         }
+        $player->setUpdatedAtValue();
+        $this->em->persist($player);
         $this->em->flush();
         return $ocs;
     }

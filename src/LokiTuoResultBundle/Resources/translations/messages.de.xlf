@@ -38,6 +38,10 @@
                 <source>update.inventory</source>
                 <target>Karten Aktualisieren</target>
             </trans-unit>
+            <trans-unit id="update.inventories">
+                <source>update.inventories</source>
+                <target>Karten Aktualisieren</target>
+            </trans-unit>
             <trans-unit id="ownedcard.player.title">
                 <source>ownedcard.player.title %name%</source>
                 <target>Inventar für Spieler %name%</target>
