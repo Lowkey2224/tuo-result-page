@@ -121,10 +121,10 @@ class TuImportController extends Controller
 
     private function setQueueRunning(QueueItem $queue)
     {
-        if($queue->isRunning() ) {
-            $msg = $this->get('translator')->trans('ownedcard.player.update.already_running %name%', ['%name%' => $queue->getUpdatedBy()->getUsername()]);
-            throw new ConflictHttpException($msg, null, 409);
-        }
+//        if($queue->isRunning() ) {
+//            $msg = $this->get('translator')->trans('ownedcard.player.update.already_running %name%', ['%name%' => $queue->getUpdatedBy()->getUsername()]);
+//            throw new ConflictHttpException($msg, null, 409);
+//        }
         $em = $this->getDoctrine()->getManager();
         $queue->setStatusRunning("")->setUpdatedBy($this->getUser());
         $em->persist($queue);
