@@ -44,7 +44,7 @@ class TuImportController extends Controller
         if (!$player->hasKongCredentials()) {
             $msg = $this->get('translator')->trans("ownedcard.player.update.no_credentials");
             $this->freeQueue($queue);
-            throw new ConflictHttpException($msg, null, 409 );
+            throw new ConflictHttpException($msg, null, 420);
         }
         $idAmountMap = $connector->getInventoryAndDeck($player);
         if(empty($idAmountMap)) {
