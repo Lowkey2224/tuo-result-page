@@ -85,12 +85,12 @@
 
         </div>
         <div class="col-md-3 text-right">
-            {#{% if player.hasKongCredentials %}#}
+            {% if player.hasKongCredentials %}
                 <button role="button" type="button" id="update-btn" class="ladda-button" data-style="contract"
                         data-color="blue" data-size="xs" data-player-id="{{ player.id }}">
                     <span class="ladda-label">{{ 'update.inventory'|trans }}<i class=""></i></span>
                 </button>
-            {#{% endif %}#}
+            {% endif %}
         </div>
     </div>
     <div id="updateFlash"></div>
