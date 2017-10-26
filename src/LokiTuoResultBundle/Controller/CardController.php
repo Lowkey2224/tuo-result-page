@@ -3,7 +3,6 @@
 namespace LokiTuoResultBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use LokiTuoResultBundle\Entity\Card;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,11 +24,10 @@ class CardController extends Controller
         $letters = [];
         $cards   = [];
         $count   = 0;
-        $allCards = new ArrayCollection($repo->findAll());
-        strpos("name", "needle", 0);
+        $names = new ArrayCollection($repo->findAllNames());
         for ($i = 0; $i < 26; ++$i) {
-            $cards[$char] = $allCards->filter(function (Card $c) use ($char) {
-                return strpos($c->getName(), $char) === 0;
+            $cards[$char] = $names->filter(function ($c) use ($char) {
+                return strpos($c['name'], $char) === 0;
             });
             $count += count($cards[$char]);
             $letters[] = $char;
@@ -50,10 +48,12 @@ class CardController extends Controller
      */
     public function getAllCardsAction()
     {
-        $cards = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findAll();
-        $names = array_map(function (Card $card) {
-            return $card->getName();
-        }, $cards);
+        $cards = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findAllNames();
+
+        $names = [];
+        foreach ($cards as $card) {
+            $names[] = $card['name'];
+        }
 
         return new JsonResponse($names);
     }

@@ -27,4 +27,11 @@ class CardRepository extends AbstractBaseRepository
             ->join('c.levels', 'l');
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllNames()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select("c.name");
+        return $qb->getQuery()->getResult();
+    }
 }
