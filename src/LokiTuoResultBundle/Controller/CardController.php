@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use LokiTuoResultBundle\Entity\Card;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,8 +25,12 @@ class CardController extends Controller
         $letters = [];
         $cards   = [];
         $count   = 0;
+        $allCards = new ArrayCollection($repo->findAll());
+        strpos("name", "needle", 0);
         for ($i = 0; $i < 26; ++$i) {
-            $cards[$char] = $repo->findByStartingLetter($char);
+            $cards[$char] = $allCards->filter(function (Card $c) use ($char) {
+                return strpos($c->getName(), $char) === 0;
+            });
             $count += count($cards[$char]);
             $letters[] = $char;
             ++$char;
