@@ -12,7 +12,7 @@ cache:
 
 env:
   - TEST_SUITE=Command
-  - TEST_SUITE=Controller
+#  - TEST_SUITE=Controller
   - TEST_SUITE=Unit
 git:
   depth: 3
