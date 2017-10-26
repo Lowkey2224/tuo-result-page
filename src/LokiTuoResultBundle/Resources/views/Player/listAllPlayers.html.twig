@@ -79,28 +79,18 @@
         $('#update-link').click(function () {
             var laddaButton = Ladda.create(document.querySelector('#update-link'));
             laddaButton.start();
-
-
-            var address = "{{ path("loki.tuo.ownedcard.card.update.all") }}";
             $.ajax({
-                url: address,
+                url: '{{ path("loki.tuo.tui.update.all") }}',
                 error: function (response, textStatus, errorThrown) {
-                    var flash = null;
                     var empty = '<div class="alert alert-dismissible alert-%errorType%" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>%errorMsg%</div>';
+                    var flash;
                     if (textStatus === "error" && errorThrown === "Gateway Time-out") {
                         flash = empty.replace('%errorType%', 'warning').replace('%errorMsg%', '{% trans %}ownedcard.player.update.timeout{% endtrans %}');
-                    } else if (textStatus === "error" && errorThrown === "Conflict") {
-                        flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', '{% trans %}ownedcard.player.update.no_credentials{% endtrans %}');
-                    }
-                    console.log(flash);
-                    if(flash) {
-                        $('#updateFlash').append(flash);
                     }else {
-                        console.log("NO Flash set");
+                        flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', response.responseJSON.error.exception[0].message);
                     }
+                    $('#updateFlash').append(flash);
                     laddaButton.stop();
-                    console.log("Fail Response", response);
-                    console.log("Status", textStatus, " error", errorThrown);
 
                 },
                 success: function () {

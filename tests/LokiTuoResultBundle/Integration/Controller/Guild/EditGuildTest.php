@@ -21,7 +21,7 @@ class EditGuildTest extends AbstractControllerTest
     {
         $client->request('GET', '/guild/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->clickLinkName($client, 'Add Guild');
+        $this->clickLinkName($client, 'Add guild');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $form                   = $this->getFormById($client->getCrawler(), 'guild_submit');
         $form['guild[name]']    = 'TestGuild';

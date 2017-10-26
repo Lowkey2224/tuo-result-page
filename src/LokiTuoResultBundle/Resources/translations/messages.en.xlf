@@ -234,6 +234,10 @@
                 <source>ownedcard.show.body.inventory.add.success</source>
                 <target>_NAME_ with level _LEVEL_ added _AMOUNT_ times</target>
             </trans-unit>
+            <trans-unit id="ownedcard.player.update.already_running">
+                <source>ownedcard.player.update.already_running %name%</source>
+                <target>Currently the user %name% is running the import, please try again later.</target>
+            </trans-unit>
             <trans-unit id="ownedcard.player.update.timeout">
                 <source>ownedcard.player.update.timeout</source>
                 <target>Due to high load updating your inventory takes some time. come back in a few minutes and refresh the page.</target>

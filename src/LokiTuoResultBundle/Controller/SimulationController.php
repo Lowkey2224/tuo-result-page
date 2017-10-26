@@ -174,8 +174,6 @@ class SimulationController extends Controller
     public function getFileAction(ResultFile $file)
     {
         $filename = $file->getOriginalName();
-
-
         return new Response($file->getContent(), 200, [
             'content-type'        => 'text/text',
             'cache-control'       => 'private',

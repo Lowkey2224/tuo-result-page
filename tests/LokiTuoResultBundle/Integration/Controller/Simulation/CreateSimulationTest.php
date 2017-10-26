@@ -24,7 +24,7 @@ class CreateSimulationTest extends AbstractControllerTest
         $crawler = $this->clickLinkName($client, 'Create Simulation Script');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(1, $crawler->filter('div:contains("Create Simulation Script")')->count());
+        $this->assertGreaterThan(1, $crawler->filter('div:contains("create simulation script")')->count());
         $this->assertEquals(1, $crawler->filterXPath('//button[@id="simulation_save"]')->count());
         $form                                 = $this->getFormById($crawler, 'simulation_save');
         $form['simulation[missions]']         = $this->mission1;

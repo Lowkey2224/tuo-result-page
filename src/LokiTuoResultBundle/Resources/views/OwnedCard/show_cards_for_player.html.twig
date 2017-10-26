@@ -85,14 +85,12 @@
 
         </div>
         <div class="col-md-3 text-right">
-            {% if player.hasKongCredentials %}
-            <a id="update-link" href="#" data-player-id="{{ player.id }}">
+            {#{% if player.hasKongCredentials %}#}
                 <button role="button" type="button" id="update-btn" class="ladda-button" data-style="contract"
-                        data-color="blue" data-size="xs">
+                        data-color="blue" data-size="xs" data-player-id="{{ player.id }}">
                     <span class="ladda-label">{{ 'update.inventory'|trans }}<i class=""></i></span>
                 </button>
-            </a>
-            {% endif %}
+            {#{% endif %}#}
         </div>
     </div>
     <div id="updateFlash"></div>
@@ -208,32 +206,30 @@
                 });
             });
 
-            $('#update-link').click(function () {
+            $('#update-btn').click(function () {
                 var laddaButton = Ladda.create(document.querySelector('#update-btn'));
                 laddaButton.start();
                 {% set dummyStr = 99999 %}
                 var dummyStr = "{{ dummyStr }}";
-                var address = "{{ path("loki.tuo.ownedcard.card.update", {'id': dummyStr}) }}";
+
+                var address = "{{ path("loki.tuo.tui.update.player", {'id': dummyStr}) }}";
                 var playerId = $(this).data('player-id');
                 address = address.replace(dummyStr, playerId);
                 $.ajax({
                     url: address,
                     error: function (response, textStatus, errorThrown) {
-                        var flash = null;
                         var empty = '<div class="alert alert-dismissible alert-%errorType%" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>%errorMsg%</div>';
+                        var flash;
                         if (textStatus === "error" && errorThrown === "Gateway Time-out") {
                             flash = empty.replace('%errorType%', 'warning').replace('%errorMsg%', '{% trans %}ownedcard.player.update.timeout{% endtrans %}');
-                        } else if (textStatus === "error" && errorThrown === "Conflict") {
-                            flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', '{% trans %}ownedcard.player.update.no_credentials{% endtrans %}');
+                        }else {
+                            flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', response.responseJSON.error.exception[0].message);
                         }
-                        console.log(flash);
-                        if(flash) {
-                            $('#updateFlash').append(flash);
-                        }
+                        $('#updateFlash').append(flash);
                         laddaButton.stop();
-
                     },
-                    success: function () {
+                    success: function (response) {
+                        console.log("Succ", response);
                         laddaButton.stop();
                         console.log("success");
                         location.reload();

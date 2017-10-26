@@ -9,7 +9,6 @@
 namespace LokiTuoResultBundle\Controller;
 
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Illuminate\Support\Collection;
 use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
@@ -286,78 +285,6 @@ class OwnedCardController extends Controller
             'form' => $ownedCardForm->createView(),
             'massForm' => $massOwnedCardForm->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/{id}/cards/update",
-     *     name="loki.tuo.ownedcard.card.update",
-     *     requirements={"id":"\d+"}
-     *     )
-     * @Security("is_granted('edit.player', player)")
-     *
-     * @param Player $player
-     *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function updateInventoryAction(Player $player)
-    {
-        //TODO Add some Flodding protection
-        $connector = $this->get('loki_tuo_result.tyrant_connector');
-        $ocManager = $this->get('loki_tuo_result.owned_card.manager');
-
-        /** @var Player $player */
-        if (!$player->hasKongCredentials()) {
-            return $this->json(["error" => "ERR::NO_CREDENTIALS"], 409);
-        }
-        $idAmountMap = $connector->getInventoryAndDeck($player);
-        if(empty($idAmountMap)) {
-            $this->get("logger")->debug("No Cards will be changed via import");
-            $ocs = [];
-            $this->addFlash('error', sprintf("Whoops looks like something went wrong. No Cards could be fetched for you", count($ocs)));
-        } else {
-            $this->get("logger")->debug("Cards fetched. Import Begins now.");
-            $ocManager->removeOldOwnedCardsForPlayer($player);
-            $ocs = $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
-            $this->addFlash('success', sprintf("Added %d Cards", count($ocs)));
-        }
-
-        $res = [];
-
-        foreach ($ocs as $oc) {
-            $res[$oc->getCard()->getTuoId()] = $oc->toArray();
-        }
-        return $this->json($res);
-    }
-
-    /**
-     * @Route("/cards/update",
-     *     name="loki.tuo.ownedcard.card.update.all"
-     *     )
-     * @Security("has_role('ROLE_MODERATOR')")
-     *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function updateAllInventories()
-    {
-        $connector = $this->get('loki_tuo_result.tyrant_connector');
-        $ocManager = $this->get('loki_tuo_result.owned_card.manager');
-
-        $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAll();
-        $players = new ArrayCollection($players);
-        $players = $players->filter(function(Player $p){return $p->hasKongCredentials();});
-        $successPlayers = [];
-        /** @var Player $player */
-        foreach ($players as $player){
-            $idAmountMap = $connector->getInventoryAndDeck($player);
-            if(!empty($idAmountMap)) {
-                $this->get("logger")->debug("Cards fetched. Import Begins now.");
-                $ocManager->removeOldOwnedCardsForPlayer($player);
-                $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
-                $successPlayers[] = $player->getName();
-            }
-        }
-        $this->addFlash("Success", sprintf("Players: %s were updated", implode(", ", $successPlayers)));
-        return $this->json(["result" => true]);
     }
 
 }
