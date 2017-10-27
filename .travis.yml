@@ -12,8 +12,9 @@ cache:
 
 env:
   - TEST_SUITE=Command
-#  - TEST_SUITE=Controller
+  - TEST_SUITE=Controller
   - TEST_SUITE=Unit
+  - TEST_SUITE=User
 git:
   depth: 3
 before_install:
@@ -27,12 +28,9 @@ install:
   - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
 
 before_script:
-  - if [ "$TEST_SUITE" = "Controller" ]; then php bin/console doctrine:database:create --env=test ; fi;
-  - if [ "$TEST_SUITE" = "Controller" ]; then php bin/console doctrine:schema:create --env=test ; fi;
-  - if [ "$TEST_SUITE" = "Controller" ]; then php bin/console doctrine:fixtures:load -n  --env=test ; fi;
-  - if [ "$TEST_SUITE" = "Command" ]; then php bin/console doctrine:database:create --env=test ; fi;
-  - if [ "$TEST_SUITE" = "Command" ]; then php bin/console doctrine:schema:create --env=test ; fi;
-  - if [ "$TEST_SUITE" = "Command" ]; then php bin/console doctrine:fixtures:load -n  --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Controller" ] || [ "$TEST_SUITE" = "Command" ] || [ "$TEST_SUITE" = "User" ]; then php bin/console doctrine:database:create --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Controller" ] || [ "$TEST_SUITE" = "Command" ] || [ "$TEST_SUITE" = "User" ]; then php bin/console doctrine:schema:create --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Controller" ] || [ "$TEST_SUITE" = "Command" ] || [ "$TEST_SUITE" = "User" ]; then php bin/console doctrine:fixtures:load -n  --env=test ; fi;
 
 script:
   - "phpdbg -qrr ./vendor/bin/phpunit --testsuite $TEST_SUITE"
