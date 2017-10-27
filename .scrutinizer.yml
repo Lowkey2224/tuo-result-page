@@ -29,7 +29,7 @@ build:
             - php bin/console doctrine:fixtures:load -n --env=test
         override:
             -
-                command: 'vendor/bin/phpunit --coverage-clover=some-file --debug'
+                command: 'vendor/bin/phpunit --coverage-clover=some-file --debug --filter testCreateGuild'
                 coverage:
                     file: 'some-file'
                     format: 'clover'
