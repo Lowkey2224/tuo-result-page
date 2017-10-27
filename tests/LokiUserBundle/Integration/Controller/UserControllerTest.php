@@ -50,18 +50,25 @@ class UserControllerTest extends WebTestCase
 
     public function testDeactivateActivate()
     {
+        echo "\nLogging in\n";
         $client = $this->loginAs(self::USER, self::PASSWORD_CORRECT);
+        echo "Asserting\n";
         $this->assertContains('Welcome, '.self::USER, $client->getResponse()->getContent());
+        echo "Going to user\n";
         $crawler = $client->request('GET', '/user/');
 
         $user       = 'user';
         $deactivate = 'deactivate';
         $activate   = 'activate';
-
+        echo "AssertHas Column\n";
         $this->assertHasColumn($crawler, $user, 'active');
+        echo "ProORDemote\n";
         $crawler = $this->clicPromoteOrDemotekLink($crawler, $client, $user, $deactivate);
+        echo "New Assert COlumn\n";
         $this->assertHasColumn($crawler, $user, 'inactive');
+        echo "Promote again\n";
         $crawler = $this->clicPromoteOrDemotekLink($crawler, $client, $user, $activate);
+        echo "Last Assert\n";
         $this->assertHasColumn($crawler, $user, 'active');
     }
 
