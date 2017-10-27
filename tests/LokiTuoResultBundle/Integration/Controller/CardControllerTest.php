@@ -22,9 +22,8 @@ class CardControllerTest extends AbstractControllerTest
         $response = $client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $res = json_decode($response->getContent(), true);
-        rsort($res);
-        rsort($this->cards);
-
-        $this->assertArraySubset($this->cards, $res);
+        foreach ($this->cards as $card) {
+            $this->assertContains($card, $res);
+        }
     }
 }
