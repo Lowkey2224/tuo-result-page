@@ -2,36 +2,36 @@ services:
     loki_tuo_result.reader:
         class: LokiTuoResultBundle\Service\Reader\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
-            cardManager: "@loki_tuo_result.owned_card.manager"
-            logger: "@logger"
+            - "@doctrine.orm.entity_manager"
+            - "@loki_tuo_result.owned_card.manager"
+            - "@logger"
         #arguments: ["@service_id", "plain_value", %parameter%]
 
     loki_tuo_result.card.reader:
         class: LokiTuoResultBundle\Service\CardReader\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.card.persister:
         class: LokiTuoResultBundle\Service\CardReader\Persister
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.owned_card.mass_sim_reader:
         class: LokiTuoResultBundle\Service\OwnedCards\MassSimReader
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
-            ownedCardManager: "@loki_tuo_result.owned_card.manager"
+            - "@doctrine.orm.entity_manager"
+            - "@loki_tuo_result.owned_card.manager"
 
     loki_tuo_result.owned_card.manager:
         class: LokiTuoResultBundle\Service\OwnedCards\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.persister.database:
         class: LokiTuoResultBundle\Service\Persister\DatabasePersister
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.persister.null:
         class: LokiTuoResultBundle\Service\Persister\NullPersister
@@ -39,24 +39,24 @@ services:
     loki_tuo_result.battlegroundeffect.reader:
         class: LokiTuoResultBundle\Service\BattleGroundEffectReader\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.player.manager:
         class: LokiTuoResultBundle\Service\PlayerManager\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.simulation.manager:
         class: LokiTuoResultBundle\Service\Simulation\Service
         arguments:
-            twig: '@templating'
+            - '@templating'
         #arguments: ["@service_id", "plain_value", %parameter%]
 
     loki_tuo_result.vpc_simulation.manager:
         class: LokiTuoResultBundle\Service\VpcSImulation\Service
         arguments:
-            buzz: '@buzz'
-            vpc_url: "%vpc_url%"
+            - '@buzz'
+            - "%vpc_url%"
 
     loki_tuo_result.password_resetting:
         class: LokiTuoResultBundle\EventListener\RegistrationListener

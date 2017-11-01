@@ -1,6 +1,12 @@
 {
     "name": "loki/tuo-result-page",
     "description": "A website Managing Simulations with tuo",
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "https://pear.php.net"
+        }
+    ],
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -41,7 +47,8 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "kriswallsmith/assetic": "^1.4",
-        "friendsofphp/php-cs-fixer": "^2.1"
+        "friendsofphp/php-cs-fixer": "^2.1",
+        "pear-pear.php.net/HTTP_Request2": "2.3.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

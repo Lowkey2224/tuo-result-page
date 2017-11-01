@@ -27,6 +27,12 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->container = self::$kernel->getContainer();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        unset($this->container);
+    }
+
     const USER             = 'foo';
     const PASSWORD_CORRECT = 'foo';
 

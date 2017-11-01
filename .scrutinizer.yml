@@ -29,10 +29,9 @@ build:
             - php bin/console doctrine:fixtures:load -n --env=test
         override:
             -
-                command: 'vendor/bin/phpunit --coverage-clover=some-file'
-                command: 'vendor/bin/phpunit --coverage-clover=coverage.xml'
+                command: 'vendor/bin/phpunit --coverage-clover=some-file --debug'
                 coverage:
-                    file: 'coverage.xml'
+                    file: 'some-file'
                     format: 'clover'
     environment:
         php: '7.0.8'

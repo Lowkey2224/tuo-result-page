@@ -22,23 +22,23 @@ class Service
         $this->connector = new Connector($logger);
     }
 
+    /**
+     * Calls the linked method internally
+     * @param string $adapter
+     * @see \HTTP_Request2::setAdapter()
+     */
+    public function setRequestAdapter($adapter)
+    {
+        $this->connector->setAdapter($adapter);
+    }
+
     public function getInventoryAndDeck(Player $player)
     {
-
-
         if (!$player->hasKongCredentials()) {
             return [];
         }
         $this->logger->info("Fetching Data for Player " . $player->getName());
-        $userPassword = $player->getKongCredentials()->getKongPassword();
-        $userId = $player->getKongCredentials()->getTuUserId();
-        $synCode = $player->getKongCredentials()->getSynCode();
-        $userName = $player->getKongCredentials()->getKongUserName();
-        $kongId = $player->getKongCredentials()->getKongId();
-        $kongToken = $player->getKongCredentials()->getKongToken();
-
-        list($cards, $decks) = $this->connector->getInventory($userId, $userName, $userPassword, $userId, $kongId,
-            $synCode, $kongToken);
+        list($cards, $decks) = $this->connector->getInventory($player);
         $cardIds = $this->handleCards($cards);
         $cardIds = $this->handleDecks($cardIds, $decks);
 
@@ -58,7 +58,6 @@ class Service
             if ($value->num_owned > 0) {
                 $this->logger->info(sprintf("My Deck has the Following Card"));
                 $countOwned++;
-
                 $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_owned : (int)$value->num_owned;
             }
             if ($value->num_used > 0) {
