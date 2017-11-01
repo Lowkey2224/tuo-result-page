@@ -4,6 +4,7 @@
 namespace LokiTuoResultBundle\Service\TyrantApiConnector;
 
 
+use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerInterface;
 
 class Connector
@@ -97,20 +98,27 @@ class Connector
         $response = $req->send();
         if ($response->getStatus() == 200) {
             return json_decode($response->getBody());
+        } else {
+            $this->logger->warning("Error from TU API: Status: " . $response->getReasonPhrase());
+            $this->logger->warning("Body was " . $response->getBody());
         }
         return null;
     }
 
-    public function getInventory($userId, $userName, $userPassword, $targerUserId, $kongId, $synCode, $kongToken)
+    /**
+     * @param Player $player
+     * @return array
+     */
+    public function getInventory(Player $player)
     {
         $options = [
-            'password' => $userPassword,
-            'target_user_id' => $targerUserId,
-            'user_id' => $userId,
-            'syncode' => $synCode,
-            'kongId' => $kongId,
-            'user_name' => $userName,
-            'kong_token' => $kongToken,
+            'password' => $player->getKongCredentials()->getKongPassword(),
+            'target_user_id' => $player->getKongCredentials()->getTuUserId(),
+            'user_id' => $player->getKongCredentials()->getTuUserId(),
+            'syncode' => $player->getKongCredentials()->getSynCode(),
+            'kongId' => $player->getKongCredentials()->getKongId(),
+            'user_name' => $player->getKongCredentials()->getKongUserName(),
+            'kong_token' => $player->getKongCredentials()->getKongToken(),
         ];
         $result = $this->apiCall(self::GET_INVENTORY, $options);
         if (isset($result_bubyack_data)) {
@@ -121,23 +129,5 @@ class Connector
             isset($result->user_cards) ? $result->user_cards : [],
             isset($result->user_decks) ? $result->user_decks : [],
         ];
-    }
-
-    public function getDeck($player, $deckType)
-    {
-        $deck = [];
-        $deck[] = $commander_id = $player->$deckType->commander_id;
-        $deck[] = $deck_id = $player->$deckType->deck_id;
-
-        echo "commander_id = " . $commander_id . "\n";
-        echo "deck_id = " . $deck_id . "\n";
-        echo "_______\n";
-        $cards = $player->$deckType->cards;
-
-        foreach ($cards as $cardId) {
-
-            $deck[] = $cardId;
-        }
-        return $deck;
     }
 }
