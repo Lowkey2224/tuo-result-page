@@ -290,6 +290,10 @@
                 <source>player.edit.title %name%</source>
                 <target>Edit player %name%</target>
             </trans-unit>
+            <trans-unit id="player.edit">
+                <source>player.edit</source>
+                <target>Edit player</target>
+            </trans-unit>
             <trans-unit id="player.index.title">
                 <source>player.index.title</source>
                 <target>all players</target>
@@ -301,6 +305,14 @@
             <trans-unit id="player.show.title">
                 <source>player.show.title %name%</source>
                 <target>results for %name%</target>
+            </trans-unit>
+            <trans-unit id="player.results">
+                <source>player.results</source>
+                <target>show results</target>
+            </trans-unit>
+            <trans-unit id="player.owned-cards">
+                <source>player.owned-cards</source>
+                <target>show inventory</target>
             </trans-unit>
             <trans-unit id="simulation.edit.title">
                 <source>simulation.edit.title %name%</source>

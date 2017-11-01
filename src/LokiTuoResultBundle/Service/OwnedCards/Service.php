@@ -24,10 +24,16 @@ class Service
 
     use LoggerAwareTrait;
 
+    /**
+     * @var Collection
+     */
+    private $levels;
+
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
         $this->logger = new NullLogger();
+        $this->levels = null;
     }
 
     /**
@@ -169,13 +175,9 @@ class Service
         return $ocs;
     }
 
-    /**
-     * @param integer[] $tuIds
-     * @param Player $player
-     * @return OwnedCard[] array
-     */
-    private function getOwnedCardsByTuoIds(array $tuIds, Player $player)
+    public function prepare()
     {
+
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
         $cards = $cardRepo->findAllWithLevels();
         $cards = new Collection($cards);
@@ -189,14 +191,27 @@ class Service
                 $levelsFlat[$level->getTuoId()] = $level;
             }
         }
-        $levels = $levelsFlat;
+        $this->levels = $levelsFlat;
+        unset($levelsFlat, $levels, $cards);
+    }
+
+    /**
+     * @param integer[] $tuIds
+     * @param Player $player
+     * @return OwnedCard[] array
+     */
+    private function getOwnedCardsByTuoIds(array $tuIds, Player $player)
+    {
+        if (!$this->levels) {
+            $this->prepare();
+        }
         $ownedCards = [];
         foreach ($tuIds as $tuId => $amounts) {
             $amount = $amounts['owned'];
             $amountInDeck = isset($amounts['used']) ? $amounts['used'] : 0;
             $oc = new OwnedCard();
 
-            $oc->setCard($levels->get($tuId));
+            $oc->setCard($this->levels->get($tuId));
             $oc->setAmount($amount);
             $oc->setPlayer($player);
             $oc->setAmountInDeck($amountInDeck);
