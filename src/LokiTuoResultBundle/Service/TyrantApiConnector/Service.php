@@ -22,6 +22,16 @@ class Service
         $this->connector = new Connector($logger);
     }
 
+    /**
+     * Calls the linked method internally
+     * @param string $adapter
+     * @see \HTTP_Request2::setAdapter()
+     */
+    public function setRequestAdapter($adapter)
+    {
+        $this->connector->setAdapter($adapter);
+    }
+
     public function getInventoryAndDeck(Player $player)
     {
 
@@ -36,7 +46,6 @@ class Service
         $userName = $player->getKongCredentials()->getKongUserName();
         $kongId = $player->getKongCredentials()->getKongId();
         $kongToken = $player->getKongCredentials()->getKongToken();
-
         list($cards, $decks) = $this->connector->getInventory($userId, $userName, $userPassword, $userId, $kongId,
             $synCode, $kongToken);
         $cardIds = $this->handleCards($cards);

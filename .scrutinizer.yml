@@ -34,5 +34,5 @@ build:
                     file: 'some-file'
                     format: 'clover'
     environment:
-        php: '7.1.3'
+        php: '7.0.8'
         mysql: 5.6             # 5.5 or 5.6 or 5.7

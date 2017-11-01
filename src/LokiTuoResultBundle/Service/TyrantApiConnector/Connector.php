@@ -11,11 +11,31 @@ class Connector
     const GET_INVENTORY = "init";
     const GET_DECKS = "getProfileData";
     const GET_MEMBERS = "updateFaction";
+
+    /**
+     * @var string
+     */
+    private $adapter;
+
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $this->adapter = "HTTP_Request2_Adapter_Curl";
+    }
+
+    /**
+     * @param string $adapter
+     * @return Connector
+     */
+    public function setAdapter($adapter)
+    {
+        $this->adapter = $adapter;
+        return $this;
     }
 
     /**
@@ -71,34 +91,12 @@ class Connector
             $bodyStr[] = $key . "=" . $value;
         }
         $bodyStr = implode("&", $bodyStr);
-        if ($ch = curl_init()) {
-//            curl_init();
-
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $bodyStr);
-
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $headers = [];
-            $headers[] = 'X-Apple-Tz: 0';
-            $headers[] = 'X-Apple-Store-Front: 143444,12';
-            $headers[] = 'Accept: *\*';
-            $headers[] = 'Connection: keep-alive';
-            $headers[] = 'Cache-Control: no-cache';
-            $headers[] = 'Content-Type:application/json';
-            $headers[] = 'Host: mobile.tyrantonline.com';
-            $headers[] = 'User-Agent: tyrantmobile/1.26 CFNetwork/672.0.8 Darwin/14.0.0';
-            $headers[] = 'X-MicrosoftAjax: Delta=true';
-            $headers[] = 'X-Requested-With:XMLHttpRequest';
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            $server_output = curl_exec($ch);
-            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $this->logger->info(sprintf("Received Statuscode: %s", $httpcode));
-            $this->logger->debug(sprintf("Fetched Body \n%s", $server_output));
-            curl_close($ch);
-
-            return json_decode($server_output);
+        $req = new \HTTP_Request2($url, \HTTP_Request2::METHOD_POST, []);
+        $req->setBody($bodyStr);
+        $req->setAdapter($this->adapter);
+        $response = $req->send();
+        if ($response->getStatus() == 200) {
+            return json_decode($response->getBody());
         }
         return null;
     }
@@ -115,13 +113,13 @@ class Connector
             'kong_token' => $kongToken,
         ];
         $result = $this->apiCall(self::GET_INVENTORY, $options);
-        if(isset($result_bubyack_data)) {
+        if (isset($result_bubyack_data)) {
             $this->logger->info("Buyback exists");
         }
 
         return [
-            isset($result->user_cards)?$result->user_cards:[],
-            isset($result->user_decks)?$result->user_decks:[],
+            isset($result->user_cards) ? $result->user_cards : [],
+            isset($result->user_decks) ? $result->user_decks : [],
         ];
     }
 
