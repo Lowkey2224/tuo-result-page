@@ -30,8 +30,9 @@ build:
         override:
             -
                 command: 'vendor/bin/phpunit --coverage-clover=some-file'
+                command: 'vendor/bin/phpunit --coverage-clover=coverage.xml'
                 coverage:
-                    file: 'some-file'
+                    file: 'coverage.xml'
                     format: 'clover'
     environment:
         php: '7.0.8'
