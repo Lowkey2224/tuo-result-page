@@ -120,7 +120,7 @@ class Service
             $oc->setAmount($cardEntry['amount']);
             $oc->setPlayer($player);
             $oc->setAmountInDeck($cardEntry['inDeck']);
-            $this->logger->error("Persisting Card $oc");
+            $this->logger->debug("Persisting Card $oc");
             $result[] = $oc;
         }
 
