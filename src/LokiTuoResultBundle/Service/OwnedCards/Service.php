@@ -175,7 +175,42 @@ class Service
         return $ocs;
     }
 
-    public function prepare()
+    /**
+     * @param integer[] $tuIds
+     * @param Player $player
+     * @return OwnedCard[] array
+     */
+    private function getOwnedCardsByTuoIds(array $tuIds, Player $player)
+    {
+        if (!$this->levels) {
+            $this->logger->info("Fething level info");
+            $this->prepare();
+        }
+        $ownedCards = [];
+        foreach ($tuIds as $tuId => $amounts) {
+            if (!$this->levels->get($tuId)) {
+                $this->logger->warning("Unknown Card was tried to persist with ID: " . $tuId);
+                continue;
+            }
+            $amount = $amounts['owned'];
+            $amountInDeck = isset($amounts['used']) ? $amounts['used'] : 0;
+            $oc = new OwnedCard();
+
+            $oc->setCard($this->levels->get($tuId));
+            $oc->setAmount($amount);
+            $oc->setPlayer($player);
+            $oc->setAmountInDeck($amountInDeck);
+            if ($oc->getCard()) {
+                $ownedCards[$tuId] = $oc;
+            }
+        }
+        return $ownedCards;
+    }
+
+    /**
+     * Fetches Carddata and filles $this->levels
+     */
+    private function prepare()
     {
 
         $cardRepo = $this->em->getRepository('LokiTuoResultBundle:Card');
@@ -193,32 +228,5 @@ class Service
         }
         $this->levels = $levelsFlat;
         unset($levelsFlat, $levels, $cards);
-    }
-
-    /**
-     * @param integer[] $tuIds
-     * @param Player $player
-     * @return OwnedCard[] array
-     */
-    private function getOwnedCardsByTuoIds(array $tuIds, Player $player)
-    {
-        if (!$this->levels) {
-            $this->prepare();
-        }
-        $ownedCards = [];
-        foreach ($tuIds as $tuId => $amounts) {
-            $amount = $amounts['owned'];
-            $amountInDeck = isset($amounts['used']) ? $amounts['used'] : 0;
-            $oc = new OwnedCard();
-
-            $oc->setCard($this->levels->get($tuId));
-            $oc->setAmount($amount);
-            $oc->setPlayer($player);
-            $oc->setAmountInDeck($amountInDeck);
-            if ($oc->getCard()) {
-                $ownedCards[$tuId] = $oc;
-            }
-        }
-        return $ownedCards;
     }
 }
