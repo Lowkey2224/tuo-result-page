@@ -72,9 +72,19 @@
         </div>
     {% endif %}
     <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-md-4 text-left">
             <a href="{{ path('loki.tuo.player.all.show') }}">
                 <h3>{{ 'player.list'|trans }}</h3>
+            </a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a href="{{ path('loki.tuo.player.edit', {'id': player.id}) }}">
+                <h3>{{ 'player.edit'|trans }}</h3>
+            </a>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="{{ path('loki.tuo.player.results.show', {'id': player.id}) }}">
+                <h3>{{ 'player.results'|trans }}</h3>
             </a>
         </div>
     </div>
