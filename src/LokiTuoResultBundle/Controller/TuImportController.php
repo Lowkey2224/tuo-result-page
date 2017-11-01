@@ -3,7 +3,6 @@
 namespace LokiTuoResultBundle\Controller;
 
 
-use Doctrine\Common\Collections\ArrayCollection;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Entity\QueueItem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -79,13 +78,14 @@ class TuImportController extends Controller
      */
     public function updateAllInventories()
     {
+        $stopwatch = $this->get('debug.stopwatch');
+        $stopwatch->start('fetchAll');
+
         $queue  = $this->getQueueItem();
         $this->setQueueRunning($queue);
         $connector = $this->get('loki_tuo_result.tyrant_connector');
         $ocManager = $this->get('loki_tuo_result.owned_card.manager');
-        $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAll();
-        $players = new ArrayCollection($players);
-        $players = $players->filter(function(Player $p){return $p->hasKongCredentials();});
+        $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAllWithCredentials();
 
         $successPlayers = [];
         /** @var Player $player */
@@ -100,6 +100,10 @@ class TuImportController extends Controller
         }
         $this->addFlash("Success", sprintf("Players: %s were updated", implode(", ", $successPlayers)));
         $this->freeQueue($queue);
+        $e = $stopwatch->stop("fetchAll");
+
+        $this->get('monolog.logger.tu_api')->info(sprintf("Duration %d ms for %d players", $e->getDuration(),
+            count($players)));
         return $this->json(["result" => true]);
     }
 

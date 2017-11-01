@@ -25,4 +25,16 @@ class PlayerRepository extends AbstractBaseRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllWithCredentials()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.kongCredentials', 'kongCredentials')
+            ->addSelect(['kongCredentials'])
+            ->where('p.active = :active')
+            ->setParameter('active', true);
+
+
+        return $qb->getQuery()->getResult();
+    }
 }
