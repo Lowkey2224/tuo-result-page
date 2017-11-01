@@ -15,18 +15,22 @@
     <testsuites>
         <testsuite name="all">
             <directory>tests</directory>
+            <directory>src/*/tests</directory>
         </testsuite>
         <testsuite name="Integration">
             <directory>tests/*/Integration/*</directory>
         </testsuite>
         <testsuite name="Controller">
-            <directory>tests/*/Integration/Controller</directory>
+            <directory>tests/LokiTuoResultBundle/Integration/Controller</directory>
         </testsuite>
         <testsuite name="Command">
             <directory>tests/*/Integration/Command</directory>
         </testsuite>
         <testsuite name="Unit">
             <directory>tests/*/Unit/*</directory>
+        </testsuite>
+        <testsuite name="User">
+            <directory>tests/LokiUserBundle/*</directory>
         </testsuite>
     </testsuites>
 

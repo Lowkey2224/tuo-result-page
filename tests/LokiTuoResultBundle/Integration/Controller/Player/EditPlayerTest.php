@@ -21,7 +21,7 @@ class EditPlayerTest extends AbstractControllerTest
         $client->request('GET', '/player/');
         $crawler = $this->clickLinkName($client, 'Edit');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->filter('button:contains("Delete")')->count());
+        $this->assertEquals(1, $crawler->filter('button:contains("delete")')->count());
         $this->assertEquals(1, $crawler->filterXPath('//button[@name= "player[submit]"]')->count());
     }
 
