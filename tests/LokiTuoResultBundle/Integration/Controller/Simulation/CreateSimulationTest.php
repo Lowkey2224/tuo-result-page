@@ -41,6 +41,8 @@ class CreateSimulationTest extends AbstractControllerTest
         $expectedContent = trim(file_get_contents($this->getFilePath().'mass_sim_v2.sh'));
 
         $this->assertEquals($expectedContent, $content);
+        unset($expectedContent);
+        unset($content);
     }
 
     private function removeTimeStampFromScriptFile($content, $replacement = '%s')
