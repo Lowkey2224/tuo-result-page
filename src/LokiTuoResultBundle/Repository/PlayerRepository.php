@@ -37,4 +37,19 @@ class PlayerRepository extends AbstractBaseRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findWithOwnedCards($id)
+    {
+        $qb = $this->createQueryBuilder('player')
+            ->innerJoin('player.ownedCards', 'ownedCards')
+            ->innerJoin('ownedCards.card', 'cardLevel')
+            ->innerJoin('cardLevel.card', 'card')
+            ->addSelect(['ownedCards'])
+            ->addSelect(['cardLevel'])
+            ->addSelect(['card'])
+            ->where('player.id = :id')
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->getSingleResult();
+    }
 }

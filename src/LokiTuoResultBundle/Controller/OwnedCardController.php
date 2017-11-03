@@ -15,6 +15,7 @@ use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Form\Type\MassOwnedCardType;
 use LokiTuoResultBundle\Form\Type\OwnedCardType;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -253,6 +254,7 @@ class OwnedCardController extends Controller
      * @param Player $player
      * @Route("/{id}/cards", name="loki.tuo.ownedcard.cards.show", requirements={"id":"\d+"})
      *
+     * @ParamConverter("player", class="LokiTuoResultBundle:Player", options={"repository_method" = "findWithOwnedCards"})
      * @return Response
      * @Security("is_granted('view.player', player)")
      */

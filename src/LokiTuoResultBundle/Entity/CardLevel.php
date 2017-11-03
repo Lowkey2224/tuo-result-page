@@ -86,6 +86,11 @@ class CardLevel extends AbstractBaseEntity
         return $str;
     }
 
+    /**
+     * Returns the name of the Card.
+     * Maybe needs to fetch getCard()
+     * @return string
+     */
     public function getName()
     {
         return $this->card->getName();
