@@ -15,6 +15,9 @@ class Service
     /** @var Connector */
     private $connector;
 
+    const STATEGY_MOST_GOLD = 1;
+    const STATEGY_LEAST_ELO = 2;
+
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -88,5 +91,44 @@ class Service
             }
         }
         return $cardIds;
+    }
+
+    public function test(Player $player, string $message, $options = [])
+    {
+        return $this->connector->test($player, $message, $options);
+    }
+
+    public function doSingleBattle(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
+    {
+        $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
+        $enemyId = $this->selectEnemy($result, $enemySelectionStrategy);
+        $result = $this->connector->test($player, Connector::START_BATTLE, ['target_user_id' => $enemyId]);
+        $battleId = $result->battle_data->battle_id;
+        $result = $this->connector->test($player, Connector::PLAY_CARD, [
+            'battle_id' => $battleId,
+            'skip' => 1,
+            'card_uid' => (int)rand(1, 3),
+            'data_usage' => 78,
+        ]);
+        $gold = $result->battle_data->rewards[0]->gold;
+        $rating = $result->battle_data->rewards[0]->rating_change;
+        return ["gold" => $gold, "rating" => $rating, "stamina" => $result->user_data->stamina];
+
+    }
+
+    private function selectEnemy($data, int $strategy)
+    {
+        if (!$strategy) {
+            throw new \Exception();
+        }
+        $maxGold = 0;
+        $targetId = 0;
+        foreach ($data->hunting_targets as $id => $target) {
+            if ($target->gold > $maxGold) {
+                $maxGold = $target->gold;
+                $targetId = $id;
+            }
+        }
+        return $targetId;
     }
 }

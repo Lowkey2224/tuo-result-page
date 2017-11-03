@@ -12,6 +12,9 @@ class Connector
     const GET_INVENTORY = "init";
     const GET_DECKS = "getProfileData";
     const GET_MEMBERS = "updateFaction";
+    const GET_HUNTING_TARGETS = "getHuntingTargets";
+    const START_BATTLE = "startHuntingBattle";
+    const PLAY_CARD = "playCard";
 
     /**
      * @var string
@@ -40,53 +43,39 @@ class Connector
     }
 
     /**
-     * Get Members of the Faction for the given Player
-     * @param int $userId tyrant userId
-     * @param string $userName The shown username
-     * @param string $userPassword hashed Password
-     * @param string $kongId kongregateId
-     * @param string $synCode Syncode to be taken from existing API Requests
-     * @param string $kongToken KongTOken to be taken from existing API Requests
-     * @return null|string Result
-     */
-    public function getMembers($userId, $userName, $userPassword, $kongId, $synCode, $kongToken)
-    {
-        $options = [
-            'password' => $userPassword,
-            'target_user_id' => $userId,
-            'user_id' => $userId,
-            'syncode' => $synCode,
-            'kongId' => $kongId,
-            'user_name' => $userName,
-            'kong_token' => $kongToken,
-        ];
-        $result = $this->apiCall(self::GET_MEMBERS, $options);
-
-        return $result;
-    }
-
-    /**
      * Makes an API Call to the tyrantonline API
      * @param string $method The method you want to call
      * @param string[] $options options TODO need to be validated
      * @return object|null The Resultstring or null
      */
-    private function apiCall($method, array $options)
+    private function apiCall($method, Player $player, array $options = [])
     {
-        $url = sprintf('https://mobile.tyrantonline.com/api.php?message=%s&user_id=%d', $method, $options['user_id']);
-        $this->logger->debug(sprintf("Using URL %s", $url));
-
+        $url = sprintf('https://mobile.tyrantonline.com/api.php?message=%s&user_id=%d', $method,
+            $player->getKongCredentials()->getTuUserId());
+        $this->logger->info(sprintf("Using URL %s", $url));
+        $salt = 'TR&Q$K';
+        $time = time();
         $body = [
-            'password' => $options['password'] . "=Unity4_6_6",
-            'client_version' => 61,
-            'target_user_id' => $options['target_user_id'],
-            'user_id' => $options['user_id'],
-            'timestamp' => time(),
-            'syncode' => $options['syncode'],
-            'kong_id' => $options['kongId'],
-            'kong_token' => $options['kong_token'],
-            'kong_name' => $options['user_name']
+            'password' => $player->getKongCredentials()->getKongPassword(),
+            'client_version' => 77, //TODO make this editable,
+            'user_id' => $player->getKongCredentials()->getTuUserId(),
+            'timestamp' => $time,
+            'client_time' => $time,
+            'syncode' => $player->getKongCredentials()->getSynCode(),
+            'kong_id' => $player->getKongCredentials()->getKongId(),
+            'kong_token' => $player->getKongCredentials()->getKongToken(),
+            'kong_name' => $player->getKongCredentials()->getKongUserName(),
+            'hash' => md5($salt . $player->getKongCredentials()->getTuUserId() . $time),
+            'client_signature' => md5($time . $player->getKongCredentials()->getKongPassword() . 'emJwaVK0HrTxVjIONHYH'),
+            'unity' => "Unity5_4_2",
+            'os_version' => "Mac+OS+X+10.12",
+            'platform' => 'Web',
+            'device_type' => 'Firefox+56.0',
+            'data_usage' => 0, //TODO calc this According to Here'sJohnny! "data_usage" = Kilobytes Downloaded
+            'api_stat_name' => 0, //TODO Last API Call message, this needs to be saved inside the Player
+            'api_stat_time' => 0, //TODO Diff to Last API Call timestamp,  this needs to be saved inside the Player
         ];
+        $body = array_merge($body, $options);
         $bodyStr = [];
         foreach ($body as $key => $value) {
             $bodyStr[] = $key . "=" . $value;
@@ -111,16 +100,8 @@ class Connector
      */
     public function getInventory(Player $player)
     {
-        $options = [
-            'password' => $player->getKongCredentials()->getKongPassword(),
-            'target_user_id' => $player->getKongCredentials()->getTuUserId(),
-            'user_id' => $player->getKongCredentials()->getTuUserId(),
-            'syncode' => $player->getKongCredentials()->getSynCode(),
-            'kongId' => $player->getKongCredentials()->getKongId(),
-            'user_name' => $player->getKongCredentials()->getKongUserName(),
-            'kong_token' => $player->getKongCredentials()->getKongToken(),
-        ];
-        $result = $this->apiCall(self::GET_INVENTORY, $options);
+
+        $result = $this->apiCall(self::GET_INVENTORY, $player);
         if (isset($result_bubyack_data)) {
             $this->logger->info("Buyback exists");
         }
@@ -129,5 +110,17 @@ class Connector
             isset($result->user_cards) ? $result->user_cards : [],
             isset($result->user_decks) ? $result->user_decks : [],
         ];
+    }
+
+    /**
+     * Sends any message
+     * @param Player $player Player
+     * @param string $message the message you send
+     * @param array $options additional body params
+     * @return null|object
+     */
+    public function test(Player $player, string $message, $options = [])
+    {
+        return $this->apiCall($message, $player, $options);
     }
 }
