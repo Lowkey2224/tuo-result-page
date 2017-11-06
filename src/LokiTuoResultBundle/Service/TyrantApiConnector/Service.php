@@ -108,12 +108,14 @@ class Service
 
     public function doSingleBattle(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
     {
+        $this->logger->info("Selecting Target");
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
         $enemyId = $this->selectEnemy($result, $enemySelectionStrategy);
+        $this->logger->info("Starting Battle");
         $result = $this->connector->test($player, Connector::START_BATTLE, ['target_user_id' => $enemyId]);
-        $this->logger->info("Start Battle Result");
-        $this->logger->info(json_encode($result));
+
         $battleId = $result->battle_data->battle_id;
+        $this->logger->info("Finishing Battle on Auto");
         $result = $this->connector->test($player, Connector::PLAY_CARD, [
             'battle_id' => $battleId,
             'skip' => 1,
@@ -129,6 +131,7 @@ class Service
     {
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
         $stamina = $result->user_data->stamina;
+        $this->logger->info(sprintf("Doing %d battles for Player %s", $stamina, $player->getName()));
         $result = [];
         for (; $stamina > 0; $stamina--) {
             $result[] = $this->doSingleBattle($player, $enemySelectionStrategy);
