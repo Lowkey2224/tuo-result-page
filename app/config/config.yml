@@ -112,7 +112,7 @@ old_sound_rabbit_mq:
             connection_timeout: 3
             read_write_timeout: 3
             keepalive: false
-            heartbeat: 0
+            heartbeat: 6
     producers:
         tu_api.battle:
             connection:       default
