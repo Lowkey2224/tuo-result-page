@@ -86,3 +86,19 @@ services:
         tags:
             - { name: security.voter }
         public: false
+    loki_tuo_result.tu_api.battle.producer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuApiProducer
+        arguments: ["@old_sound_rabbit_mq.tu_api.battle_producer", "@doctrine.orm.default_entity_manager"]
+    loki_tuo_result.tu_api.update.producer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuApiProducer
+        arguments: ["@old_sound_rabbit_mq.tu_api.update_producer", "@doctrine.orm.default_entity_manager"]
+    loki_tuo_result.tu_api.battle.consumer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuBattleConsumer
+        arguments: ["@doctrine.orm.default_entity_manager", "@loki_tuo_result.tyrant_connector", "@monolog.logger.tu_api"]
+    loki_tuo_result.tu_api.update.consumer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuUpdateInventoryConsumer
+        arguments:
+          - "@doctrine.orm.default_entity_manager"
+          - "@loki_tuo_result.tyrant_connector"
+          - "@monolog.logger.tu_api"
+          - "@loki_tuo_result.owned_card.manager"

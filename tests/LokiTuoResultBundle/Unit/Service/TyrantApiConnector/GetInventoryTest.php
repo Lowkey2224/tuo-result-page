@@ -21,7 +21,7 @@ class GetInventoryTest extends AbstractServiceTest
      */
     public function testGetInventory($filename, $expectedCards)
     {
-        $service = new Service(new NullLogger());
+        $service = new Service(new NullLogger(), "", "");
 
         $mock = new \HTTP_Request2_Adapter_Mock();
         $response = "HTTP/1.1 200 OK\r\n\r\n";

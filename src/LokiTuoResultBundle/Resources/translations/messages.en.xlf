@@ -210,9 +210,25 @@
                 <source>update.inventory</source>
                 <target>Update Cards</target>
             </trans-unit>
+            <trans-unit id="update.inventory.queue.success">
+                <source>update.inventory.queue.success</source>
+                <target>update cards request queued</target>
+            </trans-unit>
             <trans-unit id="update.inventories">
                 <source>update.inventories</source>
                 <target>Update Cards</target>
+            </trans-unit>
+            <trans-unit id="update.inventories.queue.success">
+                <source>update.inventories.queue.success</source>
+                <target>update inventories request queued</target>
+            </trans-unit>
+            <trans-unit id="do.battle">
+                <source>do.battle</source>
+                <target>Battle all available Battles</target>
+            </trans-unit>
+            <trans-unit id="do.battle.queue.success">
+                <source>do.battle.queue.success</source>
+                <target>Battle request queued</target>
             </trans-unit>
             <trans-unit id="ownedcard.show.title">
                 <source>ownedcard.show.title %name%</source>

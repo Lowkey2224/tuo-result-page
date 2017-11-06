@@ -48,7 +48,8 @@
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "kriswallsmith/assetic": "^1.4",
         "friendsofphp/php-cs-fixer": "^2.1",
-        "pear-pear.php.net/HTTP_Request2": "2.3.0"
+      "pear-pear.php.net/HTTP_Request2": "2.3.0",
+      "php-amqplib/rabbitmq-bundle": "^1.13"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

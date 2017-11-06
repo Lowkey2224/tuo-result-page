@@ -26,3 +26,5 @@ parameters:
     vpc_url: tuo.throwingbones.com
     tu_api_hash_salt: "asdghjhgfds"
     tu_api_signature_salt: "defrdgtfhgjhhfgdfd"
+    rabbitmq_user: guest
+    rabbitmq_password: guest

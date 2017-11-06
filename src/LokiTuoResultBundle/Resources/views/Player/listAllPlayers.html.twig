@@ -42,9 +42,11 @@
         {{ 'player.index.add.player'|trans }}
     </button>
     {% if showUpdateButton %}
-    <button id="update-link" role="button" type="button" class="ladda-button" data-style="contract" data-color="blue" data-size="xs">
-        {{ 'update.inventories'|trans }}
-    </button>
+        <a href="{{ path('loki.tuo.tui.update.all') }}">
+            <button role="button" type="button" id="update-btn" class="btn btn-info">
+                <span class="ladda-label">{{ 'update.inventories'|trans }}<i class=""></i></span>
+            </button>
+        </a>
     {% endif %}
 
     <table class="table table-striped data-table">
@@ -101,36 +103,4 @@
 
         {{ 'footer.text'|trans }}<br/>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-<script>
-    $(function () {
-        $('#update-link').click(function () {
-            var laddaButton = Ladda.create(document.querySelector('#update-link'));
-            laddaButton.start();
-            $.ajax({
-                url: '{{ path("loki.tuo.tui.update.all") }}',
-                error: function (response, textStatus, errorThrown) {
-                    var empty = '<div class="alert alert-dismissible alert-%errorType%" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>%errorMsg%</div>';
-                    var flash;
-                    if (textStatus === "error" && errorThrown === "Gateway Time-out") {
-                        flash = empty.replace('%errorType%', 'warning').replace('%errorMsg%', '{% trans %}ownedcard.player.update.timeout{% endtrans %}');
-                    }else {
-                        flash = empty.replace('%errorType%', 'danger').replace('%errorMsg%', response.responseJSON.error.exception[0].message);
-                    }
-                    $('#updateFlash').append(flash);
-                    laddaButton.stop();
-
-                },
-                success: function () {
-                    laddaButton.stop();
-                    console.log("success");
-                    location.reload();
-                }
-            });
-
-        });
-    });
-</script>
 {% endblock %}
