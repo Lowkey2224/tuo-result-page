@@ -58,7 +58,7 @@ class TuBattleConsumer implements ConsumerInterface
         $body = $msg->getBody();
         $body = unserialize($body);
         $playerId = $body['playerId'];
-        $queueItem = $this->queueItemManager->getItem($msg['queueItemId']);
+        $queueItem = $this->queueItemManager->getItem($body['queueItemId']);
         $this->queueItemManager->setStatusRunning($queueItem);
         $this->player = $this->em->find(Player::class, $playerId);
         if (!$this->player->hasKongCredentials()) {
