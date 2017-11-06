@@ -109,10 +109,10 @@ old_sound_rabbit_mq:
             password: '%rabbitmq_password%'
             vhost:    '/'
             lazy:     false
-            connection_timeout: 3
-            read_write_timeout: 10
+            connection_timeout: 60
+            read_write_timeout: 60
             keepalive: false
-            heartbeat: 5
+            heartbeat: 30
     producers:
         tu_api.battle:
             connection:       default
