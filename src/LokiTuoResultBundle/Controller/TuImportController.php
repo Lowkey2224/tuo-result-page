@@ -78,28 +78,6 @@ class TuImportController extends Controller
     }
 
     /**
-     * @Route("/{id}/test.{_format}",
-     *     name="loki.tuo.tui.test.player",
-     *     defaults={"_format": "json"},
-     *     requirements={"id":"\d+", "_format": "json"}
-     *     )
-     * @Security("is_granted('edit.player', player)")
-     *
-     * @param Player $player
-     *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function testAction(Player $player)
-    {
-        $connector = $this->get('loki_tuo_result.tyrant_connector');
-        $options = [];
-        $this->get('monolog.logger.tu_api')->info(print_r($options, true));
-        $data = $connector->test($player, "useDailyBonus", $options);
-
-        return $this->json($data);
-    }
-
-    /**
      * @Route("/{id}/battle.{_format}",
      *     name="loki.tuo.tui.player.battle",
      *     defaults={"_format": "json"},
@@ -142,9 +120,13 @@ class TuImportController extends Controller
             $diff = $diff->diff($now);
             /** @var \DateInterval $diff */
             $data['daily_time'] = $diff->format("%H:%i");
+            $this->addFlash("info", sprintf("Next Bonus available in %s", $data['daily_time']));
+        } else {
+            $level = $this->getDoctrine()->getRepository('LokiTuoResultBundle:CardLevel')->find($data['tuId']);
+            $this->addFlash("success", sprintf("Got Card %s", $level->getCard()->getName()));
         }
 
-        return $this->json($data);
+        return $this->redirectToRoute("loki.tuo.ownedcard.cards.show", ['id' => $player->getId()]);
     }
 
 

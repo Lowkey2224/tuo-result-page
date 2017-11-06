@@ -354,6 +354,10 @@
                 <source>simulation.upload.description</source>
                 <target>Upload your simulation result here</target>
             </trans-unit>
+            <trans-unit id="claim.card">
+                <source>claim.card</source>
+                <target>Claim Bonus Card</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

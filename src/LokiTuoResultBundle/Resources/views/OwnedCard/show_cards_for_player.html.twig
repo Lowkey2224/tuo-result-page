@@ -90,7 +90,16 @@
     </div>
 
     <div class="row" style="margin-top: 20px;">
-        <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="col-md-3 text-left">
+            {% if player.hasKongCredentials %}
+                <a href="{{ path('loki.tuo.tui.player.claim_card', {'id': player.id}) }}">
+                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                        <span class="ladda-label">{{ 'claim.card'|trans }}<i class=""></i></span>
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+        <div class="col-md-6 text-center">
             <h2 style="margin-top: 0;">{{ 'ownedcard.show.title %name%'|trans({'%name%' : player.name}) }}</h2>
 
         </div>
