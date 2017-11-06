@@ -111,6 +111,8 @@ class Service
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
         $enemyId = $this->selectEnemy($result, $enemySelectionStrategy);
         $result = $this->connector->test($player, Connector::START_BATTLE, ['target_user_id' => $enemyId]);
+        $this->logger->info("Start Battle Result");
+        $this->logger->info(json_encode($result));
         $battleId = $result->battle_data->battle_id;
         $result = $this->connector->test($player, Connector::PLAY_CARD, [
             'battle_id' => $battleId,
@@ -118,8 +120,6 @@ class Service
             'card_uid' => (int)rand(1, 3),
             'data_usage' => 78,
         ]);
-        $this->logger->info("Battle Result");
-        $this->logger->info(json_encode($result));
         $gold = $result->battle_data->rewards[0]->gold;
         $rating = $result->battle_data->rewards[0]->rating_change;
         return ["gold" => $gold, "rating" => $rating, "stamina" => $result->user_data->stamina];
