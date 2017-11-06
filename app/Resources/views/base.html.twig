@@ -44,16 +44,17 @@
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="dropdown{% if currentPath starts with '/simulation/' %} active{% endif %}">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'nav.simulation'|trans }}<span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'nav.simulation'|trans }}<span
+                                    class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li {% if currentPath == '/simulation/' %}class="active"{% endif %}>
                                 <a href="{{ path('tuo.index') }}">{{ 'nav.simulation.index'|trans }}</a>
                             </li>
                             <li {% if currentPath == '/simulation/create' %} class="active" {% endif %}>
                                 <a href="{{ path('loki.tuo.sim.create') }}">{{ 'nav.simulation.create'|trans }}</a>
-                            {#<li {% if currentPath == '/simulation/create/vpc' %} class="active" {% endif %}>#}
+                                {#<li {% if currentPath == '/simulation/create/vpc' %} class="active" {% endif %}>#}
                                 {#<a href="{{ path('loki.tuo.sim.create.vpc') }}">Execute VPC Simulation</a>#}
-                            {#</li>#}
+                                {#</li>#}
                             <li {% if currentPath == '/simulation/upload' %} class="active" {% endif %}>
                                 <a href="{{ path('loki.tuo.result.upload') }}">{{ 'nav.simulation.upload'|trans }}</a>
                             </li>
@@ -72,54 +73,68 @@
                         or  currentPath starts with '/user/'
                         or currentPath starts with '/card/'
                         or currentPath starts with '/guild/' %} active{% endif %}">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'nav.admin'|trans }}<span class="caret"></span></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'nav.admin'|trans }}<span
+                                        class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li {% if currentPath starts with '/import/' %} class="active" {% endif %}><a
-                                            href="{{ path('loki.tuo.import.index') }}">{{ 'nav.admin.import'|trans }}</a></li>
+                                            href="{{ path('loki.tuo.import.index') }}">{{ 'nav.admin.import'|trans }}</a>
+                                </li>
                                 <li {% if currentPath starts with '/user/' %} class="active" {% endif %}><a
-                                            href="{{ path('loki.user.user.index') }}">{{ 'nav.admin.user'|trans }}</a></li>
+                                            href="{{ path('loki.user.user.index') }}">{{ 'nav.admin.user'|trans }}</a>
+                                </li>
                                 <li {% if currentPath starts with '/card/' %} class="active" {% endif %}><a
-                                            href="{{ path('loki.tuo.card.index') }}">{{ 'nav.admin.card'|trans }}</a></li>
+                                            href="{{ path('loki.tuo.card.index') }}">{{ 'nav.admin.card'|trans }}</a>
+                                </li>
                                 <li {% if currentPath starts with '/guild/' %} class="active" {% endif %}><a
-                                            href="{{ path('loki.tuo.guild.index') }}">{{ 'nav.admin.guild'|trans }}</a></li>
+                                            href="{{ path('loki.tuo.guild.index') }}">{{ 'nav.admin.guild'|trans }}</a>
+                                </li>
 
                             </ul>
                         </li>
                     {% endif %}
                     <li class="dropdown{% if currentPath starts with '/help/' %} active{% endif %}">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans %}nav.help{% endtrans %}<span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans %}nav.help{% endtrans %}
+                            <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li {% if currentPath starts with '/help/tuCredentials' %} class="active" {% endif %}><a
-                                        href="{{ path('loki.tuo.help.tucred') }}">{% trans %}nav.help.tuCredentials{% endtrans %}</a></li>
+                                        href="{{ path('loki.tuo.help.tucred') }}">{% trans %}
+                                    nav.help.tuCredentials{% endtrans %}</a></li>
 
                         </ul>
 
                     </li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {{ render(controller('LokiTuoResultBundle:QueueItem:index')) }}
+                    {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
-                               aria-expanded="false">{{ 'nav.welcome %name%'|trans({'%name%' : app.user}) }}<span class="caret"></span></a>
+                               aria-expanded="false">{{ 'nav.welcome %name%'|trans({'%name%' : app.user}) }}<span
+                                        class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                {% if app.user.players is not empty%}
+                                {% if app.user.players is not empty %}
                                     <li role="separator" class="divider"></li>
                                     {% for player in app.user.players %}
-                                        <li><a href="{{ path('loki.tuo.ownedcard.cards.show', {'id': player.id}) }}">{{ player.name }}</a></li>
+                                        <li>
+                                            <a href="{{ path('loki.tuo.ownedcard.cards.show', {'id': player.id}) }}">{{ player.name }}</a>
+                                        </li>
                                     {% endfor %}
                                 {% endif %}
-                                {#<li><a href="#">Another action</a></li>#}
-                                {#<li><a href="#">Something else here</a></li>#}
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ path('fos_user_security_logout') }}">{{ 'nav.logout'|trans }}</a></li>
-                                {#<li><a href="#">Separated link</a></li>#}
                             </ul>
                         </li>
                     {% else %}
-                        <li><a href="{{ path('fos_user_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> {{ 'nav.login'|trans }}<span class="sr-only">(current)</span></a>
+                        <li><a href="{{ path('fos_user_security_login') }}"><span
+                                        class="glyphicon glyphicon-log-in"></span> {{ 'nav.login'|trans }}<span
+                                        class="sr-only">(current)</span></a>
                         </li>
-                        <li><a href="{{ path('fos_user_registration_register') }}"><span class="glyphicon glyphicon-user"></span> {{ 'nav.register'|trans }}<span class="sr-only">(current)</span></a>
+                        <li><a href="{{ path('fos_user_registration_register') }}"><span
+                                        class="glyphicon glyphicon-user"></span> {{ 'nav.register'|trans }}<span
+                                        class="sr-only">(current)</span></a>
                         </li>
                     {% endif %}
                 </ul>
@@ -154,7 +169,8 @@
 <script src="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/spin.min.js') }}"></script>
 <script src="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/ladda.min.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.data-table').DataTable({

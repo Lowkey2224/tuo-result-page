@@ -23,12 +23,6 @@ class QueueItem extends AbstractBaseEntity
     protected $updatedBy;
 
     /**
-     * @var string Name of the Queue Item
-     * @ORM\Column(type="string", nullable=false, unique=true)
-     */
-    protected $name;
-
-    /**
      * @var string status
      * @ORM\Column(type="string", nullable=false)
      */
@@ -68,14 +62,26 @@ class QueueItem extends AbstractBaseEntity
         return $this->status === 'running';
     }
 
+    public function isFinished()
+    {
+        return $this->status === 'finished';
+    }
+
     /**
-     * @param string $message
      * @return $this
      */
-    public function setStatusRunning(string $message)
+    public function setStatusRunning()
     {
         $this->status = "running";
-        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setStatusFinished()
+    {
+        $this->status = "finished";
         return $this;
     }
 
@@ -94,24 +100,6 @@ class QueueItem extends AbstractBaseEntity
     public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return QueueItem
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
         return $this;
     }
 

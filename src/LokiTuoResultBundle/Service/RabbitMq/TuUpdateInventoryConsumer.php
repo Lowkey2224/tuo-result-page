@@ -5,6 +5,7 @@ namespace LokiTuoResultBundle\Service\RabbitMq;
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Service\OwnedCards\Service as OcManager;
+use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
 use LokiTuoResultBundle\Service\TyrantApiConnector\Service as Connector;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -13,32 +14,33 @@ use Psr\Log\LoggerInterface;
 
 class TuUpdateInventoryConsumer implements BatchConsumerInterface, ConsumerInterface
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $em;
-    /**
-     * @var Connector
-     */
+
+    /** @var Connector */
     protected $connector;
-    /**
-     * @var LoggerInterface
-     */
+
+    /** @var LoggerInterface */
     protected $logger;
+
     /** @var OcManager */
     private $ocManager;
-    private $player;
 
+    /** @var QueueItemManager */
+    protected $queueItemManager;
+    
     public function __construct(
         EntityManager $entityManager,
         Connector $connector,
         LoggerInterface $logger,
-        OcManager $ocManager
+        OcManager $ocManager,
+        QueueItemManager $service
     ) {
         $this->ocManager = $ocManager;
         $this->em = $entityManager;
         $this->connector = $connector;
         $this->logger = $logger;
+        $this->queueItemManager = $service;
     }
 
     /**
@@ -63,17 +65,21 @@ class TuUpdateInventoryConsumer implements BatchConsumerInterface, ConsumerInter
         $body = $msg->getBody();
         $body = unserialize($body);
         $playerId = $body['playerId'];
-        $this->player = $this->em->find(Player::class, $playerId);
-        if (!$this->player->hasKongCredentials()) {
-            $this->player = null;
+        $queueItem = $this->queueItemManager->getItem($body['queueItemId']);
+        $this->queueItemManager->setStatusRunning($queueItem);
+        $player = $this->em->find(Player::class, $playerId);
+        if (!$player->hasKongCredentials()) {
+            $player = null;
+            $this->queueItemManager->setStatusFinished($queueItem);
             return true;
         }
-        $idAmountMap = $this->connector->getInventoryAndDeck($this->player);
+        $idAmountMap = $this->connector->getInventoryAndDeck($player);
         if (!empty($idAmountMap)) {
-            $this->ocManager->removeOldOwnedCardsForPlayer($this->player);
-            $ocs = $this->ocManager->persistOwnedCardsByTuoId($idAmountMap, $this->player);
-            $this->logger->info(sprintf("Persisted %d cards for player %s", count($ocs), $this->player->getName()));
+            $this->ocManager->removeOldOwnedCardsForPlayer($player);
+            $ocs = $this->ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
+            $this->logger->info(sprintf("Persisted %d cards for player %s", count($ocs), $player->getName()));
         }
+        $this->queueItemManager->setStatusFinished($queueItem);
         return true;
     }
 }

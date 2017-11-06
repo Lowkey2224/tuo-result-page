@@ -4,6 +4,8 @@ namespace LokiTuoResultBundle\Service\RabbitMq;
 
 use Doctrine\ORM\EntityManager;
 use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
+use LokiUserBundle\Entity\User;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 
 class TuApiProducer
@@ -14,27 +16,39 @@ class TuApiProducer
     /** @var EntityManager */
     private $em;
 
-    public function __construct(ProducerInterface $entityProducer, EntityManager $entityManager)
+    /** @var  QueueItemManager */
+    private $queueItemManager;
+
+    public function __construct(
+        ProducerInterface $entityProducer,
+        EntityManager $entityManager,
+        QueueItemManager $service
+    )
     {
         $this->em = $entityManager;
         $this->entityProducer = $entityProducer;
+        $this->queueItemManager = $service;
     }
 
-    public function updatePlayerInventories(Player $player)
+    public function updatePlayerInventories(Player $player, User $user)
     {
+        $queueItem = $this->queueItemManager->createItem($user, $player, "battle.player.queue.description");
         $arr = [
             'playerId' => $player->getId(),
-            'method' => 'updateInventory'
+            'method' => 'updateInventory',
+            'queueItemId' => $queueItem->getId(),
         ];
         $msg = serialize($arr);
         $this->entityProducer->publish($msg);
     }
 
-    public function battleAllBatles(Player $player)
+    public function battleAllBatles(Player $player, User $user)
     {
+        $queueItem = $this->queueItemManager->createItem($user, $player, "update.player.queue.description");
         $arr = [
             'playerId' => $player->getId(),
-            'method' => 'battleAll'
+            'method' => 'battleAll',
+            'queueItemId' => $queueItem->getId(),
         ];
         $msg = serialize($arr);
         $this->entityProducer->publish($msg);

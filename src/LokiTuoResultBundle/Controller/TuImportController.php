@@ -31,7 +31,7 @@ class TuImportController extends Controller
      */
     public function updateInventoryAction(Player $player)
     {
-        $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player);
+        $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player, $this->getUser());
         $this->addFlash("success", "Update Inventory Request queued");
         return $this->json(true);
     }
@@ -50,7 +50,7 @@ class TuImportController extends Controller
      */
     public function queueAction(Player $player)
     {
-        $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player);
+        $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player, $this->getUser());
         $this->addFlash("success", "Update Inventory Request queued");
         return $this->redirectToRoute("loki.tuo.ownedcard.cards.show", ['id' => $player->getId()]);
     }
@@ -71,7 +71,7 @@ class TuImportController extends Controller
         $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAllWithCredentials();
         /** @var Player $player */
         foreach ($players as $player) {
-            $queueManager->updatePlayerInventories($player);
+            $queueManager->updatePlayerInventories($player, $this->getUser());
         }
         $this->addFlash("success", "Update Inventory Request queued");
         return $this->redirectToRoute("loki.tuo.player.all.show");
@@ -113,7 +113,7 @@ class TuImportController extends Controller
      */
     public function battleAction(Player $player)
     {
-        $this->get('loki_tuo_result.tu_api.battle.producer')->battleAllBatles($player);
+        $this->get('loki_tuo_result.tu_api.battle.producer')->battleAllBatles($player, $this->getUser());
         $this->addFlash("success", "Auto Battle Request queued");
 
         return $this->redirectToRoute("loki.tuo.ownedcard.cards.show", ['id' => $player->getId()]);

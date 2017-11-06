@@ -74,6 +74,10 @@
                 <source>nav.help.tuCredentials</source>
                 <target>Inventory Import</target>
             </trans-unit>
+            <trans-unit id="nav.queue">
+                <source>nav.queue</source>
+                <target>Queue Status</target>
+            </trans-unit>
             <trans-unit id="Back_to_top">
                 <source>Back to top</source>
                 <target>Back to top</target>
@@ -213,6 +217,10 @@
             <trans-unit id="update.inventory.queue.success">
                 <source>update.inventory.queue.success</source>
                 <target>update cards request queued</target>
+            </trans-unit>
+            <trans-unit id="update.player.queue.description">
+                <source>update.player.queue.description %name%</source>
+                <target>Updating inventory for Player %name%</target>
             </trans-unit>
             <trans-unit id="update.inventories">
                 <source>update.inventories</source>
