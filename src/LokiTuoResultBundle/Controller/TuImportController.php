@@ -122,17 +122,17 @@ class TuImportController extends Controller
     public function testAction(Player $player)
     {
         $connector = $this->get('loki_tuo_result.tyrant_connector');
-//        $options = [];
-        $options = ['battle_id' => 1509730796781, 'skip' => 1, 'card_uid' => (int)rand(1, 3)];
+        $options = [];
+//        $options = ['battle_id' => 1509730796781, 'skip' => 1, 'card_uid' => (int)rand(1, 3)];
         $this->get('monolog.logger.tu_api')->info(print_r($options, true));
-        $data = $connector->test($player, "playCard", $options);
+        $data = $connector->test($player, "useDailyBonus", $options);
 
         return $this->json($data);
     }
 
     /**
      * @Route("/{id}/battle.{_format}",
-     *     name="loki.tuo.tui.battle.player",
+     *     name="loki.tuo.tui.player.battle",
      *     defaults={"_format": "json"},
      *     requirements={"id":"\d+", "_format": "json"}
      *     )
@@ -145,7 +145,35 @@ class TuImportController extends Controller
     public function battleAction(Player $player)
     {
         $connector = $this->get('loki_tuo_result.tyrant_connector');
-        $data = $connector->doSingleBattle($player);
+        $data = $connector->battleAllBattles($player);
+
+        return $this->json($data);
+    }
+
+    /**
+     * @Route("/{id}/claim-bonus.{_format}",
+     *     name="loki.tuo.tui.player.claim_card",
+     *     defaults={"_format": "json"},
+     *     requirements={"id":"\d+", "_format": "json"}
+     *     )
+     * @Security("is_granted('edit.player', player)")
+     *
+     * @param Player $player
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function claimBonusAction(Player $player)
+    {
+        $connector = $this->get('loki_tuo_result.tyrant_connector');
+        $data = $connector->claimBonus($player);
+        if (!$data['result']) {
+            $diff = \DateTime::createFromFormat("U", $data['daily_time']);
+            $now = new \DateTime();
+
+            $diff = $diff->diff($now);
+            /** @var \DateInterval $diff */
+            $data['daily_time'] = $diff->format("%H:%i");
+        }
 
         return $this->json($data);
     }

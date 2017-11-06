@@ -18,11 +18,11 @@ class Service
     const STATEGY_MOST_GOLD = 1;
     const STATEGY_LEAST_ELO = 2;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, string $hashSalt, string $signatureSalt)
     {
         $this->logger = $logger;
 
-        $this->connector = new Connector($logger);
+        $this->connector = new Connector($logger, $hashSalt, $signatureSalt);
     }
 
     /**
@@ -98,6 +98,19 @@ class Service
         return $this->connector->test($player, $message, $options);
     }
 
+    public function claimBonus(Player $player)
+    {
+        $result = $this->connector->test($player, Connector::CLAIM_BONUS, []);
+        if (!$result->result) {
+            return [
+                'result' => $result->result,
+                'message' => $result->result_message[0],
+                'daily_time' => $result->daily_bonus_time,
+            ];
+        }
+        return ['result' => $result->result, 'tuId' => $result->bonus_result->bonus->card];
+    }
+
     public function doSingleBattle(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
     {
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
@@ -110,10 +123,23 @@ class Service
             'card_uid' => (int)rand(1, 3),
             'data_usage' => 78,
         ]);
+        $this->logger->info("Battle Result");
+        $this->logger->info(json_encode($result));
         $gold = $result->battle_data->rewards[0]->gold;
         $rating = $result->battle_data->rewards[0]->rating_change;
         return ["gold" => $gold, "rating" => $rating, "stamina" => $result->user_data->stamina];
+    }
 
+    public function battleAllBattles(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
+    {
+        $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
+        $stamina = $result->user_data->stamina;
+        $result = [];
+        for (; $stamina > 0; $stamina--) {
+            $result[] = $this->doSingleBattle($player, $enemySelectionStrategy);
+            sleep(1);
+        }
+        return $result;
     }
 
     private function selectEnemy($data, int $strategy)

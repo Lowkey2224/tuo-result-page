@@ -24,3 +24,5 @@ parameters:
     guilds: ['CTP', 'CNS', 'CTN']
     registration_codes: []
     vpc_url: tuo.throwingbones.com
+    tu_api_hash_salt: "asdghjhgfds"
+    tu_api_signature_salt: "defrdgtfhgjhhfgdfd"

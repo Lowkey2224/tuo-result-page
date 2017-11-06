@@ -15,6 +15,7 @@ class Connector
     const GET_HUNTING_TARGETS = "getHuntingTargets";
     const START_BATTLE = "startHuntingBattle";
     const PLAY_CARD = "playCard";
+    const CLAIM_BONUS = "useDailyBonus";
 
     /**
      * @var string
@@ -26,10 +27,22 @@ class Connector
      */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /**
+     * @var string
+     */
+    private $hashSalt;
+
+    /**
+     * @var string
+     */
+    private $signatureSalt;
+
+    public function __construct(LoggerInterface $logger, string $hashSalt, string $signatureSalt)
     {
         $this->logger = $logger;
         $this->adapter = "HTTP_Request2_Adapter_Curl";
+        $this->hashSalt = $hashSalt;
+        $this->signatureSalt = $signatureSalt;
     }
 
     /**
@@ -53,11 +66,14 @@ class Connector
         $url = sprintf('https://mobile.tyrantonline.com/api.php?message=%s&user_id=%d', $method,
             $player->getKongCredentials()->getTuUserId());
         $this->logger->info(sprintf("Using URL %s", $url));
-        $salt = 'TR&Q$K';
+
         $time = time();
+        //TODO make this editable,
+        $version = "77.02";
         $body = [
             'password' => $player->getKongCredentials()->getKongPassword(),
-            'client_version' => 77, //TODO make this editable,
+            'client_version' => $version,
+
             'user_id' => $player->getKongCredentials()->getTuUserId(),
             'timestamp' => $time,
             'client_time' => $time,
@@ -65,16 +81,18 @@ class Connector
             'kong_id' => $player->getKongCredentials()->getKongId(),
             'kong_token' => $player->getKongCredentials()->getKongToken(),
             'kong_name' => $player->getKongCredentials()->getKongUserName(),
-            'hash' => md5($salt . $player->getKongCredentials()->getTuUserId() . $time),
-            'client_signature' => md5($time . $player->getKongCredentials()->getKongPassword() . 'emJwaVK0HrTxVjIONHYH'),
+            'hash' => md5($this->hashSalt . $player->getKongCredentials()->getTuUserId() . $time),
+            'client_signature' => md5($time . $player->getKongCredentials()->getKongPassword() . $this->signatureSalt),
             'unity' => "Unity5_4_2",
             'os_version' => "Mac+OS+X+10.12",
             'platform' => 'Web',
             'device_type' => 'Firefox+56.0',
             'data_usage' => 0, //TODO calc this According to Here'sJohnny! "data_usage" = Kilobytes Downloaded
-            'api_stat_name' => 0, //TODO Last API Call message, this needs to be saved inside the Player
-            'api_stat_time' => 0, //TODO Diff to Last API Call timestamp,  this needs to be saved inside the Player
+            'api_stat_name' => $player->getLastApiMessage(),
+            'api_stat_time' => $time - $player->getLastApiTime(),
         ];
+        $player->setLastApiMessage($method);
+        $player->setLastApiTime($time);
         $body = array_merge($body, $options);
         $bodyStr = [];
         foreach ($body as $key => $value) {
@@ -85,6 +103,7 @@ class Connector
         $req->setBody($bodyStr);
         $req->setAdapter($this->adapter);
         $response = $req->send();
+        //TODO dispatch Event, if $result->version != $this->version
         if ($response->getStatus() == 200) {
             return json_decode($response->getBody());
         } else {

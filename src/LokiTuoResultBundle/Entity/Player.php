@@ -66,6 +66,18 @@ class Player extends AbstractBaseEntity
      */
     private $ownershipConfirmed;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $lastApiMessage;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $lastApiTime;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
@@ -251,4 +263,42 @@ class Player extends AbstractBaseEntity
         $this->kongCredentials = $kongCredentials;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getLastApiMessage()
+    {
+        return $this->lastApiMessage;
+    }
+
+    /**
+     * @param string $lastApiMessage
+     * @return Player
+     */
+    public function setLastApiMessage(string $lastApiMessage)
+    {
+        $this->lastApiMessage = $lastApiMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastApiTime()
+    {
+        return $this->lastApiTime;
+    }
+
+    /**
+     * @param int $lastApiTime
+     * @return Player
+     */
+    public function setLastApiTime(int $lastApiTime)
+    {
+        $this->lastApiTime = $lastApiTime;
+        return $this;
+    }
+
+
 }
