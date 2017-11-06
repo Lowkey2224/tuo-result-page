@@ -47,11 +47,11 @@ class TuImportController extends Controller
         }
         $idAmountMap = $connector->getInventoryAndDeck($player);
         if(empty($idAmountMap)) {
-            $this->get("logger")->debug("No Cards will be changed via import");
+            $this->get("monolog.logger.tu_api")->debug("No Cards will be changed via import");
             $ocs = [];
             $this->addFlash('error', sprintf("Whoops looks like something went wrong. No Cards could be fetched for you", count($ocs)));
         } else {
-            $this->get("logger")->debug("Cards fetched. Import Begins now.");
+            $this->get("monolog.logger.tu_api")->debug("Cards fetched. Import Begins now.");
             $ocManager->removeOldOwnedCardsForPlayer($player);
             $ocs = $ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);
             $this->addFlash('success', sprintf("Added %d Cards", count($ocs)));

@@ -56,17 +56,12 @@ class Service
         foreach ($cards as $id => $value) {
             $countKnown++;
             if ($value->num_owned > 0) {
-                $this->logger->info(sprintf("My Deck has the Following Card"));
                 $countOwned++;
                 $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_owned : (int)$value->num_owned;
             }
             if ($value->num_used > 0) {
-                $this->logger->info(sprintf("My Deck has the Following Card"));
                 $countDeck++;
                 $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_used : (int)$value->num_used;
-            }
-            if ($value->num_owned == 0) {
-                $this->logger->info(sprintf("Previosly Owned"));
             }
         }
 
