@@ -132,7 +132,7 @@ class Service
         $result = [];
         for (; $stamina > 0; $stamina--) {
             $result[] = $this->doSingleBattle($player, $enemySelectionStrategy);
-            sleep(1);
+            sleep(3);
         }
         return $result;
     }
