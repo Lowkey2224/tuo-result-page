@@ -3,6 +3,7 @@
 namespace LokiTuoResultBundle\Controller;
 
 
+use LokiTuoResultBundle\Entity\CardLevel;
 use LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -122,7 +123,8 @@ class TuImportController extends Controller
             $data['daily_time'] = $diff->format("%H:%i");
             $this->addFlash("info", sprintf("Next Bonus available in %s", $data['daily_time']));
         } else {
-            $level = $this->getDoctrine()->getRepository('LokiTuoResultBundle:CardLevel')->find($data['tuId']);
+            /** @var CardLevel $level */
+            $level = $this->getDoctrine()->getRepository('LokiTuoResultBundle:CardLevel')->findOneBy(['tuoId' => $data['tuId']]);
             $this->addFlash("success", sprintf("Got Card %s", $level->getCard()->getName()));
         }
 
