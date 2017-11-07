@@ -4,6 +4,11 @@ namespace LokiTuoResultBundle\Integration\Controller\Guild;
 
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class IndexTest
+ * @package LokiTuoResultBundle\Integration\Controller\Guild
+ * @runTestsInSeparateProcesses
+ */
 class IndexTest extends AbstractControllerTest
 {
     /**

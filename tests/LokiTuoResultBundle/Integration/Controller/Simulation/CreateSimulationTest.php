@@ -5,6 +5,11 @@ namespace LokiTuoResultBundle\Integration\Controller\Simulation;
 use LokiTuoResultBundle\Entity\Player;
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class CreateSimulationTest
+ * @package LokiTuoResultBundle\Integration\Controller\Simulation
+ * @runTestsInSeparateProcesses
+ */
 class CreateSimulationTest extends AbstractControllerTest
 {
     private $mission1 = 'Supremacy Mutant-10';

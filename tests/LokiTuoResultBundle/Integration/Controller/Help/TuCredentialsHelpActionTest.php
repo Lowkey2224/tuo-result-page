@@ -4,6 +4,11 @@ namespace LokiTuoResultBundle\Integration\Controller\Help;
 
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class TuCredentialsHelpActionTest
+ * @package LokiTuoResultBundle\Integration\Controller\Help
+ * @runTestsInSeparateProcesses
+ */
 class TuCredentialsHelpActionTest extends AbstractControllerTest
 {
     public function testLoggedIn()

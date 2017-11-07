@@ -7,6 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class EditPlayerTest
+ * @package LokiTuoResultBundle\Integration\Controller\Player
+ * @runTestsInSeparateProcesses
+ */
 class EditPlayerTest extends AbstractControllerTest
 {
     /**

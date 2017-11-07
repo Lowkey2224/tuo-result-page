@@ -5,6 +5,11 @@ namespace LokiTuoResultBundle\Integration\Controller\Simulation;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class UploadSimulationResultTest
+ * @package LokiTuoResultBundle\Integration\Controller\Simulation
+ * @runTestsInSeparateProcesses
+ */
 class UploadSimulationResultTest extends AbstractControllerTest
 {
     private $missionName = 'TestMission-81';

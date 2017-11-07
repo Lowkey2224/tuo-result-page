@@ -5,6 +5,11 @@ namespace LokiTuoResultBundle\Integration\Controller\Guild;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class EditGuildTest
+ * @package LokiTuoResultBundle\Integration\Controller\Guild
+ * @runTestsInSeparateProcesses
+ */
 class EditGuildTest extends AbstractControllerTest
 {
     /**

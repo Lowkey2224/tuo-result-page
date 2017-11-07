@@ -2,6 +2,11 @@
 
 namespace Tests\LokiTuoResultBundle\Integration\Controller;
 
+/**
+ * Class DefaultControllerTest
+ * @package Tests\LokiTuoResultBundle\Integration\Controller
+ * @runTestsInSeparateProcesses
+ */
 class DefaultControllerTest extends AbstractControllerTest
 {
     public function testIndex()

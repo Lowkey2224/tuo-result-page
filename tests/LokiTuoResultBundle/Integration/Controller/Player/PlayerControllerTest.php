@@ -6,6 +6,11 @@ use LokiTuoResultBundle\Entity\OwnedCard;
 use LokiTuoResultBundle\Entity\Player;
 use Tests\LokiTuoResultBundle\Integration\Controller\AbstractControllerTest;
 
+/**
+ * Class PlayerControllerTest
+ * @package Tests\LokiTuoResultBundle\Integration\Controller\Player
+ * @runTestsInSeparateProcesses
+ */
 class PlayerControllerTest extends AbstractControllerTest
 {
     /**

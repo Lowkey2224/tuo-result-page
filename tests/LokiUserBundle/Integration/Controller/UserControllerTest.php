@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ * Class UserControllerTest
+ * @package LokiUserBundle\Tests\Integration\Controller
+ * @runTestsInSeparateProcesses
+ */
 class UserControllerTest extends WebTestCase
 {
     const USER             = 'foo';
