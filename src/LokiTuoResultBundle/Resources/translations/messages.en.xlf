@@ -222,6 +222,10 @@
                 <source>update.player.queue.description %name%</source>
                 <target>Updating inventory for Player %name%</target>
             </trans-unit>
+            <trans-unit id="battle.player.queue.description">
+                <source>battle.player.queue.description %name%</source>
+                <target>Doing Battles for Player %name%</target>
+            </trans-unit>
             <trans-unit id="update.inventories">
                 <source>update.inventories</source>
                 <target>Update Cards</target>

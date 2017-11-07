@@ -28,28 +28,9 @@ class TuImportController extends Controller
      *
      * @param Player $player
      *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function updateInventoryAction(Player $player)
-    {
-        $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player, $this->getUser());
-        $this->addFlash("success", "Update Inventory Request queued");
-        return $this->json(true);
-    }
-
-    /**
-     * @Route("/{id}/queue.{_format}",
-     *     name="loki.tuo.tui.update.player",
-     *     defaults={"_format": "json"},
-     *     requirements={"id":"\d+", "_format": "json"}
-     *     )
-     * @Security("is_granted('edit.player', player)")
-     *
-     * @param Player $player
-     *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function queueAction(Player $player)
     {
         $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player, $this->getUser());
         $this->addFlash("success", "Update Inventory Request queued");

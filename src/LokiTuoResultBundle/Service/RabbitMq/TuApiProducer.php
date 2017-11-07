@@ -32,7 +32,7 @@ class TuApiProducer
 
     public function updatePlayerInventories(Player $player, User $user)
     {
-        $queueItem = $this->queueItemManager->createItem($user, $player, "battle.player.queue.description");
+        $queueItem = $this->queueItemManager->createItem($user, $player, "update.player.queue.description");
         $arr = [
             'playerId' => $player->getId(),
             'method' => 'updateInventory',
@@ -44,7 +44,7 @@ class TuApiProducer
 
     public function battleAllBatles(Player $player, User $user)
     {
-        $queueItem = $this->queueItemManager->createItem($user, $player, "update.player.queue.description");
+        $queueItem = $this->queueItemManager->createItem($user, $player, "battle.player.queue.description");
         $arr = [
             'playerId' => $player->getId(),
             'method' => 'battleAll',
