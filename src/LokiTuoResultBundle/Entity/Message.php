@@ -3,6 +3,8 @@
 namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Message.
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\MessageRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Message extends AbstractBaseEntity
+class Message extends AbstractBaseEntity implements Translatable
 {
     /**
      * @var Player
@@ -30,8 +32,23 @@ class Message extends AbstractBaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Gedmo\Translatable
      */
     private $message;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     * and it is not necessary because globally locale can be set in listener
+     */
+    private $locale;
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+        return $this;
+    }
 
     /**
      * @return Player
