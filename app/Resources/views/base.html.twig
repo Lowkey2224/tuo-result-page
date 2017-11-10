@@ -112,14 +112,20 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
-                               aria-expanded="false">{{ 'nav.welcome %name%'|trans({'%name%' : app.user}) }}<span
+                               aria-expanded="false">{{ 'nav.welcome %name%'|trans({'%name%' : app.user}) }}
+                                <div class="badge" style="display: none" id="total-messages">0</div>
+                                <span
                                         class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 {% if app.user.players is not empty %}
                                     <li role="separator" class="divider"></li>
                                     {% for player in app.user.players %}
                                         <li>
-                                            <a href="{{ path('loki.tuo.ownedcard.cards.show', {'id': player.id}) }}">{{ player.name }}</a>
+                                            <a href="{{ path('loki.tuo.ownedcard.cards.show', {'id': player.id}) }}">{{ player.name }}
+                                                <div style="display: none" class="badge"
+                                                     id="message-player-{{ player.id }}">0
+                                                </div>
+                                            </a>
                                         </li>
                                     {% endfor %}
                                 {% endif %}
@@ -186,6 +192,7 @@
             searching: true,
             ordering: true
         });
+
     });
 </script>
 {% block javascripts %}{% endblock %}

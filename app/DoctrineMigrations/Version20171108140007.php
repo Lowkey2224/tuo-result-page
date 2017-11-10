@@ -37,7 +37,7 @@ class Version20171108140007 extends AbstractMigration
         $this->addSql('CREATE TABLE message (
           id INT AUTO_INCREMENT NOT NULL, 
           player_id INT DEFAULT NULL, 
-          status INT NOT NULL, 
+          status INT NOT NULL COMMENT \'1 => Ungelesen, 2 => Gelesen\', 
           message VARCHAR(255) NOT NULL, 
           created_at DATETIME DEFAULT NULL, 
           updated_at DATETIME DEFAULT NULL, 

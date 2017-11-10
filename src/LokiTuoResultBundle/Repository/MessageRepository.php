@@ -2,6 +2,8 @@
 
 namespace LokiTuoResultBundle\Repository;
 
+use LokiUserBundle\Entity\User;
+
 /**
  * MessageRepository
  *
@@ -10,4 +12,20 @@ namespace LokiTuoResultBundle\Repository;
  */
 class MessageRepository extends AbstractBaseRepository
 {
+
+    /**
+     * Returns the total number of Messages for all Players a User Owns
+     * @param User $user
+     * @return int
+     */
+    public function countForUser(User $user)
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->join('m.player', 'p')
+            ->select("COUNT(m.id)")
+            ->where("p.owner = :id")
+            ->setParameter("id", $user->getId());
+        $res = $qb->getQuery()->getSingleResult();
+        return $res[1];
+    }
 }

@@ -57,7 +57,8 @@
         "symfony/phpunit-bridge": "3.*",
         "phpunit/phpunit": "5.*",
         "fzaninotto/faker": "^1.6",
-        "nelmio/alice": "^2.1"
+        "nelmio/alice": "^2.1",
+        "phploc/phploc": "^4.0"
     },
     "scripts": {
         "post-install-cmd": [

@@ -15,6 +15,8 @@ use Gedmo\Translatable\Translatable;
  */
 class Message extends AbstractBaseEntity implements Translatable
 {
+    const STATUS_UNREAD = 1;
+    const STATUS_READ = 2;
     /**
      * @var Player
      * @ORM\ManyToOne(targetEntity="Player", inversedBy="ownedCards")
@@ -27,7 +29,7 @@ class Message extends AbstractBaseEntity implements Translatable
      * @var integer
      * @ORM\Column(type="integer")
      */
-    private $status;
+    private $status = self::STATUS_UNREAD;
 
     /**
      * @var string
@@ -50,6 +52,26 @@ class Message extends AbstractBaseEntity implements Translatable
         return $this;
     }
 
+    public function setStatusUnread()
+    {
+        $this->status = 1;
+    }
+
+    public function setStatusRead()
+    {
+        $this->status = 2;
+    }
+
+    public function isUnread()
+    {
+        return $this->status == self::STATUS_UNREAD;
+    }
+
+    public function isRead()
+    {
+        return $this->status == self::STATUS_READ;
+    }
+
     /**
      * @return Player
      */
@@ -68,13 +90,6 @@ class Message extends AbstractBaseEntity implements Translatable
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatus(): int
-    {
-        return $this->status;
-    }
 
     /**
      * @param int $status
@@ -104,4 +119,13 @@ class Message extends AbstractBaseEntity implements Translatable
         return $this;
     }
 
+    public function serialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'message' => $this->getMessage(),
+            'read' => $this->isRead(),
+            'playerId' => $this->getPlayer()->getId(),
+        ];
+    }
 }

@@ -5,10 +5,12 @@ namespace LokiTuoResultBundle\Controller;
 
 use LokiTuoResultBundle\Entity\CardLevel;
 use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Service\TyrantApiConnector\Connector;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 /**
  * Class PlayerController.
@@ -60,6 +62,28 @@ class TuImportController extends Controller
     }
 
     /**
+     * @Route("/{id}/test.{_format}",
+     *     name="loki.tuo.tui.test.player",
+     *     defaults={"_format": "json"},
+     *     requirements={"id":"\d+", "_format": "json"}
+     *     )
+     * @Security("is_granted('edit.player', player)")
+     *
+     * @param Player $player
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function testAction(Player $player)
+    {
+        $connector = $this->get('loki_tuo_result.tyrant_connector');
+        $options = [];
+        $this->get('monolog.logger.tu_api')->info(print_r($options, true));
+        $data = $connector->test($player, Connector::GET_INVENTORY, $options);
+
+        return $this->json($data);
+    }
+
+    /**
      * @Route("/{id}/battle.{_format}",
      *     name="loki.tuo.tui.player.battle",
      *     defaults={"_format": "json"},
@@ -77,6 +101,28 @@ class TuImportController extends Controller
         $this->addFlash("success", "Auto Battle Request queued");
 
         return $this->redirectToRoute("loki.tuo.ownedcard.cards.show", ['id' => $player->getId()]);
+    }
+
+
+    /**
+     * @Route("/{id}/stamina.{_format}",
+     *     name="loki.tuo.tui.player.stamina",
+     *     defaults={"_format": "json"},
+     *     requirements={"id":"\d+", "_format": "json"}
+     *     )
+     * @Security("is_granted('edit.player', player)")
+     *
+     * @param Player $player
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function staminaAction(Player $player)
+    {
+
+        if (!$player->hasKongCredentials()) {
+            throw new ConflictHttpException("Has no Credentials");
+        }
+        return $this->get('loki_tuo_result.tyrant_connector')->getStaminaInfo($player);
     }
 
     /**

@@ -239,7 +239,7 @@ class OwnedCardController extends Controller
         $level = (is_null($level) || $level == 'null' || trim($level) == '' || 0) ? null : $level;
         $amount = $request->get('owned_card_amount');
         $card = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Card')->findOneBy(['name' => $name]);
-        if (!$card) {
+        if (!$card && $card->getLevel($level)) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
         $manager = $this->get('loki_tuo_result.player.manager');

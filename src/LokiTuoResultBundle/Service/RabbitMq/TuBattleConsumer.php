@@ -4,6 +4,7 @@ namespace LokiTuoResultBundle\Service\RabbitMq;
 
 
 use Doctrine\ORM\EntityManager;
+use LokiTuoResultBundle\Entity\Message;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
 use LokiTuoResultBundle\Service\TyrantApiConnector\Service;
@@ -68,7 +69,26 @@ class TuBattleConsumer implements ConsumerInterface
         }
 
 
-        $this->connector->battleAllBattles($this->player);
+        $result = $this->connector->battleAllBattles($this->player);
+        $won = 0;
+        $gold = 0;
+        $rating = 0;
+        foreach ($result as $resultArray) {
+            $gold += $resultArray['gold'];
+            $rating += $resultArray['rating'];
+            if ($resultArray['rating'] > 0) {
+                ++$won;
+            }
+        }
+        $messageText = sprintf("Fought %d battles, won %d, Won %d gold and %d rating", count($result), $won, $gold,
+            $rating);
+        $msg = new Message();
+        $msg->setPlayer($this->player)
+            ->setMessage($messageText)
+            ->setStatusUnread();
+        $this->em->persist($msg);
+        $this->em->flush();
+
 
         $this->queueItemManager->setStatusFinished($queueItem);
         return true;
