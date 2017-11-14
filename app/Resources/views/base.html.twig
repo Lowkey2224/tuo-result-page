@@ -13,7 +13,6 @@
           href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/ladda.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
@@ -113,7 +112,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
                                aria-expanded="false">{{ 'nav.welcome %name%'|trans({'%name%' : app.user}) }}
-                                <div class="badge" style="display: none" id="total-messages">0</div>
+                                <div class="badge" style="display: none" id="message-user">0</div>
                                 <span
                                         class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -122,7 +121,7 @@
                                     {% for player in app.user.players %}
                                         <li>
                                             <a href="{{ path('loki.tuo.ownedcard.cards.show', {'id': player.id}) }}">{{ player.name }}
-                                                <div style="display: none" class="badge"
+                                                <div class="badge" style="display: none"
                                                      id="message-player-{{ player.id }}">0
                                                 </div>
                                             </a>
@@ -172,6 +171,15 @@
             {{ flashMessage }}
         </div>
     {% endfor %}
+    <div id="messages">
+        <div class="alert alert-info messagealert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">Mark as read</span></button>
+            <small>lokimcfly:</small>
+            Fought 2 battles, won 1, Won 104 gold and 82 rating
+        </div>
+    </div>
+
 
     {% block body %}{% endblock %}
 
@@ -179,19 +187,27 @@
 <script src="{{ asset('bundles/lokituoresult/vendor/jquery-3.1.0.min.js') }}"></script>
 <script src="{{ asset('bundles/lokituoresult/vendor/jquery-ui-1.12.0.custom/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/lokituoresult/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/spin.min.js') }}"></script>
-<script src="{{ asset('bundles/lokituoresult/vendor/Ladda-1.0.5/ladda.min.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
         src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ asset('js/fos_js_routes.js') }}"></script>
+<script src="{{ asset('bundles/lokituoresult/js/app.js') }}"></script>
 <script>
     $(document).ready(function () {
+        var debug = {{ app.environment=="dev"?"true":"false" }};
         $('.data-table').DataTable({
             responsive: true,
             paging: false,
             searching: true,
             ordering: true
         });
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% for player in app.user.players %}
+        getPlayerBadge({{ player.id }});
+        {% endfor %}
+        getUserBadge();
+        {% endif %}
 
     });
 </script>

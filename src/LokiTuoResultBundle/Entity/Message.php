@@ -19,7 +19,7 @@ class Message extends AbstractBaseEntity implements Translatable
     const STATUS_READ = 2;
     /**
      * @var Player
-     * @ORM\ManyToOne(targetEntity="Player", inversedBy="ownedCards")
+     * @ORM\ManyToOne(targetEntity="Player", inversedBy="messages")
      * @ORM\JoinColumn(referencedColumnName="id", name="player_id")
      */
     private $player;
@@ -125,7 +125,10 @@ class Message extends AbstractBaseEntity implements Translatable
             'id' => $this->getId(),
             'message' => $this->getMessage(),
             'read' => $this->isRead(),
-            'playerId' => $this->getPlayer()->getId(),
+            'player' => [
+                'id' => $this->getPlayer()->getId(),
+                'name' => $this->getPlayer()->getName(),
+            ],
         ];
     }
 }

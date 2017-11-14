@@ -29,7 +29,7 @@ class MessageController extends Controller
      */
     public function countMessageAction(Player $player)
     {
-        return $this->json($player->getMessages()->count());
+        return $this->json(["count" => $player->getMessages()->count() . ""]);
     }
 
     /**
@@ -45,21 +45,26 @@ class MessageController extends Controller
         $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
         $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
         $totalCount = $repo->countForUser($this->getUser());
-        return $this->json($totalCount);
+        return $this->json(["count" => $totalCount]);
     }
 
     /**
-     * @param Message $message
+     * @param Player $player
      * @return JsonResponse
      * @Route("/{id}.{_format}",
      *     name="loki.tuo.message.show",
      *     defaults={"_format": "json"},
      *     requirements={"id":"\d+", "_format":"json"}
      *     )
+     * @Security("is_granted('delete.player', player)")
      */
-    public function showAction(Message $message)
+    public function showAction(Player $player)
     {
-        return $this->json($message->serialize());
+        $body = [];
+        foreach ($player->getMessages() as $message) {
+            $body[] = $message->serialize();
+        }
+        return $this->json($body);
     }
 
     /**
@@ -70,6 +75,7 @@ class MessageController extends Controller
      *     defaults={"_format": "json"},
      *     requirements={"id":"\d+", "_format":"json"}
      *     )
+     * @Security("is_granted('view.message', message)")
      */
     public function markReadAction(Message $message)
     {

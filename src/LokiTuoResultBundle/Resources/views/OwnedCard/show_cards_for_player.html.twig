@@ -230,6 +230,7 @@
                     minLength: 3
                 });
             });
+            {#getMessagesForPlayer({{ player.id }});#}
 
             $('.submit-button').click(function () {
                 var buttonPressed = $(this).attr('name');
@@ -264,10 +265,6 @@
                         console.log("Button Pressed", buttonPressed);
                 }
                 url = url.replace(replaceValue, cardId);
-                var debug = {{ app.environment=="dev"?"true":"false" }};
-                if (debug) {
-                    url = url + "?XDEBUG_SESSION_START=PHPSTORM";
-                }
 
                 sendAjaxRequest([], succCb, "GET", url);
             });

@@ -79,7 +79,7 @@ class Player extends AbstractBaseEntity
     private $lastApiTime;
 
     /**
-     * @var Message|ArrayCollection
+     * @var Message[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Message", mappedBy="player")
      */
     private $messages;
@@ -308,7 +308,7 @@ class Player extends AbstractBaseEntity
     }
 
     /**
-     * @return ArrayCollection|Message
+     * @return ArrayCollection|Message[]
      */
     public function getMessages()
     {
@@ -316,7 +316,7 @@ class Player extends AbstractBaseEntity
     }
 
     /**
-     * @param ArrayCollection|Message $messages
+     * @param ArrayCollection|Message[] $messages
      * @return Player
      */
     public function setMessages($messages)

@@ -142,3 +142,16 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'tu_api.update', type: direct}
             queue_options:    {name: 'tu_api.update'}
             callback:         loki_tuo_result.tu_api.update.consumer
+
+fos_js_routing:
+    routes_to_expose:
+      - 'loki.tuo.message.count.user'
+      - 'loki.tuo.message.count.player'
+      - 'loki.tuo.message.show'
+      - 'loki.tuo.message.read'
+      - 'loki.tuo.ownedcard.create'
+      - 'loki.tuo.cards.all'
+      - 'loki.tuo.ownedcard.deck.add'
+      - 'loki.tuo.ownedcard.card.remove'
+      - 'loki.tuo.ownedcard.card.add'
+      - 'loki.tuo.ownedcard.deck.remove'
