@@ -69,7 +69,6 @@ var markMessageRead = function (msgId) {
 };
 
 $('.message-alert').click(function () {
-    //TODO Why is this not called on a newly added Item.
     console.log($(this));
     var msgId = $(this).data("msg-id");
     console.log(msgId);
