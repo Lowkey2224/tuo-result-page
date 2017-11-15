@@ -7,6 +7,7 @@ use LokiTuoResultBundle\Entity\Message;
 use LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -29,7 +30,9 @@ class MessageController extends Controller
      */
     public function countMessageAction(Player $player)
     {
-        return $this->json(["count" => $player->getMessages()->count() . ""]);
+        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
+        $msg = $repo->findUnreadByPlayer($player);
+        return $this->json(["count" => count($msg) . ""]);
     }
 
     /**
@@ -50,21 +53,20 @@ class MessageController extends Controller
 
     /**
      * @param Player $player
-     * @return JsonResponse
+     * @return array
      * @Route("/{id}.{_format}",
      *     name="loki.tuo.message.show",
      *     defaults={"_format": "json"},
      *     requirements={"id":"\d+", "_format":"json"}
      *     )
      * @Security("is_granted('delete.player', player)")
+     * @Template()
      */
     public function showAction(Player $player)
     {
-        $body = [];
-        foreach ($player->getMessages() as $message) {
-            $body[] = $message->serialize();
-        }
-        return $this->json($body);
+        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
+        $msg = $repo->findUnreadByPlayer($player);
+        return ["messages" => $msg];
     }
 
     /**

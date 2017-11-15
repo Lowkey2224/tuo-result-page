@@ -2,6 +2,8 @@
 
 namespace LokiTuoResultBundle\Repository;
 
+use LokiTuoResultBundle\Entity\Message;
+use LokiTuoResultBundle\Entity\Player;
 use LokiUserBundle\Entity\User;
 
 /**
@@ -24,8 +26,21 @@ class MessageRepository extends AbstractBaseRepository
             ->join('m.player', 'p')
             ->select("COUNT(m.id)")
             ->where("p.owner = :id")
-            ->setParameter("id", $user->getId());
+            ->andWhere('m.status = :status')
+            ->setParameter("id", $user->getId())
+            ->setParameter("status", Message::STATUS_UNREAD);
         $res = $qb->getQuery()->getSingleResult();
         return $res[1];
+    }
+
+    public function findUnreadByPlayer(Player $player)
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->join('m.player', 'p')
+            ->where("p.id = :id")
+            ->andWhere('m.status = :status')
+            ->setParameter("id", $player->getId())
+            ->setParameter("status", Message::STATUS_UNREAD);
+        return $qb->getQuery()->getResult();
     }
 }
