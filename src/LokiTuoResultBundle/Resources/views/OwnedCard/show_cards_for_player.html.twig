@@ -241,33 +241,34 @@
                 var succCb;
                 {% set tId = 1123445567899 %}
                 var replaceValue = "{{ tId }}";
+                var method;
                 switch (buttonPressed) {
                     case "add-to-deck":
                         url = "{{ path('loki.tuo.ownedcard.deck.add', {'id':tId}) }}";
-                        console.log("Button Pressed", buttonPressed);
+                        method = "POST";
                         succCb = addToDeckCb;
                         break;
                     case "remove-card":
                         url = "{{ path('loki.tuo.ownedcard.card.remove', {'id':tId}) }}";
-                        console.log("Button Pressed", buttonPressed);
+                        method = "DELETE";
                         succCb = reduceCardCb;
                         break;
                     case "add-card":
                         url = "{{ path('loki.tuo.ownedcard.card.add', {'id':tId}) }}";
-                        console.log("Button Pressed", buttonPressed);
+                        method = "PUT";
                         succCb = addCardCb;
                         break;
                     case "remove-card-from-deck":
                         url = "{{ path('loki.tuo.ownedcard.deck.remove', {'id':tId}) }}";
+                        method = "DELETE";
                         succCb = removeFromDeckCb;
-                        console.log("Button Pressed", buttonPressed);
                         break;
                     default:
                         console.log("Button Pressed", buttonPressed);
                 }
                 url = url.replace(replaceValue, cardId);
 
-                sendAjaxRequest([], succCb, "GET", url);
+                sendAjaxRequest([], succCb, method, url);
             });
 
             // Add new Card
