@@ -73,7 +73,16 @@ class TuUpdateInventoryConsumer implements BatchConsumerInterface, ConsumerInter
             $this->queueItemManager->setStatusFinished($queueItem);
             return true;
         }
-        $idAmountMap = $this->connector->getInventoryAndDeck($player);
+        try {
+            $idAmountMap = $this->connector->getInventoryAndDeck($player);
+        } catch (\Exception $exception) {
+
+            $this->logger->error("Failed to battle for Player " . $player->getName());
+            $this->logger->error($exception->getMessage());
+            $this->logger->error($exception->getTraceAsString());
+            $idAmountMap = [];
+        }
+
         if (!empty($idAmountMap)) {
             $this->ocManager->removeOldOwnedCardsForPlayer($player);
             $ocs = $this->ocManager->persistOwnedCardsByTuoId($idAmountMap, $player);

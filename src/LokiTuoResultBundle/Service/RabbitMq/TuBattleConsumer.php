@@ -90,6 +90,13 @@ class TuBattleConsumer implements ConsumerInterface
         $this->em->flush();
 
 
+        try {
+            $this->connector->battleAllBattles($this->player);
+        } catch (\Exception $exception) {
+            $this->logger->error("Failed to battle for Player " . $this->player->getName());
+            $this->logger->error($exception->getMessage());
+            $this->logger->error($exception->getTraceAsString());
+        }
         $this->queueItemManager->setStatusFinished($queueItem);
         return true;
     }
