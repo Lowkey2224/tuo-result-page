@@ -67,9 +67,24 @@ class TuBattleConsumer implements ConsumerInterface
             $this->queueItemManager->setStatusFinished($queueItem);
             return true;
         }
+        $result = [];
+        try {
+            $result = $this->connector->battleAllBattles($this->player);
+        } catch (\Exception $exception) {
+            $this->logger->error("Failed to battle for Player " . $this->player->getName());
+            $this->logger->error($exception->getMessage());
+            $this->logger->error($exception->getTraceAsString());
 
+            $messageText = sprintf("There was a Problem fighting Battles. Please report this issue to an Administrator");
+            $msg = new Message();
+            $msg->setPlayer($this->player)
+                ->setMessage($messageText)
+                ->setStatusUnread();
+            return true;
+        } finally {
+            $this->queueItemManager->setStatusFinished($queueItem);
+        }
 
-        $result = $this->connector->battleAllBattles($this->player);
         $won = 0;
         $gold = 0;
         $rating = 0;
@@ -89,15 +104,6 @@ class TuBattleConsumer implements ConsumerInterface
         $this->em->persist($msg);
         $this->em->flush();
 
-
-        try {
-            $this->connector->battleAllBattles($this->player);
-        } catch (\Exception $exception) {
-            $this->logger->error("Failed to battle for Player " . $this->player->getName());
-            $this->logger->error($exception->getMessage());
-            $this->logger->error($exception->getTraceAsString());
-        }
-        $this->queueItemManager->setStatusFinished($queueItem);
         return true;
     }
 }
