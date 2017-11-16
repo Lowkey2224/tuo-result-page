@@ -91,7 +91,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
         $map = $this->getAttributeMethodMap();
         if (isset($map[$attribute])) {
             $method = $map[$attribute];
-            $result = $this->$method($subject, $user);
+            $result = $user->hasRole('ROLE_ADMIN') || $this->$method($subject, $user);
             $this->logger->debug(sprintf("Result for vote on %s is %s", $subject, $result?"true": "false"));
             return $result;
         }

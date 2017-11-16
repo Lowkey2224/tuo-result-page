@@ -78,10 +78,17 @@ class Player extends AbstractBaseEntity
      */
     private $lastApiTime;
 
+    /**
+     * @var Message[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Message", mappedBy="player")
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
         $this->ownedCards = new ArrayCollection();
+        $this->messages = new ArrayCollection();
         $this->active = true;
         $this->ownershipConfirmed = false;
         $this->kongCredentials = new KongregateCredentials();
@@ -300,5 +307,22 @@ class Player extends AbstractBaseEntity
         return $this;
     }
 
+    /**
+     * @return ArrayCollection|Message[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param ArrayCollection|Message[] $messages
+     * @return Player
+     */
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+        return $this;
+    }
 
 }

@@ -32,3 +32,8 @@
     /** Unhide lightbox **/
     display: block;
 }
+
+.badge {
+    background-color: orange;
+    /*display: none;*/
+}

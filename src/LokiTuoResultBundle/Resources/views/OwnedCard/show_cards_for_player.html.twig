@@ -71,18 +71,19 @@
             </div>
         </div>
     {% endif %}
+    {{ render(controller('LokiTuoResultBundle:Message:show', {'player' : player})) }}
     <div class="row">
-        <div class="col-md-4 text-left">
+        <div class="col-xs-4 text-left">
             <a href="{{ path('loki.tuo.player.all.show') }}">
                 <h3>{{ 'player.list'|trans }}</h3>
             </a>
         </div>
-        <div class="col-md-4 text-center">
+        <div class="col-xs-4 text-center">
             <a href="{{ path('loki.tuo.player.edit', {'id': player.id}) }}">
                 <h3>{{ 'player.edit'|trans }}</h3>
             </a>
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-xs-4 text-right">
             <a href="{{ path('loki.tuo.player.results.show', {'id': player.id}) }}">
                 <h3>{{ 'player.results'|trans }}</h3>
             </a>
@@ -230,6 +231,7 @@
                     minLength: 3
                 });
             });
+            {#getMessagesForPlayer({{ player.id }});#}
 
             $('.submit-button').click(function () {
                 var buttonPressed = $(this).attr('name');
@@ -264,10 +266,6 @@
                         console.log("Button Pressed", buttonPressed);
                 }
                 url = url.replace(replaceValue, cardId);
-                var debug = {{ app.environment=="dev"?"true":"false" }};
-                if (debug) {
-                    url = url + "?XDEBUG_SESSION_START=PHPSTORM";
-                }
 
                 sendAjaxRequest([], succCb, "GET", url);
             });

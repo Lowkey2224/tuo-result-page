@@ -13,7 +13,7 @@ class PlayerVoter extends AbstractVoter
 
     protected function canView(Player $player, User $user)
     {
-        return $player->isActive() || $user->hasRole('ROLE_ADMIN');
+        return $player->isActive();
     }
 
     protected function canEdit(Player $player, User $user)
@@ -23,9 +23,7 @@ class PlayerVoter extends AbstractVoter
 
     protected function canDelete(Player $player, User $user)
     {
-        $correctRole = $user->hasRole('ROLE_MODERATOR')
-            || $user->hasRole('ROLE_ADMIN');
-        return $correctRole || $player->isOwnedBy($user);
+        return $user->hasRole('ROLE_MODERATOR') || $player->isOwnedBy($user);
     }
 
     /**

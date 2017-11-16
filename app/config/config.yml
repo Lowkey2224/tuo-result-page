@@ -58,6 +58,13 @@ doctrine:
         #     path:     "%database_path%"
 
     orm:
+        mappings:
+            gedmo_translatable:
+                type: annotation
+                prefix: Gedmo\Translatable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                alias: GedmoTranslatable # (optional) it will default to the name set for the mapping
+                is_bundle: false
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
@@ -135,3 +142,16 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'tu_api.update', type: direct}
             queue_options:    {name: 'tu_api.update'}
             callback:         loki_tuo_result.tu_api.update.consumer
+
+fos_js_routing:
+    routes_to_expose:
+      - 'loki.tuo.message.count.user'
+      - 'loki.tuo.message.count.player'
+      - 'loki.tuo.message.show'
+      - 'loki.tuo.message.read'
+      - 'loki.tuo.ownedcard.create'
+      - 'loki.tuo.cards.all'
+      - 'loki.tuo.ownedcard.deck.add'
+      - 'loki.tuo.ownedcard.card.remove'
+      - 'loki.tuo.ownedcard.card.add'
+      - 'loki.tuo.ownedcard.deck.remove'

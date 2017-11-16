@@ -21,6 +21,9 @@
             <arg value="cache:clear"/>
             <arg value="--env=prod"/>
         </exec>
+        <exec executable="${console}">
+            <arg value="fos:js-routing:dump"/>
+        </exec>
 
     </target>
     <target name="full-build" depends="prepare,static-analysis,-check-failure"

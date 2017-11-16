@@ -106,7 +106,7 @@ class Service
         return ['result' => $result->result, 'tuId' => $result->bonus_result->bonus->card];
     }
 
-    public function doSingleBattle(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
+    private function doSingleBattle(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
     {
         $this->logger->info("Selecting Target");
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
@@ -127,6 +127,12 @@ class Service
         return ["gold" => $gold, "rating" => $rating, "stamina" => $result->user_data->stamina];
     }
 
+    /**
+     * Battles a number of Battles equals the stamina of the player
+     * @param Player $player
+     * @param int $enemySelectionStrategy
+     * @return array[] with entry ["gold" => int, "rating" => int, "stamina" => int]
+     */
     public function battleAllBattles(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
     {
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
@@ -138,6 +144,14 @@ class Service
             sleep(3);
         }
         return $result;
+    }
+
+    public function getStaminaInfo(Player $player)
+    {
+        $result = $this->connector->test($player, Connector::GET_INVENTORY, []);
+        $stamina = $result->user_data->stamina;
+        $maxStamina = $result->user_data->battle_energy;
+        return ["stamina" => $stamina, "maxStamina" => $maxStamina];
     }
 
     private function selectEnemy($data, int $strategy)
