@@ -73,7 +73,10 @@ class Service
      */
     public function addCardToPlayer(Player $player, CardLevel $card, int $amount, int $amountInDeck)
     {
-        $oc = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy(['card' => $card]);
+        $oc = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy([
+            'card' => $card,
+            'player' => $player
+        ]);
         if ($oc) {
             $amount += $oc->getAmount();
             $amountInDeck += $oc->getAmountInDeck();

@@ -49,7 +49,7 @@ class TuImportController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAllInventories()
+    public function updateAllInventoriesAction()
     {
         $queueManager = $this->get('loki_tuo_result.tu_api.update.producer');
         $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAllWithCredentials();
