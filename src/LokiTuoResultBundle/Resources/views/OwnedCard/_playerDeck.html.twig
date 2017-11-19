@@ -1,0 +1,27 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        {{ 'ownedcard.show.body.deck %name%'|trans({'%name%' : player.name}) }}<br/>
+        {{ deckName | join(', ') }}
+    </div>
+    <div class="panel-body">
+        <table id="deck" class="table table-striped">
+            <tbody>
+            {% for card in deck %}
+                <tr class="row" id="deck{{ card.id }}">
+                    <td class="col-xs-9 card-name">
+                        {{ card.toDeckString }}
+                    </td>
+                    <td class="col-xs-3">
+                        <div class="form-group pull-right">
+                            <button class="btn btn-danger btn-xs submit-button" name="remove-card-from-deck"
+                                    data-id="{{ card.id }}">
+                                <i class="glyphicon glyphicon-minus"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
