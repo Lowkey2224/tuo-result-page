@@ -15,6 +15,9 @@ use LokiUserBundle\Entity\User;
 class QueueItem extends AbstractBaseEntity
 {
 
+    const STATUS_WAITING = "waiting";
+    const STATUS_RUNNING = "running";
+    const STATUS_FINISHED = "finished";
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="LokiUserBundle\Entity\User")
@@ -47,24 +50,38 @@ class QueueItem extends AbstractBaseEntity
      */
     public function setStatusWaiting()
     {
-        $this->status = "waiting";
+        $this->status = self::STATUS_WAITING;
         $this->message = "";
         return $this;
     }
 
     public function isWaiting()
     {
-        return $this->status === "waiting";
+        return $this->status === self::STATUS_WAITING;
     }
 
     public function isRunning()
     {
-        return $this->status === 'running';
+        return $this->status === self::STATUS_RUNNING;
     }
 
     public function isFinished()
     {
-        return $this->status === 'finished';
+        return $this->status === self::STATUS_FINISHED;
+    }
+
+    public function getStatusName()
+    {
+        switch ($this->status) {
+            case self::STATUS_WAITING:
+                return "pause";
+            case self::STATUS_RUNNING:
+                return "play";
+            case self::STATUS_FINISHED:
+                return "ok";
+            default:
+                return "error";
+        }
     }
 
     /**

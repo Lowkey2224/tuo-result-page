@@ -1,13 +1,4 @@
-{% if result.percent > 850 %}
-    {% set class = "panel-success" %}
-{% elseif result.percent > 650 %}
-    {% set class = "panel-info" %}
-{% elseif result.percent > 500 %}
-    {% set class = "panel-warning" %}
-{% else %}
-    {% set class = "panel-danger" %}
-{% endif %}
-<div class="panel {{ class }}">
+<div class="panel panel-{{ result.styleClass }}">
     <div class="panel-heading">
 
         Player: <a

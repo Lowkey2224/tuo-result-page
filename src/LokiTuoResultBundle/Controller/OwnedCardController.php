@@ -34,7 +34,8 @@ class OwnedCardController extends Controller
     /**
      * @Route("/id/card/deck/{id}",
      *     name="loki.tuo.ownedcard.deck.add",
-     *     requirements={"id":"\d+"})
+     *     requirements={"id":"\d+"},
+     *     methods={"POST"})
      *
      *
      * @param OwnedCard $oc
@@ -73,7 +74,8 @@ class OwnedCardController extends Controller
     /**
      * @Route("/id/card/deck/{id}/remove",
      *     name="loki.tuo.ownedcard.deck.remove",
-     *     requirements={"id":"\d+"})
+     *     requirements={"id":"\d+"},
+     *     methods={"DELETE"})
      *
      *
      * @param OwnedCard $oc
@@ -98,7 +100,8 @@ class OwnedCardController extends Controller
     }
 
     /**
-     * @Route("/{id}/card", name="loki.tuo.ownedcard.card.add", requirements={"id":"\d+"})
+     * @Route("/{id}/card", name="loki.tuo.ownedcard.card.add", requirements={"id":"\d+"},
+     *     methods={"PUT"})
      *
      * @param OwnedCard $oc
      * @param OwnedCard $oc
@@ -125,7 +128,8 @@ class OwnedCardController extends Controller
     /**
      * @Route("/{id}/card/reduce",
      *     name="loki.tuo.ownedcard.card.remove",
-     *     requirements={"id":"\d+"}
+     *     requirements={"id":"\d+"},
+     *     methods={"DELETE"}
      *     )
      *
      * @param OwnedCard $oc
@@ -158,7 +162,8 @@ class OwnedCardController extends Controller
     /**
      * @Route("/{id}/cards/add",
      *     name="loki.tuo.ownedcard.card.add.mass",
-     *     requirements={"id":"\d+"}
+     *     requirements={"id":"\d+"},
+     *     methods={"PUT"}
      *     )
      * @Security("is_granted('edit.player', player)")
      *
@@ -197,7 +202,7 @@ class OwnedCardController extends Controller
     /**
      * @Route("/{id}/cards/delete",
      *     name="loki.tuo.ownedcard.card.delete.mass",
-     *     methods={"GET"},
+     *     methods={"DELETE"},
      *     requirements={"id":"\d+"}
      *     )
      *
