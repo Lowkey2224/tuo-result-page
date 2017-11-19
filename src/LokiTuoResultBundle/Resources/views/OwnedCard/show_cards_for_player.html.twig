@@ -114,6 +114,11 @@
                 url = url.replace(replaceValue, cardId);
 
                 sendAjaxRequest([], succCb, method, url);
+                var debug = {{ app.environment=="dev"?"true":"false" }};
+                if (debug) {
+                    url = url + "?XDEBUG_SESSION_START=PHPSTORM";
+                }
+                sendAjaxRequest([], succCb, "GET", url);
             });
 
             // Add new Card

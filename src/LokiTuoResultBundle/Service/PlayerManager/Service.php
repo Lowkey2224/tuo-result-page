@@ -73,20 +73,23 @@ class Service
      */
     public function addCardToPlayer(Player $player, CardLevel $card, int $amount, int $amountInDeck)
     {
-        $oc = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy(['card' => $card]);
-        if ($oc) {
-            $amount += $oc->getAmount();
-            $amountInDeck += $oc->getAmountInDeck();
+        $ownedCard = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy([
+            'card' => $card,
+            'player' => $player
+        ]);
+        if ($ownedCard) {
+            $amount += $ownedCard->getAmount();
+            $amountInDeck += $ownedCard->getAmountInDeck();
         } else {
             if (!$card instanceof CardLevel) {
                 return null;
             }
-            $oc = new OwnedCard();
-            $oc->setCard($card);
-            $oc->setPlayer($player);
+            $ownedCard = new OwnedCard();
+            $ownedCard->setCard($card);
+            $ownedCard->setPlayer($player);
         }
 
-        return $this->updateOwnedCard($oc, $amount, $amountInDeck);
+        return $this->updateOwnedCard($ownedCard, $amount, $amountInDeck);
     }
 
     /**
@@ -103,14 +106,14 @@ class Service
     public function reduceCardForPlayer(Player $player, Card $card, int $amount, int $amountInDeck, int $level = null)
     {
         $criteria = ['card' => $card, 'player' => $player, 'level' => $level];
-        $oc = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
-        if (!$oc) {
+        $ownedCard = $this->em->getRepository('LokiTuoResultBundle:OwnedCard')->findOneBy($criteria);
+        if (!$ownedCard) {
             throw new NotFoundResourceException('Owned Card was not Found');
         }
-        $amount = $oc->getAmount() - $amount;
-        $amountInDeck = $oc->getAmountInDeck() - $amountInDeck;
+        $amount = $ownedCard->getAmount() - $amount;
+        $amountInDeck = $ownedCard->getAmountInDeck() - $amountInDeck;
 
-        return $this->updateOwnedCard($oc, $amount, $amountInDeck);
+        return $this->updateOwnedCard($ownedCard, $amount, $amountInDeck);
     }
 
     /**
