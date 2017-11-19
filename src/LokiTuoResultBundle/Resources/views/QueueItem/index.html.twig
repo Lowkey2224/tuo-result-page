@@ -5,11 +5,9 @@
         {% for item in items %}
             {% if item.running %}
                 {% set class = "play" %}
-            {% endif %}
-            {% if item.waiting %}
+            {% elseif item.waiting %}
                 {% set class = "pause" %}
-            {% endif %}
-            {% if item.finished %}
+            {% elseif item.finished %}
                 {% set class = "ok" %}
             {% endif %}
             <li><i class="glyphicon glyphicon-{{ class }}"></i> {{ item.message }}
