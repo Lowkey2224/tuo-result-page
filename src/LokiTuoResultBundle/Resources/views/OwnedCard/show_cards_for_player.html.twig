@@ -156,11 +156,13 @@
                 </p>
                 <div class="col-md-3 col-xs-3">
                     {% if is_granted('ROLE_MODERATOR') or player.isOwnedBy(app.user) %}
-                        <a href="{{ path("loki.tuo.ownedcard.card.delete.mass", {'id':player.id}) }}">
-                            <button type="button" class="pull-right btn btn-danger btn-md">
+                        <form method="post"
+                              action="{{ path("loki.tuo.ownedcard.card.delete.mass", {'id':player.id}) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="pull-right btn btn-danger btn-md">
                                 <i class="glyphicon glyphicon-minus"></i>
                             </button>
-                        </a>
+                        </form>
                     {% endif %}
                     <a href="{{ path("loki.tuo.player.inventory.show", {'id':player.id}) }}">
                         <button type="button" class="pull-right btn btn-primary btn-md">
