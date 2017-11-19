@@ -3,14 +3,7 @@
         nav.queue{% endtrans %}<span class="caret"></span></a>
     <ul class="dropdown-menu">
         {% for item in items %}
-            {% if item.running %}
-                {% set class = "play" %}
-            {% elseif item.waiting %}
-                {% set class = "pause" %}
-            {% elseif item.finished %}
-                {% set class = "ok" %}
-            {% endif %}
-            <li><i class="glyphicon glyphicon-{{ class }}"></i> {{ item.message }}
+            <li><i class="glyphicon glyphicon-{{ item.statusName }}"></i> {{ item.message }}
                 <small>by User {{ item.updatedBy.username }}</small>
             </li>
             {% if not loop.last %}
