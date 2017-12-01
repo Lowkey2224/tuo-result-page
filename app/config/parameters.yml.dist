@@ -28,3 +28,5 @@ parameters:
     tu_api_signature_salt: "defrdgtfhgjhhfgdfd"
     rabbitmq_user: guest
     rabbitmq_password: guest
+    mailer_sender: Tyrant Unleashed Optimizer Results
+    mailer_sender_address: foo@bar.baz
