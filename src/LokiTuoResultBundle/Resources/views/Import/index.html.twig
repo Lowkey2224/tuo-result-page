@@ -3,7 +3,7 @@
 
     <div class="row">
         <h3 class="col-md-6 col-md-offset-3 text-center">
-            All Resultfiles and their Status
+            {{ 'import.index.title'|trans }}
         </h3>
     </div>
 
@@ -11,12 +11,12 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Guild</th>
-            <th>Missions</th>
-            <th>comment</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Links</th>
+            <th>{{ 'table.header.guild'|trans }}</th>
+            <th>{{ 'table.header.missions'|trans }}</th>
+            <th>{{ 'table.header.comment'|trans }}</th>
+            <th>{{ 'table.header.status'|trans }}</th>
+            <th>{{ 'table.header.date'|trans }}</th>
+            <th>{{ 'links'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -51,7 +51,6 @@
     </table>
 
     <div class="row" style="margin-top: 20px;">
-
-        Simulations and website done by LokiMcFly<br/>
+        {{ 'footer.text'|trans }}<br/>
     </div>
 {% endblock %}

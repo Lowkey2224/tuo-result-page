@@ -1,0 +1,290 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{{ 'ownedcard.show.title %name%'|trans({'%name%' : player.name}) }}{% endblock %}
+
+{% block body %}
+
+    {% if canEdit %}
+        <!-- Modal -->
+        {% include '@LokiTuoResult/OwnedCard/_modals.html.twig' with {'form': form, 'massForm' : massForm} only %}
+    {% endif %}
+    {{ render(controller('LokiTuoResultBundle:Message:show', {'player' : player})) }}
+    <div class="row">
+        <div class="col-xs-4 text-left">
+            <a href="{{ path('loki.tuo.player.all.show') }}">
+                <h3>{{ 'player.list'|trans }}</h3>
+            </a>
+        </div>
+        <div class="col-xs-4 text-center">
+            <a href="{{ path('loki.tuo.player.edit', {'id': player.id}) }}">
+                <h3>{{ 'player.edit'|trans }}</h3>
+            </a>
+        </div>
+        <div class="col-xs-4 text-right">
+            <a href="{{ path('loki.tuo.player.results.show', {'id': player.id}) }}">
+                <h3>{{ 'player.results'|trans }}</h3>
+            </a>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-3 text-left">
+            {% if player.hasKongCredentials %}
+                <a href="{{ path('loki.tuo.tui.player.claim_card', {'id': player.id}) }}">
+                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                        <span class="ladda-label">{{ 'claim.card'|trans }}<i class=""></i></span>
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+        <div class="col-md-6 text-center">
+            <h2 style="margin-top: 0;">{{ 'ownedcard.show.title %name%'|trans({'%name%' : player.name}) }}</h2>
+
+        </div>
+        <div class="col-md-3 text-right">
+            {% if player.hasKongCredentials %}
+                <a href="{{ path('loki.tuo.tui.update.player', {'id': player.id}) }}">
+                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                        <span class="ladda-label">{{ 'update.inventory'|trans }}<i class=""></i></span>
+                    </button>
+                </a>
+                <a href="{{ path('loki.tuo.tui.player.battle', {'id': player.id}) }}">
+                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                        <span class="ladda-label">{{ 'do.battle'|trans }}<i class=""></i></span>
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div id="updateFlash"></div>
+    {% include '@LokiTuoResult/OwnedCard/_playerDeck.html.twig' with {'player': player, 'deckName' : deckName, 'deck' : deck} only %}
+    {% include '@LokiTuoResult/OwnedCard/_playerInventory.html.twig' with {'player': player, 'cards' : cards} only %}
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="pull-left"><a href="{{ path("tuo.index") }}">{{ 'index.back'|trans }}</a></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var availableCardNames = [];
+            $.get("{{ path('loki.tuo.cards.all') }}", function (data) {
+                availableCardNames = data;
+                $("#owned_card_card").autocomplete({
+                    source: availableCardNames,
+                    minLength: 3
+                });
+            });
+
+
+            $('.submit-button').click(function () {
+                var buttonPressed = $(this).attr('name');
+                var cardId = $(this).data('id');
+                console.log(cardId);
+                var url;
+                var succCb;
+                {% set tId = 1123445567899 %}
+                var replaceValue = "{{ tId }}";
+                var method;
+                switch (buttonPressed) {
+                    case "add-to-deck":
+                        url = "{{ path('loki.tuo.ownedcard.deck.add', {'id':tId}) }}";
+                        method = "POST";
+                        succCb = addToDeckCb;
+                        break;
+                    case "remove-card":
+                        url = "{{ path('loki.tuo.ownedcard.card.remove', {'id':tId}) }}";
+                        method = "DELETE";
+                        succCb = reduceCardCb;
+                        break;
+                    case "add-card":
+                        url = "{{ path('loki.tuo.ownedcard.card.add', {'id':tId}) }}";
+                        method = "PUT";
+                        succCb = addCardCb;
+                        break;
+                    case "remove-card-from-deck":
+                        url = "{{ path('loki.tuo.ownedcard.deck.remove', {'id':tId}) }}";
+                        method = "DELETE";
+                        succCb = removeFromDeckCb;
+                        break;
+                    default:
+                        console.log("Button Pressed", buttonPressed);
+                }
+                url = url.replace(replaceValue, cardId);
+
+                var debug = {{ app.environment=="dev"?"true":"false" }};
+                if (debug) {
+                    url = url + "?XDEBUG_SESSION_START=PHPSTORM";
+                }
+                sendAjaxRequest([], succCb, method, url);
+            });
+
+            // Add new Card
+            $("form.data-remote").on("submit", function (e) {
+                e.preventDefault();
+                var $inputs = this.elements;
+                console.log("inputs", $inputs);
+                var data = {
+                    owned_card_card: $inputs['owned_card[card]'].value,
+                    owned_card_level: $inputs['owned_card[level]'].value,
+                    owned_card_amount: $inputs['owned_card[amount]'].value
+                };
+                console.log("Data", data);
+                sendAddNewCardRequest(data);
+            });
+
+
+            var reduceCardCb = function (response) {
+                $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                var id = response['id'];
+                var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                if (response['amount'] > 0) {
+                    console.log('UPdate');
+                    changeAmountOfCardRow(id, combinedName);
+                } else {
+                    console.log('Delete', id);
+                    removeCardRow(id)
+                }
+            };
+
+            var removeFromDeckCb = function (response) {
+                var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                if (response['amount'] === 0) {
+                    removeCardRow('deck' + response['id']);
+                } else {
+                    changeAmountOfCardRow("deck" + response['id'], combinedName);
+
+                }
+            };
+
+            var addToDeckCb = function (response) {
+                var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                addCardToDeck(response['id'], combinedName, response['amount'], response['level']);
+            };
+
+            var addCardCb = function (response) {
+                $('#jsFlash').append(getFlashMessage(true, response['name'], response['level'], response['amount']));
+                var combinedName = getCombinedCardName(response['name'], response['level'], response['amount']);
+                console.log("Adding Card row ", combinedName);
+                addCardRow(response['id'], combinedName, response['amount'], response['level']);
+            };
+
+
+            function sendAddNewCardRequest(data) {
+                var method = "POST";
+                var url = "{{ path('loki.tuo.ownedcard.create', {'id': player.id}) }}";
+                sendAjaxRequest(data, addCardCb, method, url)
+            }
+
+            /**
+             * Sends an Ajax Request, with the given Data to the URL with its method
+             * @param data Request Data
+             * @param successCallback Method to be executed, if the Request is Successful
+             * @param method Request method e.g. "GET"
+             * @param url Url of the request
+             */
+            function sendAjaxRequest(data, successCallback, method, url) {
+                $.ajax({
+                    method: method,
+                    url: url,
+                    data: data,
+                    error: function (response, textStatus, errorThrown) {
+                        console.log("Fail Response", response);
+                        console.log("Status", textStatus, " error", errorThrown);
+
+                    },
+                    success: successCallback
+                });
+            }
+
+            function addCardRow(id, combinedName, amount, name, level) {
+                console.log(id, combinedName, amount, name, level);
+                if ($('#' + id).length !== 0) {
+                    changeAmountOfCardRow(id, combinedName);
+                    console.log('UPdate Add');
+
+                } else {
+                    console.log("Create new Content line");
+                    var text = '<tr class="row" id="' + combinedName + '">' +
+                        '<td  class="col-xs-9 card-name">' +
+                        combinedName +
+                        '</td>' +
+                        '<td class="col-xs-3">' +
+                        '<form class="data-remote-remove">' +
+                        '<input type="hidden" name="name" id="name" value="' + name + '">' +
+                        '<input type="hidden" name="level" id="level" value="' + level + '">' +
+                        '<input type="hidden" name="id" id="id" value="' + id + '">' +
+                        '<button type="submit" class="pull-right btn btn-primary btn-xs">' +
+                        '<i class="glyphicon glyphicon-minus"></i>' +
+                        '</button>' +
+                        '</form>' +
+                        '</td></tr>';
+                    console.log("Insert before ", id);
+                    $('#ownedCards').find('tbody').append(text);
+                    return text;
+                }
+
+            }
+
+            function addCardToDeck(id, combinedName, amount, name, level) {
+                console.log(id, combinedName, amount, name, level);
+                if ($('#deck' + id).length !== 0) {
+                    changeAmountOfCardRow(id, combinedName);
+                    console.log('UPdate Add');
+
+                } else {
+                    console.log("Create new Content line");
+                    var text = '<tr class="row" id="deck' + id + '">' +
+                        '<td  class="col-xs-9 card-name">' +
+                        combinedName +
+                        '</td>' +
+                        '<td class="col-xs-3">' +
+                        '<form class="data-remote-remove-from-deck">' +
+                        '<input type="hidden" name="name" id="name" value="' + name + '">' +
+                        '<input type="hidden" name="level" id="level" value="' + level + '">' +
+                        '<input type="hidden" name="id" id="id" value="' + id + '">' +
+                        '<button type="submit" class="pull-right btn btn-danger btn-xs">' +
+                        '<i class="glyphicon glyphicon-minus"></i>' +
+                        '</button>' +
+                        '</form>' +
+                        '</td></tr>';
+                    console.log("Insert before ", id);
+                    $('#deck').find('tbody').append(text);
+                    return text;
+                }
+
+            }
+
+            function changeAmountOfCardRow(id, combinedName) {
+                console.log("Changing", id);
+                var td = $("#" + id + " .card-name");
+                td.text(combinedName);
+            }
+
+            function removeCardRow(id) {
+                $('#' + id).remove();
+                console.log("Remove row with id ", id);
+            }
+
+            function getCombinedCardName(name, level, amount) {
+                var combinedName = name;
+                combinedName += (level !== null && level !== 'null') ? "-" + level : "";
+                combinedName += amount > 1 ? " (" + amount + ")" : "";
+                return combinedName;
+            }
+
+            function getFlashMessage(successful, name, level, amount) {
+                var cssClass = (successful) ? 'alert-success' : 'alert-danger';
+                if (successful) {
+                    var msg = "{{ 'ownedcard.show.body.inventory.add.success'|trans }}".replace("_NAME_", name).replace('_LEVEL_', level).replace('_AMOUNT_', amount);
+                    text = "<strong>{{ 'success'|trans }}: </strong>" + msg;
+                }
+
+                return '<div class="alert alert-dismissible ' + cssClass + '" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + text + '</div>';
+            }
+
+        });
+    </script>
+{% endblock %}

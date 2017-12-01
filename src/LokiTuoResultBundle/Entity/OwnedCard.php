@@ -21,13 +21,6 @@ class OwnedCard extends AbstractBaseEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="level", type="integer", nullable=true)
-     */
-    private $level;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="amount", type="integer")
      */
     private $amount = 1;
@@ -46,18 +39,16 @@ class OwnedCard extends AbstractBaseEntity
     private $player;
 
     /**
-     * @var Card
-     * @ORM\ManyToOne(targetEntity="Card")
-     * @ORM\JoinColumn(referencedColumnName="id", name="card_id")
+     * @var CardLevel
+     * @ORM\ManyToOne(targetEntity="LokiTuoResultBundle\Entity\CardLevel")
+     * @ORM\JoinColumn(referencedColumnName="id", name="card_level_id")
      */
     private $card;
 
     public function __toString()
     {
-        $str = $this->card->getName();
-        if ($this->level) {
-            $str .= '-' . $this->level;
-        }
+        $str = $this->card->getCard()->getName();
+        $str .= '-' . $this->card->getLevel();
         if ($this->amount > 1) {
             $str .= ' (' . $this->amount . ')';
         }
@@ -65,44 +56,28 @@ class OwnedCard extends AbstractBaseEntity
         return $str;
     }
 
+    public function toArray()
+    {
+        return [
+            'name' => $this->getCard()->getName(),
+            'level' => $this->getCard()->getLevel(),
+            'amount' => $this->getAmount(),
+            'id' => $this->getId(),
+        ];
+    }
+
     /**
      * @return string
      */
     public function toDeckString()
     {
-        $str = $this->card->getName();
-        if ($this->level) {
-            $str .= '-' . $this->level;
-        }
+        $str = $this->card->getCard()->getName();
+        $str .= '-' . $this->card->getLevel();
         if ($this->amountInDeck > 1) {
             $str .= ' (' . $this->amountInDeck . ')';
         }
 
         return $str;
-    }
-
-    /**
-     * Set level.
-     *
-     * @param int $level
-     *
-     * @return OwnedCard
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * Get level.
-     *
-     * @return int
-     */
-    public function getLevel()
-    {
-        return $this->level;
     }
 
     /**
@@ -146,7 +121,7 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * @return Card
+     * @return CardLevel
      */
     public function getCard()
     {
@@ -154,7 +129,7 @@ class OwnedCard extends AbstractBaseEntity
     }
 
     /**
-     * @param Card $card
+     * @param CardLevel $card
      */
     public function setCard($card)
     {

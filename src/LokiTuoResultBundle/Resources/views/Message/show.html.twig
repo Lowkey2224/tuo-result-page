@@ -1,0 +1,9 @@
+{% for message in messages %}
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close message-alert" data-msg-id="{{ message.id }}" data-dismiss="alert"
+                aria-label="Close">
+            <span aria-hidden="true">Mark as read</span></button>
+        <small>{{ message.player.name }}:</small>
+        {{ message.message }}
+    </div>
+{% endfor %}

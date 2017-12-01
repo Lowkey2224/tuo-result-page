@@ -2,36 +2,36 @@ services:
     loki_tuo_result.reader:
         class: LokiTuoResultBundle\Service\Reader\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
-            cardManager: "@loki_tuo_result.owned_card.manager"
-            logger: "@logger"
+            - "@doctrine.orm.entity_manager"
+            - "@loki_tuo_result.owned_card.manager"
+            - "@logger"
         #arguments: ["@service_id", "plain_value", %parameter%]
 
     loki_tuo_result.card.reader:
         class: LokiTuoResultBundle\Service\CardReader\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.card.persister:
         class: LokiTuoResultBundle\Service\CardReader\Persister
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.owned_card.mass_sim_reader:
         class: LokiTuoResultBundle\Service\OwnedCards\MassSimReader
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
-            ownedCardManager: "@loki_tuo_result.owned_card.manager"
+            - "@doctrine.orm.entity_manager"
+            - "@loki_tuo_result.owned_card.manager"
 
     loki_tuo_result.owned_card.manager:
         class: LokiTuoResultBundle\Service\OwnedCards\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.persister.database:
         class: LokiTuoResultBundle\Service\Persister\DatabasePersister
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.persister.null:
         class: LokiTuoResultBundle\Service\Persister\NullPersister
@@ -39,30 +39,34 @@ services:
     loki_tuo_result.battlegroundeffect.reader:
         class: LokiTuoResultBundle\Service\BattleGroundEffectReader\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.player.manager:
         class: LokiTuoResultBundle\Service\PlayerManager\Service
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
 
     loki_tuo_result.simulation.manager:
         class: LokiTuoResultBundle\Service\Simulation\Service
         arguments:
-            twig: '@templating'
+            - '@templating'
         #arguments: ["@service_id", "plain_value", %parameter%]
 
     loki_tuo_result.vpc_simulation.manager:
         class: LokiTuoResultBundle\Service\VpcSImulation\Service
         arguments:
-            buzz: '@buzz'
-            vpc_url: "%vpc_url%"
+            - '@buzz'
+            - "%vpc_url%"
 
     loki_tuo_result.password_resetting:
         class: LokiTuoResultBundle\EventListener\RegistrationListener
         arguments: ['@logger', '@doctrine.orm.entity_manager']
         tags:
             - { name: kernel.event_subscriber }
+
+    loki_tuo_result.tyrant_connector:
+        class: LokiTuoResultBundle\Service\TyrantApiConnector\Service
+        arguments: ['@monolog.logger.tu_api', '%tu_api_hash_salt%', '%tu_api_signature_salt%']
 
     app.exception_listener:
         class: LokiTuoResultBundle\EventListener\LocaleListener
@@ -82,3 +86,41 @@ services:
         tags:
             - { name: security.voter }
         public: false
+    app.message_voter:
+        class: LokiTuoResultBundle\Security\MessageVoter
+        arguments: ['@logger']
+        tags:
+            - { name: security.voter }
+        public: false
+    loki_tuo_result.queue_item.manager:
+        class: LokiTuoResultBundle\Service\QueueItem\Service
+        arguments:
+          - "@doctrine.orm.default_entity_manager"
+          - "@translator"
+    loki_tuo_result.tu_api.battle.producer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuApiProducer
+        arguments:
+          - "@old_sound_rabbit_mq.tu_api.battle_producer"
+          - "@doctrine.orm.default_entity_manager"
+          - "@loki_tuo_result.queue_item.manager"
+    loki_tuo_result.tu_api.update.producer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuApiProducer
+        arguments:
+          - "@old_sound_rabbit_mq.tu_api.update_producer"
+          - "@doctrine.orm.default_entity_manager"
+          - "@loki_tuo_result.queue_item.manager"
+    loki_tuo_result.tu_api.battle.consumer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuBattleConsumer
+        arguments:
+          - "@doctrine.orm.default_entity_manager"
+          - "@loki_tuo_result.tyrant_connector"
+          - "@monolog.logger.tu_api"
+          - "@loki_tuo_result.queue_item.manager"
+    loki_tuo_result.tu_api.update.consumer:
+        class: LokiTuoResultBundle\Service\RabbitMq\TuUpdateInventoryConsumer
+        arguments:
+          - "@doctrine.orm.default_entity_manager"
+          - "@loki_tuo_result.tyrant_connector"
+          - "@monolog.logger.tu_api"
+          - "@loki_tuo_result.owned_card.manager"
+          - "@loki_tuo_result.queue_item.manager"

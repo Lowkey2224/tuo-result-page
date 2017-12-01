@@ -36,6 +36,7 @@ class Fixtures implements FixtureInterface, ContainerAwareInterface
             __DIR__ . '/fixtures/guilds.yml',
             __DIR__ . '/fixtures/cardfile.yml',
             __DIR__ . '/fixtures/cards.yml',
+            __DIR__ . '/fixtures/cardlevel.yml',
             __DIR__ . '/fixtures/players.yml',
             __DIR__ . '/fixtures/ownedCards.yml',
             __DIR__ . '/fixtures/bges.yml',

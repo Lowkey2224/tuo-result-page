@@ -77,15 +77,19 @@ class Service
             try {
                 switch ($file->getVersion()) {
                     case 1:
+                        $this->logger->info(sprintf("Importing file with id %d as text", $file->getId()));
                         $txtImporter->importFile($file, $count);
                         break;
                     case 2:
+                        $this->logger->info(sprintf("Importing file with id %d as json", $file->getId()));
                         $jsonImporter->importFile($file, $count);
                         break;
                     default:
                         throw new Exception('Unknown Resultfile Version');
                 }
             } catch (Exception $ex) {
+                $this->logger->error($ex->getMessage());
+                $this->logger->error($ex->getTraceAsString());
                 $file->setStatus(ResultFile::STATUS_ERROR);
                 $this->em->persist($file);
             }

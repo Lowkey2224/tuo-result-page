@@ -2,6 +2,14 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="de" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="nav.help">
+                <source>nav.help</source>
+                <target>Hilfe</target>
+            </trans-unit>
+            <trans-unit id="nav.help.tuCredentials">
+                <source>nav.help.tuCredentials</source>
+                <target>Inventar Import</target>
+            </trans-unit>
             <trans-unit id="Back_to_top">
                 <source>Back to top</source>
                 <target>Zurück nach oben</target>
@@ -25,6 +33,26 @@
             <trans-unit id="Save">
                 <source>Save</source>
                 <target>Speichern</target>
+            </trans-unit>
+            <trans-unit id="update.inventory">
+                <source>update.inventory</source>
+                <target>Karten Aktualisieren</target>
+            </trans-unit>
+            <trans-unit id="update.inventories">
+                <source>update.inventories</source>
+                <target>Karten Aktualisieren</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.title">
+                <source>ownedcard.player.title %name%</source>
+                <target>Inventar für Spieler %name%</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.timeout">
+                <source>ownedcard.player.update.timeout</source>
+                <target>Wegen hoher Serverlast dauert das Aktualisieren etwas länger. Komm in ein paar Minuten wieder und lade die Seite neu.</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.no_credentials">
+                <source>ownedcard.player.update.no_credentials</source>
+                <target>Der Benutzer hat keine Tyrant Unleashed Zugangsdaten hinterlegt. Bitte füge sie zu erst hinzu.</target>
             </trans-unit>
         </body>
     </file>

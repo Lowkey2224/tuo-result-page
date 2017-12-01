@@ -3,15 +3,34 @@
 {% block title %}Results for Player {{ player.name }}{% endblock %}
 
 {% block body %}
+
+    <div class="row">
+        <div class="col-md-4 text-left">
+            <a href="{{ path('loki.tuo.player.all.show') }}">
+                <h3>{{ 'player.list'|trans }}</h3>
+            </a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a href="{{ path('loki.tuo.player.edit', {'id': player.id}) }}">
+                <h3>{{ 'player.edit'|trans }}</h3>
+            </a>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="{{ path('loki.tuo.ownedcard.cards.show', {'id': player.id}) }}">
+                <h3>{{ 'player.owned-cards'|trans }}</h3>
+            </a>
+        </div>
+    </div>
+
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-6 col-md-offset-3 text-center">
-            <h2 style="margin-top: 0;">Results for {{ player.name }}</h2>
+            <h2 style="margin-top: 0;">{{ 'player.show.title %name%'|trans({'%name%' : player.name}) }}</h2>
         </div>
     </div>
     {% for result in results %}
         {% include '@LokiTuoResult/partials/showSingleResult.html.twig' with {'result': result} only %}
     {% endfor %}
     <div class="row" style="margin-top: 20px;">
-        <div class="pull-left"><a href="{{ path("tuo.index") }}">back to overview</a></div>
+        <div class="pull-left"><a href="{{ path("tuo.index") }}">{{ 'index.back'|trans }}</a></div>
     </div>
 {% endblock %}

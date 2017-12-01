@@ -1,0 +1,14 @@
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans %}
+        nav.queue{% endtrans %}<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        {% for item in items %}
+            <li><i class="glyphicon glyphicon-{{ item.statusName }}"></i> {{ item.message }}
+                <small>by User {{ item.updatedBy.username }}</small>
+            </li>
+            {% if not loop.last %}
+                <li role="separator" class="divider"></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</li>

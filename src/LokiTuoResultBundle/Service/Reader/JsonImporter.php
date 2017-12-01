@@ -75,7 +75,7 @@ class JsonImporter extends AbstractImporter
             $this->em->persist($missionEntity);
             foreach ($mission->results as $result) {
                 if (!$result->result) {
-                    $this->logger->info(sprintf("Player %s has no result for mission with UUID %s", $result->player,
+                    $this->logger->warning(sprintf("Player %s has no result for mission with UUID %s", $result->player,
                         $uuid));
                     continue;
                 }
@@ -91,11 +91,9 @@ class JsonImporter extends AbstractImporter
                 $resultEntity->setGuild($guilds->get($result->guild_id));
                 $resultEntity->setMission($missionEntity);
                 $resultEntity->setPlayer($player);
-                //TODO Create real Deck
                 $this->deleteOldDeck($resultEntity);
                 $deck = $this->createDeck($parsed['deck'], $resultEntity, $cards);
                 $resultEntity->setDeck($deck);
-//                $resultEntity->setDeck($parsed['deck']);
                 $resultEntity->setPercent($parsed['percent']);
                 $resultEntity->setSourceFile($resultFile);
                 $results->push($resultEntity);

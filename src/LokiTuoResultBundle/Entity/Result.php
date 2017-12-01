@@ -55,6 +55,19 @@ class Result extends AbstractBaseEntity
      */
     private $guild;
 
+    public function getStyleClass()
+    {
+        if ($this->percent > 850) {
+            return "success";
+        } elseif ($this->percent > 650) {
+            return "info";
+        } elseif ($this->percent > 500) {
+            return "warning";
+        } else {
+            return "danger";
+        }
+    }
+
     public function __construct()
     {
         $this->deck = new ArrayCollection();

@@ -1,6 +1,6 @@
 language: php
 php:
-  - 7
+  - 7.0.8
   - 7.1
 
 services:
@@ -11,8 +11,10 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  global:
-    - TEST_SUITE=all
+  - TEST_SUITE=Command
+  - TEST_SUITE=Controller
+  - TEST_SUITE=Unit
+  - TEST_SUITE=User
 git:
   depth: 3
 before_install:
@@ -26,9 +28,9 @@ install:
   - if [ "$dependencies" = "highest" ]; then composer update  --prefer-dist -n; fi;
 
 before_script:
-  - php bin/console doctrine:database:create --env=test
-  - php bin/console doctrine:schema:create --env=test
-  - php bin/console doctrine:fixtures:load -n  --env=test
+  - if [ "$TEST_SUITE" = "Controller" ] || [ "$TEST_SUITE" = "Command" ] || [ "$TEST_SUITE" = "User" ]; then php bin/console doctrine:database:create --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Controller" ] || [ "$TEST_SUITE" = "Command" ] || [ "$TEST_SUITE" = "User" ]; then php bin/console doctrine:schema:create --env=test ; fi;
+  - if [ "$TEST_SUITE" = "Controller" ] || [ "$TEST_SUITE" = "Command" ] || [ "$TEST_SUITE" = "User" ]; then php bin/console doctrine:fixtures:load -n  --env=test ; fi;
 
 script:
   - "phpdbg -qrr ./vendor/bin/phpunit --testsuite $TEST_SUITE"

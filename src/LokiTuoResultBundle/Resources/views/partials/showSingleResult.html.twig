@@ -1,13 +1,4 @@
-{% if result.percent > 850 %}
-    {% set class = "panel-success" %}
-{% elseif result.percent > 650 %}
-    {% set class = "panel-info" %}
-{% elseif result.percent > 500 %}
-    {% set class = "panel-warning" %}
-{% else %}
-    {% set class = "panel-danger" %}
-{% endif %}
-<div class="panel {{ class }}">
+<div class="panel panel-{{ result.styleClass }}">
     <div class="panel-heading">
 
         Player: <a
@@ -17,7 +8,7 @@
         <a href="{{ path("tuo.resultfile.show", {'id': result.sourceFile.id}) }}">
             <i class="pull-right glyphicon glyphicon-floppy-save"></i>
         </a>
-        <a href="{{ path("loki.tuo.player.cards.show", {'id': result.player.id}) }}">
+        <a href="{{ path("loki.tuo.ownedcard.cards.show", {'id': result.player.id}) }}">
             <i class="pull-right glyphicon glyphicon-zoom-in"></i>
         </a>
 
@@ -26,8 +17,8 @@
     <div class="panel-body">
         {% for deckEntry in result.deck %}
             {{ deckEntry.card }}
-            {% if deckEntry.level %}
-                Level {{ deckEntry.level }}
+            {% if deckEntry.card.level %}
+                Level {{ deckEntry.card.level }}
             {% endif %}
             <br/>
         {% endfor %}

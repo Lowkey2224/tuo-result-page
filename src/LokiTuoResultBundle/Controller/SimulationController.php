@@ -173,8 +173,7 @@ class SimulationController extends Controller
      */
     public function getFileAction(ResultFile $file)
     {
-        $filename = 'result.txt';
-
+        $filename = $file->getOriginalName();
         return new Response($file->getContent(), 200, [
             'content-type'        => 'text/text',
             'cache-control'       => 'private',
@@ -207,41 +206,6 @@ class SimulationController extends Controller
 
         return $this->render('@LokiTuoResult/Simulation/upload.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/test", name="loki.tuo.test")
-     * @Security("has_role('ROLE_USER')")
-     */
-    public function testAction()
-    {
-        $pr     = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Player');
-        $player = $pr->find(36);
-        $sim    = new Simulation();
-        $sim->setPlayer([$player]);
-        $sim->setGuild('CTN');
-        $sim->setMissions('Steel Mutant-10');
-        $sim->setIterations(1);
-        $sim->setSimType('climb');
-
-        $m = $this->get('loki_tuo_result.vpc_simulation.manager');
-        $m->post2($sim);
-        $form = $this->getUploadForm();
-
-        return $this->render('LokiTuoResultBundle:partials:UploadModal.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function getUploadForm()
-    {
-        return $this->createForm(ResultFileType::class, null, [
-            'action' => $this->generateUrl('loki.tuo.result.upload'),
-            'method' => 'POST',
         ]);
     }
 }

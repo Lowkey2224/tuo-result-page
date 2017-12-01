@@ -1,19 +1,16 @@
 LokiTuoResultBundle\Entity\OwnedCard:
   loki_{Malika, StonewallGarrison, Inheritor}:
-    level: null
     amount: 1
     amountInDeck: 1
     player: '@player_loki'
-    card: '@<current()>'
+    card: '@<current()>lvl1'
   lowkey_{Malika, StonewallGarrison, Inheritor}:
-    level: null
     amount: 1
     amountInDeck: 1
     player: '@player_lowkey'
-    card: '@<current()>'
+    card: '@<current()>lvl1'
   loken_{Malika, StonewallGarrison, Inheritor}:
-    level: null
     amount: 1
     amountInDeck: 1
     player: '@player_loken'
-    card: '@<current()>'
+    card: '@<current()>lvl1'

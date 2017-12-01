@@ -25,4 +25,31 @@ class PlayerRepository extends AbstractBaseRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllWithCredentials()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.kongCredentials', 'kongCredentials')
+            ->addSelect(['kongCredentials'])
+            ->where('p.active = :active')
+            ->setParameter('active', true);
+
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findWithOwnedCards($id)
+    {
+        $qb = $this->createQueryBuilder('player')
+            ->leftJoin('player.ownedCards', 'ownedCards')
+            ->leftJoin('ownedCards.card', 'cardLevel')
+            ->leftJoin('cardLevel.card', 'card')
+            ->addSelect(['ownedCards'])
+            ->addSelect(['cardLevel'])
+            ->addSelect(['card'])
+            ->where('player.id = :id')
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->getSingleResult();
+    }
 }

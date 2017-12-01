@@ -54,17 +54,53 @@ class Player extends AbstractBaseEntity
     private $owner;
 
     /**
+     * @var KongregateCredentials
+     * @ORM\OneToOne(targetEntity="LokiTuoResultBundle\Entity\KongregateCredentials", cascade={"persist"})
+     * @ORM\JoinColumn(name="kong_credentials_id", referencedColumnName="id")
+     */
+    private $kongCredentials;
+
+    /**
      * @var bool
      * @ORM\Column(type="boolean")
      */
     private $ownershipConfirmed;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $lastApiMessage;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $lastApiTime;
+
+    /**
+     * @var Message[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Message", mappedBy="player")
+     */
+    private $messages;
+
     public function __construct()
     {
-        $this->results            = new ArrayCollection();
-        $this->ownedCards         = new ArrayCollection();
-        $this->active             = true;
+        $this->results = new ArrayCollection();
+        $this->ownedCards = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->active = true;
         $this->ownershipConfirmed = false;
+        $this->kongCredentials = new KongregateCredentials();
+    }
+
+    /**
+     * Checks if the User has Credentials usable with the Tyrant Unleashed API
+     * @return bool
+     */
+    public function hasKongCredentials()
+    {
+        return $this->kongCredentials && $this->kongCredentials->isValid();
     }
 
     public function __toString()
@@ -216,4 +252,77 @@ class Player extends AbstractBaseEntity
     {
         $this->guild = $guild;
     }
+
+    /**
+     * @return KongregateCredentials
+     */
+    public function getKongCredentials(): KongregateCredentials
+    {
+        return $this->kongCredentials;
+    }
+
+    /**
+     * @param KongregateCredentials $kongCredentials
+     * @return Player
+     */
+    public function setKongCredentials(KongregateCredentials $kongCredentials)
+    {
+        $this->kongCredentials = $kongCredentials;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastApiMessage()
+    {
+        return $this->lastApiMessage;
+    }
+
+    /**
+     * @param string $lastApiMessage
+     * @return Player
+     */
+    public function setLastApiMessage(string $lastApiMessage)
+    {
+        $this->lastApiMessage = $lastApiMessage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastApiTime()
+    {
+        return $this->lastApiTime;
+    }
+
+    /**
+     * @param int $lastApiTime
+     * @return Player
+     */
+    public function setLastApiTime(int $lastApiTime)
+    {
+        $this->lastApiTime = $lastApiTime;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Message[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param ArrayCollection|Message[] $messages
+     * @return Player
+     */
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+        return $this;
+    }
+
 }

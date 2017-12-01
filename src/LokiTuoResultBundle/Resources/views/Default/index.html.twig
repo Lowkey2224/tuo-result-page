@@ -1,20 +1,12 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}CTP/CNS Simming Results{% endblock %}
+{% block title %}{{ 'index.title'|trans }}{% endblock %}
 
 {% block body %}
-
-    {#{% include '@LokiTuoResult/partials/UploadModal.html.twig' with {'form': form} only %}#}
-
     <div class="row" style="padding: 5px">
-        {#{% if is_granted('ROLE_ADMIN') %}#}
-        {#<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#uploadModal">#}
-        {#Upload Sim Result#}
-        {#</button>#}
-        {#{% endif %}#}
         <a href="{{ path('loki.tuo.sim.create') }}">
             <button type="button" class="btn btn-info btn-md pull-right">
-                Create Simulation Script
+                {{ 'simulation.create'|trans }}
             </button>
         </a>
     </div>
@@ -22,13 +14,12 @@
     <table class="table table-striped data-table">
         <thead>
         <tr>
-            {#<th>#</th>#}
-            <th>Mission</th>
-            <th>Guilds</th>
-            <th>Type</th>
-            <th>Last Updated at</th>
+            <th>{{ 'table.header.mission'|trans }}</th>
+            <th>{{ 'table.header.guild'|trans }}</th>
+            <th>{{ 'table.header.type'|trans }}</th>
+            <th>{{ 'table.header.date'|trans }}</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th>Links</th>
+                <th>{{ 'links'|trans }}</th>
             {% endif %}
         </tr>
         </thead>
@@ -52,7 +43,7 @@
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
                         <a href="{{ path('loki.tuo.mission.edit', {'id': mission.0.id}) }}">
-                            Edit
+                            {{ 'edit'|trans }}
                         </a>
                     </td>
                 {% endif %}
@@ -65,11 +56,11 @@
 
 
     <div class="row">
-        <a href="{{ path('loki.tuo.player.all.show') }}"><h4>Playerlist</h4></a>
+        <a href="{{ path('loki.tuo.player.all.show') }}"><h4>{{ 'player.list'|trans }}</h4></a>
     </div>
 
     <div class="row" style="margin-top: 20px;">
 
-        Simulations and website done by LokiMcFly<br/>
+        {{ 'footer.text'|trans }}<br/>
     </div>
 {% endblock %}

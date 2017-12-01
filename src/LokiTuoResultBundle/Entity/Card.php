@@ -2,6 +2,7 @@
 
 namespace LokiTuoResultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Card extends AbstractBaseEntity
 {
-    public $skillDelimiter = '|';
 
     /**
      * @var string
@@ -21,40 +21,6 @@ class Card extends AbstractBaseEntity
      * @ORM\Column(name="Name", type="string", length=255, unique=true)
      */
     private $name;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Attack", type="integer")
-     */
-    private $attack;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Defense", type="integer")
-     */
-    private $defense;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Delay", type="integer")
-     */
-    private $delay;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Picture", type="string", length=255, nullable=true)
-     */
-    private $picture;
-
-    /**
-     * @var
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $skills;
 
     /**
      * @var CardFile
@@ -69,36 +35,20 @@ class Card extends AbstractBaseEntity
      */
     private $race;
 
+    /**
+     * @var CardLevel[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="CardLevel", mappedBy="card", cascade={"remove", "persist"}, orphanRemoval=true, fetch="EAGER")
+     */
+    private $levels;
+
     public function __toString()
     {
-        try {
-            $str = $this->getName();
-            $str .= ' ';
-            $str .= $this->getDelay();
-            $str .= '/';
-            $str .= $this->getAttack();
-            $str .= '/';
-            $str .= $this->getDefense();
-            $str .= ' ';
-
-            foreach ($this->getSkills() as $skill) {
-                $str .= $skill . ' ';
-            }
-            $str .= ' (' . self::getFactionName($this->getRace()) . ')';
-        } catch (\Exception $ex) {
-            echo $ex->getMessage() . "\n";
-            echo $ex->getTraceAsString();
-            $str = '';
-        }
-
-        return $str;
+        return $this->getName();
     }
 
     public function __construct()
     {
-        $this->defense = 0;
-        $this->delay   = 0;
-        $this->attack  = 0;
+        $this->levels = new ArrayCollection();
     }
 
     /**
@@ -126,102 +76,6 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * Set attack.
-     *
-     * @param int $attack
-     *
-     * @return Card
-     */
-    public function setAttack($attack)
-    {
-        $this->attack = (int)$attack;
-
-        return $this;
-    }
-
-    /**
-     * Get attack.
-     *
-     * @return int
-     */
-    public function getAttack()
-    {
-        return $this->attack;
-    }
-
-    /**
-     * Set defense.
-     *
-     * @param int $defense
-     *
-     * @return Card
-     */
-    public function setDefense($defense)
-    {
-        $this->defense = (int)$defense;
-
-        return $this;
-    }
-
-    /**
-     * Get defense.
-     *
-     * @return int
-     */
-    public function getDefense()
-    {
-        return $this->defense;
-    }
-
-    /**
-     * Set delay.
-     *
-     * @param int $delay
-     *
-     * @return Card
-     */
-    public function setDelay($delay)
-    {
-        $this->delay = (int)$delay;
-
-        return $this;
-    }
-
-    /**
-     * Get delay.
-     *
-     * @return int
-     */
-    public function getDelay()
-    {
-        return $this->delay;
-    }
-
-    /**
-     * Set picture.
-     *
-     * @param string $picture
-     *
-     * @return Card
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    /**
-     * Get picture.
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
-    }
-
-    /**
      * @return CardFile
      */
     public function getCardFile()
@@ -238,27 +92,19 @@ class Card extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
-     */
-    public function getSkills()
-    {
-        return $this->skills;
-    }
-
-    /**
-     * @param mixed $skills
-     */
-    public function setSkills($skills)
-    {
-        $this->skills = $skills;
-    }
-
-    /**
      * @return int
      */
     public function getRace()
     {
         return $this->race;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRaceName()
+    {
+        return self::getFactionName($this->getRace());
     }
 
     /**
@@ -288,4 +134,57 @@ class Card extends AbstractBaseEntity
                 return $factionId;
         }
     }
+
+    /**
+     * Returns an ArrayCollection with Keys = tuId
+     * @return ArrayCollection|CardLevel[]
+     */
+    public function getLevels()
+    {
+        return $this->levels;
+    }
+
+    /**
+     * @param int $tuoId
+     * @return CardLevel|null
+     */
+    public function getLevelByTuId(int $tuoId)
+    {
+        return $this->levels->get($tuoId);
+    }
+
+    /**
+     * Returns the CardLEvel with the desired Level or null if no level exists.
+     * @param int $level
+     * @return CardLevel|null
+     */
+    public function getLevel(int $level = null)
+    {
+        $useMax = is_null($level);
+        $return = null;
+        foreach ($this->getLevels() as $elem) {
+            if ($useMax) {
+                $level = max($level, $elem->getLevel());
+            }
+            if ($elem->getLevel() === $level) {
+                $return = $elem;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param ArrayCollection|CardLevel[] $levels
+     * @return Card
+     */
+    public function setLevels($levels)
+    {
+        $this->levels = new ArrayCollection();
+        foreach ($levels as $level) {
+            $this->levels->set($level->getTuoId(), $level);
+        }
+        return $this;
+    }
+
 }

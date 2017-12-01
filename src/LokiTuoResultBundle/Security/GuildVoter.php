@@ -7,8 +7,8 @@ use LokiUserBundle\Entity\User;
 
 class GuildVoter extends AbstractVoter
 {
-    const VIEW   = 'view.guild';
-    const EDIT   = 'edit.guild';
+    const VIEW = 'view.guild';
+    const EDIT = 'edit.guild';
 
     /**
      * returns the class name of the supported class.
@@ -40,9 +40,6 @@ class GuildVoter extends AbstractVoter
 
     protected function canEdit(Guild $guild, User $user)
     {
-        $correctRole = $user->hasRole('ROLE_MODERATOR')
-            || $user->hasRole('ROLE_ADMIN');
-
-        return $correctRole;
+        return $user->hasRole('ROLE_MODERATOR');
     }
 }

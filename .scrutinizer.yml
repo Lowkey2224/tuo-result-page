@@ -9,6 +9,7 @@ filter:
         - 'bin/*'
         - 'var/*'
         - 'composer.lock'
+        - 'src/*/DataFixtures'
 checks:
     php: true
     javascript: true
@@ -28,9 +29,9 @@ build:
             - php bin/console doctrine:fixtures:load -n --env=test
         override:
             -
-                command: 'vendor/bin/phpunit --coverage-clover=some-file'
+                command: 'vendor/bin/phpunit --coverage-clover=coverage.xml'
                 coverage:
-                    file: 'some-file'
+                    file: 'coverage.xml'
                     format: 'clover'
     environment:
         php: '7.0.8'

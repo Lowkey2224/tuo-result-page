@@ -2,6 +2,82 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="base.title">
+                <source>base.title</source>
+                <target>Tyrant Unleashed Optimizer Results</target>
+            </trans-unit>
+            <trans-unit id="nav.title">
+                <source>nav.title</source>
+                <target>tuo simulations</target>
+            </trans-unit>
+            <trans-unit id="nav.simulation">
+                <source>nav.simulation</source>
+                <target>Simulation</target>
+            </trans-unit>
+            <trans-unit id="nav.simulation.index">
+                <source>nav.simulation.index</source>
+                <target>All Simulations</target>
+            </trans-unit>
+            <trans-unit id="nav.simulation.create">
+                <source>nav.simulation.create</source>
+                <target>Create SimScript</target>
+            </trans-unit>
+            <trans-unit id="nav.simulation.upload">
+                <source>nav.simulation.upload</source>
+                <target>Upload Result</target>
+            </trans-unit>
+            <trans-unit id="nav.player">
+                <source>nav.player</source>
+                <target>Players</target>
+            </trans-unit>
+            <trans-unit id="nav.admin">
+                <source>nav.admin</source>
+                <target>Administration</target>
+            </trans-unit>
+            <trans-unit id="nav.admin.import">
+                <source>nav.admin.import</source>
+                <target>Imports</target>
+            </trans-unit>
+            <trans-unit id="nav.admin.user">
+                <source>nav.admin.user</source>
+                <target>Users</target>
+            </trans-unit>
+            <trans-unit id="nav.admin.card">
+                <source>nav.admin.card</source>
+                <target>Cards</target>
+            </trans-unit>
+            <trans-unit id="nav.admin.guild">
+                <source>nav.admin.guild</source>
+                <target>Guilds</target>
+            </trans-unit>
+            <trans-unit id="nav.welcome">
+                <source>nav.welcome %name%</source>
+                <target>Welcome, %name%</target>
+            </trans-unit>
+            <trans-unit id="nav.login">
+                <source>nav.login</source>
+                <target>Login</target>
+            </trans-unit>
+            <trans-unit id="nav.register">
+                <source>nav.register</source>
+                <target>Register</target>
+            </trans-unit>
+            <trans-unit id="nav.logout">
+                <source>nav.logout</source>
+                <target>Logout</target>
+            </trans-unit>
+            <trans-unit id="nav.help">
+                <source>nav.help</source>
+                <target>Help</target>
+            </trans-unit>
+            <trans-unit id="nav.help.tuCredentials">
+                <source>nav.help.tuCredentials</source>
+                <target>Inventory Import</target>
+            </trans-unit>
+            <trans-unit id="nav.queue">
+                <source>nav.queue</source>
+                <target>Queue Status</target>
+            </trans-unit>
             <trans-unit id="Back_to_top">
                 <source>Back to top</source>
                 <target>Back to top</target>
@@ -14,9 +90,73 @@
                 <source>save</source>
                 <target>Save</target>
             </trans-unit>
+            <trans-unit id="edit">
+                <source>edit</source>
+                <target>edit</target>
+            </trans-unit>
+            <trans-unit id="delete">
+                <source>delete</source>
+                <target>delete</target>
+            </trans-unit>
             <trans-unit id="close">
                 <source>close</source>
                 <target>Close</target>
+            </trans-unit>
+            <trans-unit id="back">
+                <source>back</source>
+                <target>back</target>
+            </trans-unit>
+            <trans-unit id="links">
+                <source>links</source>
+                <target>links</target>
+            </trans-unit>
+            <trans-unit id="success">
+                <source>success</source>
+                <target>success</target>
+            </trans-unit>
+            <trans-unit id="error">
+                <source>error</source>
+                <target>error</target>
+            </trans-unit>
+            <trans-unit id="table.header.date">
+                <source>table.header.date</source>
+                <target>last updated</target>
+            </trans-unit>
+            <trans-unit id="table.header.mission">
+                <source>table.header.mission</source>
+                <target>mission</target>
+            </trans-unit>
+            <trans-unit id="table.header.missions">
+                <source>table.header.missions</source>
+                <target>missions</target>
+            </trans-unit>
+            <trans-unit id="table.header.guild">
+                <source>table.header.guild</source>
+                <target>guild</target>
+            </trans-unit>
+            <trans-unit id="table.header.type">
+                <source>table.header.type</source>
+                <target>type</target>
+            </trans-unit>
+            <trans-unit id="table.header.name">
+                <source>table.header.name</source>
+                <target>name</target>
+            </trans-unit>
+            <trans-unit id="table.header.active">
+                <source>table.header.active</source>
+                <target>active</target>
+            </trans-unit>
+            <trans-unit id="table.header.status">
+                <source>table.header.status</source>
+                <target>status</target>
+            </trans-unit>
+            <trans-unit id="table.header.comment">
+                <source>table.header.comment</source>
+                <target>comment</target>
+            </trans-unit>
+            <trans-unit id="table.header.owner">
+                <source>table.header.owner</source>
+                <target>owner</target>
             </trans-unit>
             <trans-unit id="form.simulation.missions">
                 <source>form.simulation.missions</source>
@@ -69,6 +209,158 @@
             <trans-unit id="form.simulation.generate">
                 <source>form.simulation.generate</source>
                 <target>Generate Script</target>
+            </trans-unit>
+            <trans-unit id="update.inventory">
+                <source>update.inventory</source>
+                <target>Update Cards</target>
+            </trans-unit>
+            <trans-unit id="update.inventory.queue.success">
+                <source>update.inventory.queue.success</source>
+                <target>update cards request queued</target>
+            </trans-unit>
+            <trans-unit id="update.player.queue.description">
+                <source>update.player.queue.description %name%</source>
+                <target>Updating inventory for Player %name%</target>
+            </trans-unit>
+            <trans-unit id="battle.player.queue.description">
+                <source>battle.player.queue.description %name%</source>
+                <target>Doing Battles for Player %name%</target>
+            </trans-unit>
+            <trans-unit id="update.inventories">
+                <source>update.inventories</source>
+                <target>Update Cards</target>
+            </trans-unit>
+            <trans-unit id="update.inventories.queue.success">
+                <source>update.inventories.queue.success</source>
+                <target>update inventories request queued</target>
+            </trans-unit>
+            <trans-unit id="do.battle">
+                <source>do.battle</source>
+                <target>Battle all available Battles</target>
+            </trans-unit>
+            <trans-unit id="do.battle.queue.success">
+                <source>do.battle.queue.success</source>
+                <target>Battle request queued</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.show.title">
+                <source>ownedcard.show.title %name%</source>
+                <target>Owned Cards for Player %name%</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.show.body.deck">
+                <source>ownedcard.show.body.deck %name%</source>
+                <target>Deck for Player: %name%</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.show.body.inventory">
+                <source>ownedcard.show.body.inventory %name%</source>
+                <target>Inventory for Player: %name%</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.show.body.inventory.add.deck">
+                <source>ownedcard.show.body.inventory.add.deck</source>
+                <target>add to deck</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.show.body.inventory.add.success">
+                <source>ownedcard.show.body.inventory.add.success</source>
+                <target>_NAME_ with level _LEVEL_ added _AMOUNT_ times</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.already_running">
+                <source>ownedcard.player.update.already_running %name%</source>
+                <target>Currently the user %name% is running the import, please try again later.</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.timeout">
+                <source>ownedcard.player.update.timeout</source>
+                <target>Due to high load updating your inventory takes some time. come back in a few minutes and refresh the page.</target>
+            </trans-unit>
+            <trans-unit id="ownedcard.player.update.no_credentials">
+                <source>ownedcard.player.update.no_credentials</source>
+                <target>This user has no Credentials for Tyrant Unleashed. Please add them first.</target>
+            </trans-unit>
+            <trans-unit id="simulation.create">
+                <source>simulation.create</source>
+                <target>Create Simulation Script</target>
+            </trans-unit>
+            <trans-unit id="player.list">
+                <source>player.list</source>
+                <target>Player overview</target>
+            </trans-unit>
+            <trans-unit id="footer.text">
+                <source>footer.text</source>
+                <target>Simulations and website done by LokiMcFly</target>
+            </trans-unit>
+            <trans-unit id="mission.show.title">
+                <source>mission.show.title %name%</source>
+                <target>Results for %name%</target>
+            </trans-unit>
+            <trans-unit id="index.back">
+                <source>index.back</source>
+                <target>back to overview</target>
+            </trans-unit>
+            <trans-unit id="index.title">
+                <source>index.title</source>
+                <target>Simulation Results</target>
+            </trans-unit>
+            <trans-unit id="guild.edit.title">
+                <source>guild.edit.title %name%</source>
+                <target>Edit guild %name%</target>
+            </trans-unit>
+            <trans-unit id="guild.index.title">
+                <source>guild.index.title</source>
+                <target>All guilds</target>
+            </trans-unit>
+            <trans-unit id="guild.index.add">
+                <source>guild.index.add</source>
+                <target>Add guild</target>
+            </trans-unit>
+            <trans-unit id="import.index.title">
+                <source>import.index.title</source>
+                <target>All Resultfiles and their Status</target>
+            </trans-unit>
+            <trans-unit id="player.edit.title">
+                <source>player.edit.title %name%</source>
+                <target>Edit player %name%</target>
+            </trans-unit>
+            <trans-unit id="player.edit">
+                <source>player.edit</source>
+                <target>Edit player</target>
+            </trans-unit>
+            <trans-unit id="player.index.title">
+                <source>player.index.title</source>
+                <target>all players</target>
+            </trans-unit>
+            <trans-unit id="player.index.add.player">
+                <source>player.index.add.player</source>
+                <target>add players</target>
+            </trans-unit>
+            <trans-unit id="player.show.title">
+                <source>player.show.title %name%</source>
+                <target>results for %name%</target>
+            </trans-unit>
+            <trans-unit id="player.results">
+                <source>player.results</source>
+                <target>show results</target>
+            </trans-unit>
+            <trans-unit id="player.owned-cards">
+                <source>player.owned-cards</source>
+                <target>show inventory</target>
+            </trans-unit>
+            <trans-unit id="simulation.edit.title">
+                <source>simulation.edit.title %name%</source>
+                <target>edit mission %name%</target>
+            </trans-unit>
+            <trans-unit id="simulation.index.title">
+                <source>simulation.index.title</source>
+                <target>create simulation script</target>
+            </trans-unit>
+            <trans-unit id="simulation.upload.title">
+                <source>simulation.upload.title</source>
+                <target>upload simulation result</target>
+            </trans-unit>
+            <trans-unit id="simulation.upload.description">
+                <source>simulation.upload.description</source>
+                <target>Upload your simulation result here</target>
+            </trans-unit>
+            <trans-unit id="claim.card">
+                <source>claim.card</source>
+                <target>Claim Bonus Card</target>
             </trans-unit>
         </body>
     </file>

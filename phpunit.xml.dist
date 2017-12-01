@@ -8,19 +8,29 @@
          bootstrap="app/autoload.php"
 >
     <php>
-        <ini name="error_reporting" value="-1" />
-        <server name="KERNEL_DIR" value="app/" />
+        <ini name="error_reporting" value="-1"/>
+        <server name="KERNEL_DIR" value="app/"/>
     </php>
 
     <testsuites>
         <testsuite name="all">
             <directory>tests</directory>
+            <directory>src/*/tests</directory>
         </testsuite>
-        <testsuite name="controller">
-            <directory>tests/*/Controller</directory>
+        <testsuite name="Integration">
+            <directory>tests/*/Integration/*</directory>
         </testsuite>
-        <testsuite name="command">
-            <directory>tests/*/Command</directory>
+        <testsuite name="Controller">
+            <directory>tests/LokiTuoResultBundle/Integration/Controller</directory>
+        </testsuite>
+        <testsuite name="Command">
+            <directory>tests/*/Integration/Command</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>tests/*/Unit/*</directory>
+        </testsuite>
+        <testsuite name="User">
+            <directory>tests/LokiUserBundle/*</directory>
         </testsuite>
     </testsuites>
 
