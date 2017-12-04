@@ -45,7 +45,7 @@ class MessageController extends Controller
      */
     public function countUserMessageAction()
     {
-        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_REMEMBERED");
         $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
         $totalCount = $repo->countForUser($this->getUser());
         return $this->json(["count" => $totalCount]);

@@ -280,7 +280,7 @@ class OwnedCardController extends Controller
 
         $massOwnedCardForm = $this->createForm(MassOwnedCardType::class, null, [
             'action' => $this->generateUrl('loki.tuo.ownedcard.card.add.mass', ['id' => $player->getId()]),
-            'method' => 'POST',
+            'method' => 'PUT',
         ]);
 
         return $this->render('LokiTuoResultBundle:OwnedCard:show_cards_for_player.html.twig', [

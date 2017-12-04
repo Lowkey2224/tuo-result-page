@@ -36,6 +36,7 @@
      aria-labelledby="massAddOwnedCardModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            {{ form_start(massForm) }}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
@@ -44,7 +45,7 @@
             <div class="modal-body ui-front">
                 <div id="jsFlash"></div>
                 <h4>Note, that you have to Separate each Card with a new Line.</h4>
-                {{ form_start(massForm) }}
+
 
                 <div class=" ui-widget form-group">
                     {{ form_row(massForm.cards) }}
@@ -53,8 +54,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 {{ form_widget(massForm.submit, {'attr' : {'class': 'btn btn-success'}}) }}
-                {{ form_end(massForm) }}
+
             </div>
+            {{ form_end(massForm) }}
         </div>
     </div>
 </div>

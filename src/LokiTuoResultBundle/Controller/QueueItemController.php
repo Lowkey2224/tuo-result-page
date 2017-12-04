@@ -19,7 +19,7 @@ class QueueItemController extends Controller
      */
     public function indexAction()
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $repo = $this->getDoctrine()->getRepository("LokiTuoResultBundle:QueueItem");
         $items = $repo->findActive();
         return ['items' => $items];
