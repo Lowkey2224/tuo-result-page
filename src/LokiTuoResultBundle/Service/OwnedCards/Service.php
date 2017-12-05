@@ -103,13 +103,8 @@ class Service
                 continue;
             }
             $oc = new OwnedCard();
-            $selectedLevel = null;
-            foreach ($card->getLevels() as $level) {
-                if ($level->getLevel() === $cardEntry['level']) {
-                    $selectedLevel = $level;
-                    break;
-                }
-            }
+            $selectedLevel = $card->getLevel($cardEntry['level']);
+
             if (!$selectedLevel instanceof CardLevel) {
                 $this->logger->notice(sprintf('No corresponding Level %d found for Card %d', $cardEntry['level'],
                     $cardEntry['name']));

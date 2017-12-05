@@ -104,7 +104,6 @@ class OwnedCardController extends Controller
      *     methods={"PUT"})
      *
      * @param OwnedCard $oc
-     * @param OwnedCard $oc
      *
      * @return JsonResponse
      */
@@ -174,8 +173,12 @@ class OwnedCardController extends Controller
      */
     public function addMassCardsForPlayerAction(Request $request, Player $player)
     {
-        $form = $this->createForm(MassOwnedCardType::class);
+        $form = $this->createForm(MassOwnedCardType::class, null, [
+            'action' => $this->generateUrl('loki.tuo.ownedcard.card.add.mass', ['id' => $player->getId()]),
+            'method' => 'PUT',
+        ]);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $names = $form->getData();
