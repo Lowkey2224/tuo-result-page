@@ -112,7 +112,7 @@
             </trans-unit>
             <trans-unit id="form.player.kongpassword">
                 <source>form.player.kongpassword</source>
-                <target>Password</target>
+                <target>Password Hash</target>
             </trans-unit>
             <trans-unit id="form.player.kongusername">
                 <source>form.player.kongusername</source>

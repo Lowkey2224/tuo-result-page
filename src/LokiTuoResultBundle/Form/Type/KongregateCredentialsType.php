@@ -20,7 +20,7 @@ class KongregateCredentialsType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('kongPassword', TextType::class, [
-                'label' => 'form.player.konguserpassword',
+                'label' => 'form.player.kongpassword',
                 'translation_domain' => 'LokiTuoResultBundle',
                 'attr' => ['class' => 'form-control'],
             ])
