@@ -1,9 +1,19 @@
+<div class="row">
+    <h3 class="col-md-12 text-center">
+        {{ 'battlelog.message.total %count% %won% %gold% %rating%'|trans({
+            '%count%' : total.battles | number_format(0,'.', ','),
+            '%won%': total.won | number_format(0,'.', ','),
+            '%gold%' : total.gold | number_format(0,'.', ','),
+            '%rating%' : total.rating | number_format(0,'.', ',')
+        }) }}
+    </h3>
+</div>
 {% for message in messages %}
     <div class="alert alert-info alert-dismissible" role="alert">
         <button type="button" class="close message-alert" data-msg-id="{{ message.id }}" data-dismiss="alert"
                 aria-label="Close">
             <span aria-hidden="true">Mark as read</span></button>
         <small>{{ message.player.name }}:</small>
-        {{ message.message }}
+        {{ 'battlelog.message %count% %won% %gold% %rating%'|trans({'%count%' : message.battles, '%won%': message.won, '%gold%' : message.gold, '%rating%' : message.rating}) }}
     </div>
 {% endfor %}

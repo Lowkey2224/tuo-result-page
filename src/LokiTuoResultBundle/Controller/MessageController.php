@@ -3,6 +3,7 @@
 namespace LokiTuoResultBundle\Controller;
 
 
+use LokiTuoResultBundle\Entity\BattleLog;
 use LokiTuoResultBundle\Entity\Message;
 use LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,7 +31,7 @@ class MessageController extends Controller
      */
     public function countMessageAction(Player $player)
     {
-        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
+        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:BattleLog');
         $msg = $repo->findUnreadByPlayer($player);
         return $this->json(["count" => count($msg) . ""]);
     }
@@ -42,11 +43,13 @@ class MessageController extends Controller
      *     requirements={"_format": "json"}
      *     )
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function countUserMessageAction()
     {
         $this->denyAccessUnlessGranted("IS_AUTHENTICATED_REMEMBERED");
-        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
+        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:BattleLog');
         $totalCount = $repo->countForUser($this->getUser());
         return $this->json(["count" => $totalCount]);
     }
@@ -64,9 +67,10 @@ class MessageController extends Controller
      */
     public function showAction(Player $player)
     {
-        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:Message');
+        $repo = $this->getDoctrine()->getRepository('LokiTuoResultBundle:BattleLog');
         $msg = $repo->findUnreadByPlayer($player);
-        return ["messages" => $msg];
+        $total = $repo->getTotaldByPlayer($player);
+        return ["messages" => $msg, "total" => $total];
     }
 
     /**
@@ -79,7 +83,7 @@ class MessageController extends Controller
      *     )
      * @Security("is_granted('view.message', message)")
      */
-    public function markReadAction(Message $message)
+    public function markReadAction(BattleLog $message)
     {
         $message->setStatusRead();
         $this->getDoctrine()->getManager()->persist($message);

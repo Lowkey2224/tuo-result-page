@@ -79,16 +79,16 @@ class Player extends AbstractBaseEntity
     private $lastApiTime;
 
     /**
-     * @var Message[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Message", mappedBy="player")
+     * @var BattleLog[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\BattleLog", mappedBy="player")
      */
-    private $messages;
+    private $battleLogs;
 
     public function __construct()
     {
         $this->results = new ArrayCollection();
         $this->ownedCards = new ArrayCollection();
-        $this->messages = new ArrayCollection();
+        $this->battleLogs = new ArrayCollection();
         $this->active = true;
         $this->ownershipConfirmed = false;
         $this->kongCredentials = new KongregateCredentials();
@@ -308,20 +308,20 @@ class Player extends AbstractBaseEntity
     }
 
     /**
-     * @return ArrayCollection|Message[]
+     * @return ArrayCollection|BattleLog[]
      */
-    public function getMessages()
+    public function getBattleLogs()
     {
-        return $this->messages;
+        return $this->battleLogs;
     }
 
     /**
-     * @param ArrayCollection|Message[] $messages
+     * @param ArrayCollection|BattleLog[] $battleLogs
      * @return Player
      */
-    public function setMessages($messages)
+    public function setBattleLogs($battleLogs)
     {
-        $this->messages = $messages;
+        $this->battleLogs = $battleLogs;
         return $this;
     }
 

@@ -4,7 +4,7 @@ namespace LokiTuoResultBundle\Service\RabbitMq;
 
 
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\Message;
+use LokiTuoResultBundle\Entity\BattleLog;
 use LokiTuoResultBundle\Entity\Player;
 use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
 use LokiTuoResultBundle\Service\TyrantApiConnector\Service;
@@ -74,12 +74,6 @@ class TuBattleConsumer implements ConsumerInterface
             $this->logger->error("Failed to battle for Player " . $this->player->getName());
             $this->logger->error($exception->getMessage());
             $this->logger->error($exception->getTraceAsString());
-
-            $messageText = sprintf("There was a Problem fighting Battles. Please report this issue to an Administrator");
-            $msg = new Message();
-            $msg->setPlayer($this->player)
-                ->setMessage($messageText)
-                ->setStatusUnread();
             return true;
         } finally {
             $this->queueItemManager->setStatusFinished($queueItem);
@@ -95,15 +89,16 @@ class TuBattleConsumer implements ConsumerInterface
                 ++$won;
             }
         }
-        $messageText = sprintf("Fought %d battles, won %d, Won %d gold and %d rating", count($result), $won, $gold,
-            $rating);
         //Dont send a message if no Battles were fought
         if (count($result) > 0) {
-            $msg = new Message();
-            $msg->setPlayer($this->player)
-                ->setMessage($messageText)
+            $battleLog = new BattleLog();
+            $battleLog->setPlayer($this->player)
+                ->setWon($won)
+                ->setBattles(count($result))
+                ->setGold($gold)
+                ->setRating($rating)
                 ->setStatusUnread();
-            $this->em->persist($msg);
+            $this->em->persist($battleLog);
             $this->em->flush();
         }
 
