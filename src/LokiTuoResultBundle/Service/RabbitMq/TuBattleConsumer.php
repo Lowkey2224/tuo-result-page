@@ -97,12 +97,15 @@ class TuBattleConsumer implements ConsumerInterface
         }
         $messageText = sprintf("Fought %d battles, won %d, Won %d gold and %d rating", count($result), $won, $gold,
             $rating);
-        $msg = new Message();
-        $msg->setPlayer($this->player)
-            ->setMessage($messageText)
-            ->setStatusUnread();
-        $this->em->persist($msg);
-        $this->em->flush();
+        //Dont send a message if no Battles were fought
+        if (count($result) > 0) {
+            $msg = new Message();
+            $msg->setPlayer($this->player)
+                ->setMessage($messageText)
+                ->setStatusUnread();
+            $this->em->persist($msg);
+            $this->em->flush();
+        }
 
         return true;
     }
