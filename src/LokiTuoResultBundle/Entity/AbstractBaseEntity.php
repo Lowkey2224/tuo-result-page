@@ -52,6 +52,7 @@ abstract class AbstractBaseEntity
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
+        return $this;
     }
 
     /**
@@ -62,6 +63,7 @@ abstract class AbstractBaseEntity
     public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTime();
+        return $this;
     }
 
     /**
@@ -78,6 +80,7 @@ abstract class AbstractBaseEntity
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**

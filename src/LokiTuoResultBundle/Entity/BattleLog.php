@@ -182,5 +182,21 @@ class BattleLog extends AbstractBaseEntity
         return $this;
     }
 
-
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            "battles" => $this->battles,
+            "won" => $this->won,
+            "gold" => $this->gold,
+            "rating" => $this->rating,
+            "read" => $this->isRead(),
+            'player' => [
+                'id' => $this->getPlayer()->getId(),
+                'name' => $this->getPlayer()->getName(),
+            ],
+        ];
+    }
 }

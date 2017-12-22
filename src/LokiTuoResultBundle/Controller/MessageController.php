@@ -4,7 +4,6 @@ namespace LokiTuoResultBundle\Controller;
 
 
 use LokiTuoResultBundle\Entity\BattleLog;
-use LokiTuoResultBundle\Entity\Message;
 use LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -74,21 +73,21 @@ class MessageController extends Controller
     }
 
     /**
-     * @param Message $message
+     * @param BattleLog $message
      * @return JsonResponse
      * @Route("/{id}/read.{_format}",
      *     name="loki.tuo.message.read",
      *     defaults={"_format": "json"},
      *     requirements={"id":"\d+", "_format":"json"}
      *     )
-     * @Security("is_granted('view.message', message)")
      */
     public function markReadAction(BattleLog $message)
     {
+        //      * @Security("is_granted('view.message', message)")
         $message->setStatusRead();
         $this->getDoctrine()->getManager()->persist($message);
         $this->getDoctrine()->getManager()->flush();
-        return $this->json($message->serialize());
+        return $this->json($message->toArray());
     }
 
 }
