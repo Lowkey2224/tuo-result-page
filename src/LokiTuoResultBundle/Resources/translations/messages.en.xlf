@@ -363,8 +363,10 @@
                 <target>Claim Bonus Card</target>
             </trans-unit>
             <trans-unit id="battlelog.message">
-                <source>battlelog.message %count% %won% %gold% %rating%</source>
-                <target>Fought %count% battles and won %won% of them. Won %gold% gold and %rating% rating</target>
+                <source>battlelog.message %count% %won% %gold% %rating% %date%</source>
+                <target>Fought %count% battles and won %won% of them. Won %gold% gold and %rating% rating. Finished
+                    %date%
+                </target>
             </trans-unit>
             <trans-unit id="battlelog.message.total">
                 <source>battlelog.message.total %count% %won% %gold% %rating%</source>

@@ -3,6 +3,7 @@
 namespace LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use LokiTuoResultBundle\Model\Message;
 
 /**
  * Class BattleLog
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\BattleLogRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class BattleLog extends AbstractBaseEntity
+class BattleLog extends AbstractBaseEntity implements Message
 {
     const STATUS_UNREAD = 1;
     const STATUS_READ = 2;
@@ -197,6 +198,21 @@ class BattleLog extends AbstractBaseEntity
                 'id' => $this->getPlayer()->getId(),
                 'name' => $this->getPlayer()->getName(),
             ],
+        ];
+    }
+
+    public function translateParams(): array
+    {
+//
+        return [
+            'battlelog.message %count% %won% %gold% %rating% %date%',
+            [
+                '%count%' => $this->battles,
+                '%won%' => $this->won,
+                '%gold%' => $this->gold,
+                '%rating%' => $this->rating,
+                '%date%' => $this->updatedAt->format('Y-m-d H:i')
+            ]
         ];
     }
 }
