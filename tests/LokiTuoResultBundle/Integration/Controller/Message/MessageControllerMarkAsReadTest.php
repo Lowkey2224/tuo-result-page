@@ -19,9 +19,13 @@ class MessageControllerMarkAsReadTest extends AbstractControllerTest
             ->setWon(1)
             ->setPlayer($player);
         $client = $this->loginAs();
-
-//        $crawler = $client->request("GET", sprintf("/message/%d/read", $battleLog->getId()));
-        $crawler = $client->request("GET", "/message/1/read");
+        $id = 1;
+        $url = sprintf("/message/%d/read", $id);
+        $client->request("GET", $url);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $repo = $this->container->get('doctrine')->getRepository('LokiTuoResultBundle:BattleLog');
+        /** @var BattleLog $blog */
+        $blog = $repo->find($id);
+        $this->assertEquals(BattleLog::STATUS_READ, $blog->getStatus());
     }
 }
