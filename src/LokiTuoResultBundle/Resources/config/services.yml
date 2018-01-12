@@ -124,3 +124,9 @@ services:
           - "@monolog.logger.tu_api"
           - "@loki_tuo_result.owned_card.manager"
           - "@loki_tuo_result.queue_item.manager"
+    loki_tuo_result.crypto:
+        class: LokiTuoResultBundle\Service\Crypto\Crypto
+        arguments:
+          - "%crypto.method%"
+          - "%crypto.key%"
+          - "%crypto.iv%"

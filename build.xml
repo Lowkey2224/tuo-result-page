@@ -236,7 +236,7 @@
         <exec executable="php" taskname="schema:drop">
             <arg line="${console} doctrine:schema:drop --force -e=test"/>
         </exec>
-        <exec executable="php" taskname="cache:create">
+        <exec executable="php" taskname="schema:create">
             <arg line="${console} doctrine:schema:create -e=test"/>
         </exec>
         <exec executable="php" taskname="fixtures:load">

@@ -59,7 +59,6 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
                 $supports = true;
             }
         }
-
         return $supports;
     }
 
@@ -76,7 +75,7 @@ abstract class AbstractVoter extends Voter implements LoggerAwareInterface
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $user = $token->getUser();
-
+        dump($user);
         if (!$user instanceof User) {
             $this->logger->debug("User is not logged in");
             // the user must be logged in; if not, deny access

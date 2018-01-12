@@ -44,6 +44,7 @@ class Fixtures implements FixtureInterface, ContainerAwareInterface
             __DIR__ . '/fixtures/missions.yml',
             __DIR__ . '/fixtures/result.yml',
             __DIR__ . '/fixtures/deckEntry.yml',
+            __DIR__ . '/fixtures/battlelog.yml',
         ];
         $objects = \Nelmio\Alice\Fixtures::load($ary, $manager);
 

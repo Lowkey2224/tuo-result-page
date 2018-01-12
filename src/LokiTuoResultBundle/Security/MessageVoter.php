@@ -2,7 +2,7 @@
 
 namespace LokiTuoResultBundle\Security;
 
-use LokiTuoResultBundle\Entity\Message;
+use LokiTuoResultBundle\Model\Message;
 use LokiUserBundle\Entity\User;
 
 class MessageVoter extends AbstractVoter
@@ -23,6 +23,7 @@ class MessageVoter extends AbstractVoter
     protected function canView(Message $message, User $user)
     {
         $owner = $message->getPlayer()->getOwner();
+        dump($owner, $user);
         return $owner === $user;
     }
 

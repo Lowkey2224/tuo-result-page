@@ -30,3 +30,7 @@ parameters:
     rabbitmq_password: guest
     mailer_sender: Tyrant Unleashed Optimizer Results
     mailer_sender_address: foo@bar.baz
+
+    crypto.method: AES-256-CBC
+    crypto.key: ChangeThisItsNotSoSecret
+    crypto.iv: ThisIsMyInitializationVektor

@@ -56,7 +56,7 @@ var getUserBadge = function () {
 var markMessageRead = function (msgId) {
     $.ajax({
         method: "GET",
-        url: Routing.generate("loki.tuo.message.read", {id: msgId}),
+        url: Routing.generate("loki.tuo.message.read", {id: msgId}) + "?XDEBUG_SESSION_START=PHPSTORM",
         error: errCb,
         success: function (response) {
             console.log(response);
