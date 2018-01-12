@@ -14,6 +14,6 @@
                 aria-label="Close">
             <span aria-hidden="true">Mark as read</span></button>
         <small>{{ message.player.name }}:</small>
-        {{ 'battlelog.message %count% %won% %gold% %rating%'|trans({'%count%' : message.battles, '%won%': message.won, '%gold%' : message.gold, '%rating%' : message.rating}) }}
+        {{ message.translateParams[0]|trans(message.translateParams[1]) }}
     </div>
 {% endfor %}
