@@ -56,13 +56,15 @@
             {% endif %}
         </div>
     </div>
-    <div class="row">
-        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center" id="demo"></h5>
-        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Stamina: {{ info.stamina }}
-            /{{ info.maxStamina }}</h5>
-        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Energy: {{ info.energy }}
-            /{{ info.maxEnergy }}</h5>
-    </div>
+    {% if player.hasKongCredentials and info %}
+        <div class="row">
+            <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center" id="demo"></h5>
+            <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Stamina: {{ info.stamina }}
+                /{{ info.maxStamina }}</h5>
+            <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Energy: {{ info.energy }}
+                /{{ info.maxEnergy }}</h5>
+        </div>
+    {% endif %}
     <div id="updateFlash"></div>
     {% include '@LokiTuoResult/OwnedCard/_playerDeck.html.twig' with {'player': player, 'deckName' : deckName, 'deck' : deck} only %}
     {% include '@LokiTuoResult/OwnedCard/_playerInventory.html.twig' with {'player': player, 'cards' : cards} only %}
@@ -75,6 +77,7 @@
 {% block javascripts %}
     <script>
         $(function () {
+            {% if player.kongCredentials and info %}
             // Set the date we're counting down to
             var elem = $("#demo");
             //('Y-m-d\Th:i:sO')
@@ -107,7 +110,7 @@
                     elem.text('Ready');
                 }
             }, 1000);
-
+            {% endif %}
             var availableCardNames = [];
             $.get("{{ path('loki.tuo.cards.all') }}", function (data) {
                 availableCardNames = data;

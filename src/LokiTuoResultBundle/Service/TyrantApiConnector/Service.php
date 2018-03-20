@@ -57,21 +57,14 @@ class Service
             return $cardIds;
         }
         $this->logger->info(sprintf("Found %d Cards", count($cards)));
-        $countOwned = 0;
-        $countDeck = 0;
-        $countKnown = 0;
         foreach ($cards as $id => $value) {
-            $countKnown++;
             if ($value->num_owned > 0) {
-                $countOwned++;
                 $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_owned : (int)$value->num_owned;
             }
             if ($value->num_used > 0) {
-                $countDeck++;
                 $cardIds[$id]["owned"] = isset($cardIds[$id]) ? $cardIds[$id]["owned"] + $value->num_used : (int)$value->num_used;
             }
         }
-
         return $cardIds;
     }
 
@@ -80,7 +73,6 @@ class Service
         $this->logger->info(sprintf("Found %d Decks", count($decks)));
         foreach ($decks as $deck) {
             if (count($deck->cards) > 0) {
-
                 $cardIds[$deck->dominion_id]["used"] = 1;
                 $cardIds[$deck->commander_id]["used"] = 1;
                 foreach ($deck->cards as $id => $amount) {
@@ -159,6 +151,9 @@ class Service
 
     private function selectEnemy($data, int $strategy)
     {
+        if (!$strategy) {
+            return $strategy;
+        }
         $maxGold = 0;
         $targetId = 0;
         foreach ($data->hunting_targets as $id => $target) {

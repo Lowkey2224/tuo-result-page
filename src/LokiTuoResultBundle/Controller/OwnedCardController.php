@@ -278,19 +278,13 @@ class OwnedCardController extends Controller
         $combined = $deck->map(function (OwnedCard $item) {
             return $item->toDeckString();
         });
-        $formOptions = ['attr' => ['class' => 'data-remote']];
-        $ownedCardForm = $this->createForm(OwnedCardType::class, null, $formOptions);
+        $ownedCardForm = $this->createForm(OwnedCardType::class, null, ['attr' => ['class' => 'data-remote']]);
 
         $massOwnedCardForm = $this->createForm(MassOwnedCardType::class, null, [
             'action' => $this->generateUrl('loki.tuo.ownedcard.card.add.mass', ['id' => $player->getId()]),
             'method' => 'PUT',
         ]);
-        $info = null;
-        if ($player->hasKongCredentials()) {
-            $info = $this->get('loki_tuo_result.tyrant_connector')->getPlayerInfo($player);
-            $energy = $info->getEnergy();
-        }
-
+        $info = $player->hasKongCredentials() ? $this->get('loki_tuo_result.tyrant_connector')->getPlayerInfo($player) : null;
 
         return $this->render('LokiTuoResultBundle:OwnedCard:show_cards_for_player.html.twig', [
             'canEdit' => true,

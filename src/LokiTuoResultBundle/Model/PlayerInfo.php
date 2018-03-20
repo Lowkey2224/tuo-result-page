@@ -39,7 +39,6 @@ class PlayerInfo
 
     public function isCardReady()
     {
-        dump($this->getBonusCardReadyAt() < new \DateTime());
         return $this->getBonusCardReadyAt() < new \DateTime();
     }
 }
