@@ -56,15 +56,7 @@
             {% endif %}
         </div>
     </div>
-    {% if player.hasKongCredentials and info %}
-        <div class="row">
-            <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center" id="demo"></h5>
-            <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Stamina: {{ info.stamina }}
-                /{{ info.maxStamina }}</h5>
-            <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Energy: {{ info.energy }}
-                /{{ info.maxEnergy }}</h5>
-        </div>
-    {% endif %}
+    {% include '@LokiTuoResult/OwnedCard/_playerInfo.html.twig' with {'player': player, 'info' : info} only %}
     <div id="updateFlash"></div>
     {% include '@LokiTuoResult/OwnedCard/_playerDeck.html.twig' with {'player': player, 'deckName' : deckName, 'deck' : deck} only %}
     {% include '@LokiTuoResult/OwnedCard/_playerInventory.html.twig' with {'player': player, 'cards' : cards} only %}
@@ -77,40 +69,6 @@
 {% block javascripts %}
     <script>
         $(function () {
-            {% if player.kongCredentials and info %}
-            // Set the date we're counting down to
-            var elem = $("#demo");
-            //('Y-m-d\Th:i:sO')
-            var date = new Date('{{ info.bonusCardReadyAt | date }}');
-            date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-
-
-            var countDownDate = date.getTime();
-
-            // Update the count down every 1 second
-            var x = setInterval(function() {
-
-                // Get todays date and time
-                var now = new Date().getTime();
-
-                // Find the distance between now an the count down date
-                var distance = countDownDate - now;
-
-                // Time calculations for days, hours, minutes and seconds
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the element with id="demo"
-                elem.text("Card Ready in: " + hours + "h " + minutes + "m " + seconds + "s ");
-
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                    clearInterval(x);
-                    elem.text('Ready');
-                }
-            }, 1000);
-            {% endif %}
             var availableCardNames = [];
             $.get("{{ path('loki.tuo.cards.all') }}", function (data) {
                 availableCardNames = data;

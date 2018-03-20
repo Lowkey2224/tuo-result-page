@@ -1,0 +1,8 @@
+LokiTuoResultBundle\Entity\BattleLog:
+   log_{loki, loken, lowkey}:
+       battles: 23
+       won: 5
+       gold: 42
+       rating: 55
+       status: 1
+       player: '@player_<current()>'

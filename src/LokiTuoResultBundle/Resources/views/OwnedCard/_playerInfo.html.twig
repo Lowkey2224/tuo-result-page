@@ -1,0 +1,48 @@
+{% if player.kongCredentials and info %}
+
+    <div class="row">
+        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center" id="demo"></h5>
+        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Stamina: {{ info.stamina }}
+            /{{ info.maxStamina }}</h5>
+        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Energy: {{ info.energy }}
+            /{{ info.maxEnergy }}</h5>
+    </div>
+
+    <script>
+
+        // Set the date we're counting down to
+
+        var elem = document.getElementById('demo');
+        //('Y-m-d\Th:i:sO')
+        var date = new Date('{{ info.bonusCardReadyAt | date }}');
+        date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+
+
+        var countDownDate = date.getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function () {
+
+            // Get todays date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now an the count down date
+            var distance = countDownDate - now;
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                elem.innerHTML = 'Ready';
+                // elem.text('Ready');
+            } else {
+                // Time calculations for days, hours, minutes and seconds
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+                elem.innerHTML = "Card Ready in: " + hours + "h " + minutes + "m " + seconds + "s ";
+            }
+        }, 1000);
+    </script>
+{% endif %}
