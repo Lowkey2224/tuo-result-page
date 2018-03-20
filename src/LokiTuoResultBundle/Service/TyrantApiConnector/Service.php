@@ -5,6 +5,7 @@ namespace LokiTuoResultBundle\Service\TyrantApiConnector;
 
 
 use LokiTuoResultBundle\Entity\Player;
+use LokiTuoResultBundle\Model\PlayerInfo;
 use Psr\Log\LoggerInterface;
 
 class Service
@@ -51,11 +52,14 @@ class Service
 
     private function handleCards($cards = null)
     {
+        $cardIds = [];
+        if (!$cards) {
+            return $cardIds;
+        }
         $this->logger->info(sprintf("Found %d Cards", count($cards)));
         $countOwned = 0;
         $countDeck = 0;
         $countKnown = 0;
-        $cardIds = [];
         foreach ($cards as $id => $value) {
             $countKnown++;
             if ($value->num_owned > 0) {
@@ -136,10 +140,10 @@ class Service
     public function battleAllBattles(Player $player, int $enemySelectionStrategy = self::STATEGY_MOST_GOLD)
     {
         $result = $this->connector->test($player, Connector::GET_HUNTING_TARGETS, []);
-        $stamina = $result->user_data->stamina;
-        $this->logger->info(sprintf("Doing %d battles for Player %s", $stamina, $player->getName()));
+        $playerInfo = new PlayerInfo($result);
+        $this->logger->info(sprintf("Doing %d battles for Player %s", $playerInfo->getStamina(), $player->getName()));
         $result = [];
-        for (; $stamina > 0; $stamina--) {
+        for ($i = $playerInfo->getStamina(); $i > 0; $i--) {
             $result[] = $this->doSingleBattle($player, $enemySelectionStrategy);
             sleep(3);
         }
@@ -149,16 +153,12 @@ class Service
     public function getStaminaInfo(Player $player)
     {
         $result = $this->connector->test($player, Connector::GET_INVENTORY, []);
-        $stamina = $result->user_data->stamina;
-        $maxStamina = $result->user_data->battle_energy;
-        return ["stamina" => $stamina, "maxStamina" => $maxStamina];
+        $playerInfo = new PlayerInfo($result);
+        return ["stamina" => $playerInfo->getStamina(), "maxStamina" => $playerInfo->getMaxStamina()];
     }
 
     private function selectEnemy($data, int $strategy)
     {
-        if (!$strategy) {
-            throw new \Exception();
-        }
         $maxGold = 0;
         $targetId = 0;
         foreach ($data->hunting_targets as $id => $target) {
@@ -168,5 +168,11 @@ class Service
             }
         }
         return $targetId;
+    }
+
+    public function getPlayerInfo(Player $player)
+    {
+        $result = $this->connector->test($player, Connector::GET_INVENTORY, []);
+        return new PlayerInfo($result);
     }
 }

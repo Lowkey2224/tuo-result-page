@@ -269,8 +269,6 @@ class OwnedCardController extends Controller
     public function showCardsForPlayerAction(Player $player)
     {
         $allCards = $player->getOwnedCards();
-        $energy = 0;
-        $bonusCardReady = new \DateTime("+12 hours");
         $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
             return $elem->getCard()->getName();
         });
@@ -287,6 +285,11 @@ class OwnedCardController extends Controller
             'action' => $this->generateUrl('loki.tuo.ownedcard.card.add.mass', ['id' => $player->getId()]),
             'method' => 'PUT',
         ]);
+        $info = null;
+        if ($player->hasKongCredentials()) {
+            $info = $this->get('loki_tuo_result.tyrant_connector')->getPlayerInfo($player);
+            $energy = $info->getEnergy();
+        }
 
 
         return $this->render('LokiTuoResultBundle:OwnedCard:show_cards_for_player.html.twig', [
@@ -297,7 +300,7 @@ class OwnedCardController extends Controller
             'cards' => $allCards,
             'form' => $ownedCardForm->createView(),
             'massForm' => $massOwnedCardForm->createView(),
-
+            'info' => $info,
         ]);
     }
 

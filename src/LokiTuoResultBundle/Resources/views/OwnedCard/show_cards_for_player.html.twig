@@ -57,10 +57,8 @@
     </div>
     <div>
         <p id="demo"></p>
-
-        <script>
-
-        </script>
+        <p>Stamina: {{ info.stamina }}/{{ info.maxStamina }}</p>
+        <p>Energy: {{ info.energy }}/{{ info.maxEnergy }}</p>
     </div>
     <div id="updateFlash"></div>
     {% include '@LokiTuoResult/OwnedCard/_playerDeck.html.twig' with {'player': player, 'deckName' : deckName, 'deck' : deck} only %}
@@ -75,7 +73,13 @@
     <script>
         $(function () {
             // Set the date we're counting down to
-            var countDownDate = new Date("Sep 5, 2018 15:37:25").getTime();
+            var elem = $("#demo");
+            //('Y-m-d\Th:i:sO')
+            var date = new Date('{{ info.bonusCardReadyAt | date }}');
+            date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+
+
+            var countDownDate = date.getTime();
 
             // Update the count down every 1 second
             var x = setInterval(function() {
@@ -92,12 +96,12 @@
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                 // Display the result in the element with id="demo"
-                $("#demo").text(hours + "h " + minutes + "m " + seconds + "s ");
+                elem.text(hours + "h " + minutes + "m " + seconds + "s ");
 
                 // If the count down is finished, write some text
                 if (distance < 0) {
                     clearInterval(x);
-                    $("#demo").text('Ready');
+                    elem.text('Ready');
                 }
             }, 1000);
 
