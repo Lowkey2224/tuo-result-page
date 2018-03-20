@@ -1,12 +1,12 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\RabbitMq;
+namespace App\LokiTuoResultBundle\Service\RabbitMq;
 
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Service\OwnedCards\Service as OcManager;
+use App\LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
+use App\LokiTuoResultBundle\Service\TyrantApiConnector\Service as Connector;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Service\OwnedCards\Service as OcManager;
-use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
-use LokiTuoResultBundle\Service\TyrantApiConnector\Service as Connector;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -28,7 +28,7 @@ class TuUpdateInventoryConsumer implements BatchConsumerInterface, ConsumerInter
 
     /** @var QueueItemManager */
     protected $queueItemManager;
-    
+
     public function __construct(
         EntityManager $entityManager,
         Connector $connector,

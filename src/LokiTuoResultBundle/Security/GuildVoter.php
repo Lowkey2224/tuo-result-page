@@ -1,8 +1,8 @@
 <?php
 
-namespace LokiTuoResultBundle\Security;
+namespace App\LokiTuoResultBundle\Security;
 
-use LokiTuoResultBundle\Entity\Guild;
+use App\LokiTuoResultBundle\Entity\Guild;
 use LokiUserBundle\Entity\User;
 
 class GuildVoter extends AbstractVoter

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LokiTuoResultBundle\Service\TyrantApiConnector;
+namespace App\LokiTuoResultBundle\Service\TyrantApiConnector;
 
 
-use LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerInterface;
 
 class Connector

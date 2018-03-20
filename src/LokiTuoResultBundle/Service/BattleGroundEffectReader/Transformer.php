@@ -6,9 +6,9 @@
  * Time: 20:39.
  */
 
-namespace LokiTuoResultBundle\Service\BattleGroundEffectReader;
+namespace App\LokiTuoResultBundle\Service\BattleGroundEffectReader;
 
-use LokiTuoResultBundle\Entity\BattleGroundEffect;
+use App\LokiTuoResultBundle\Entity\BattleGroundEffect;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 

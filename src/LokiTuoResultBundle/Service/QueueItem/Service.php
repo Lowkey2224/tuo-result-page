@@ -1,10 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\QueueItem;
+namespace App\LokiTuoResultBundle\Service\QueueItem;
 
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\QueueItem;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Entity\QueueItem;
 use LokiUserBundle\Entity\User;
 use Symfony\Component\Translation\TranslatorInterface;
 

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace LokiTuoResultBundle\Service\Reader;
+namespace App\LokiTuoResultBundle\Service\Reader;
 
-use LokiTuoResultBundle\Entity\Mission;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Entity\Result;
-use LokiTuoResultBundle\Entity\ResultFile;
+use App\LokiTuoResultBundle\Entity\Mission;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\Result;
+use App\LokiTuoResultBundle\Entity\ResultFile;
 
 class TxtImporter extends AbstractImporter
 {

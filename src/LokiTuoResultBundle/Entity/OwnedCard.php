@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * OwnedCard.
  *
  * @ORM\Table(name="owned_card")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\OwnedCardRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\OwnedCardRepository")
  * @UniqueEntity(
  *     fields={"level", "player", "card"},
  *     message="Dieser spieler hat diesen Eintrag bereits."
@@ -40,7 +40,7 @@ class OwnedCard extends AbstractBaseEntity
 
     /**
      * @var CardLevel
-     * @ORM\ManyToOne(targetEntity="LokiTuoResultBundle\Entity\CardLevel")
+     * @ORM\ManyToOne(targetEntity="App\LokiTuoResultBundle\Entity\CardLevel")
      * @ORM\JoinColumn(referencedColumnName="id", name="card_level_id")
      */
     private $card;

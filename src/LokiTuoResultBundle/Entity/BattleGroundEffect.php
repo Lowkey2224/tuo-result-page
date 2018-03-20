@@ -6,7 +6,7 @@
  * Time: 20:12.
  */
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is a Property which can be used in Simulations.
  *
  * @ORM\Table(name="battle_ground_effect")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\BattleGroundEffectRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\BattleGroundEffectRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class BattleGroundEffect extends AbstractBaseEntity

@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\OwnedCard:
+App\LokiTuoResultBundle\Entity\OwnedCard:
   loki_{Malika, StonewallGarrison, Inheritor}:
     amount: 1
     amountInDeck: 1

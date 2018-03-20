@@ -6,12 +6,12 @@
  * Time: 18:49.
  */
 
-namespace LokiTuoResultBundle\Service\OwnedCards;
+namespace App\LokiTuoResultBundle\Service\OwnedCards;
 
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 

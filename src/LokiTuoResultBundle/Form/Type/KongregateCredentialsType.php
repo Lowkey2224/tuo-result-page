@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Form\Type;
+namespace App\LokiTuoResultBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -52,7 +52,7 @@ class KongregateCredentialsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'LokiTuoResultBundle\Entity\KongregateCredentials'
+            'data_class' => 'App\LokiTuoResultBundle\Entity\KongregateCredentials'
         ]);
     }
 }

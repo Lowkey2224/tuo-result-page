@@ -6,10 +6,10 @@
  * Time: 11:51.
  */
 
-namespace LokiTuoResultBundle\Service\VpcSImulation;
+namespace App\LokiTuoResultBundle\Service\VpcSImulation;
 
+use App\LokiTuoResultBundle\Service\Simulation\Simulation;
 use Buzz\Browser;
-use LokiTuoResultBundle\Service\Simulation\Simulation;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 

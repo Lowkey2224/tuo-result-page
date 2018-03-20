@@ -1,11 +1,11 @@
 <?php
 
-namespace LokiTuoResultBundle\Repository;
+namespace App\LokiTuoResultBundle\Repository;
 
+use App\LokiTuoResultBundle\Entity\BattleLog;
+use App\LokiTuoResultBundle\Entity\Player;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use LokiTuoResultBundle\Entity\BattleLog;
-use LokiTuoResultBundle\Entity\Player;
 use LokiUserBundle\Entity\User;
 
 class BattleLogRepository extends AbstractBaseRepository

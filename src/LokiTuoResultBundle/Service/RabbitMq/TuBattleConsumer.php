@@ -1,13 +1,13 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\RabbitMq;
+namespace App\LokiTuoResultBundle\Service\RabbitMq;
 
 
+use App\LokiTuoResultBundle\Entity\BattleLog;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
+use App\LokiTuoResultBundle\Service\TyrantApiConnector\Service;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\BattleLog;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
-use LokiTuoResultBundle\Service\TyrantApiConnector\Service;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;

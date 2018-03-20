@@ -1,15 +1,15 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\Reader;
+namespace App\LokiTuoResultBundle\Service\Reader;
 
+use App\LokiTuoResultBundle\Entity\BattleGroundEffect;
+use App\LokiTuoResultBundle\Entity\Card;
+use App\LokiTuoResultBundle\Entity\Guild;
+use App\LokiTuoResultBundle\Entity\Mission;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\Result;
+use App\LokiTuoResultBundle\Entity\ResultFile;
 use Illuminate\Support\Collection;
-use LokiTuoResultBundle\Entity\BattleGroundEffect;
-use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\Guild;
-use LokiTuoResultBundle\Entity\Mission;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Entity\Result;
-use LokiTuoResultBundle\Entity\ResultFile;
 
 class JsonImporter extends AbstractImporter
 {

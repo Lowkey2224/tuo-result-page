@@ -6,7 +6,9 @@
  * Time: 10:12.
  */
 
-namespace LokiTuoResultBundle\Form\Type;;
+namespace App\LokiTuoResultBundle\Form\Type;
+
+;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;

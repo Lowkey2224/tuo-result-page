@@ -6,7 +6,7 @@
  * Time: 17:28.
  */
 
-namespace LokiTuoResultBundle\Form\Type;
+namespace App\LokiTuoResultBundle\Form\Type;
 
 ;
 
@@ -32,7 +32,7 @@ class PlayerType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('guild', EntityType::class, [
-                'class' => 'LokiTuoResultBundle\Entity\Guild',
+                'class' => 'App\LokiTuoResultBundle\Entity\Guild',
                 'label' => 'form.player.guild',
                 'translation_domain' => 'LokiTuoResultBundle',
                 'multiple' => false,
@@ -75,7 +75,7 @@ class PlayerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'LokiTuoResultBundle\Entity\Player',
+            'data_class' => 'App\LokiTuoResultBundle\Entity\Player',
             'guilds' => [
                 'Please Select your Guild...' => null,
             ],

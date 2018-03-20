@@ -6,13 +6,15 @@
  * Time: 15:41.
  */
 
-namespace LokiTuoResultBundle\Form\Type;;
+namespace App\LokiTuoResultBundle\Form\Type;
 
-use LokiTuoResultBundle\Entity\BattleGroundEffect;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Repository\BattleGroundEffectRepository;
-use LokiTuoResultBundle\Repository\GuildRepository;
-use LokiTuoResultBundle\Repository\PlayerRepository;
+;
+
+use App\LokiTuoResultBundle\Entity\BattleGroundEffect;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Repository\BattleGroundEffectRepository;
+use App\LokiTuoResultBundle\Repository\GuildRepository;
+use App\LokiTuoResultBundle\Repository\PlayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -36,7 +38,7 @@ class SimulationType extends AbstractType
                 ],
             ])
             ->add('backgroundeffect', EntityType::class, [
-                'class'        => 'LokiTuoResultBundle\Entity\BattleGroundEffect',
+                'class' => 'App\LokiTuoResultBundle\Entity\BattleGroundEffect',
                 'label'        => 'form.simulation.backgroundEffect',
                 'required'     => false,
                 'choice_label' => function (BattleGroundEffect $bge) {
@@ -79,7 +81,7 @@ class SimulationType extends AbstractType
             ])
             ->add('guild', EntityType::class, [
                 'label'         => 'form.simulation.guild',
-                'class'         => 'LokiTuoResultBundle\Entity\Guild',
+                'class' => 'App\LokiTuoResultBundle\Entity\Guild',
                 'required'         => false,
                 'query_builder' => function (GuildRepository $gr) {
                     $qb = $gr->createQueryBuilder('g')
@@ -169,7 +171,7 @@ class SimulationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'LokiTuoResultBundle\Service\Simulation\Simulation',
+            'data_class' => 'App\LokiTuoResultBundle\Service\Simulation\Simulation',
         ]);
     }
 }

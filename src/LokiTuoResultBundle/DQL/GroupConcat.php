@@ -6,7 +6,7 @@
  * Time: 22:44.
  */
 
-namespace LokiTuoResultBundle\DQL;
+namespace App\LokiTuoResultBundle\DQL;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;

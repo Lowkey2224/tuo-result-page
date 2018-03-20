@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\Result:
+App\LokiTuoResultBundle\Entity\Result:
   result_{loki, loken, lowkey}:
     percent: 808
     mission: "@mission1"

@@ -19,7 +19,7 @@
         </exec>
         <exec executable="${console}" >
             <arg value="cache:clear"/>
-            <arg value="--env=prod"/>
+            <arg value="--env prod"/>
         </exec>
         <exec executable="${console}">
             <arg value="fos:js-routing:dump"/>
@@ -220,7 +220,7 @@
     <target name="warmup" unless="warmup.done" description="clears cache and installs assets">
         <echo message=""/>
         <exec executable="php" taskname="cache:clear prod">
-            <arg line="${console} cache:clear --env=prod"/>
+            <arg line="${console} cache:clear --env prod"/>
         </exec>
         <exec executable="php" taskname="cache:clear dev">
             <arg line="${console} cache:clear"/>
@@ -234,13 +234,13 @@
     <target name="rebuild-database" unless="rebuild-database.done" description="Drops the Database Schema, builds it, and loads fixtures">
         <echo message=""/>
         <exec executable="php" taskname="schema:drop">
-            <arg line="${console} doctrine:schema:drop --force -e=test"/>
+            <arg line="${console} doctrine:schema:drop --force -e test"/>
         </exec>
         <exec executable="php" taskname="cache:create">
-            <arg line="${console} doctrine:schema:create -e=test"/>
+            <arg line="${console} doctrine:schema:create -e test"/>
         </exec>
         <exec executable="php" taskname="fixtures:load">
-            <arg line="${console} doctrine:fixtures:load -n -e=test"/>
+            <arg line="${console} doctrine:fixtures:load -n -e test"/>
         </exec>
         <property name="rebuild-database.done" value="true"/>
     </target>

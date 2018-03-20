@@ -3,10 +3,7 @@
 namespace Tests\LokiTuoResultBundle\Integration\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use LokiTuoResultBundle\Command\LokiTuoImportFileCommand;
-use LokiTuoResultBundle\Command\LokiTuoResReadFileCommand;
 use LokiTuoResultBundle\Entity\Mission;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -20,9 +17,11 @@ class TuoResultReadTest extends KernelTestCase
 
     public function testReadImport()
     {
-        self::bootKernel();
-        $this->application = new Application(self::$kernel);
-        $this->em          = static::$kernel->getContainer()
+        $kernel = static::createKernel();
+        $kernel->boot();
+
+        $this->application = new Application($kernel);
+        $this->em = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
         $this->executeRead();
@@ -31,11 +30,8 @@ class TuoResultReadTest extends KernelTestCase
 
     private function executeRead()
     {
-        $this->application->add(new LokiTuoResReadFileCommand());
         $filePath = Util::filePath().'/resultTest.txt';
-        /** @var ContainerAwareCommand $command */
         $command = $this->application->find('loki:tuo:result:read');
-        $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $resultFiles   = $this->em->getRepository('LokiTuoResultBundle:ResultFile')->findAll();
         $countBefore   = count($resultFiles);
@@ -55,10 +51,7 @@ class TuoResultReadTest extends KernelTestCase
 
     private function executeImport()
     {
-        $this->application->add(new LokiTuoImportFileCommand());
-        /** @var ContainerAwareCommand $command */
         $command = $this->application->find('loki:tuo:result:import');
-        $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $missionName   = 'TestMission-80';
         $missionRepo   = $this->em->getRepository('LokiTuoResultBundle:Mission');

@@ -6,7 +6,7 @@
  * Time: 16:18.
  */
 
-namespace LokiTuoResultBundle\DataFixtures\ORM;
+namespace App\LokiTuoResultBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

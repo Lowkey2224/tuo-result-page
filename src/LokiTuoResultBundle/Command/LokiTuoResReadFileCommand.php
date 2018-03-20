@@ -1,15 +1,25 @@
 <?php
 
-namespace LokiTuoResultBundle\Command;
+namespace App\LokiTuoResultBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\LokiTuoResultBundle\Service\Reader\Service;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LokiTuoResReadFileCommand extends ContainerAwareCommand
+class LokiTuoResReadFileCommand extends Command
 {
+    /** @var Service */
+    private $reader;
+
+    public function __construct(Service $reader)
+    {
+        $this->reader = $reader;
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -22,10 +32,9 @@ class LokiTuoResReadFileCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filePath = $input->getArgument('filename');
-        $reader   = $this->getContainer()->get('loki_tuo_result.reader');
         $logger   = new ConsoleLogger($output);
-        $reader->setLogger($logger);
-        $id = $reader->readFile($filePath);
+        $this->reader->setLogger($logger);
+        $id = $this->reader->readFile($filePath);
 
         $output->writeln("Read File with id $id.");
 

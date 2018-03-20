@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\BattleGroundEffect:
+App\LokiTuoResultBundle\Entity\BattleGroundEffect:
     Inspired:
         name: Inspired
         description:  Rally all 3

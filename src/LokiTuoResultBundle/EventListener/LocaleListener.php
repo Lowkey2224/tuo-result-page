@@ -6,7 +6,7 @@
  * Time: 17:51.
  */
 
-namespace LokiTuoResultBundle\EventListener;
+namespace App\LokiTuoResultBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\Mission:
+App\LokiTuoResultBundle\Entity\Mission:
   mission1:
     name: iron mutant-5
     type: mission

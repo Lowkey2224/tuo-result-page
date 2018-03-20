@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Security;
+namespace App\LokiTuoResultBundle\Security;
 
 use LokiUserBundle\Entity\User;
 use Psr\Log\LoggerAwareInterface;

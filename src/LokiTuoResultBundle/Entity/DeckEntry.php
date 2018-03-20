@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Deck.
  *
  * @ORM\Table(name="deck_entry")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\DeckEntryRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\DeckEntryRepository")
  * @UniqueEntity(fields={"playOrder", "card", "result"},
  *     message="There exists already this card for this result in this order")
  * @ORM\HasLifecycleCallbacks()

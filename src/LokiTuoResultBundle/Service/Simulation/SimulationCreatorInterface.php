@@ -6,7 +6,7 @@
  * Time: 15:53.
  */
 
-namespace LokiTuoResultBundle\Service\Simulation;
+namespace App\LokiTuoResultBundle\Service\Simulation;
 
 interface SimulationCreatorInterface
 {

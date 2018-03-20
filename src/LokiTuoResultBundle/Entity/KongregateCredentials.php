@@ -1,14 +1,14 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class KongregateCredentials
- * @package LokiTuoResultBundle\Entity
+ * @package App\LokiTuoResultBundle\Entity
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\KongregateCredentialsRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\KongregateCredentialsRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class KongregateCredentials extends AbstractBaseEntity

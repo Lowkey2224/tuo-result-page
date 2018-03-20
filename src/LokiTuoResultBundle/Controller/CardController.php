@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

@@ -1,8 +1,8 @@
 <?php
 
-namespace LokiTuoResultBundle\Repository;
+namespace App\LokiTuoResultBundle\Repository;
 
-use LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\Player;
 
 /**
  * OwnedCardRepository.

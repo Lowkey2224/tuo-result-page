@@ -1,10 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
+use App\LokiTuoResultBundle\Entity\Guild;
+use App\LokiTuoResultBundle\Form\Type\GuildType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use LokiTuoResultBundle\Entity\Guild;
-use LokiTuoResultBundle\Form\Type\GuildType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

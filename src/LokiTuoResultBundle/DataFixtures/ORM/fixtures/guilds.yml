@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\Guild:
+App\LokiTuoResultBundle\Entity\Guild:
     CTN:
         name: CTN
         enabled: true

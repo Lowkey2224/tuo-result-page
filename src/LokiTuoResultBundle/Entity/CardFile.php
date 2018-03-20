@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CardFile.
  *
  * @ORM\Table(name="card_file")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\CardFileRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\CardFileRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class CardFile extends AbstractBaseEntity

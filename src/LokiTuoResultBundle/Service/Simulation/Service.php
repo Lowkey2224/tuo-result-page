@@ -6,7 +6,7 @@
  * Time: 08:56.
  */
 
-namespace LokiTuoResultBundle\Service\Simulation;
+namespace App\LokiTuoResultBundle\Service\Simulation;
 
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;

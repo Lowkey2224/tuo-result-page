@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LokiTuoResultBundle\Model;
+namespace App\LokiTuoResultBundle\Model;
 
 
-use LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\Player;
 
 interface Message
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
 
-use LokiTuoResultBundle\Entity\BattleLog;
-use LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\BattleLog;
+use App\LokiTuoResultBundle\Entity\Player;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class MessageController
- * @package LokiTuoResultBundle\Controller
+ * @package App\LokiTuoResultBundle\Controller
  * @Route("/message")
  */
 class MessageController extends Controller

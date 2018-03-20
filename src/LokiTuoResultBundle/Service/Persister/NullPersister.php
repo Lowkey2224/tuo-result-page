@@ -6,7 +6,7 @@
  * Time: 20:44.
  */
 
-namespace LokiTuoResultBundle\Service\Persister;
+namespace App\LokiTuoResultBundle\Service\Persister;
 
 use Psr\Log\LoggerAwareTrait;
 

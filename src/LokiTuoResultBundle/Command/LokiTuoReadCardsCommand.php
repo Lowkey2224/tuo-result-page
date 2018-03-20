@@ -1,16 +1,25 @@
 <?php
 
-namespace LokiTuoResultBundle\Command;
+namespace App\LokiTuoResultBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\LokiTuoResultBundle\Service\CardReader\Service;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LokiTuoReadCardsCommand extends ContainerAwareCommand
+class LokiTuoReadCardsCommand extends Command
 {
+    /** @var Service */
+    private $reader;
+
+    public function __construct(Service $service)
+    {
+        $this->reader = $service;
+        parent::__construct();
+    }
     protected function configure()
     {
         $this
@@ -25,8 +34,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $logger = new ConsoleLogger($output);
         $path   = realpath($input->getArgument('dataPath'));
         $logger->debug(' Filepath Read: ' . $path);
-        $reader = $this->getContainer()->get('loki_tuo_result.card.reader');
-        $reader->setLogger($logger);
+        $this->reader->setLogger($logger);
         $files     = scandir($path);
         $pattern   = '/^cards_section_\d\d?.xml/m';
         $cardFiles = array_filter($files, function ($item) use ($pattern) {
@@ -35,7 +43,7 @@ class LokiTuoReadCardsCommand extends ContainerAwareCommand
         $cardFiles = array_map(function ($item) use ($path) {
             return $path . '/' . $item;
         }, $cardFiles);
-        $count = $reader->saveCardFiles($cardFiles);
+        $count = $this->reader->saveCardFiles($cardFiles);
 
         $output->writeln("Persisted $count card Files.");
 

@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use LokiTuoResultBundle\Command\LokiTuoImportFileCommand;
 use LokiTuoResultBundle\Entity\Mission;
 use LokiTuoResultBundle\Entity\ResultFile;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -21,9 +20,11 @@ class TuoResultV2ReadTest extends KernelTestCase
 
     public function testReadImportV2()
     {
-        self::bootKernel();
-        $this->application = new Application(self::$kernel);
-        $this->em = static::$kernel->getContainer()
+        $kernel = static::createKernel();
+        $kernel->boot();
+
+        $this->application = new Application($kernel);
+        $this->em = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
         $this->createResultFile();
@@ -61,10 +62,7 @@ class TuoResultV2ReadTest extends KernelTestCase
 
     private function executeImport()
     {
-        $this->application->add(new LokiTuoImportFileCommand());
-        /** @var ContainerAwareCommand $command */
         $command = $this->application->find('loki:tuo:result:import');
-        $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $missionName = 'Test Mission Version2-23';
         $missionRepo = $this->em->getRepository('LokiTuoResultBundle:Mission');

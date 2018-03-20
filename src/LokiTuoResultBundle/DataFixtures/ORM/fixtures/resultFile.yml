@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\ResultFile:
+App\LokiTuoResultBundle\Entity\ResultFile:
   resultFile5:
     status: 1
     comment: done by fixtures

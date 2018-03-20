@@ -6,7 +6,7 @@
  * Time: 18:06.
  */
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

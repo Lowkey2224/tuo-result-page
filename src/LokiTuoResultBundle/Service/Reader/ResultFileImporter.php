@@ -1,10 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\Reader;
+namespace App\LokiTuoResultBundle\Service\Reader;
 
+use App\LokiTuoResultBundle\Entity\ResultFile;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use LokiTuoResultBundle\Entity\ResultFile;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 

@@ -6,10 +6,10 @@
  * Time: 20:44.
  */
 
-namespace LokiTuoResultBundle\Service\Persister;
+namespace App\LokiTuoResultBundle\Service\Persister;
 
+use App\LokiTuoResultBundle\Entity\AbstractBaseEntity;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\AbstractBaseEntity;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Definition\Exception\Exception;

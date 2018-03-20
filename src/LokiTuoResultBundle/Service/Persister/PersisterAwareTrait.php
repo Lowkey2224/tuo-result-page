@@ -6,9 +6,9 @@
  * Time: 20:57.
  */
 
-namespace LokiTuoResultBundle\Service\Persister;
+namespace App\LokiTuoResultBundle\Service\Persister;
 
-use LokiTuoResultBundle\Service\Persister\Exception\NoPersisterExpection;
+use App\LokiTuoResultBundle\Service\Persister\Exception\NoPersisterExpection;
 
 trait PersisterAwareTrait
 {

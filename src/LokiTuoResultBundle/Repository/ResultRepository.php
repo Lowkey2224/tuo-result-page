@@ -1,8 +1,8 @@
 <?php
 
-namespace LokiTuoResultBundle\Repository;
+namespace App\LokiTuoResultBundle\Repository;
 
-use LokiTuoResultBundle\Entity\Mission;
+use App\LokiTuoResultBundle\Entity\Mission;
 
 /**
  * ResultRepository.

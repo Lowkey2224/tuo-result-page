@@ -6,10 +6,10 @@
  * Time: 20:45.
  */
 
-namespace LokiTuoResultBundle\Service\CardReader;
+namespace App\LokiTuoResultBundle\Service\CardReader;
 
+use App\LokiTuoResultBundle\Entity\CardFile;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\CardFile;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 

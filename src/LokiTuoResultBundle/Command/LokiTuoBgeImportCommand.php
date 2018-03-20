@@ -1,16 +1,34 @@
 <?php
 
-namespace LokiTuoResultBundle\Command;
+namespace App\LokiTuoResultBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\LokiTuoResultBundle\Service\BattleGroundEffectReader\Service;
+use App\LokiTuoResultBundle\Service\Persister\DatabasePersister;
+use App\LokiTuoResultBundle\Service\Persister\NullPersister;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LokiTuoBgeImportCommand extends ContainerAwareCommand
+class LokiTuoBgeImportCommand extends Command
 {
+    /** @var NullPersister */
+    private $nullPersister;
+    /** @var DatabasePersister */
+    private $databasePersister;
+    /** @var Service */
+    private $reader;
+
+    public function __construct(NullPersister $nullPersister, DatabasePersister $databasePersister, Service $reader)
+    {
+        $this->nullPersister = $nullPersister;
+        $this->databasePersister = $databasePersister;
+        $this->reader = $reader;
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -38,18 +56,18 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filepath = $input->getArgument('filepath');
-        if ($input->getOption('pretend')) {
-            $persister = $this->getContainer()->get('loki_tuo_result.persister.null');
-        } else {
-            $persister = $this->getContainer()->get('loki_tuo_result.persister.database');
-        }
         $logger = new ConsoleLogger($output);
-        $persister->setLogger($logger);
-        $reader = $this->getContainer()->get('loki_tuo_result.battlegroundeffect.reader');
-        $reader->setLogger($logger);
-        $reader->setPersister($persister);
-        $count = $reader->readFile($filepath);
+        $filepath = $input->getArgument('filepath');
+        $this->reader->setLogger($logger);
+        if ($input->getOption('pretend')) {
+            $this->nullPersister->setLogger($logger);
+            $this->reader->setPersister($this->nullPersister);
+        } else {
+            $this->databasePersister->setLogger($logger);
+            $this->reader->setPersister($this->databasePersister);
+        }
+
+        $count = $this->reader->readFile($filepath);
 
         $output->writeln('There were <info>' . $count . '</info> Entries to be persisted.');
     }

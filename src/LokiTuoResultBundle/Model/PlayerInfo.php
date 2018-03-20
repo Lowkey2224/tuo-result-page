@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Model;
+namespace App\LokiTuoResultBundle\Model;
 
 class PlayerInfo
 {

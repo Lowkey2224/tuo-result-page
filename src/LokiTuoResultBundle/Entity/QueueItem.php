@@ -1,15 +1,15 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use LokiUserBundle\Entity\User;
 
 /**
  * Class QueueItem
- * @package LokiTuoResultBundle\Entity
+ * @package App\LokiTuoResultBundle\Entity
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\QueueItemRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\QueueItemRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class QueueItem extends AbstractBaseEntity

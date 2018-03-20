@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\CardFile:
+App\LokiTuoResultBundle\Entity\CardFile:
     CardFile1:
         originalFileName: TestFile1.xml
         status: 1

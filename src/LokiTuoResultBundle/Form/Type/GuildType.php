@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Form\Type;
+namespace App\LokiTuoResultBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -41,7 +41,7 @@ class GuildType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'LokiTuoResultBundle\Entity\Guild',
+            'data_class' => 'App\LokiTuoResultBundle\Entity\Guild',
         ]);
     }
 }

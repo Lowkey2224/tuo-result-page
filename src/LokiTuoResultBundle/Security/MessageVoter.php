@@ -1,8 +1,8 @@
 <?php
 
-namespace LokiTuoResultBundle\Security;
+namespace App\LokiTuoResultBundle\Security;
 
-use LokiTuoResultBundle\Entity\Message;
+use App\LokiTuoResultBundle\Entity\Message;
 use LokiUserBundle\Entity\User;
 
 class MessageVoter extends AbstractVoter

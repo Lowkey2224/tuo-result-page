@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\CardLevel:
+App\LokiTuoResultBundle\Entity\CardLevel:
        Malikalvl1:
         card: '@Malika'
         attack: 0

@@ -6,12 +6,12 @@
  * Time: 10:19.
  */
 
-namespace LokiTuoResultBundle\Service\CardReader;
+namespace App\LokiTuoResultBundle\Service\CardReader;
 
+use App\LokiTuoResultBundle\Entity\Card;
+use App\LokiTuoResultBundle\Entity\CardFile;
+use App\LokiTuoResultBundle\Entity\CardLevel;
 use Doctrine\Common\Collections\ArrayCollection;
-use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\CardFile;
-use LokiTuoResultBundle\Entity\CardLevel;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
@@ -51,7 +51,7 @@ class Transformer
                 ->setDelay(($object->cost) ? (int)$object->cost : 0)
                 ->setTuoId((int)$object->id)
                 ->setLevel(1)
-            ->setCard($card);
+                ->setCard($card);
             if (isset($object->skill)) {
                 $skills = array_merge($skills, $this->readSkill($object->skill));
                 $level1->setSkills($skills);

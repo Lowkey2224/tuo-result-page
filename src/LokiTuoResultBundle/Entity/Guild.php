@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Card.
  *
  * @ORM\Table(name="guild")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\GuildRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\GuildRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Guild extends AbstractBaseEntity
@@ -22,13 +22,13 @@ class Guild extends AbstractBaseEntity
 
     /**
      * @var ArrayCollection|Player[]
-     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Player", mappedBy="guild")
+     * @ORM\OneToMany(targetEntity="App\LokiTuoResultBundle\Entity\Player", mappedBy="guild")
      */
     private $players;
 
     /**
      * @var ArrayCollection|Result[]
-     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\Result", mappedBy="guild")
+     * @ORM\OneToMany(targetEntity="App\LokiTuoResultBundle\Entity\Result", mappedBy="guild")
      */
     private $results;
 

@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\BattleLog:
+App\LokiTuoResultBundle\Entity\BattleLog:
    log_{loki, loken, lowkey}:
        battles: 23
        won: 5

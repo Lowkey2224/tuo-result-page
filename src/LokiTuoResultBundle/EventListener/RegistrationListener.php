@@ -6,10 +6,10 @@
  * Time: 16:47.
  */
 
-namespace LokiTuoResultBundle\EventListener;
+namespace App\LokiTuoResultBundle\EventListener;
 
+use App\LokiTuoResultBundle\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
-use LokiTuoResultBundle\Entity\Player;
 use LokiUserBundle\Event\RegistrationCompleteEvent;
 use LokiUserBundle\LokiUserEvents;
 use Psr\Log\LoggerInterface;

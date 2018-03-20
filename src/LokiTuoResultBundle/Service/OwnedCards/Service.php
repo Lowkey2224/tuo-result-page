@@ -6,14 +6,14 @@
  * Time: 14:28.
  */
 
-namespace LokiTuoResultBundle\Service\OwnedCards;
+namespace App\LokiTuoResultBundle\Service\OwnedCards;
 
+use App\LokiTuoResultBundle\Entity\Card;
+use App\LokiTuoResultBundle\Entity\CardLevel;
+use App\LokiTuoResultBundle\Entity\OwnedCard;
+use App\LokiTuoResultBundle\Entity\Player;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Support\Collection;
-use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\CardLevel;
-use LokiTuoResultBundle\Entity\OwnedCard;
-use LokiTuoResultBundle\Entity\Player;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 

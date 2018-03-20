@@ -1,8 +1,8 @@
 <?php
 
-namespace LokiTuoResultBundle\Security;
+namespace App\LokiTuoResultBundle\Security;
 
-use LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\Player;
 use LokiUserBundle\Entity\User;
 
 class PlayerVoter extends AbstractVoter

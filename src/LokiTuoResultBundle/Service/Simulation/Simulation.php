@@ -6,10 +6,10 @@
  * Time: 15:11.
  */
 
-namespace LokiTuoResultBundle\Service\Simulation;
+namespace App\LokiTuoResultBundle\Service\Simulation;
 
-use LokiTuoResultBundle\Entity\BattleGroundEffect;
-use LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Entity\BattleGroundEffect;
+use App\LokiTuoResultBundle\Entity\Player;
 
 /**
  * Class to Reperesnt a MassSimulation
@@ -203,7 +203,7 @@ class Simulation
     }
 
     /**
-     * @return \LokiTuoResultBundle\Entity\Player[]
+     * @return \App\LokiTuoResultBundle\Entity\Player[]
      */
     public function getPlayers()
     {
@@ -251,7 +251,7 @@ class Simulation
     }
 
     /**
-     * @param \LokiTuoResultBundle\Entity\Player[] $players
+     * @param \App\LokiTuoResultBundle\Entity\Player[] $players
      */
     public function setPlayers($players)
     {

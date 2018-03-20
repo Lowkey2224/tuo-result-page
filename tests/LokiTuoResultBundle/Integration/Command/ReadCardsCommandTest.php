@@ -3,9 +3,6 @@
 namespace Tests\LokiTuoResultBundle\Integration\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use LokiTuoResultBundle\Command\LokiTuoImportCardsCommand;
-use LokiTuoResultBundle\Command\LokiTuoReadCardsCommand;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -17,11 +14,14 @@ class ReadCardsCommandTest extends KernelTestCase
     /** @var ObjectManager $em */
     private $em;
 
+
     public function testReadImport()
     {
-        self::bootKernel();
-        $this->application = new Application(self::$kernel);
-        $this->em          = static::$kernel->getContainer()
+        $kernel = static::createKernel();
+        $kernel->boot();
+
+        $this->application = new Application($kernel);
+        $this->em = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
         $this->executeRead();
@@ -30,10 +30,7 @@ class ReadCardsCommandTest extends KernelTestCase
 
     private function executeRead()
     {
-        $this->application->add(new LokiTuoReadCardsCommand());
-        /** @var ContainerAwareCommand $command */
         $command = $this->application->find('loki:tuo:cards:read');
-        $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $bges          = $this->em->getRepository('LokiTuoResultBundle:CardFile')->findAll();
         $countBefore   = count($bges);
@@ -53,10 +50,7 @@ class ReadCardsCommandTest extends KernelTestCase
 
     private function executeImport()
     {
-        $this->application->add(new LokiTuoImportCardsCommand());
-        /** @var ContainerAwareCommand $command */
         $command = $this->application->find('loki:tuo:cards:import');
-        $command->setContainer(self::$kernel->getContainer());
         $commandTester = new CommandTester($command);
         $res           = $this->em->getRepository('LokiTuoResultBundle:Card')->findAll();
 

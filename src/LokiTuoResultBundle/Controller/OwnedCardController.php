@@ -6,14 +6,17 @@
  * Time: 11:32
  */
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
 
+use App\LokiTuoResultBundle\Entity\OwnedCard;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Form\Type\MassOwnedCardType;
+use App\LokiTuoResultBundle\Form\Type\OwnedCardType;
+use App\LokiTuoResultBundle\Service\OwnedCards\Service as OwnedCardManager;
+use App\LokiTuoResultBundle\Service\PlayerManager\Service as PlayerManager;
+use App\LokiTuoResultBundle\Service\TyrantApiConnector\Service as ApiConnector;
 use Illuminate\Support\Collection;
-use LokiTuoResultBundle\Entity\OwnedCard;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Form\Type\MassOwnedCardType;
-use LokiTuoResultBundle\Form\Type\OwnedCardType;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Class PlayerController.
@@ -171,8 +175,12 @@ class OwnedCardController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addMassCardsForPlayerAction(Request $request, Player $player)
-    {
+    public function addMassCardsForPlayerAction(
+        Request $request,
+        Player $player,
+        OwnedCardManager $manager,
+        LoggerInterface $logger
+    ) {
         $form = $this->createForm(MassOwnedCardType::class, null, [
             'action' => $this->generateUrl('loki.tuo.ownedcard.card.add.mass', ['id' => $player->getId()]),
             'method' => 'PUT',
@@ -184,9 +192,7 @@ class OwnedCardController extends Controller
             $names = $form->getData();
             $names = $names['cards'];
 
-            $manager = $this->get('loki_tuo_result.owned_card.manager');
             /** @var LoggerInterface $logger */
-            $logger = $this->get('logger');
             $manager->setLogger($logger);
             $cards = [];
             foreach (explode("\n", $names) as $line) {
@@ -214,15 +220,15 @@ class OwnedCardController extends Controller
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      * @Security("is_granted('delete.player', player)")
      */
-    public function deleteMassCardsForPlayerAction(Player $player)
-    {
-        $manager = $this->get('loki_tuo_result.owned_card.manager');
-        /** @var LoggerInterface $logger */
-        $logger = $this->get('logger');
+    public function deleteMassCardsForPlayerAction(
+        Player $player,
+        OwnedCardManager $manager,
+        LoggerInterface $logger,
+        PlayerManager $playerManager
+    ) {
         $manager->setLogger($logger);
         $manager->removeOldOwnedCardsForPlayer($player);
-        $manager = $this->get('loki_tuo_result.player.manager');
-        $manager->addDefaultCard($player);
+        $playerManager->addDefaultCard($player);
 
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
@@ -240,7 +246,7 @@ class OwnedCardController extends Controller
      * @param Player $player
      * @return JsonResponse
      */
-    public function createOwnedCardAction(Request $request, Player $player)
+    public function createOwnedCardAction(Request $request, Player $player, PlayerManager $manager)
     {
         $name = trim($request->get('owned_card_card'));
         $level = $request->get('owned_card_level');
@@ -250,7 +256,6 @@ class OwnedCardController extends Controller
         if (!$card || !$card->getLevel($level)) {
             return new JsonResponse(['message' => 'Card not found'], 420);
         }
-        $manager = $this->get('loki_tuo_result.player.manager');
         $oc = $manager->addCardToPlayer($player, $card->getLevel($level), $amount, 0);
         $player->setUpdatedAtValue();
         $this->getDoctrine()->getManager()->persist($player);
@@ -266,7 +271,7 @@ class OwnedCardController extends Controller
      * @return Response
      * @Security("is_granted('view.player', player)")
      */
-    public function showCardsForPlayerAction(Player $player)
+    public function showCardsForPlayerAction(Player $player, ApiConnector $connector)
     {
         $allCards = $player->getOwnedCards();
         $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
@@ -284,7 +289,7 @@ class OwnedCardController extends Controller
             'action' => $this->generateUrl('loki.tuo.ownedcard.card.add.mass', ['id' => $player->getId()]),
             'method' => 'PUT',
         ]);
-        $info = $player->hasKongCredentials() ? $this->get('loki_tuo_result.tyrant_connector')->getPlayerInfo($player) : null;
+        $info = $player->hasKongCredentials() ? $connector->getPlayerInfo($player) : null;
 
         return $this->render('LokiTuoResultBundle:OwnedCard:show_cards_for_player.html.twig', [
             'canEdit' => true,

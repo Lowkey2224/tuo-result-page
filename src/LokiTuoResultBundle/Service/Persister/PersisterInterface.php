@@ -6,7 +6,7 @@
  * Time: 20:53.
  */
 
-namespace LokiTuoResultBundle\Service\Persister;
+namespace App\LokiTuoResultBundle\Service\Persister;
 
 use Psr\Log\LoggerInterface;
 
@@ -17,7 +17,7 @@ interface PersisterInterface
     /**
      * Persists the Given array of AbstractBaseEntity into the according DataStorage.
      *
-     * @param \LokiTuoResultBundle\Entity\AbstractBaseEntity[] $entities
+     * @param \App\LokiTuoResultBundle\Entity\AbstractBaseEntity[] $entities
      * @param $identifiers string[]
      *
      * @return int

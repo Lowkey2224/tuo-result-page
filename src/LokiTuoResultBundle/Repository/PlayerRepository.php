@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Repository;
+namespace App\LokiTuoResultBundle\Repository;
 
 //use Doctrine\ORM\Query\Expr\Join;
 

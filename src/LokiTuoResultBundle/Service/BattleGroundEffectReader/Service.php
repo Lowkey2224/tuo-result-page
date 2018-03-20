@@ -6,11 +6,10 @@
  * Time: 20:22.
  */
 
-namespace LokiTuoResultBundle\Service\BattleGroundEffectReader;
+namespace App\LokiTuoResultBundle\Service\BattleGroundEffectReader;
 
+use App\LokiTuoResultBundle\Service\Persister\PersisterAwareTrait;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Service\Persister\Exception\NoPersisterExpection;
-use LokiTuoResultBundle\Service\Persister\PersisterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -32,11 +31,8 @@ class Service
 
     /**
      * @param $filepath
-     *
-     * @throws FileNotFoundException if the given File is not available
-     * @throws NoPersisterExpection  if there is no PersisterInterface set
-     *
      * @return int
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function readFile($filepath)
     {

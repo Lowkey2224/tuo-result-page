@@ -1,15 +1,25 @@
 <?php
 
-namespace LokiTuoResultBundle\Command;
+namespace App\LokiTuoResultBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\LokiTuoResultBundle\Service\OwnedCards\MassSimReader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LokiTuoDeckImportCommand extends ContainerAwareCommand
+class LokiTuoDeckImportCommand extends Command
 {
+    /** @var MassSimReader */
+    private $massSimReader;
+
+    public function __construct(MassSimReader $massSimReader)
+    {
+        $this->massSimReader = $massSimReader;
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -23,10 +33,9 @@ class LokiTuoDeckImportCommand extends ContainerAwareCommand
     {
         $argument = $input->getArgument('simScript');
 
-        $massSimReader = $this->getContainer()->get('loki_tuo_result.owned_card.mass_sim_reader');
-        $res           = $massSimReader->getPlayerCardMap($argument);
+        $res = $this->massSimReader->getPlayerCardMap($argument);
 
-        $massSimReader->savePlayerCardMap($res);
+        $this->massSimReader->savePlayerCardMap($res);
 
         $output->writeln('Command result.');
 

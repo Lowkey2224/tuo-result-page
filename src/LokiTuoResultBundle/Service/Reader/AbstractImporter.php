@@ -1,15 +1,15 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\Reader;
+namespace App\LokiTuoResultBundle\Service\Reader;
 
+use App\LokiTuoResultBundle\Entity\Card;
+use App\LokiTuoResultBundle\Entity\DeckEntry;
+use App\LokiTuoResultBundle\Entity\Result;
+use App\LokiTuoResultBundle\Entity\ResultFile;
+use App\LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Illuminate\Support\Collection;
-use LokiTuoResultBundle\Entity\Card;
-use LokiTuoResultBundle\Entity\DeckEntry;
-use LokiTuoResultBundle\Entity\Result;
-use LokiTuoResultBundle\Entity\ResultFile;
-use LokiTuoResultBundle\Service\OwnedCards\Service as CardManager;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 

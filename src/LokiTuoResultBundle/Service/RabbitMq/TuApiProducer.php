@@ -1,10 +1,10 @@
 <?php
 
-namespace LokiTuoResultBundle\Service\RabbitMq;
+namespace App\LokiTuoResultBundle\Service\RabbitMq;
 
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
 use Doctrine\ORM\EntityManager;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Service\QueueItem\Service as QueueItemManager;
 use LokiUserBundle\Entity\User;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 
@@ -23,8 +23,7 @@ class TuApiProducer
         ProducerInterface $entityProducer,
         EntityManager $entityManager,
         QueueItemManager $service
-    )
-    {
+    ) {
         $this->em = $entityManager;
         $this->entityProducer = $entityProducer;
         $this->queueItemManager = $service;

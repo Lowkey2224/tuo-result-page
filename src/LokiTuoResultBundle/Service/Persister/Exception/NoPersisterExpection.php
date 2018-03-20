@@ -6,7 +6,7 @@
  * Time: 21:17.
  */
 
-namespace LokiTuoResultBundle\Service\Persister\Exception;
+namespace App\LokiTuoResultBundle\Service\Persister\Exception;
 
 class NoPersisterExpection extends \Exception
 {

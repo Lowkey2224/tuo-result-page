@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use LokiUserBundle\Entity\User;
  * Player.
  *
  * @ORM\Table(name="player")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\PlayerRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\PlayerRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Player extends AbstractBaseEntity
@@ -36,7 +36,7 @@ class Player extends AbstractBaseEntity
 
     /**
      * @var Guild
-     * @ORM\ManyToOne(targetEntity="LokiTuoResultBundle\Entity\Guild", inversedBy="players")
+     * @ORM\ManyToOne(targetEntity="App\LokiTuoResultBundle\Entity\Guild", inversedBy="players")
      * @ORM\JoinColumn(referencedColumnName="id", name="guild_id")
      */
     private $guild;
@@ -55,7 +55,7 @@ class Player extends AbstractBaseEntity
 
     /**
      * @var KongregateCredentials
-     * @ORM\OneToOne(targetEntity="LokiTuoResultBundle\Entity\KongregateCredentials", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\LokiTuoResultBundle\Entity\KongregateCredentials", cascade={"persist"})
      * @ORM\JoinColumn(name="kong_credentials_id", referencedColumnName="id")
      */
     private $kongCredentials;
@@ -80,7 +80,7 @@ class Player extends AbstractBaseEntity
 
     /**
      * @var BattleLog[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="LokiTuoResultBundle\Entity\BattleLog", mappedBy="player")
+     * @ORM\OneToMany(targetEntity="App\LokiTuoResultBundle\Entity\BattleLog", mappedBy="player")
      */
     private $battleLogs;
 

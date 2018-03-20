@@ -1,11 +1,14 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
 
-use LokiTuoResultBundle\Entity\CardLevel;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Service\TyrantApiConnector\Connector;
+use App\LokiTuoResultBundle\Entity\CardLevel;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Service\RabbitMq\TuApiProducer;
+use App\LokiTuoResultBundle\Service\TyrantApiConnector\Connector;
+use App\LokiTuoResultBundle\Service\TyrantApiConnector\Service as ApiConnector;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,9 +35,9 @@ class TuImportController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateInventoryAction(Player $player)
+    public function updateInventoryAction(Player $player, TuApiProducer $producer)
     {
-        $this->get('loki_tuo_result.tu_api.update.producer')->updatePlayerInventories($player, $this->getUser());
+        $producer->updatePlayerInventories($player, $this->getUser());
         $this->addFlash("success", "Update Inventory Request queued");
         return $this->redirectToRoute("loki.tuo.ownedcard.cards.show", ['id' => $player->getId()]);
     }
@@ -49,13 +52,12 @@ class TuImportController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAllInventoriesAction()
+    public function updateAllInventoriesAction(TuApiProducer $producer)
     {
-        $queueManager = $this->get('loki_tuo_result.tu_api.update.producer');
         $players = $this->getDoctrine()->getRepository("LokiTuoResultBundle:Player")->findAllWithCredentials();
         /** @var Player $player */
         foreach ($players as $player) {
-            $queueManager->updatePlayerInventories($player, $this->getUser());
+            $producer->updatePlayerInventories($player, $this->getUser());
         }
         $this->addFlash("success", "Update Inventory Request queued");
         return $this->redirectToRoute("loki.tuo.player.all.show");
@@ -73,11 +75,10 @@ class TuImportController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function testAction(Player $player)
+    public function testAction(Player $player, ApiConnector $connector, LoggerInterface $logger)
     {
-        $connector = $this->get('loki_tuo_result.tyrant_connector');
         $options = [];
-        $this->get('monolog.logger.tu_api')->info(print_r($options, true));
+        $logger->info(print_r($options, true));
         $data = $connector->test($player, Connector::GET_INVENTORY, $options);
 
         return $this->json($data);
@@ -95,9 +96,9 @@ class TuImportController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function battleAction(Player $player)
+    public function battleAction(Player $player, TuApiProducer $producer)
     {
-        $this->get('loki_tuo_result.tu_api.battle.producer')->battleAllBatles($player, $this->getUser());
+        $producer->battleAllBatles($player, $this->getUser());
         $this->addFlash("success", "Auto Battle Request queued");
 
         return $this->redirectToRoute("loki.tuo.ownedcard.cards.show", ['id' => $player->getId()]);
@@ -114,15 +115,15 @@ class TuImportController extends Controller
      *
      * @param Player $player
      *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array
      */
-    public function staminaAction(Player $player)
+    public function staminaAction(Player $player, ApiConnector $connector)
     {
 
         if (!$player->hasKongCredentials()) {
             throw new ConflictHttpException("Has no Credentials");
         }
-        return $this->get('loki_tuo_result.tyrant_connector')->getStaminaInfo($player);
+        return $connector->getStaminaInfo($player);
     }
 
     /**
@@ -137,9 +138,8 @@ class TuImportController extends Controller
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function claimBonusAction(Player $player)
+    public function claimBonusAction(Player $player, ApiConnector $connector)
     {
-        $connector = $this->get('loki_tuo_result.tyrant_connector');
         $data = $connector->claimBonus($player);
         if (!$data['result']) {
             $diff = \DateTime::createFromFormat("U", $data['daily_time']);

@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Exception;
  * ResultFile.
  *
  * @ORM\Table(name="result_file")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\ResultFileRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\ResultFileRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class ResultFile extends AbstractBaseEntity

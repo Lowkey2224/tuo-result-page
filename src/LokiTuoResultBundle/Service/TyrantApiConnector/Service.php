@@ -1,11 +1,11 @@
 <?php
 
 
-namespace LokiTuoResultBundle\Service\TyrantApiConnector;
+namespace App\LokiTuoResultBundle\Service\TyrantApiConnector;
 
 
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Model\PlayerInfo;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Model\PlayerInfo;
 use Psr\Log\LoggerInterface;
 
 class Service

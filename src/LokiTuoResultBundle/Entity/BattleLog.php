@@ -1,15 +1,15 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
+use App\LokiTuoResultBundle\Model\Message;
 use Doctrine\ORM\Mapping as ORM;
-use LokiTuoResultBundle\Model\Message;
 
 /**
  * Class BattleLog
- * @package LokiTuoResultBundle\Entity
+ * @package App\LokiTuoResultBundle\Entity
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\BattleLogRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\BattleLogRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class BattleLog extends AbstractBaseEntity implements Message

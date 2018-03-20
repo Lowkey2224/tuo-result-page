@@ -1,12 +1,13 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
-use LokiTuoResultBundle\Entity\KongregateCredentials;
-use LokiTuoResultBundle\Entity\OwnedCard;
-use LokiTuoResultBundle\Entity\Player;
-use LokiTuoResultBundle\Form\Type\PlayerType;
-use LokiTuoResultBundle\Security\PlayerVoter;
+use App\LokiTuoResultBundle\Entity\KongregateCredentials;
+use App\LokiTuoResultBundle\Entity\OwnedCard;
+use App\LokiTuoResultBundle\Entity\Player;
+use App\LokiTuoResultBundle\Form\Type\PlayerType;
+use App\LokiTuoResultBundle\Security\PlayerVoter;
+use App\LokiTuoResultBundle\Service\PlayerManager\Service as PlayerManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -164,13 +165,12 @@ class PlayerController extends Controller
      *
      * @return RedirectResponse
      */
-    public function addPlayerAction(Request $request)
+    public function addPlayerAction(Request $request, PlayerManager $manager)
     {
         $player = new Player();
         $form = $this->getPlayerForm($player);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->get('loki_tuo_result.player.manager');
             $player = $manager->findOrCreatePlayer($player);
 
             // Check if Player already exists

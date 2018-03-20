@@ -1,4 +1,4 @@
-LokiTuoResultBundle\Entity\Card:
+App\LokiTuoResultBundle\Entity\Card:
     Malika:
         name: Malika
         race: 2

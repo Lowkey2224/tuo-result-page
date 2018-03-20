@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Controller;
+namespace App\LokiTuoResultBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class HelpController
- * @package LokiTuoResultBundle\Controller
+ * @package App\LokiTuoResultBundle\Controller
  * @Route("/help")
  */
 class HelpController extends Controller

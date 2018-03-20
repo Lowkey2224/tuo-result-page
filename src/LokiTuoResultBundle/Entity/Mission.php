@@ -1,6 +1,6 @@
 <?php
 
-namespace LokiTuoResultBundle\Entity;
+namespace App\LokiTuoResultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Mission.
  *
  * @ORM\Table(name="mission")
- * @ORM\Entity(repositoryClass="LokiTuoResultBundle\Repository\MissionRepository")
+ * @ORM\Entity(repositoryClass="App\LokiTuoResultBundle\Repository\MissionRepository")
  * @UniqueEntity({"name", "bge", "structures"})
  * @ORM\HasLifecycleCallbacks()
  */
