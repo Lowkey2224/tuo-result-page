@@ -28,12 +28,18 @@ class PlayerInfo
 
     public function getMaxStamina()
     {
-        return $this->data->user_data->battle_energy;
+        return $this->data->max_stamina;
     }
 
     public function getBonusCardReadyAt()
     {
         $date = $this->data->daily_bonus_time;
         return \DateTime::createFromFormat("U", $date);
+    }
+
+    public function isCardReady()
+    {
+        dump($this->getBonusCardReadyAt() < new \DateTime());
+        return $this->getBonusCardReadyAt() < new \DateTime();
     }
 }

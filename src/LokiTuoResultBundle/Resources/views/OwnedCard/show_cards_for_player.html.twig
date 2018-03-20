@@ -30,11 +30,12 @@
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-3 text-left">
             {% if player.hasKongCredentials %}
-                <a href="{{ path('loki.tuo.tui.player.claim_card', {'id': player.id}) }}">
-                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                {% if info.cardReady %}<a href="{{ path('loki.tuo.tui.player.claim_card', {'id': player.id}) }}">{% endif %}
+                <button role="button" type="button" class="btn btn-info btn-sm"
+                        {% if not info.cardReady %}disabled{% endif %}>
                         <span class="ladda-label">{{ 'claim.card'|trans }}<i class=""></i></span>
                     </button>
-                </a>
+                {% if info.cardReady %}</a>{% endif %}
             {% endif %}
         </div>
         <div class="col-md-6 text-center">
@@ -43,22 +44,24 @@
         <div class="col-md-3 text-right">
             {% if player.hasKongCredentials %}
                 <a href="{{ path('loki.tuo.tui.update.player', {'id': player.id}) }}">
-                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                    <button role="button" type="button" class="btn btn-info btn-sm">
                         <span class="ladda-label">{{ 'update.inventory'|trans }}<i class=""></i></span>
                     </button>
                 </a>
                 <a href="{{ path('loki.tuo.tui.player.battle', {'id': player.id}) }}">
-                    <button role="button" type="button" id="update-btn" class="btn btn-info btn-sm">
+                    <button role="button" type="button" class="btn btn-info btn-sm">
                         <span class="ladda-label">{{ 'do.battle'|trans }}<i class=""></i></span>
                     </button>
                 </a>
             {% endif %}
         </div>
     </div>
-    <div>
-        <p id="demo"></p>
-        <p>Stamina: {{ info.stamina }}/{{ info.maxStamina }}</p>
-        <p>Energy: {{ info.energy }}/{{ info.maxEnergy }}</p>
+    <div class="row">
+        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center" id="demo"></h5>
+        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Stamina: {{ info.stamina }}
+            /{{ info.maxStamina }}</h5>
+        <h5 class="col-xs-6 col-xs-offset-3 col-sm-offset-0 col-sm-4 text-center">Energy: {{ info.energy }}
+            /{{ info.maxEnergy }}</h5>
     </div>
     <div id="updateFlash"></div>
     {% include '@LokiTuoResult/OwnedCard/_playerDeck.html.twig' with {'player': player, 'deckName' : deckName, 'deck' : deck} only %}
@@ -96,7 +99,7 @@
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                 // Display the result in the element with id="demo"
-                elem.text(hours + "h " + minutes + "m " + seconds + "s ");
+                elem.text("Card Ready in: " + hours + "h " + minutes + "m " + seconds + "s ");
 
                 // If the count down is finished, write some text
                 if (distance < 0) {
