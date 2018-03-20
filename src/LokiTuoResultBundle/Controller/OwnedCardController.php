@@ -269,6 +269,8 @@ class OwnedCardController extends Controller
     public function showCardsForPlayerAction(Player $player)
     {
         $allCards = $player->getOwnedCards();
+        $energy = 0;
+        $bonusCardReady = new \DateTime("+12 hours");
         $allCards = Collection::make($allCards)->sortBy(function (OwnedCard $elem) {
             return $elem->getCard()->getName();
         });
@@ -286,6 +288,7 @@ class OwnedCardController extends Controller
             'method' => 'PUT',
         ]);
 
+
         return $this->render('LokiTuoResultBundle:OwnedCard:show_cards_for_player.html.twig', [
             'canEdit' => true,
             'player' => $player,
@@ -294,6 +297,7 @@ class OwnedCardController extends Controller
             'cards' => $allCards,
             'form' => $ownedCardForm->createView(),
             'massForm' => $massOwnedCardForm->createView(),
+
         ]);
     }
 
