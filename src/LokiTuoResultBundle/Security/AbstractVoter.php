@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+
 abstract class AbstractVoter extends Voter implements LoggerAwareInterface
 {
     /** @var  LoggerInterface */

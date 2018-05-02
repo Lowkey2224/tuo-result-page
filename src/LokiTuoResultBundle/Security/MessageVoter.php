@@ -2,7 +2,7 @@
 
 namespace App\LokiTuoResultBundle\Security;
 
-use App\LokiTuoResultBundle\Entity\Message;
+use App\LokiTuoResultBundle\Model\Message;
 use LokiUserBundle\Entity\User;
 
 class MessageVoter extends AbstractVoter
